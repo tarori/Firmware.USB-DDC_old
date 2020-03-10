@@ -52,7 +52,7 @@
 # feature_quirk_ptest set in flash, which will lead to flash being
 # overwritten with defaults
 AUDIO_WIDGET_DEFAULTS=-DFEATURE_BOARD_DEFAULT=feature_board_usbi2s \
-	-DFEATURE_IMAGE_DEFAULT=feature_image_uac1_audio \
+	-DFEATURE_IMAGE_DEFAULT=feature_image_uac2_audio \
 	-DFEATURE_IN_DEFAULT=feature_in_normal \
 	-DFEATURE_OUT_DEFAULT=feature_out_normal \
 	-DFEATURE_ADC_DEFAULT=feature_adc_none \
@@ -102,7 +102,7 @@ AUDIO_WIDGET_DEFAULTS=-DFEATURE_BOARD_DEFAULT=feature_board_usbi2s \
 #	-DFEATURE_CFG_INTERFACE \
 #	-DFEATURE_PRODUCT_AB1x
 
-all:: Release/widget.elf widget-control
+all:: audio-widget widget-control
 
 Release/widget.elf::
 	rm -f Release/widget.elf Release/src/features.o
@@ -120,8 +120,8 @@ audio-widget::
 #	rm -f Release/widget.elf Release/src/features.o
 #	CFLAGS="$(SDR_WIDGET_DEFAULTS)" ./make-widget
 
-#widget-control: widget-control.c src/features.h
-#	gcc $(AUDIO_WIDGET_DEFAULTS) -o widget-control widget-control.c -lusb-1.0
+widget-control: widget-control.c src/features.h
+	gcc $(AUDIO_WIDGET_DEFAULTS) -o widget-control widget-control.c -lusb-1.0
 
 clean::
 	rm -f widget-control widget-control.exe

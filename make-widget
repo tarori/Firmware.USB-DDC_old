@@ -4,7 +4,7 @@
 # it manually means compilation default features are not set. You 
 # must edit Makefile (at project root) to set compilation defaults.
 #
-# This file tries to set AVR32BIN to a directory containing avr32-gcc.
+# This file tries to set AVR32BIN to a directory containing avr32-gcc.exe.
 # it then includes it in the path and runs make in the Release folder.
 #
 # You must edit this file if your AVR32 tools are installed but not 
@@ -15,15 +15,8 @@
 # 	"/cygdrive/c/Program Files (x86)/AVR32studio_2.6/plugins/com.atmel.avr.toolchains.win32.x86_3.0.0.201009140852/os/win32/x86/bin" \
 
 for d in \
-	"/cygdrive/c/Program Files (x86)/Atmel/AVR Tools/AVR Toolchain/bin" \
-	"/cygdrive/c/Program Files (x86)/Atmel/AVR Tools/AVR32 Studio/plugins/com.atmel.avr.toolchains.win32.x86_3.1.0.201012011657/os/win32/x86/bin" \
-    "/cygdrive/c/Program Files (x86)/Atmel/AVR32Studio_2.7/plugins/com.atmel.avr.toolchains.win32.x86_3.1.0.201012011657/os/win32/x86/bin" \
-    "/cygdrive/c/Programs/Atmel/AVR32Studio_2.7/AVR32 Studio/plugins/com.atmel.avr.toolchains.win32.x86_3.1.0.201012011657/os/win32/x86/bin" \
-    "/home/alex/as4e-ide/plugins/com.atmel.avr.toolchains.linux.x86_64_3.1.0.201012011657/os/linux/x86_64/bin" \
-    "/home/alex/as4e-ide/plugins/com.atmel.avr.toolchains.linux.x86_64_3.0.0.201009140852/os/linux/x86_64/bin"\
-    "/cygdrive/c/Program Files/Atmel/AVR Tools/AVR32 Studio/plugins/com.atmel.avr.toolchains.win32.x86_3.1.0.201012011657/os/win32/x86/bin" \
-    "/usr/local/eclipse/plugins/com.atmel.avr.toolchains.linux.x86_64_3.1.0.201012011657/os/linux/x86_64/bin" \
-    "/opt/avr32-gnu-toolchain-linux_x86_64/bin" \
+	"/cygdrive/c/Program Files (x86)/Atmel/AVR Tools/AVR32 Toolchain/bin" \
+    "/mnt/c/Program Files (x86)/Atmel/AVR Tools/AVR32 Toolchain/bin" \
     ;do
 	if [ -d "$d" ]
 	then
