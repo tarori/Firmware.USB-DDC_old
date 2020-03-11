@@ -7,4 +7,6 @@
 *.o
 *.d
 *.elf
+*.hex
+*.exe
 widget-control

@@ -5,4 +5,5 @@ objcopy -O ihex $elf $hex && \
 dfu-programmer.exe at32uc3a3256 erase --debug 6  && \
 dfu-programmer.exe at32uc3a3256 flash --suppress-bootloader-mem $hex --debug 6 && \
 dfu-programmer.exe at32uc3a3256 reset --debug 4 && \
+rm $hex && \
 exit 0

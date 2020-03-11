@@ -127,3 +127,6 @@ clean::
 	rm -f widget-control widget-control.exe
 	cd Release && make clean
 	rm -f widget-control
+
+write:: audio-widget
+	./program_widget
