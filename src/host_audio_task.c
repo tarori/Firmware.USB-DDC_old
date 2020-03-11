@@ -135,9 +135,9 @@ void host_audio_task(void)
     while (TRUE) {
         vTaskDelayUntil(&xLastWakeTime, configTSK_USB_HAUDIO_PERIOD);
 
-#endif // FREERTOS_USED
-        // First, check the host controller is in full operating mode with the
-        // B-device attached and enumerated
+#endif // FREERTOS_USED                                                    \
+    // First, check the host controller is in full operating mode with the \
+    // B-device attached and enumerated
         if (Is_host_ready()) {
             // New device connection (executed only once after device connection)
             if (audio_new_device_connected) {

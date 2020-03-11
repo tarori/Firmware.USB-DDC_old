@@ -298,9 +298,9 @@
 //! @{
 #define AUDIO_TE_TYPE_USB_UNDEFINE 0x0100                         // I/O USB Terminal, undefined Type.
 #define AUDIO_TE_TYPE_USB_STREAMING 0x0101                        // I/O A Terminal dealing with a signal carried over an endpoint in an AudioStreaming interface. The AudioStreaming interface descriptor points to the associated Terminal through the bTerminalLink field.
-#define AUDIO_TE_TYPE_USB_VENDOR_SPECIFIC 0x01FF                  // I/O A Terminal dealing with a signal carried over a vendor-specific interface. The vendor-specific interface descriptor must contain a field that references the Terminal
-                                                                  //! @}
-                                                                  //! \name Input Terminal Types pp. 2.2
+#define AUDIO_TE_TYPE_USB_VENDOR_SPECIFIC 0x01FF                  // I/O A Terminal dealing with a signal carried over a vendor-specific interface. The vendor-specific interface descriptor must contain a field that references the Terminal \
+                                                                  //! @}                                                                                                                                                                       \
+                                                                  //! \name Input Terminal Types pp. 2.2                                                                                                                                       \
                                                                   //! @{
 #define AUDIO_TE_TYPE_INPUT_UNDEFINED 0x0200                      // I Input Terminal, undefined Type.
 #define AUDIO_TE_TYPE_INPUT_MICROPHONE 0x0201                     // I A generic microphone that does not fit under any of the other classifications.
@@ -308,9 +308,9 @@
 #define AUDIO_TE_TYPE_INPUT_PERSONAL_MICROPHONE 0x0203            // I A head-mounted or clip-on microphone.
 #define AUDIO_TE_TYPE_INPUT_OMNI_DIRECTIONAL_MICROPHONE 0x0204    // I A microphone designed to pick up voice from more than one speaker at relatively long ranges.
 #define AUDIO_TE_TYPE_INPUT_MICROPHONE_ARRAY 0x0205               // I An array of microphones designed for directional processing using host-based signal processing algorithms.
-#define AUDIO_TE_TYPE_INPUT_PROCESSING_MICROPHONE_ARRAY 0x0206    // I An array of microphones with an embedded signal processor.
-                                                                  //! @}
-                                                                  //! \name Output Terminal Types pp 2.3
+#define AUDIO_TE_TYPE_INPUT_PROCESSING_MICROPHONE_ARRAY 0x0206    // I An array of microphones with an embedded signal processor. \
+                                                                  //! @}                                                          \
+                                                                  //! \name Output Terminal Types pp 2.3                          \
                                                                   //! @{
 #define AUDIO_TE_TYPE_OUTPUT_UNDEFINED 0x0300                     // O Output Terminal, undefined Type.
 #define AUDIO_TE_TYPE_OUTPUT_SPEAKER 0x0301                       // O A generic speaker or set of speakers that does not fit under any of the other classifications.
@@ -319,25 +319,25 @@
 #define AUDIO_TE_TYPE_OUTPUT_DESKTOP_SPEAKER 0x0304               // O Relatively small speaker or set of speakers normally placed on the desktop or integrated into the monitor. These speakers are close to the user and have limited stereo separation.
 #define AUDIO_TE_TYPE_OUTPUT_ROOM_SPEAKER 0x0305                  // O Larger speaker or set of speakers that are heard well anywhere in the room.
 #define AUDIO_TE_TYPE_OUTPUT_COMMUNICATION_SPEAKER 0x0306         // O Speaker or set of speakers designed for voice communication.
-#define AUDIO_TE_TYPE_OUTPUT_LOW_FREQUENCY_EFFECTS_SPEAKER 0x0307 // O Speaker designed for low frequencies (subwoofer). Not capable of reproducing speech or music.
-                                                                  //! @}
-                                                                  //! \name Bi-directional Terminal Types pp 2.4
+#define AUDIO_TE_TYPE_OUTPUT_LOW_FREQUENCY_EFFECTS_SPEAKER 0x0307 // O Speaker designed for low frequencies (subwoofer). Not capable of reproducing speech or music. \
+                                                                  //! @}                                                                                             \
+                                                                  //! \name Bi-directional Terminal Types pp 2.4                                                     \
                                                                   //! @{
 #define AUDIO_TE_TYPE_BI_UNDEFINED 0x0400                         // I/O Bi-directional Terminal, undefined Type.
 #define AUDIO_TE_TYPE_BI_HANDSET 0x0401                           // I/O Hand-held bi-directional audio device.
 #define AUDIO_TE_TYPE_BI_HEADSET 0x0402                           // I/O Head-mounted bi-directional audio device.
 #define AUDIO_TE_TYPE_BI_SPEAKERPHONE_NO_ECHO_REDUCTION 0x0403    // I/O A hands-free audio device designed for host-based echo cancellation.
 #define AUDIO_TE_TYPE_BI_ECHO_SUPPRESSING_SPEAKERPHONE 0x0404     // I/O A hands-free audio device with echo suppression capable of half-duplex operation.
-#define AUDIO_TE_TYPE_BI_ECHO_CANCELING_SPEAKERPHONE 0x0405       // I/O A hands-free audio device with echo cancellation capable of full-duplex operation.
-                                                                  //! @}
-                                                                  //! \name Telephony Terminal Types pp 2.5
+#define AUDIO_TE_TYPE_BI_ECHO_CANCELING_SPEAKERPHONE 0x0405       // I/O A hands-free audio device with echo cancellation capable of full-duplex operation. \
+                                                                  //! @}                                                                                    \
+                                                                  //! \name Telephony Terminal Types pp 2.5                                                 \
                                                                   //! @{
 #define AUDIO_TE_TYPE_TELEPHONY_UNDEFINED 0x0500                  // I/O Telephony Terminal, undefined Type.
 #define AUDIO_TE_TYPE_TELEPHONY_PHONE_LINE 0x0501                 // I/O May be an analog telephone line jack, an ISDN line, a proprietary PBX interface, or a wireless link.
 #define AUDIO_TE_TYPE_TELEPHONY_TELEPHONE 0x0502                  // I/O Device can be used as a telephone. When not in use as a telephone, handset is used as a bi-directional audio device.
-#define AUDIO_TE_TYPE_TELEPHONY_DOWN_LINE_PHONE 0x0503            // I/O A standard telephone set connected to the device. When not in use as a telephone, it can be used as a bidirectional audio device.
-                                                                  //! @}
-                                                                  //! \name External Terminal Types pp 2.6
+#define AUDIO_TE_TYPE_TELEPHONY_DOWN_LINE_PHONE 0x0503            // I/O A standard telephone set connected to the device. When not in use as a telephone, it can be used as a bidirectional audio device. \
+                                                                  //! @}                                                                                                                                   \
+                                                                  //! \name External Terminal Types pp 2.6                                                                                                 \
                                                                   //! @{
 #define AUDIO_TE_TYPE_EXTERNAL_UNDEFINED 0x0600                   // I/O External Terminal, undefined Type.
 #define AUDIO_TE_TYPE_EXTERNAL_ANALOG_CONNECTOR 0x0601            // I/O A generic analog connector.
@@ -581,8 +581,8 @@
 //! @{
 #define AUDIO_TE_CONTROL_CS_COPY_PROTECT_ATT_CPL0 0x00 // Copying is permitted without restriction. The material is either not copyrighted, or the copyright is not asserted
 #define AUDIO_TE_CONTROL_CS_COPY_PROTECT_ATT_CPL1 0x01 // One generation of copies may be made. The material is copyright protected and is the original.
-#define AUDIO_TE_CONTROL_CS_COPY_PROTECT_ATT_CPL2 0x02 // The material is copyright protected and no digital copying is permitted.
-                                                       //! @}
+#define AUDIO_TE_CONTROL_CS_COPY_PROTECT_ATT_CPL2 0x02 // The material is copyright protected and no digital copying is permitted. \
+                                                       //! @}                                                                      \
                                                        //! @}
 
 //! \name Mixer Unit Control requests
@@ -592,8 +592,8 @@
 //! \name Broadcast Channels (wValue)
 //! @{
 #define AUDIO_MIXER_CONTROL_IOCN_ALL_PROGRAM 0xFFFF // To get or set all programmable Mixer Controls
-#define AUDIO_MIXER_CONTROL_IOCN_ALL 0x0000         // To get all Mixer Controls
-                                                    //! @}
+#define AUDIO_MIXER_CONTROL_IOCN_ALL 0x0000         // To get all Mixer Controls \
+                                                    //! @}                       \
                                                     //! @}
 
 //! \name Selector Unit Control requests
@@ -631,7 +631,7 @@
 //! @}
 //! \name Broadcast Channels (wValue)
 //! @{
-#define AUDIO_FU_CONTROL_CN_ALL 0xFF // To get or set all available Controls
+#define AUDIO_FU_CONTROL_CN_ALL 0xFF // To get or set all available Controls \
                                      //! @}
 
 //! \name Bands parameter for AUDIO_FU_CONTROL_CS_GRAPHIC_EQUALIZER
@@ -665,15 +665,15 @@
 #define AUDIO_FU_CONTROL_BAND_EQ_10000Hz 0x04000000 // band 40
 #define AUDIO_FU_CONTROL_BAND_EQ_12500Hz 0x08000000 // band 41
 #define AUDIO_FU_CONTROL_BAND_EQ_16000Hz 0x10000000 // band 42*
-#define AUDIO_FU_CONTROL_BAND_EQ_20000Hz 0x20000000 // band 43
-                                                    //! @}
-                                                    //! \name Bands parameter for AUDIO_FU_CONTROL_CS_DELAY
-                                                    //! The settings for the CUR, MIN, MAX, and RES attributes can range from zero (0x0000) to 1023.9844ms (0xFFFF) in steps of 1/64 ms (0x0001).
+#define AUDIO_FU_CONTROL_BAND_EQ_20000Hz 0x20000000 // band 43                                                                                                                                    \
+                                                    //! @}                                                                                                                                        \
+                                                    //! \name Bands parameter for AUDIO_FU_CONTROL_CS_DELAY                                                                                       \
+                                                    //! The settings for the CUR, MIN, MAX, and RES attributes can range from zero (0x0000) to 1023.9844ms (0xFFFF) in steps of 1/64 ms (0x0001). \
                                                     //! @{
 #define AUDIO_FU_CONTROL_DELAY_0MS 0x0000           // 0 ms
 #define AUDIO_FU_CONTROL_DELAY_1MS 0x0040           // 1 ms
-#define AUDIO_FU_CONTROL_DELAY_MAX 0xFFFF           // 1023.9844 ms
-                                                    //! @}
+#define AUDIO_FU_CONTROL_DELAY_MAX 0xFFFF           // 1023.9844 ms \
+                                                    //! @}          \
                                                     //! @}
 
 //! \name Processing Unit Control requests
@@ -733,13 +733,13 @@
 #define AUDIO_PU_CONTROL_CS_RV_TYPE_HALL2 4                  // simulates the reverberation of a large concert hall.
 #define AUDIO_PU_CONTROL_CS_RV_TYPE_PLATE 5                  // simulates a plate reverberation (a studio device using a metal plate).
 #define AUDIO_PU_CONTROL_CS_RV_TYPE_DELAY 6                  // conventional delay that produces echo effects.
-#define AUDIO_PU_CONTROL_CS_RV_TYPE_PANNING_DELAY 7          // special delay in which the delayed sounds move left and right.
-                                                             //! @}
-                                                             //! \name Bands parameter for AUDIO_PU_CONTROL_CS_DR_RELEASE_TIME
-                                                             //! The settings for the CUR, MIN, MAX, and RES attributes can range from zero (0x0000) to 255.9961 ms (0xFFFF) in steps of 1/256 ms or 0.00390625 ms (0x0001)
+#define AUDIO_PU_CONTROL_CS_RV_TYPE_PANNING_DELAY 7          // special delay in which the delayed sounds move left and right.                                                                                              \
+                                                             //! @}                                                                                                                                                         \
+                                                             //! \name Bands parameter for AUDIO_PU_CONTROL_CS_DR_RELEASE_TIME                                                                                              \
+                                                             //! The settings for the CUR, MIN, MAX, and RES attributes can range from zero (0x0000) to 255.9961 ms (0xFFFF) in steps of 1/256 ms or 0.00390625 ms (0x0001) \
                                                              //! @{
 #define AUDIO_PU_CONTROL_CS_DR_RELEASE_TIME_DELAY_0MS 0x0000 // 0 ms
-#define AUDIO_PU_CONTROL_CS_DR_RELEASE_TIME_DELAY_MAX 0xFFFF // 255.9961 ms
+#define AUDIO_PU_CONTROL_CS_DR_RELEASE_TIME_DELAY_MAX 0xFFFF // 255.9961 ms \
                                                              //! @}
 //! @}
 
@@ -811,19 +811,19 @@
 #define AUDIO_CONTROL_LEVEL16_0DB 0x0000         //         0 dB
 #define AUDIO_CONTROL_LEVEL16_M1DB 0xFE00        //        -1 dB
 #define AUDIO_CONTROL_LEVEL16_MIN 0x8001         // -127.9961 dB
-#define AUDIO_CONTROL_LEVEL16_MUTE 0x8000        // -infinit dB (CUR attribute only)
-                                                 //! @}
-                                                 //! \name Level 8bits
-                                                 //! Used in:
-                                                 //! - Feature Unit Control requests withAUDIO_FU_CONTROL_CS_BASS, _MID, _TREBLE
-                                                 //!
-                                                 //! The settings for the CUR, MIN, and MAX attributes can range from +31.75 dB (0x7F) down to -32.00 dB (0x80) in steps of 0.25 dB (0x01)
-                                                 //! The settings for the RES attribute can only take positive values and range from 0.25 dB (0x01) to +31.75 dB (0x7F)
+#define AUDIO_CONTROL_LEVEL16_MUTE 0x8000        // -infinit dB (CUR attribute only)                                                                                                       \
+                                                 //! @}                                                                                                                                    \
+                                                 //! \name Level 8bits                                                                                                                     \
+                                                 //! Used in:                                                                                                                              \
+                                                 //! - Feature Unit Control requests withAUDIO_FU_CONTROL_CS_BASS, _MID, _TREBLE                                                           \
+                                                 //!                                                                                                                                       \
+                                                 //! The settings for the CUR, MIN, and MAX attributes can range from +31.75 dB (0x7F) down to -32.00 dB (0x80) in steps of 0.25 dB (0x01) \
+                                                 //! The settings for the RES attribute can only take positive values and range from 0.25 dB (0x01) to +31.75 dB (0x7F)                    \
                                                  //! @{
 #define AUDIO_CONTROL_LEVEL8_MAX 0x7F            // +31.75 dB
 #define AUDIO_CONTROL_LEVEL8_0DB 0x00            //      0 dB
-#define AUDIO_CONTROL_LEVEL8_MIN 0x80            //  -32.00 dB
-                                                 //! @}
+#define AUDIO_CONTROL_LEVEL8_MIN 0x80            //  -32.00 dB \
+                                                 //! @}        \
                                                  //! @}
 //! @}
 

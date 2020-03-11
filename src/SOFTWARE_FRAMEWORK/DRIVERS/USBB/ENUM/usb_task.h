@@ -97,7 +97,7 @@
 #define EVT_USB_RESET 8           // USB reset
 #define EVT_HOST_SOF 9            // Host start-of-frame sent
 #define EVT_HOST_HWUP 10          // Host wake-up detected
-#define EVT_HOST_DISCONNECTION 11 // The target device is disconnected
+#define EVT_HOST_DISCONNECTION 11 // The target device is disconnected \
                                   //! @}
 
 //! @defgroup std_req_values Standard requests defines

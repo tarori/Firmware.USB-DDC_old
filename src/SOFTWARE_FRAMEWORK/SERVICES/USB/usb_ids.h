@@ -211,7 +211,7 @@
 #define USB_SETUP_SET_STAND_INTERFACE (USB_SETUP_DIR_HOST_TO_DEVICE | USB_SETUP_TYPE_STANDARD | USB_SETUP_RECIPIENT_INTERFACE) // 0x01
 #define USB_SETUP_GET_STAND_INTERFACE (USB_SETUP_DIR_DEVICE_TO_HOST | USB_SETUP_TYPE_STANDARD | USB_SETUP_RECIPIENT_INTERFACE) // 0x81
 #define USB_SETUP_SET_STAND_ENDPOINT (USB_SETUP_DIR_HOST_TO_DEVICE | USB_SETUP_TYPE_STANDARD | USB_SETUP_RECIPIENT_ENDPOINT)   // 0x02
-#define USB_SETUP_GET_STAND_ENDPOINT (USB_SETUP_DIR_DEVICE_TO_HOST | USB_SETUP_TYPE_STANDARD | USB_SETUP_RECIPIENT_ENDPOINT)   // 0x82
+#define USB_SETUP_GET_STAND_ENDPOINT (USB_SETUP_DIR_DEVICE_TO_HOST | USB_SETUP_TYPE_STANDARD | USB_SETUP_RECIPIENT_ENDPOINT)   // 0x82 \
                                                                                                                                //! @}
 
 //! \name Request type used by specific setup request from class driver
@@ -225,8 +225,8 @@
 #define USB_SETUP_SET_CLASS_OTHER (USB_SETUP_DIR_HOST_TO_DEVICE | USB_SETUP_TYPE_CLASS | USB_SETUP_RECIPIENT_OTHER)       // 0x23
 #define USB_SETUP_GET_CLASS_OTHER (USB_SETUP_DIR_DEVICE_TO_HOST | USB_SETUP_TYPE_CLASS | USB_SETUP_RECIPIENT_OTHER)       // 0xA3
 #define USB_SETUP_SET_VENDOR_DEVICE (USB_SETUP_DIR_HOST_TO_DEVICE | USB_SETUP_TYPE_VENDOR | USB_SETUP_RECIPIENT_DEVICE)   // 0x40
-#define USB_SETUP_GET_VENDOR_DEVICE (USB_SETUP_DIR_DEVICE_TO_HOST | USB_SETUP_TYPE_VENDOR | USB_SETUP_RECIPIENT_DEVICE)   // 0xC0
-                                                                                                                          //! @}
+#define USB_SETUP_GET_VENDOR_DEVICE (USB_SETUP_DIR_DEVICE_TO_HOST | USB_SETUP_TYPE_VENDOR | USB_SETUP_RECIPIENT_DEVICE)   // 0xC0 \
+                                                                                                                          //! @}  \
                                                                                                                           //! @}
 
 //! \name Standard Requests (bRequest)

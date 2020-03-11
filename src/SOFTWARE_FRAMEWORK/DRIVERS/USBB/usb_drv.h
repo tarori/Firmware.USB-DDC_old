@@ -225,7 +225,7 @@
     (!Tst_bits(AVR32_GPIO.port[USB_ID_PIN >> 5].gper, 1 << (USB_ID_PIN & 0x1F)) &&                              \
      Tst_bits(AVR32_GPIO.port[USB_ID_PIN >> 5].pmr0, 1 << (USB_ID_PIN & 0x1F)) == Tst_bits(USB_ID_PIN, 0x01) && \
      Tst_bits(AVR32_GPIO.port[USB_ID_PIN >> 5].pmr1, 1 << (USB_ID_PIN & 0x1F)) == Tst_bits(USB_ID_PIN, 0x02))
-#endif // USB_DEVICE_FEATURE == ENABLED && USB_HOST_FEATURE == ENABLED
+#endif // USB_DEVICE_FEATURE == ENABLED && USB_HOST_FEATURE == ENABLED \
        //! Enable external USB_ID pin (listened to by USB)
 #define Usb_enable_id_pin() (Set_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_UIDE_MASK))
 //! Disable external USB_ID pin (ignored by USB)
@@ -263,7 +263,7 @@
     (!Tst_bits(AVR32_GPIO.port[USB_VBOF_PIN >> 5].gper, 1 << (USB_VBOF_PIN & 0x1F)) &&                                     \
      Tst_bits(AVR32_GPIO.port[USB_VBOF_PIN >> 5].pmr0, 1 << (USB_VBOF_PIN & 0x1F)) == Tst_bits(USB_VBOF_FUNCTION, 0x01) && \
      Tst_bits(AVR32_GPIO.port[USB_VBOF_PIN >> 5].pmr1, 1 << (USB_VBOF_PIN & 0x1F)) == Tst_bits(USB_VBOF_FUNCTION, 0x02))
-#endif // USB_HOST_FEATURE == ENABLED
+#endif // USB_HOST_FEATURE == ENABLED \
        //! Set USB_VBOF output pin polarity
 #define Usb_set_vbof_active_high() (Clr_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_VBUSPO_MASK))
 #define Usb_set_vbof_active_low() (Set_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_VBUSPO_MASK))

@@ -826,7 +826,7 @@ void uac1_device_audio_task(void *pvParameters)
                     print_dbg_char_char('9');
 #endif
                     mobo_clear_dac_channel(); // Silencing incoming (OUT endpoint) audio buffer for good measure.
-                    // mobodebug is this another scheduler thief?
+                                              // mobodebug is this another scheduler thief?
 
 #if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20) // With WM8805 present, handle semaphores
                     ledSet = FALSE;
