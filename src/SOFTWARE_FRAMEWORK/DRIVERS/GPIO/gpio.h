@@ -50,33 +50,30 @@
 #ifndef _GPIO_H_
 #define _GPIO_H_
 
-#include <avr32/io.h>
 #include "compiler.h"
+#include <avr32/io.h>
 
 /*! \name Return Values of the GPIO API
  */
 //! @{
-#define GPIO_SUCCESS            0 //!< Function successfully completed.
-#define GPIO_INVALID_ARGUMENT   1 //!< Input parameters are out of range.
+#define GPIO_SUCCESS 0          //!< Function successfully completed.
+#define GPIO_INVALID_ARGUMENT 1 //!< Input parameters are out of range.
 //! @}
-
 
 /*! \name Interrupt Trigger Modes
  */
 //! @{
-#define GPIO_PIN_CHANGE         0 //!< Interrupt triggered upon pin change.
-#define GPIO_RISING_EDGE        1 //!< Interrupt triggered upon rising edge.
-#define GPIO_FALLING_EDGE       2 //!< Interrupt triggered upon falling edge.
+#define GPIO_PIN_CHANGE 0   //!< Interrupt triggered upon pin change.
+#define GPIO_RISING_EDGE 1  //!< Interrupt triggered upon rising edge.
+#define GPIO_FALLING_EDGE 2 //!< Interrupt triggered upon falling edge.
 //! @}
-
 
 //! A type definition of pins and modules connectivity.
 typedef struct
 {
-  unsigned char pin;              //!< Module pin.
-  unsigned char function;         //!< Module function.
+    unsigned char pin;      //!< Module pin.
+    unsigned char function; //!< Module function.
 } gpio_map_t[];
-
 
 /*! \name Peripheral Bus Interface
  *
@@ -319,7 +316,6 @@ extern void gpio_clear_pin_interrupt_flag(unsigned int pin);
 
 //! @}
 
-
 #if (defined AVR32_GPIO_LOCAL_ADDRESS)
 /*! \name Local Bus Interface
  *
@@ -345,10 +341,11 @@ extern void gpio_clear_pin_interrupt_flag(unsigned int pin);
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void gpio_local_init(void)
+extern __inline__ void
+gpio_local_init(void)
 {
-  Set_system_register(AVR32_CPUCR,
-                      Get_system_register(AVR32_CPUCR) | AVR32_CPUCR_LOCEN_MASK);
+    Set_system_register(AVR32_CPUCR,
+                        Get_system_register(AVR32_CPUCR) | AVR32_CPUCR_LOCEN_MASK);
 }
 
 /*! \brief Enables the output driver of a pin.
@@ -363,9 +360,10 @@ extern __inline__ void gpio_local_init(void)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void gpio_local_enable_pin_output_driver(unsigned int pin)
+extern __inline__ void
+gpio_local_enable_pin_output_driver(unsigned int pin)
 {
-  AVR32_GPIO_LOCAL.port[pin >> 5].oders = 1 << (pin & 0x1F);
+    AVR32_GPIO_LOCAL.port[pin >> 5].oders = 1 << (pin & 0x1F);
 }
 
 /*! \brief Disables the output driver of a pin.
@@ -377,9 +375,10 @@ extern __inline__ void gpio_local_enable_pin_output_driver(unsigned int pin)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void gpio_local_disable_pin_output_driver(unsigned int pin)
+extern __inline__ void
+gpio_local_disable_pin_output_driver(unsigned int pin)
 {
-  AVR32_GPIO_LOCAL.port[pin >> 5].oderc = 1 << (pin & 0x1F);
+    AVR32_GPIO_LOCAL.port[pin >> 5].oderc = 1 << (pin & 0x1F);
 }
 
 /*! \brief Returns the value of a pin.
@@ -393,9 +392,10 @@ extern __inline__ void gpio_local_disable_pin_output_driver(unsigned int pin)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ int gpio_local_get_pin_value(unsigned int pin)
+extern __inline__ int
+gpio_local_get_pin_value(unsigned int pin)
 {
-  return (AVR32_GPIO_LOCAL.port[pin >> 5].pvr >> (pin & 0x1F)) & 1;
+    return (AVR32_GPIO_LOCAL.port[pin >> 5].pvr >> (pin & 0x1F)) & 1;
 }
 
 /*! \brief Drives a GPIO pin to 1.
@@ -412,9 +412,10 @@ extern __inline__ int gpio_local_get_pin_value(unsigned int pin)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void gpio_local_set_gpio_pin(unsigned int pin)
+extern __inline__ void
+gpio_local_set_gpio_pin(unsigned int pin)
 {
-  AVR32_GPIO_LOCAL.port[pin >> 5].ovrs = 1 << (pin & 0x1F);
+    AVR32_GPIO_LOCAL.port[pin >> 5].ovrs = 1 << (pin & 0x1F);
 }
 
 /*! \brief Drives a GPIO pin to 0.
@@ -431,9 +432,10 @@ extern __inline__ void gpio_local_set_gpio_pin(unsigned int pin)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void gpio_local_clr_gpio_pin(unsigned int pin)
+extern __inline__ void
+gpio_local_clr_gpio_pin(unsigned int pin)
 {
-  AVR32_GPIO_LOCAL.port[pin >> 5].ovrc = 1 << (pin & 0x1F);
+    AVR32_GPIO_LOCAL.port[pin >> 5].ovrc = 1 << (pin & 0x1F);
 }
 
 /*! \brief Toggles a GPIO pin.
@@ -450,9 +452,10 @@ extern __inline__ void gpio_local_clr_gpio_pin(unsigned int pin)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void gpio_local_tgl_gpio_pin(unsigned int pin)
+extern __inline__ void
+gpio_local_tgl_gpio_pin(unsigned int pin)
 {
-  AVR32_GPIO_LOCAL.port[pin >> 5].ovrt = 1 << (pin & 0x1F);
+    AVR32_GPIO_LOCAL.port[pin >> 5].ovrt = 1 << (pin & 0x1F);
 }
 
 /*! \brief Initializes the configuration of a GPIO pin so that it can be used
@@ -466,9 +469,10 @@ extern __inline__ void gpio_local_tgl_gpio_pin(unsigned int pin)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void gpio_local_init_gpio_open_drain_pin(unsigned int pin)
+extern __inline__ void
+gpio_local_init_gpio_open_drain_pin(unsigned int pin)
 {
-  AVR32_GPIO_LOCAL.port[pin >> 5].ovrc = 1 << (pin & 0x1F);
+    AVR32_GPIO_LOCAL.port[pin >> 5].ovrc = 1 << (pin & 0x1F);
 }
 
 /*! \brief Drives a GPIO pin to 1 using open drain.
@@ -484,9 +488,10 @@ extern __inline__ void gpio_local_init_gpio_open_drain_pin(unsigned int pin)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void gpio_local_set_gpio_open_drain_pin(unsigned int pin)
+extern __inline__ void
+gpio_local_set_gpio_open_drain_pin(unsigned int pin)
 {
-  AVR32_GPIO_LOCAL.port[pin >> 5].oderc = 1 << (pin & 0x1F);
+    AVR32_GPIO_LOCAL.port[pin >> 5].oderc = 1 << (pin & 0x1F);
 }
 
 /*! \brief Drives a GPIO pin to 0 using open drain.
@@ -502,9 +507,10 @@ extern __inline__ void gpio_local_set_gpio_open_drain_pin(unsigned int pin)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void gpio_local_clr_gpio_open_drain_pin(unsigned int pin)
+extern __inline__ void
+gpio_local_clr_gpio_open_drain_pin(unsigned int pin)
 {
-  AVR32_GPIO_LOCAL.port[pin >> 5].oders = 1 << (pin & 0x1F);
+    AVR32_GPIO_LOCAL.port[pin >> 5].oders = 1 << (pin & 0x1F);
 }
 
 /*! \brief Toggles a GPIO pin using open drain.
@@ -520,9 +526,10 @@ extern __inline__ void gpio_local_clr_gpio_open_drain_pin(unsigned int pin)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void gpio_local_tgl_gpio_open_drain_pin(unsigned int pin)
+extern __inline__ void
+gpio_local_tgl_gpio_open_drain_pin(unsigned int pin)
 {
-  AVR32_GPIO_LOCAL.port[pin >> 5].odert = 1 << (pin & 0x1F);
+    AVR32_GPIO_LOCAL.port[pin >> 5].odert = 1 << (pin & 0x1F);
 }
 
 //! @}
@@ -546,10 +553,11 @@ extern __inline__ void gpio_local_tgl_gpio_open_drain_pin(unsigned int pin)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void gpio_enable_pin_periph_event(unsigned int pin)
+extern __inline__ void
+gpio_enable_pin_periph_event(unsigned int pin)
 {
-  AVR32_GPIO.port[pin >> 5].oderc = 1 << (pin & 0x1F); // The GPIO output driver is disabled for that pin.
-  AVR32_GPIO.port[pin >> 5].evers = 1 << (pin & 0x1F);
+    AVR32_GPIO.port[pin >> 5].oderc = 1 << (pin & 0x1F); // The GPIO output driver is disabled for that pin.
+    AVR32_GPIO.port[pin >> 5].evers = 1 << (pin & 0x1F);
 }
 
 /*! \brief Disables the peripheral event generation of a pin.
@@ -560,9 +568,10 @@ extern __inline__ void gpio_enable_pin_periph_event(unsigned int pin)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void gpio_disable_pin_periph_event(unsigned int pin)
+extern __inline__ void
+gpio_disable_pin_periph_event(unsigned int pin)
 {
-  AVR32_GPIO.port[pin >> 5].everc = 1 << (pin & 0x1F);
+    AVR32_GPIO.port[pin >> 5].everc = 1 << (pin & 0x1F);
 }
 
 /*! \brief Configure the peripheral event trigger mode of a pin
@@ -579,5 +588,4 @@ extern int gpio_configure_pin_periph_event_mode(unsigned int pin, unsigned int m
 //! @}
 #endif
 
-
-#endif  // _GPIO_H_
+#endif // _GPIO_H_

@@ -57,31 +57,30 @@
 /*! \name Error Codes for the Module
  */
 //! @{
-#define TWI_SUCCESS              0
-#define TWI_INVALID_ARGUMENT    -1
-#define TWI_ARBITRATION_LOST    -2
-#define TWI_NO_CHIP_FOUND       -3
-#define TWI_RECEIVE_OVERRUN     -4
-#define TWI_RECEIVE_NACK        -5
-#define TWI_SEND_OVERRUN        -6
-#define TWI_SEND_NACK           -7
-#define TWI_INVALID_CLOCK_DIV   -8
+#define TWI_SUCCESS 0
+#define TWI_INVALID_ARGUMENT -1
+#define TWI_ARBITRATION_LOST -2
+#define TWI_NO_CHIP_FOUND -3
+#define TWI_RECEIVE_OVERRUN -4
+#define TWI_RECEIVE_NACK -5
+#define TWI_SEND_OVERRUN -6
+#define TWI_SEND_NACK -7
+#define TWI_INVALID_CLOCK_DIV -8
 //! @}
-
 
 /*!
  * \brief Input parameters when initializing the twi module mode
  */
 typedef struct
 {
-  //! The PBA clock frequency.
-  unsigned long pba_hz;
-  //! The baudrate of the TWI bus.
-  unsigned long speed;
-  //! The desired address.
-  char chip;
-  //! SMBUS mode
-  Bool smbus;
+    //! The PBA clock frequency.
+    unsigned long pba_hz;
+    //! The baudrate of the TWI bus.
+    unsigned long speed;
+    //! The desired address.
+    char chip;
+    //! SMBUS mode
+    Bool smbus;
 
 } twi_options_t;
 
@@ -90,16 +89,16 @@ typedef struct
  */
 typedef struct
 {
-  //! TWI chip address to communicate with.
-  char chip;
-  //! TWI address/commands to issue to the other chip (node).
-  unsigned int addr;
-  //! Length of the TWI data address segment (1-3 bytes).
-  int addr_length;
-  //! Where to find the data to be written.
-  void *buffer;
-  //! How many bytes do we want to write.
-  unsigned int length;
+    //! TWI chip address to communicate with.
+    char chip;
+    //! TWI address/commands to issue to the other chip (node).
+    unsigned int addr;
+    //! Length of the TWI data address segment (1-3 bytes).
+    int addr_length;
+    //! Where to find the data to be written.
+    void *buffer;
+    //! How many bytes do we want to write.
+    unsigned int length;
 } twi_package_t;
 
 /*!
@@ -107,14 +106,14 @@ typedef struct
  */
 typedef struct
 {
-  //! TWI chip address to communicate with.
-  int chip;
-  //! Where to find the data .
-  void *buffer;
-  //! How many bytes do we want to transfer.
-  unsigned int length;
-  //! Transfer direction
-  Bool read;
+    //! TWI chip address to communicate with.
+    int chip;
+    //! Where to find the data .
+    void *buffer;
+    //! How many bytes do we want to transfer.
+    unsigned int length;
+    //! Transfer direction
+    Bool read;
 } twim_transfer_t;
 
 /*!
@@ -127,7 +126,6 @@ typedef struct
 extern int twi_master_init(volatile avr32_twim_t *twi, const twi_options_t *opt, const unsigned irq);
 
 int twi_set_speed(volatile avr32_twim_t *twi, unsigned int speed, unsigned long pba_hz);
-
 
 /*!
  * \brief Test if a chip answers for a given twi address
@@ -182,8 +180,9 @@ extern int twi_master_read(volatile avr32_twim_t *twi, const twi_package_t *pack
  *                  (see \ref twi_package_t)
  * \return TWI_SUCCESS if all bytes were written, error code otherwhise
  */
-static inline int twi_master_write(volatile avr32_twim_t *twi, const twi_package_t *package) {
-	return(twim_write(twi, package->buffer,  package->length,  package->chip, 0));
+static inline int twi_master_write(volatile avr32_twim_t *twi, const twi_package_t *package)
+{
+    return (twim_write(twi, package->buffer, package->length, package->chip, 0));
 }
 
-#endif  // _TWI_H_
+#endif // _TWI_H_

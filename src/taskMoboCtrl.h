@@ -11,11 +11,9 @@
 #include <stdint.h>
 
 // SWR value x 100, in unsigned int format
-extern uint16_t	measured_SWR;
+extern uint16_t measured_SWR;
 
 extern uint16_t measured_Power(uint16_t voltage);
-extern void 	vStartTaskMoboCtrl(void);
-
-
+extern void vStartTaskMoboCtrl(void);
 
 #endif

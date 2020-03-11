@@ -48,9 +48,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  *
  */
-#include <avr32/io.h>
 #include "compiler.h"
 #include "intc.h"
+#include <avr32/io.h>
 //#include "twim.h"
 #include "twim_patched.h"
 
@@ -61,9 +61,9 @@ static volatile avr32_twim_t *twim_inst;
 static volatile Bool twim_nack = FALSE;
 
 //! Pointer to the applicative TWI transmit buffer.
-static const unsigned char * volatile twim_tx_data = NULL;
+static const unsigned char *volatile twim_tx_data = NULL;
 //! Pointer to the applicative TWI receive buffer.
-static volatile unsigned char * volatile twim_rx_data = NULL;
+static volatile unsigned char *volatile twim_rx_data = NULL;
 
 //! Remaining number of bytes to transmit.
 static volatile int twim_tx_nb_bytes = 0;
@@ -75,64 +75,55 @@ static volatile unsigned long twim_it_mask;
 
 /*! \brief TWI interrupt handler.
  */
-#if defined (__GNUC__)
+#if defined(__GNUC__)
 __attribute__((__interrupt__))
-#elif defined (__ICCAVR32__)
+#elif defined(__ICCAVR32__)
 __interrupt
 #endif
-static void twi_master_interrupt_handler(void)
+static void
+twi_master_interrupt_handler(void)
 {
-  // get masked status register value
+    // get masked status register value
     int status = twim_inst->sr & twim_it_mask;
     // this is a NACK
-    if (status & AVR32_TWIM_SR_ANAK_MASK)
-    {
-      //if we get a nak, clear the valid bit in cmdr, otherwise the command will be resent.
-      twim_inst->cmdr = twim_inst->cmdr ^ AVR32_TWIM_CMDR_VALID_MASK;
-      twim_inst->scr = AVR32_TWIM_SCR_ANAK_MASK;
-      goto nack;
+    if (status & AVR32_TWIM_SR_ANAK_MASK) {
+        //if we get a nak, clear the valid bit in cmdr, otherwise the command will be resent.
+        twim_inst->cmdr = twim_inst->cmdr ^ AVR32_TWIM_CMDR_VALID_MASK;
+        twim_inst->scr = AVR32_TWIM_SCR_ANAK_MASK;
+        goto nack;
     }
     // this is a RXRDY
-    else if (status & AVR32_TWIM_SR_RXRDY_MASK)
-    {
-      // get data from Receive Holding Register
-      *twim_rx_data = twim_inst->rhr;
-      twim_rx_data++;
-      // last byte to receive
-      twim_rx_nb_bytes--;
-      // receive complete
-      if (twim_rx_nb_bytes==0)
-      {
-        // finish the receive operation
-        twim_inst->idr = AVR32_TWIM_IDR_RXRDY_MASK;
-      }
+    else if (status & AVR32_TWIM_SR_RXRDY_MASK) {
+        // get data from Receive Holding Register
+        *twim_rx_data = twim_inst->rhr;
+        twim_rx_data++;
+        // last byte to receive
+        twim_rx_nb_bytes--;
+        // receive complete
+        if (twim_rx_nb_bytes == 0) {
+            // finish the receive operation
+            twim_inst->idr = AVR32_TWIM_IDR_RXRDY_MASK;
+        }
     }
     // this is a TXRDY
-    else if (status & AVR32_TWIM_SR_TXRDY_MASK)
-    {
-      // no more bytes to transmit
-      if (twim_tx_nb_bytes == 0)
-      {
-        twim_inst->idr = AVR32_TWIM_IDR_TXRDY_MASK;
-      }
-      else
-      {
-        // put the byte in the Transmit Holding Register
-        twim_inst->thr = *twim_tx_data++;
-        // decrease transmited bytes number
-        twim_tx_nb_bytes--;
-      }
-
+    else if (status & AVR32_TWIM_SR_TXRDY_MASK) {
+        // no more bytes to transmit
+        if (twim_tx_nb_bytes == 0) {
+            twim_inst->idr = AVR32_TWIM_IDR_TXRDY_MASK;
+        } else {
+            // put the byte in the Transmit Holding Register
+            twim_inst->thr = *twim_tx_data++;
+            // decrease transmited bytes number
+            twim_tx_nb_bytes--;
+        }
     }
     return;
 
-  nack:
+nack:
     twim_nack = TRUE;
 
-  return;
+    return;
 }
-
-
 
 /*! \brief Set the twi bus speed in cojunction with the clock frequency
  *
@@ -142,7 +133,8 @@ static void twi_master_interrupt_handler(void)
  * \return TWI_SUCCESS
  */
 int twi_set_speed(volatile avr32_twim_t *twi, unsigned int speed,
-        unsigned long pba_hz) {
+                  unsigned long pba_hz)
+{
     unsigned int cldiv;
     unsigned int ckdiv = 0;
 
@@ -158,70 +150,71 @@ int twi_set_speed(volatile avr32_twim_t *twi, unsigned int speed,
     if (ckdiv > 0x7)
         return TWI_INVALID_CLOCK_DIV;
     // set clock waveform generator register
-    twi->cwgr = cldiv
-              | (cldiv << AVR32_TWIM_CWGR_HIGH_OFFSET)
-              | (ckdiv << AVR32_TWIM_CWGR_EXP_OFFSET)
-              | (cldiv << AVR32_TWIM_CWGR_DATA_OFFSET)
-              | (0xFF << AVR32_TWIM_CWGR_STASTO_OFFSET);
+    twi->cwgr = cldiv | (cldiv << AVR32_TWIM_CWGR_HIGH_OFFSET) | (ckdiv << AVR32_TWIM_CWGR_EXP_OFFSET) | (cldiv << AVR32_TWIM_CWGR_DATA_OFFSET) | (0xFF << AVR32_TWIM_CWGR_STASTO_OFFSET);
     return TWI_SUCCESS;
 }
 
-int twi_master_init(volatile avr32_twim_t *twi, const twi_options_t *opt, const unsigned irq) {
-  
-  Bool global_interrupt_enabled = Is_global_interrupt_enabled();
-  int status = TWI_SUCCESS;
+int twi_master_init(volatile avr32_twim_t *twi, const twi_options_t *opt, const unsigned irq)
+{
 
-  // Disable TWI interrupts
-  if (global_interrupt_enabled) Disable_global_interrupt();
-  twi->idr = ~0UL;
+    Bool global_interrupt_enabled = Is_global_interrupt_enabled();
+    int status = TWI_SUCCESS;
 
-  // Reset TWI
-  twi->cr = AVR32_TWIM_CR_SWRST_MASK;
-  if (global_interrupt_enabled) Enable_global_interrupt();
+    // Disable TWI interrupts
+    if (global_interrupt_enabled)
+        Disable_global_interrupt();
+    twi->idr = ~0UL;
 
-  // Clear SR
-  twi->scr = ~0UL;
+    // Reset TWI
+    twi->cr = AVR32_TWIM_CR_SWRST_MASK;
+    if (global_interrupt_enabled)
+        Enable_global_interrupt();
 
-  // Disable all interrupts
-  Disable_global_interrupt();
+    // Clear SR
+    twi->scr = ~0UL;
 
-  // Register TWI handler on level 2
-  // Hack TF3LJ
-  //INTC_register_interrupt( &twi_master_interrupt_handler, AVR32_TWIM0_IRQ, AVR32_INTC_INT1);
-  INTC_register_interrupt( &twi_master_interrupt_handler, irq, AVR32_INTC_INT1);
+    // Disable all interrupts
+    Disable_global_interrupt();
 
-  // Enable all interrupts
-  Enable_global_interrupt();
+    // Register TWI handler on level 2
+    // Hack TF3LJ
+    //INTC_register_interrupt( &twi_master_interrupt_handler, AVR32_TWIM0_IRQ, AVR32_INTC_INT1);
+    INTC_register_interrupt(&twi_master_interrupt_handler, irq, AVR32_INTC_INT1);
 
-  twi->cr = AVR32_TWIM_CR_MEN_MASK;
+    // Enable all interrupts
+    Enable_global_interrupt();
 
-  if (opt->smbus) {
-    twi->cr = AVR32_TWIM_CR_SMEN_MASK;
-    twi->smbtr = (unsigned long) -1;
-  }
+    twi->cr = AVR32_TWIM_CR_MEN_MASK;
 
-  // Select the speed
-  if (twi_set_speed(twi, opt->speed, opt->pba_hz) == TWI_INVALID_CLOCK_DIV)
-     return TWI_INVALID_CLOCK_DIV;
+    if (opt->smbus) {
+        twi->cr = AVR32_TWIM_CR_SMEN_MASK;
+        twi->smbtr = (unsigned long)-1;
+    }
 
-  // Probe the component
-  //status = twi_probe(twi, opt->chip);
+    // Select the speed
+    if (twi_set_speed(twi, opt->speed, opt->pba_hz) == TWI_INVALID_CLOCK_DIV)
+        return TWI_INVALID_CLOCK_DIV;
 
-  return status;
+    // Probe the component
+    //status = twi_probe(twi, opt->chip);
+
+    return status;
 }
 
 void twim_disable_interrupt(volatile avr32_twim_t *twi)
 {
-  Bool global_interrupt_enabled = Is_global_interrupt_enabled();
+    Bool global_interrupt_enabled = Is_global_interrupt_enabled();
 
-  if (global_interrupt_enabled) Disable_global_interrupt();
-  twi->idr = ~0UL;
-  twi->scr = ~0UL;
+    if (global_interrupt_enabled)
+        Disable_global_interrupt();
+    twi->idr = ~0UL;
+    twi->scr = ~0UL;
 }
 
-int twi_probe(volatile avr32_twim_t *twi, char chip_addr) {
+int twi_probe(volatile avr32_twim_t *twi, char chip_addr)
+{
     twi_package_t package;
-    char data[1] = { 0 };
+    char data[1] = {0};
 
     // data to send
     package.buffer = data;
@@ -237,12 +230,13 @@ int twi_probe(volatile avr32_twim_t *twi, char chip_addr) {
     return (twim_write_packet(twi, &package));
 }
 
-int twim_read_packet(volatile avr32_twim_t *twi, const twi_package_t *package) {
+int twim_read_packet(volatile avr32_twim_t *twi, const twi_package_t *package)
+{
 
     twim_disable_interrupt(twi);
 
     twim_nack = FALSE;
-  
+
     // get a pointer to applicative data
     twim_rx_data = package->buffer;
 
@@ -250,38 +244,23 @@ int twim_read_packet(volatile avr32_twim_t *twi, const twi_package_t *package) {
     twim_rx_nb_bytes = package->length;
 
     if (package->addr_length) {
-        twim_tx_data = (unsigned char *) (&(package->addr));
+        twim_tx_data = (unsigned char *)(&(package->addr));
         // selection of first valid byte of the address
         twim_tx_data += (4 - package->addr_length);
 
         twim_tx_nb_bytes = package->addr_length;
 
-        twi->cmdr = (package->chip        << AVR32_TWIM_CMDR_SADR_OFFSET)
-                  | (package->addr_length << AVR32_TWIM_CMDR_NBYTES_OFFSET)
-                  | (1                    << AVR32_TWIM_CMDR_VALID_OFFSET)
-                  | (1                    << AVR32_TWIM_CMDR_START_OFFSET)
-                  | (0                    << AVR32_TWIM_CMDR_READ_OFFSET);
+        twi->cmdr = (package->chip << AVR32_TWIM_CMDR_SADR_OFFSET) | (package->addr_length << AVR32_TWIM_CMDR_NBYTES_OFFSET) | (1 << AVR32_TWIM_CMDR_VALID_OFFSET) | (1 << AVR32_TWIM_CMDR_START_OFFSET) | (0 << AVR32_TWIM_CMDR_READ_OFFSET);
 
-        twi->ncmdr = ((package->chip) << AVR32_TWIM_CMDR_SADR_OFFSET)
-                   | (package->length << AVR32_TWIM_CMDR_NBYTES_OFFSET)
-                   | (1               << AVR32_TWIM_CMDR_VALID_OFFSET)
-                   | (1               << AVR32_TWIM_CMDR_START_OFFSET)
-                   | (1               << AVR32_TWIM_CMDR_STOP_OFFSET)
-                   | (1               << AVR32_TWIM_CMDR_READ_OFFSET);
-
+        twi->ncmdr = ((package->chip) << AVR32_TWIM_CMDR_SADR_OFFSET) | (package->length << AVR32_TWIM_CMDR_NBYTES_OFFSET) | (1 << AVR32_TWIM_CMDR_VALID_OFFSET) | (1 << AVR32_TWIM_CMDR_START_OFFSET) | (1 << AVR32_TWIM_CMDR_STOP_OFFSET) | (1 << AVR32_TWIM_CMDR_READ_OFFSET);
 
     } else {
         twim_tx_nb_bytes = 0;
-        twi->cmdr = (package->chip   << AVR32_TWIM_CMDR_SADR_OFFSET)
-                  | (package->length<< AVR32_TWIM_CMDR_NBYTES_OFFSET)
-                  | (1               << AVR32_TWIM_CMDR_VALID_OFFSET)
-                  | (1               << AVR32_TWIM_CMDR_START_OFFSET)
-                  | (1               << AVR32_TWIM_CMDR_STOP_OFFSET)
-                  | (1               << AVR32_TWIM_CMDR_READ_OFFSET);
+        twi->cmdr = (package->chip << AVR32_TWIM_CMDR_SADR_OFFSET) | (package->length << AVR32_TWIM_CMDR_NBYTES_OFFSET) | (1 << AVR32_TWIM_CMDR_VALID_OFFSET) | (1 << AVR32_TWIM_CMDR_START_OFFSET) | (1 << AVR32_TWIM_CMDR_STOP_OFFSET) | (1 << AVR32_TWIM_CMDR_READ_OFFSET);
     }
-    
+
     // mask NACK and RXRDY interrupts
-    twim_it_mask =  AVR32_TWIM_IER_ANAK_MASK | AVR32_TWIM_IER_TXRDY_MASK | AVR32_TWIM_IER_RXRDY_MASK;
+    twim_it_mask = AVR32_TWIM_IER_ANAK_MASK | AVR32_TWIM_IER_TXRDY_MASK | AVR32_TWIM_IER_RXRDY_MASK;
 
     // update IMR through IER
     twi->ier = twim_it_mask;
@@ -289,70 +268,50 @@ int twim_read_packet(volatile avr32_twim_t *twi, const twi_package_t *package) {
     // Set pointer to TWIM instance for IT
     twim_inst = twi;
 
-     // Enable master transfer
-    twi->cr =  AVR32_TWIM_CR_MEN_MASK;
+    // Enable master transfer
+    twi->cr = AVR32_TWIM_CR_MEN_MASK;
 
     // Enable all interrupts
     Enable_global_interrupt();
-    
+
     // get data
-    while (!twim_nack && !(twi->sr & AVR32_TWIM_SR_IDLE_MASK));
+    while (!twim_nack && !(twi->sr & AVR32_TWIM_SR_IDLE_MASK))
+        ;
 
     // Disable master transfer
-    twi->cr =  AVR32_TWIM_CR_MDIS_MASK;
+    twi->cr = AVR32_TWIM_CR_MDIS_MASK;
 
-
-    if( twim_nack )
-    {
-      return TWI_RECEIVE_NACK;
+    if (twim_nack) {
+        return TWI_RECEIVE_NACK;
     }
 
     return TWI_SUCCESS;
 }
 
 int twim_read(volatile avr32_twim_t *twi, unsigned char *buffer, int nbytes,
-        int saddr, Bool tenbit) {
-          
+              int saddr, Bool tenbit)
+{
+
     twim_disable_interrupt(twi);
 
-    twim_nack = FALSE;          
-          
+    twim_nack = FALSE;
+
     // get a pointer to applicative data
     twim_rx_data = buffer;
 
     //tenbit need special handling
     if (tenbit) {
-        twi->cmdr = (saddr << AVR32_TWIM_CMDR_SADR_OFFSET)
-                  | (0    << AVR32_TWIM_CMDR_NBYTES_OFFSET)
-                  | (1 << AVR32_TWIM_CMDR_VALID_OFFSET)
-                  | (1 << AVR32_TWIM_CMDR_START_OFFSET)
-                  | (0 << AVR32_TWIM_CMDR_STOP_OFFSET)
-                  | (1 << AVR32_TWIM_CMDR_TENBIT_OFFSET)
-                  | (0 << AVR32_TWIM_CMDR_READ_OFFSET);
+        twi->cmdr = (saddr << AVR32_TWIM_CMDR_SADR_OFFSET) | (0 << AVR32_TWIM_CMDR_NBYTES_OFFSET) | (1 << AVR32_TWIM_CMDR_VALID_OFFSET) | (1 << AVR32_TWIM_CMDR_START_OFFSET) | (0 << AVR32_TWIM_CMDR_STOP_OFFSET) | (1 << AVR32_TWIM_CMDR_TENBIT_OFFSET) | (0 << AVR32_TWIM_CMDR_READ_OFFSET);
 
-        twi->ncmdr = (saddr << AVR32_TWIM_CMDR_SADR_OFFSET)
-                   | (nbytes << AVR32_TWIM_CMDR_NBYTES_OFFSET)
-                   | (1      << AVR32_TWIM_CMDR_VALID_OFFSET)
-                   | (1      << AVR32_TWIM_CMDR_START_OFFSET)
-                   | (1      << AVR32_TWIM_CMDR_STOP_OFFSET)
-                   | (1      << AVR32_TWIM_CMDR_TENBIT_OFFSET)
-                   | (1      << AVR32_TWIM_CMDR_REPSAME_OFFSET)
-                   | (1      << AVR32_TWIM_CMDR_READ_OFFSET);
+        twi->ncmdr = (saddr << AVR32_TWIM_CMDR_SADR_OFFSET) | (nbytes << AVR32_TWIM_CMDR_NBYTES_OFFSET) | (1 << AVR32_TWIM_CMDR_VALID_OFFSET) | (1 << AVR32_TWIM_CMDR_START_OFFSET) | (1 << AVR32_TWIM_CMDR_STOP_OFFSET) | (1 << AVR32_TWIM_CMDR_TENBIT_OFFSET) | (1 << AVR32_TWIM_CMDR_REPSAME_OFFSET) | (1 << AVR32_TWIM_CMDR_READ_OFFSET);
 
     } else {
-        twi->cmdr = (saddr  << AVR32_TWIM_CMDR_SADR_OFFSET)
-                  | (nbytes << AVR32_TWIM_CMDR_NBYTES_OFFSET)
-                  | (1      << AVR32_TWIM_CMDR_VALID_OFFSET)
-                  | (1      << AVR32_TWIM_CMDR_START_OFFSET)
-                  | (1      << AVR32_TWIM_CMDR_STOP_OFFSET)
-                  | (0      << AVR32_TWIM_CMDR_TENBIT_OFFSET)
-                  | (1      << AVR32_TWIM_CMDR_READ_OFFSET);
-
+        twi->cmdr = (saddr << AVR32_TWIM_CMDR_SADR_OFFSET) | (nbytes << AVR32_TWIM_CMDR_NBYTES_OFFSET) | (1 << AVR32_TWIM_CMDR_VALID_OFFSET) | (1 << AVR32_TWIM_CMDR_START_OFFSET) | (1 << AVR32_TWIM_CMDR_STOP_OFFSET) | (0 << AVR32_TWIM_CMDR_TENBIT_OFFSET) | (1 << AVR32_TWIM_CMDR_READ_OFFSET);
     }
     // get data
-    
+
     // mask NACK and RXRDY interrupts
-    twim_it_mask =  AVR32_TWIM_IER_ANAK_MASK | AVR32_TWIM_IER_TXRDY_MASK | AVR32_TWIM_IER_RXRDY_MASK;
+    twim_it_mask = AVR32_TWIM_IER_ANAK_MASK | AVR32_TWIM_IER_TXRDY_MASK | AVR32_TWIM_IER_RXRDY_MASK;
 
     // update IMR through IER
     twi->ier = twim_it_mask;
@@ -360,60 +319,57 @@ int twim_read(volatile avr32_twim_t *twi, unsigned char *buffer, int nbytes,
     // Set pointer to TWIM instance for IT
     twim_inst = twi;
 
-     // Enable master transfer
-    twi->cr =  AVR32_TWIM_CR_MEN_MASK;
+    // Enable master transfer
+    twi->cr = AVR32_TWIM_CR_MEN_MASK;
 
     // Enable all interrupts
     Enable_global_interrupt();
 
     // get data
-    while (!twim_nack && !(twi->sr & AVR32_TWIM_SR_IDLE_MASK));
+    while (!twim_nack && !(twi->sr & AVR32_TWIM_SR_IDLE_MASK))
+        ;
 
     // Disable master transfer
-    twi->cr =  AVR32_TWIM_CR_MDIS_MASK;
+    twi->cr = AVR32_TWIM_CR_MDIS_MASK;
 
-
-    if( twim_nack )
-    {
-      return TWI_RECEIVE_NACK;
+    if (twim_nack) {
+        return TWI_RECEIVE_NACK;
     }
 
-  return TWI_SUCCESS;
-
+    return TWI_SUCCESS;
 }
 
-int twi_master_read(volatile avr32_twim_t *twi, const twi_package_t *package) {
+int twi_master_read(volatile avr32_twim_t *twi, const twi_package_t *package)
+{
     unsigned char twi_register[4]; // the most address length will not longer than 4 bytes
 
     // Set Register address if needed
     if (package->addr_length) {
-	int i;
+        int i;
         // selection of first valid byte of the address
-        for (i=0; i<package->addr_length; i++)
-          twi_register[i] = (unsigned char) (package->addr >> (8*i));
+        for (i = 0; i < package->addr_length; i++)
+            twi_register[i] = (unsigned char)(package->addr >> (8 * i));
 #ifdef AVR32_TWIM_101_H_INCLUDED
-        while(twim_write(twi, twi_register,package->addr_length, package->chip,0)!=TWI_SUCCESS);
-#else        
-        twim_write(twi, twi_register,package->addr_length, package->chip,0);
+        while (twim_write(twi, twi_register, package->addr_length, package->chip, 0) != TWI_SUCCESS)
+            ;
+#else
+        twim_write(twi, twi_register, package->addr_length, package->chip, 0);
 #endif
     }
-    return twim_read(twi, package->buffer, package->length,package->chip, 0);
+    return twim_read(twi, package->buffer, package->length, package->chip, 0);
 }
 
-int twim_write_packet(volatile avr32_twim_t *twi, const twi_package_t *package) {
+int twim_write_packet(volatile avr32_twim_t *twi, const twi_package_t *package)
+{
 
     if (package->addr_length) {
-        twim_tx_data = (unsigned char *) (&(package->addr));
+        twim_tx_data = (unsigned char *)(&(package->addr));
         // selection of first valid byte of the address
         twim_tx_data += (4 - package->addr_length);
 
         twim_tx_nb_bytes = package->addr_length;
 
-        twi->cmdr = (package->chip << AVR32_TWIM_CMDR_SADR_OFFSET)
-                  | (package->addr_length << AVR32_TWIM_CMDR_NBYTES_OFFSET)
-                  | (1 << AVR32_TWIM_CMDR_VALID_OFFSET)
-                  | (1 << AVR32_TWIM_CMDR_START_OFFSET)
-                  | (0 << AVR32_TWIM_CMDR_READ_OFFSET);
+        twi->cmdr = (package->chip << AVR32_TWIM_CMDR_SADR_OFFSET) | (package->addr_length << AVR32_TWIM_CMDR_NBYTES_OFFSET) | (1 << AVR32_TWIM_CMDR_VALID_OFFSET) | (1 << AVR32_TWIM_CMDR_START_OFFSET) | (0 << AVR32_TWIM_CMDR_READ_OFFSET);
 
         // send data
         while (!(twi->sr & AVR32_TWIM_SR_IDLE_MASK) && twim_tx_nb_bytes) {
@@ -422,12 +378,7 @@ int twim_write_packet(volatile avr32_twim_t *twi, const twi_package_t *package) 
         };
     }
 
-    twi->cmdr = (package->chip << AVR32_TWIM_CMDR_SADR_OFFSET)
-              | (package->length << AVR32_TWIM_CMDR_NBYTES_OFFSET)
-              | (1 << AVR32_TWIM_CMDR_VALID_OFFSET)
-              | (1 << AVR32_TWIM_CMDR_START_OFFSET)
-              | (1 << AVR32_TWIM_CMDR_STOP_OFFSET)
-              | (0 << AVR32_TWIM_CMDR_READ_OFFSET);
+    twi->cmdr = (package->chip << AVR32_TWIM_CMDR_SADR_OFFSET) | (package->length << AVR32_TWIM_CMDR_NBYTES_OFFSET) | (1 << AVR32_TWIM_CMDR_VALID_OFFSET) | (1 << AVR32_TWIM_CMDR_START_OFFSET) | (1 << AVR32_TWIM_CMDR_STOP_OFFSET) | (0 << AVR32_TWIM_CMDR_READ_OFFSET);
 
     // get a pointer to applicative data
     twim_tx_data = package->buffer;
@@ -453,133 +404,102 @@ int twim_write_packet(volatile avr32_twim_t *twi, const twi_package_t *package) 
 }
 
 int twim_write(volatile avr32_twim_t *twi, unsigned const char *buffer,
-        int nbytes, int saddr, Bool tenbit) {
+               int nbytes, int saddr, Bool tenbit)
+{
 
     twim_disable_interrupt(twi);
 
-    twim_nack = FALSE;      
-          
+    twim_nack = FALSE;
+
     // get a pointer to applicative data
     twim_tx_data = buffer;
 
     twim_tx_nb_bytes = nbytes;
 
-    twi->cmdr = (saddr << AVR32_TWIM_CMDR_SADR_OFFSET)
-              | (nbytes << AVR32_TWIM_CMDR_NBYTES_OFFSET)
-              | (1 << AVR32_TWIM_CMDR_VALID_OFFSET)
-              | (1 << AVR32_TWIM_CMDR_START_OFFSET)
-              | (1 << AVR32_TWIM_CMDR_STOP_OFFSET)
-              | ((tenbit ? 1 : 0) << AVR32_TWIM_CMDR_TENBIT_OFFSET)
-              | (0 << AVR32_TWIM_CMDR_READ_OFFSET);
-    
+    twi->cmdr = (saddr << AVR32_TWIM_CMDR_SADR_OFFSET) | (nbytes << AVR32_TWIM_CMDR_NBYTES_OFFSET) | (1 << AVR32_TWIM_CMDR_VALID_OFFSET) | (1 << AVR32_TWIM_CMDR_START_OFFSET) | (1 << AVR32_TWIM_CMDR_STOP_OFFSET) | ((tenbit ? 1 : 0) << AVR32_TWIM_CMDR_TENBIT_OFFSET) | (0 << AVR32_TWIM_CMDR_READ_OFFSET);
+
     // mask NACK and TXRDY interrupts
-     twim_it_mask = AVR32_TWIM_IER_ANAK_MASK | AVR32_TWIM_IER_TXRDY_MASK;
+    twim_it_mask = AVR32_TWIM_IER_ANAK_MASK | AVR32_TWIM_IER_TXRDY_MASK;
 
-     // update IMR through IER
-     twi->ier = twim_it_mask;
+    // update IMR through IER
+    twi->ier = twim_it_mask;
 
-     // Set pointer to TWIM instance for IT
-     twim_inst = twi;
+    // Set pointer to TWIM instance for IT
+    twim_inst = twi;
 
-     // Enable master transfer
-     twi->cr =  AVR32_TWIM_CR_MEN_MASK;
+    // Enable master transfer
+    twi->cr = AVR32_TWIM_CR_MEN_MASK;
 
 #ifdef AVR32_TWIM_101_H_INCLUDED
-     // put the byte in the Transmit Holding Register
-     twim_inst->thr = *twim_tx_data++;
-     // decrease transmited bytes number
-     twim_tx_nb_bytes--;
+    // put the byte in the Transmit Holding Register
+    twim_inst->thr = *twim_tx_data++;
+    // decrease transmited bytes number
+    twim_tx_nb_bytes--;
 #endif
 
-     // Enable all interrupts
-     Enable_global_interrupt();
-     
-     // wait until Nack or IDLE in SR
-     while (!twim_nack && !(twi->sr & AVR32_TWIM_SR_IDLE_MASK));
+    // Enable all interrupts
+    Enable_global_interrupt();
 
-     // Disable master transfer
-     twi->cr =  AVR32_TWIM_CR_MDIS_MASK;
+    // wait until Nack or IDLE in SR
+    while (!twim_nack && !(twi->sr & AVR32_TWIM_SR_IDLE_MASK))
+        ;
+
+    // Disable master transfer
+    twi->cr = AVR32_TWIM_CR_MDIS_MASK;
 
 #ifdef AVR32_TWIM_101_H_INCLUDED
-     if( twim_nack ) {
-       return TWI_RECEIVE_NACK;
-     }
+    if (twim_nack) {
+        return TWI_RECEIVE_NACK;
+    }
 #else
-     if( twi->sr & AVR32_TWIM_SR_ANAK_MASK ) {
-       twi->scr = AVR32_TWIM_SCR_ANAK_MASK;
+    if (twi->sr & AVR32_TWIM_SR_ANAK_MASK) {
+        twi->scr = AVR32_TWIM_SCR_ANAK_MASK;
 
-       // Does not work
-       // // Hack TF3LJ
-       // // It appears that most of the time (at least when using the
-       // // secon TWIM, TWIM1) the ANAK condition is not caught by the
-       // // TWI, resulting in junk being left in the THR and all
-       // // subsequent TWI writes being screwed up, containing garbage.
-       // // The below is a brute force hack to prevent this condition
-       // twi->cr = AVR32_TWIM_CR_SWRST;	// Do a TWI Soft Reset
+        // Does not work
+        // // Hack TF3LJ
+        // // It appears that most of the time (at least when using the
+        // // secon TWIM, TWIM1) the ANAK condition is not caught by the
+        // // TWI, resulting in junk being left in the THR and all
+        // // subsequent TWI writes being screwed up, containing garbage.
+        // // The below is a brute force hack to prevent this condition
+        // twi->cr = AVR32_TWIM_CR_SWRST;	// Do a TWI Soft Reset
 
-       return TWI_RECEIVE_NACK;
-     }
-#endif     
+        return TWI_RECEIVE_NACK;
+    }
+#endif
 
-     // Does not work
-     // // Hack TF3LJ
-     // // It appears that most of the time (at least when using the
-     // // secon TWIM, TWIM1) the ANAK condition is not caught by the
-     // // TWI, resulting in junk being left in the THR and all
-     // // subsequent TWI writes being screwed up, containing garbage.
-     // // The below is a brute force hack to prevent this condition
-     twi->cr = AVR32_TWIM_CR_SWRST;	// Do a TWI Soft Reset
+    // Does not work
+    // // Hack TF3LJ
+    // // It appears that most of the time (at least when using the
+    // // secon TWIM, TWIM1) the ANAK condition is not caught by the
+    // // TWI, resulting in junk being left in the THR and all
+    // // subsequent TWI writes being screwed up, containing garbage.
+    // // The below is a brute force hack to prevent this condition
+    twi->cr = AVR32_TWIM_CR_SWRST; // Do a TWI Soft Reset
 
-
-     return TWI_SUCCESS;
+    return TWI_SUCCESS;
 }
 
 int twim_chained_transfer(volatile avr32_twim_t *twi,
-        volatile twim_transfer_t *first, volatile twim_transfer_t *second,
-        Bool tenbit) {
+                          volatile twim_transfer_t *first, volatile twim_transfer_t *second,
+                          Bool tenbit)
+{
 
     twi->scr = AVR32_TWIM_SR_CCOMP_MASK;
     if (tenbit && first->read) {
-        twi->cmdr = (first->chip << AVR32_TWIM_CMDR_SADR_OFFSET)
-                  | (0           << AVR32_TWIM_CMDR_NBYTES_OFFSET)
-                  | (1           << AVR32_TWIM_CMDR_VALID_OFFSET)
-                  | (1           << AVR32_TWIM_CMDR_START_OFFSET)
-                  | (0           << AVR32_TWIM_CMDR_STOP_OFFSET)
-                  | (1           << AVR32_TWIM_CMDR_TENBIT_OFFSET)
-                  | (0           << AVR32_TWIM_CMDR_READ_OFFSET);
+        twi->cmdr = (first->chip << AVR32_TWIM_CMDR_SADR_OFFSET) | (0 << AVR32_TWIM_CMDR_NBYTES_OFFSET) | (1 << AVR32_TWIM_CMDR_VALID_OFFSET) | (1 << AVR32_TWIM_CMDR_START_OFFSET) | (0 << AVR32_TWIM_CMDR_STOP_OFFSET) | (1 << AVR32_TWIM_CMDR_TENBIT_OFFSET) | (0 << AVR32_TWIM_CMDR_READ_OFFSET);
 
-        twi->ncmdr = (first->chip   << AVR32_TWIM_CMDR_SADR_OFFSET)
-                   | (first->length << AVR32_TWIM_CMDR_NBYTES_OFFSET)
-                   | (1             << AVR32_TWIM_CMDR_VALID_OFFSET)
-                   | (1             << AVR32_TWIM_CMDR_START_OFFSET)
-                   | (0             << AVR32_TWIM_CMDR_STOP_OFFSET)
-                   | (1             << AVR32_TWIM_CMDR_TENBIT_OFFSET)
-                   | (1             << AVR32_TWIM_CMDR_REPSAME_OFFSET)
-                   | (1             << AVR32_TWIM_CMDR_READ_OFFSET);
+        twi->ncmdr = (first->chip << AVR32_TWIM_CMDR_SADR_OFFSET) | (first->length << AVR32_TWIM_CMDR_NBYTES_OFFSET) | (1 << AVR32_TWIM_CMDR_VALID_OFFSET) | (1 << AVR32_TWIM_CMDR_START_OFFSET) | (0 << AVR32_TWIM_CMDR_STOP_OFFSET) | (1 << AVR32_TWIM_CMDR_TENBIT_OFFSET) | (1 << AVR32_TWIM_CMDR_REPSAME_OFFSET) | (1 << AVR32_TWIM_CMDR_READ_OFFSET);
 
         while (!(twi->sr & AVR32_TWIM_SR_CCOMP_MASK)) {
-
         }
         twi->scr = AVR32_TWIM_SR_CCOMP_MASK;
 
     } else {
-        twi->cmdr = (first->chip           << AVR32_TWIM_CMDR_SADR_OFFSET)
-                  | (first->length         << AVR32_TWIM_CMDR_NBYTES_OFFSET)
-                  | (1                     << AVR32_TWIM_CMDR_VALID_OFFSET)
-                  | (1                     << AVR32_TWIM_CMDR_START_OFFSET)
-                  | (0                     << AVR32_TWIM_CMDR_STOP_OFFSET)
-                  | ((tenbit ? 1 : 0)      << AVR32_TWIM_CMDR_TENBIT_OFFSET)
-                  | ((first->read ? 1 : 0) << AVR32_TWIM_CMDR_READ_OFFSET);
+        twi->cmdr = (first->chip << AVR32_TWIM_CMDR_SADR_OFFSET) | (first->length << AVR32_TWIM_CMDR_NBYTES_OFFSET) | (1 << AVR32_TWIM_CMDR_VALID_OFFSET) | (1 << AVR32_TWIM_CMDR_START_OFFSET) | (0 << AVR32_TWIM_CMDR_STOP_OFFSET) | ((tenbit ? 1 : 0) << AVR32_TWIM_CMDR_TENBIT_OFFSET) | ((first->read ? 1 : 0) << AVR32_TWIM_CMDR_READ_OFFSET);
     }
 
-    twi->ncmdr = (second->chip                       << AVR32_TWIM_CMDR_SADR_OFFSET)
-               | (second->length                     << AVR32_TWIM_CMDR_NBYTES_OFFSET)
-               | (1                                  << AVR32_TWIM_CMDR_VALID_OFFSET)
-               | (1                                  << AVR32_TWIM_CMDR_START_OFFSET)
-               | (1                                  << AVR32_TWIM_CMDR_STOP_OFFSET)
-               | ((tenbit ? 1 : 0)                   << AVR32_TWIM_CMDR_TENBIT_OFFSET)
-               | (((tenbit && second->read) ? 1 : 0) << AVR32_TWIM_CMDR_REPSAME_OFFSET)
-               | ((second->read ? 1 : 0)             << AVR32_TWIM_CMDR_READ_OFFSET);
+    twi->ncmdr = (second->chip << AVR32_TWIM_CMDR_SADR_OFFSET) | (second->length << AVR32_TWIM_CMDR_NBYTES_OFFSET) | (1 << AVR32_TWIM_CMDR_VALID_OFFSET) | (1 << AVR32_TWIM_CMDR_START_OFFSET) | (1 << AVR32_TWIM_CMDR_STOP_OFFSET) | ((tenbit ? 1 : 0) << AVR32_TWIM_CMDR_TENBIT_OFFSET) | (((tenbit && second->read) ? 1 : 0) << AVR32_TWIM_CMDR_REPSAME_OFFSET) | ((second->read ? 1 : 0) << AVR32_TWIM_CMDR_READ_OFFSET);
 
     if (first->read) {
         // get a pointer to applicative data

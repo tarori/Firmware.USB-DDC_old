@@ -53,12 +53,11 @@
 #include "compiler.h"
 #include <avr32/io.h>
 
-
 /*! \name Oscillator Types
  */
 //! @{
-#define RTC_OSC_32KHZ    1
-#define RTC_OSC_RC       0
+#define RTC_OSC_32KHZ 1
+#define RTC_OSC_RC 0
 //! @}
 
 /*! \name Predefined PSEL Values
@@ -67,14 +66,13 @@
 
 //! The PSEL value to set the RTC source clock (after the prescaler) to 1 Hz,
 //! when using an external 32-kHz crystal.
-#define RTC_PSEL_32KHZ_1HZ    14
+#define RTC_PSEL_32KHZ_1HZ 14
 
 //! The PSEL value to set the RTC source clock (after the prescaler) to 1.76 Hz,
 //! when using the internal RC oscillator (~ 115 kHz).
-#define RTC_PSEL_RC_1_76HZ    15
+#define RTC_PSEL_RC_1_76HZ 15
 
 //! @}
-
 
 /*!
  * \brief This function will initialise the RTC module.
@@ -187,5 +185,4 @@ extern void rtc_set_value(volatile avr32_rtc_t *rtc, unsigned long val);
  */
 extern unsigned long rtc_get_value(volatile avr32_rtc_t *rtc);
 
-
-#endif  // _RTC_H_
+#endif // _RTC_H_

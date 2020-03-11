@@ -54,7 +54,6 @@
 #ifndef _DEVICE_AUDIO_TASK_H_
 #define _DEVICE_AUDIO_TASK_H_
 
-
 //_____ I N C L U D E S ____________________________________________________
 
 #include "conf_usb.h"
@@ -62,9 +61,9 @@
 
 // To access semaphore
 #include "FreeRTOS.h"
-#include "task.h"
 #include "queue.h"
 #include "semphr.h"
+#include "task.h"
 
 #include "gpio.h"
 
@@ -72,9 +71,8 @@
 #include "wm8805.h"
 
 #if USB_DEVICE_FEATURE == DISABLED
-  #error device_audio_task.h is #included although USB_DEVICE_FEATURE is disabled
+#error device_audio_task.h is #included although USB_DEVICE_FEATURE is disabled
 #endif
-
 
 //_____ D E F I N I T I O N S ______________________________________________
 
@@ -88,25 +86,23 @@ extern volatile S32 FB_rate, FB_rate_initial, FB_rate_nominal; // BSB 20131031 F
 extern volatile Bool mute, spk_mute;
 extern volatile uint8_t usb_spk_mute; // This variable is written to by usb subsystem and heeded in playback
 
-extern S16 spk_vol_usb_L, spk_vol_usb_R;			// BSB 20160320 added stereo volume control
+extern S16 spk_vol_usb_L, spk_vol_usb_R; // BSB 20160320 added stereo volume control
 extern S32 spk_vol_mult_L, spk_vol_mult_R;
 
-extern volatile uint8_t input_select;				// BSB 20150501 global variable for input selector
+extern volatile uint8_t input_select; // BSB 20150501 global variable for input selector
 
 #ifdef HW_GEN_DIN20
-extern volatile uint8_t usb_ch;						// Front or rear USB channel
-extern volatile uint8_t usb_ch_swap;				// Front or rear USB channel
+extern volatile uint8_t usb_ch;      // Front or rear USB channel
+extern volatile uint8_t usb_ch_swap; // Front or rear USB channel
 #endif
 
 #if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)
-extern volatile xSemaphoreHandle input_select_semphr; 	// BSB 20150626 audio channel selection semaphore
+extern volatile xSemaphoreHandle input_select_semphr; // BSB 20150626 audio channel selection semaphore
 extern volatile wm8805_status_t wm8805_status;
 #endif
 
 //_____ M A C R O S ________________________________________________________
 
-
 //_____ D E C L A R A T I O N S ____________________________________________
 
-
-#endif  // _DEVICE_AUDIO_TASK_H_
+#endif // _DEVICE_AUDIO_TASK_H_

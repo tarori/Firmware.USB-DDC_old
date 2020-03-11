@@ -51,52 +51,51 @@
 #ifndef _USART_H_
 #define _USART_H_
 
-#include <avr32/io.h>
 #include "compiler.h"
-
+#include <avr32/io.h>
 
 /*! \name Return Values
  */
 //! @{
-#define USART_SUCCESS                 0 //!< Successful completion.
-#define USART_FAILURE                -1 //!< Failure because of some unspecified reason.
-#define USART_INVALID_INPUT           1 //!< Input value out of range.
-#define USART_INVALID_ARGUMENT       -1 //!< Argument value out of range.
-#define USART_TX_BUSY                 2 //!< Transmitter was busy.
-#define USART_RX_EMPTY                3 //!< Nothing was received.
-#define USART_RX_ERROR                4 //!< Transmission error occurred.
-#define USART_MODE_FAULT              5 //!< USART not in the appropriate mode.
+#define USART_SUCCESS 0           //!< Successful completion.
+#define USART_FAILURE -1          //!< Failure because of some unspecified reason.
+#define USART_INVALID_INPUT 1     //!< Input value out of range.
+#define USART_INVALID_ARGUMENT -1 //!< Argument value out of range.
+#define USART_TX_BUSY 2           //!< Transmitter was busy.
+#define USART_RX_EMPTY 3          //!< Nothing was received.
+#define USART_RX_ERROR 4          //!< Transmission error occurred.
+#define USART_MODE_FAULT 5        //!< USART not in the appropriate mode.
 //! @}
 
 //! Default time-out value (number of attempts).
-#define USART_DEFAULT_TIMEOUT         10000
+#define USART_DEFAULT_TIMEOUT 10000
 
 /*! \name Parity Settings
  */
 //! @{
-#define USART_EVEN_PARITY             AVR32_USART_MR_PAR_EVEN   //!< Use even parity on character transmission.
-#define USART_ODD_PARITY              AVR32_USART_MR_PAR_ODD    //!< Use odd parity on character transmission.
-#define USART_SPACE_PARITY            AVR32_USART_MR_PAR_SPACE  //!< Use a space as parity bit.
-#define USART_MARK_PARITY             AVR32_USART_MR_PAR_MARK   //!< Use a mark as parity bit.
-#define USART_NO_PARITY               AVR32_USART_MR_PAR_NONE   //!< Don't use a parity bit.
-#define USART_MULTIDROP_PARITY        AVR32_USART_MR_PAR_MULTI  //!< Parity bit is used to flag address characters.
+#define USART_EVEN_PARITY AVR32_USART_MR_PAR_EVEN       //!< Use even parity on character transmission.
+#define USART_ODD_PARITY AVR32_USART_MR_PAR_ODD         //!< Use odd parity on character transmission.
+#define USART_SPACE_PARITY AVR32_USART_MR_PAR_SPACE     //!< Use a space as parity bit.
+#define USART_MARK_PARITY AVR32_USART_MR_PAR_MARK       //!< Use a mark as parity bit.
+#define USART_NO_PARITY AVR32_USART_MR_PAR_NONE         //!< Don't use a parity bit.
+#define USART_MULTIDROP_PARITY AVR32_USART_MR_PAR_MULTI //!< Parity bit is used to flag address characters.
 //! @}
 
 /*! \name Stop Bits Settings
  */
 //! @{
-#define USART_1_STOPBIT               AVR32_USART_MR_NBSTOP_1   //!< Use 1 stop bit.
-#define USART_1_5_STOPBITS            AVR32_USART_MR_NBSTOP_1_5 //!< Use 1.5 stop bits.
-#define USART_2_STOPBITS              AVR32_USART_MR_NBSTOP_2   //!< Use 2 stop bits (for more, just give the number of bits).
+#define USART_1_STOPBIT AVR32_USART_MR_NBSTOP_1      //!< Use 1 stop bit.
+#define USART_1_5_STOPBITS AVR32_USART_MR_NBSTOP_1_5 //!< Use 1.5 stop bits.
+#define USART_2_STOPBITS AVR32_USART_MR_NBSTOP_2     //!< Use 2 stop bits (for more, just give the number of bits).
 //! @}
 
 /*! \name Channel Modes
  */
 //! @{
-#define USART_NORMAL_CHMODE           AVR32_USART_MR_CHMODE_NORMAL      //!< Normal communication.
-#define USART_AUTO_ECHO               AVR32_USART_MR_CHMODE_ECHO        //!< Echo data.
-#define USART_LOCAL_LOOPBACK          AVR32_USART_MR_CHMODE_LOCAL_LOOP  //!< Local loopback.
-#define USART_REMOTE_LOOPBACK         AVR32_USART_MR_CHMODE_REMOTE_LOOP //!< Remote loopback.
+#define USART_NORMAL_CHMODE AVR32_USART_MR_CHMODE_NORMAL        //!< Normal communication.
+#define USART_AUTO_ECHO AVR32_USART_MR_CHMODE_ECHO              //!< Echo data.
+#define USART_LOCAL_LOOPBACK AVR32_USART_MR_CHMODE_LOCAL_LOOP   //!< Local loopback.
+#define USART_REMOTE_LOOPBACK AVR32_USART_MR_CHMODE_REMOTE_LOOP //!< Remote loopback.
 //! @}
 
 #if defined(AVR32_USART_400_H_INCLUDED) || \
@@ -108,80 +107,79 @@
 /*! \name LIN Node Actions
  */
 //! @{
-#define USART_LIN_PUBLISH_ACTION      AVR32_USART_LINMR_NACT_PUBLISH    //!< The USART transmits the response.
-#define USART_LIN_SUBSCRIBE_ACTION    AVR32_USART_LINMR_NACT_SUBSCRIBE  //!< The USART receives the response.
-#define USART_LIN_IGNORE_ACTION       AVR32_USART_LINMR_NACT_IGNORE     //!< The USART does not transmit and does not receive the reponse.
+#define USART_LIN_PUBLISH_ACTION AVR32_USART_LINMR_NACT_PUBLISH     //!< The USART transmits the response.
+#define USART_LIN_SUBSCRIBE_ACTION AVR32_USART_LINMR_NACT_SUBSCRIBE //!< The USART receives the response.
+#define USART_LIN_IGNORE_ACTION AVR32_USART_LINMR_NACT_IGNORE       //!< The USART does not transmit and does not receive the reponse.
 //! @}
 
 /*! \name LIN Checksum Types
  */
 //! @{
-#define USART_LIN_ENHANCED_CHECKSUM   0 //!< LIN 2.0 "enhanced" checksum.
-#define USART_LIN_CLASSIC_CHECKSUM    1 //!< LIN 1.3 "classic" checksum.
+#define USART_LIN_ENHANCED_CHECKSUM 0 //!< LIN 2.0 "enhanced" checksum.
+#define USART_LIN_CLASSIC_CHECKSUM 1  //!< LIN 1.3 "classic" checksum.
 //! @}
 
-#endif  // USART rev. >= 4.0.0
-
+#endif // USART rev. >= 4.0.0
 
 //! Input parameters when initializing RS232 and similar modes.
 typedef struct
 {
-  //! Set baud rate of the USART (unused in slave modes).
-  unsigned long baudrate;
+    //! Set baud rate of the USART (unused in slave modes).
+    unsigned long baudrate;
 
-  //! Number of bits to transmit as a character (5 to 9).
-  unsigned char charlength;
+    //! Number of bits to transmit as a character (5 to 9).
+    unsigned char charlength;
 
-  //! How to calculate the parity bit: \ref USART_EVEN_PARITY, \ref USART_ODD_PARITY,
-  //! \ref USART_SPACE_PARITY, \ref USART_MARK_PARITY, \ref USART_NO_PARITY or
-  //! \ref USART_MULTIDROP_PARITY.
-  unsigned char paritytype;
+    //! How to calculate the parity bit: \ref USART_EVEN_PARITY, \ref USART_ODD_PARITY,
+    //! \ref USART_SPACE_PARITY, \ref USART_MARK_PARITY, \ref USART_NO_PARITY or
+    //! \ref USART_MULTIDROP_PARITY.
+    unsigned char paritytype;
 
-  //! Number of stop bits between two characters: \ref USART_1_STOPBIT,
-  //! \ref USART_1_5_STOPBITS, \ref USART_2_STOPBITS or any number from 3 to 257
-  //! which will result in a time guard period of that length between characters.
-  //! \note \ref USART_1_5_STOPBITS is supported in asynchronous modes only.
-  unsigned short stopbits;
+    //! Number of stop bits between two characters: \ref USART_1_STOPBIT,
+    //! \ref USART_1_5_STOPBITS, \ref USART_2_STOPBITS or any number from 3 to 257
+    //! which will result in a time guard period of that length between characters.
+    //! \note \ref USART_1_5_STOPBITS is supported in asynchronous modes only.
+    unsigned short stopbits;
 
-  //! Run the channel in testmode: \ref USART_NORMAL_CHMODE, \ref USART_AUTO_ECHO,
-  //! \ref USART_LOCAL_LOOPBACK or \ref USART_REMOTE_LOOPBACK.
-  unsigned char channelmode;
+    //! Run the channel in testmode: \ref USART_NORMAL_CHMODE, \ref USART_AUTO_ECHO,
+    //! \ref USART_LOCAL_LOOPBACK or \ref USART_REMOTE_LOOPBACK.
+    unsigned char channelmode;
 } usart_options_t;
 
 //! Input parameters when initializing ISO7816 mode.
 typedef struct
 {
-  //! Set the frequency of the ISO7816 clock.
-  unsigned long iso7816_hz;
+    //! Set the frequency of the ISO7816 clock.
+    unsigned long iso7816_hz;
 
-  //! The number of ISO7816 clock ticks in every bit period (1 to 2047, 0 = disable clock).
-  //! Bit rate = \ref iso7816_hz / \ref fidi_ratio.
-  unsigned short fidi_ratio;
+    //! The number of ISO7816 clock ticks in every bit period (1 to 2047, 0 = disable clock).
+    //! Bit rate = \ref iso7816_hz / \ref fidi_ratio.
+    unsigned short fidi_ratio;
 
-  //! How to calculate the parity bit: \ref USART_EVEN_PARITY for normal mode or
-  //! \ref USART_ODD_PARITY for inverse mode.
-  unsigned char paritytype;
+    //! How to calculate the parity bit: \ref USART_EVEN_PARITY for normal mode or
+    //! \ref USART_ODD_PARITY for inverse mode.
+    unsigned char paritytype;
 
-  //! Inhibit Non Acknowledge:\n
-  //!   - 0: the NACK is generated;\n
-  //!   - 1: the NACK is not generated.
-  //!
-  //! \note This bit will be used only in ISO7816 mode, protocol T = 0 receiver.
-  int inhibit_nack;
+    //! Inhibit Non Acknowledge:\n
+    //!   - 0: the NACK is generated;\n
+    //!   - 1: the NACK is not generated.
+    //!
+    //! \note This bit will be used only in ISO7816 mode, protocol T = 0 receiver.
+    int inhibit_nack;
 
-  //! Disable successive NACKs.
-  //! Successive parity errors are counted up to the value in the \ref max_iterations field.
-  //! These parity errors generate a NACK on the ISO line. As soon as this value is reached,
-  //! no addititional NACK is sent on the ISO line. The ITERATION flag is asserted.
-  int dis_suc_nack;
+    //! Disable successive NACKs.
+    //! Successive parity errors are counted up to the value in the \ref max_iterations field.
+    //! These parity errors generate a NACK on the ISO line. As soon as this value is reached,
+    //! no addititional NACK is sent on the ISO line. The ITERATION flag is asserted.
+    int dis_suc_nack;
 
-  //! Max number of repetitions (0 to 7).
-  unsigned char max_iterations;
+    //! Max number of repetitions (0 to 7).
+    unsigned char max_iterations;
 
-  //! Bit order in transmitted characters:\n
-  //!   - 0: LSB first;\n
-  //!   - 1: MSB first.
-  int bit_order;
+    //! Bit order in transmitted characters:\n
+    //!   - 0: LSB first;\n
+    //!   - 1: MSB first.
+    int bit_order;
 } usart_iso7816_options_t;
 
 #if defined(AVR32_USART_400_H_INCLUDED) || \
@@ -193,22 +191,21 @@ typedef struct
 //! Input parameters when initializing SPI mode.
 typedef struct
 {
-  //! Set the frequency of the SPI clock (unused in slave mode).
-  unsigned long baudrate;
+    //! Set the frequency of the SPI clock (unused in slave mode).
+    unsigned long baudrate;
 
-  //! Number of bits to transmit as a character (5 to 9).
-  unsigned char charlength;
+    //! Number of bits to transmit as a character (5 to 9).
+    unsigned char charlength;
 
-  //! Which SPI mode to use.
-  unsigned char spimode;
+    //! Which SPI mode to use.
+    unsigned char spimode;
 
-  //! Run the channel in testmode: \ref USART_NORMAL_CHMODE, \ref USART_AUTO_ECHO,
-  //! \ref USART_LOCAL_LOOPBACK or \ref USART_REMOTE_LOOPBACK.
-  unsigned char channelmode;
+    //! Run the channel in testmode: \ref USART_NORMAL_CHMODE, \ref USART_AUTO_ECHO,
+    //! \ref USART_LOCAL_LOOPBACK or \ref USART_REMOTE_LOOPBACK.
+    unsigned char channelmode;
 } usart_spi_options_t;
 
-#endif  // USART rev. >= 4.0.0
-
+#endif // USART rev. >= 4.0.0
 
 //------------------------------------------------------------------------------
 /*! \name Initialization Functions
@@ -383,10 +380,9 @@ extern int usart_init_spi_master(volatile avr32_usart_t *usart, const usart_spi_
  */
 extern int usart_init_spi_slave(volatile avr32_usart_t *usart, const usart_spi_options_t *opt, long pba_hz);
 
-#endif  // USART rev. >= 4.0.0
+#endif // USART rev. >= 4.0.0
 
 //! @}
-
 
 //------------------------------------------------------------------------------
 /*! \name Read and Reset Error Status Bits
@@ -404,9 +400,10 @@ extern int usart_init_spi_slave(volatile avr32_usart_t *usart, const usart_spi_o
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void usart_reset_status(volatile avr32_usart_t *usart)
+extern __inline__ void
+usart_reset_status(volatile avr32_usart_t *usart)
 {
-  usart->cr = AVR32_USART_CR_RSTSTA_MASK;
+    usart->cr = AVR32_USART_CR_RSTSTA_MASK;
 }
 
 /*! \brief Checks if a parity error has occurred since last status reset.
@@ -418,9 +415,10 @@ extern __inline__ void usart_reset_status(volatile avr32_usart_t *usart)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ int usart_parity_error(volatile avr32_usart_t *usart)
+extern __inline__ int
+usart_parity_error(volatile avr32_usart_t *usart)
 {
-  return (usart->csr & AVR32_USART_CSR_PARE_MASK) != 0;
+    return (usart->csr & AVR32_USART_CSR_PARE_MASK) != 0;
 }
 
 /*! \brief Checks if a framing error has occurred since last status reset.
@@ -432,9 +430,10 @@ extern __inline__ int usart_parity_error(volatile avr32_usart_t *usart)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ int usart_framing_error(volatile avr32_usart_t *usart)
+extern __inline__ int
+usart_framing_error(volatile avr32_usart_t *usart)
 {
-  return (usart->csr & AVR32_USART_CSR_FRAME_MASK) != 0;
+    return (usart->csr & AVR32_USART_CSR_FRAME_MASK) != 0;
 }
 
 /*! \brief Checks if an overrun error has occurred since last status reset.
@@ -446,9 +445,10 @@ extern __inline__ int usart_framing_error(volatile avr32_usart_t *usart)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ int usart_overrun_error(volatile avr32_usart_t *usart)
+extern __inline__ int
+usart_overrun_error(volatile avr32_usart_t *usart)
 {
-  return (usart->csr & AVR32_USART_CSR_OVRE_MASK) != 0;
+    return (usart->csr & AVR32_USART_CSR_OVRE_MASK) != 0;
 }
 
 #if defined(AVR32_USART_400_H_INCLUDED) || \
@@ -466,19 +466,20 @@ extern __inline__ int usart_overrun_error(volatile avr32_usart_t *usart)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ int usart_lin_get_error(volatile avr32_usart_t *usart)
+extern __inline__ int
+usart_lin_get_error(volatile avr32_usart_t *usart)
 {
-  return (usart->csr & (AVR32_USART_CSR_LINSNRE_MASK |
-                        AVR32_USART_CSR_LINCE_MASK |
-                        AVR32_USART_CSR_LINIPE_MASK |
-                        AVR32_USART_CSR_LINISFE_MASK |
-                        AVR32_USART_CSR_LINBE_MASK)) >> AVR32_USART_CSR_LINBE_OFFSET;
+    return (usart->csr & (AVR32_USART_CSR_LINSNRE_MASK |
+                          AVR32_USART_CSR_LINCE_MASK |
+                          AVR32_USART_CSR_LINIPE_MASK |
+                          AVR32_USART_CSR_LINISFE_MASK |
+                          AVR32_USART_CSR_LINBE_MASK)) >>
+           AVR32_USART_CSR_LINBE_OFFSET;
 }
 
-#endif  // USART rev. >= 4.0.0
+#endif // USART rev. >= 4.0.0
 
 //! @}
-
 
 //------------------------------------------------------------------------------
 /*! \name ISO7816 Control Functions
@@ -494,9 +495,10 @@ extern __inline__ int usart_lin_get_error(volatile avr32_usart_t *usart)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void usart_iso7816_enable_receiver(volatile avr32_usart_t *usart)
+extern __inline__ void
+usart_iso7816_enable_receiver(volatile avr32_usart_t *usart)
 {
-  usart->cr = AVR32_USART_CR_TXDIS_MASK | AVR32_USART_CR_RXEN_MASK;
+    usart->cr = AVR32_USART_CR_TXDIS_MASK | AVR32_USART_CR_RXEN_MASK;
 }
 
 /*! \brief Enables the ISO7816 transmitter.
@@ -508,13 +510,13 @@ extern __inline__ void usart_iso7816_enable_receiver(volatile avr32_usart_t *usa
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void usart_iso7816_enable_transmitter(volatile avr32_usart_t *usart)
+extern __inline__ void
+usart_iso7816_enable_transmitter(volatile avr32_usart_t *usart)
 {
-  usart->cr = AVR32_USART_CR_RXDIS_MASK | AVR32_USART_CR_TXEN_MASK;
+    usart->cr = AVR32_USART_CR_RXDIS_MASK | AVR32_USART_CR_TXEN_MASK;
 }
 
 //! @}
-
 
 //------------------------------------------------------------------------------
 #if defined(AVR32_USART_400_H_INCLUDED) || \
@@ -537,10 +539,11 @@ extern __inline__ void usart_iso7816_enable_transmitter(volatile avr32_usart_t *
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void usart_lin_set_node_action(volatile avr32_usart_t *usart, unsigned char action)
+extern __inline__ void
+usart_lin_set_node_action(volatile avr32_usart_t *usart, unsigned char action)
 {
-  usart->linmr = (usart->linmr & ~AVR32_USART_LINMR_NACT_MASK) |
-                 action << AVR32_USART_LINMR_NACT_OFFSET;
+    usart->linmr = (usart->linmr & ~AVR32_USART_LINMR_NACT_MASK) |
+                   action << AVR32_USART_LINMR_NACT_OFFSET;
 }
 
 /*! \brief Enables or disables the Identifier parity.
@@ -551,10 +554,11 @@ extern __inline__ void usart_lin_set_node_action(volatile avr32_usart_t *usart, 
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void usart_lin_enable_parity(volatile avr32_usart_t *usart, unsigned char parity)
+extern __inline__ void
+usart_lin_enable_parity(volatile avr32_usart_t *usart, unsigned char parity)
 {
-  usart->linmr = (usart->linmr & ~AVR32_USART_LINMR_PARDIS_MASK) |
-                 !parity << AVR32_USART_LINMR_PARDIS_OFFSET;
+    usart->linmr = (usart->linmr & ~AVR32_USART_LINMR_PARDIS_MASK) |
+                   !parity << AVR32_USART_LINMR_PARDIS_OFFSET;
 }
 
 /*! \brief Enables or disables the checksum.
@@ -565,10 +569,11 @@ extern __inline__ void usart_lin_enable_parity(volatile avr32_usart_t *usart, un
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void usart_lin_enable_checksum(volatile avr32_usart_t *usart, unsigned char checksum)
+extern __inline__ void
+usart_lin_enable_checksum(volatile avr32_usart_t *usart, unsigned char checksum)
 {
-  usart->linmr = (usart->linmr & ~AVR32_USART_LINMR_CHKDIS_MASK) |
-                 !checksum << AVR32_USART_LINMR_CHKDIS_OFFSET;
+    usart->linmr = (usart->linmr & ~AVR32_USART_LINMR_CHKDIS_MASK) |
+                   !checksum << AVR32_USART_LINMR_CHKDIS_OFFSET;
 }
 
 /*! \brief Sets the checksum type.
@@ -580,10 +585,11 @@ extern __inline__ void usart_lin_enable_checksum(volatile avr32_usart_t *usart, 
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void usart_lin_set_checksum(volatile avr32_usart_t *usart, unsigned char chktyp)
+extern __inline__ void
+usart_lin_set_checksum(volatile avr32_usart_t *usart, unsigned char chktyp)
 {
-  usart->linmr = (usart->linmr & ~AVR32_USART_LINMR_CHKTYP_MASK) |
-                 chktyp << AVR32_USART_LINMR_CHKTYP_OFFSET;
+    usart->linmr = (usart->linmr & ~AVR32_USART_LINMR_CHKTYP_MASK) |
+                   chktyp << AVR32_USART_LINMR_CHKTYP_OFFSET;
 }
 
 /*! \brief Gets the response data length.
@@ -595,17 +601,16 @@ extern __inline__ void usart_lin_set_checksum(volatile avr32_usart_t *usart, uns
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ unsigned char usart_lin_get_data_length(volatile avr32_usart_t *usart)
+extern __inline__ unsigned char
+usart_lin_get_data_length(volatile avr32_usart_t *usart)
 {
-  if (usart->linmr & AVR32_USART_LINMR_DLM_MASK)
-  {
-    unsigned char data_length = 1 << ((usart->linir >> (AVR32_USART_LINIR_IDCHR_OFFSET + 4)) & 0x03);
-    if (data_length == 1)
-      data_length = 2;
-    return data_length;
-  }
-  else
-    return ((usart->linmr & AVR32_USART_LINMR_DLC_MASK) >> AVR32_USART_LINMR_DLC_OFFSET) + 1;
+    if (usart->linmr & AVR32_USART_LINMR_DLM_MASK) {
+        unsigned char data_length = 1 << ((usart->linir >> (AVR32_USART_LINIR_IDCHR_OFFSET + 4)) & 0x03);
+        if (data_length == 1)
+            data_length = 2;
+        return data_length;
+    } else
+        return ((usart->linmr & AVR32_USART_LINMR_DLC_MASK) >> AVR32_USART_LINMR_DLC_OFFSET) + 1;
 }
 
 /*! \brief Sets the response data length for LIN 1.x.
@@ -615,9 +620,10 @@ extern __inline__ unsigned char usart_lin_get_data_length(volatile avr32_usart_t
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void usart_lin_set_data_length_lin1x(volatile avr32_usart_t *usart)
+extern __inline__ void
+usart_lin_set_data_length_lin1x(volatile avr32_usart_t *usart)
 {
-  usart->linmr |= AVR32_USART_LINMR_DLM_MASK;
+    usart->linmr |= AVR32_USART_LINMR_DLM_MASK;
 }
 
 /*! \brief Sets the response data length for LIN 2.x.
@@ -628,11 +634,12 @@ extern __inline__ void usart_lin_set_data_length_lin1x(volatile avr32_usart_t *u
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void usart_lin_set_data_length_lin2x(volatile avr32_usart_t *usart, unsigned char data_length)
+extern __inline__ void
+usart_lin_set_data_length_lin2x(volatile avr32_usart_t *usart, unsigned char data_length)
 {
-  usart->linmr = (usart->linmr & ~(AVR32_USART_LINMR_DLC_MASK |
-                                   AVR32_USART_LINMR_DLM_MASK)) |
-                 (data_length - 1) << AVR32_USART_LINMR_DLC_OFFSET;
+    usart->linmr = (usart->linmr & ~(AVR32_USART_LINMR_DLC_MASK |
+                                     AVR32_USART_LINMR_DLM_MASK)) |
+                   (data_length - 1) << AVR32_USART_LINMR_DLC_OFFSET;
 }
 
 /*! \brief Enables or disables the frame slot mode.
@@ -644,10 +651,11 @@ extern __inline__ void usart_lin_set_data_length_lin2x(volatile avr32_usart_t *u
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void usart_lin_enable_frameslot(volatile avr32_usart_t *usart, unsigned char frameslot)
+extern __inline__ void
+usart_lin_enable_frameslot(volatile avr32_usart_t *usart, unsigned char frameslot)
 {
-  usart->linmr = (usart->linmr & ~AVR32_USART_LINMR_FSDIS_MASK) |
-                 !frameslot << AVR32_USART_LINMR_FSDIS_OFFSET;
+    usart->linmr = (usart->linmr & ~AVR32_USART_LINMR_FSDIS_MASK) |
+                   !frameslot << AVR32_USART_LINMR_FSDIS_OFFSET;
 }
 
 /*! \brief Gets the Identifier character.
@@ -659,9 +667,10 @@ extern __inline__ void usart_lin_enable_frameslot(volatile avr32_usart_t *usart,
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ unsigned char usart_lin_get_id_char(volatile avr32_usart_t *usart)
+extern __inline__ unsigned char
+usart_lin_get_id_char(volatile avr32_usart_t *usart)
 {
-  return (usart->linir & AVR32_USART_LINIR_IDCHR_MASK) >> AVR32_USART_LINIR_IDCHR_OFFSET;
+    return (usart->linir & AVR32_USART_LINIR_IDCHR_MASK) >> AVR32_USART_LINIR_IDCHR_OFFSET;
 }
 
 /*! \brief Sets the Identifier character.
@@ -672,16 +681,16 @@ extern __inline__ unsigned char usart_lin_get_id_char(volatile avr32_usart_t *us
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void usart_lin_set_id_char(volatile avr32_usart_t *usart, unsigned char id_char)
+extern __inline__ void
+usart_lin_set_id_char(volatile avr32_usart_t *usart, unsigned char id_char)
 {
-  usart->linir = (usart->linir & ~AVR32_USART_LINIR_IDCHR_MASK) |
-                 id_char << AVR32_USART_LINIR_IDCHR_OFFSET;
+    usart->linir = (usart->linir & ~AVR32_USART_LINIR_IDCHR_MASK) |
+                   id_char << AVR32_USART_LINIR_IDCHR_OFFSET;
 }
 
 //! @}
 
-#endif  // USART rev. >= 4.0.0
-
+#endif // USART rev. >= 4.0.0
 
 //------------------------------------------------------------------------------
 #if defined(AVR32_USART_400_H_INCLUDED) || \
@@ -713,8 +722,7 @@ extern int usart_spi_unselectChip(volatile avr32_usart_t *usart);
 
 //! @}
 
-#endif  // USART rev. >= 4.0.0
-
+#endif // USART rev. >= 4.0.0
 
 //------------------------------------------------------------------------------
 /*! \name Transmit/Receive Functions
@@ -745,9 +753,10 @@ extern int usart_send_address(volatile avr32_usart_t *usart, int address);
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ int usart_tx_ready(volatile avr32_usart_t *usart)
+extern __inline__ int
+usart_tx_ready(volatile avr32_usart_t *usart)
 {
-  return (usart->csr & AVR32_USART_CSR_TXRDY_MASK) != 0;
+    return (usart->csr & AVR32_USART_CSR_TXRDY_MASK) != 0;
 }
 
 /*! \brief Writes the given character to the TX buffer if the transmitter is ready.
@@ -768,9 +777,11 @@ extern int usart_write_char(volatile avr32_usart_t *usart, int c);
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void usart_bw_write_char(volatile avr32_usart_t *usart, int c)
+extern __inline__ void
+usart_bw_write_char(volatile avr32_usart_t *usart, int c)
 {
-  while (usart_write_char(usart, c) != USART_SUCCESS);
+    while (usart_write_char(usart, c) != USART_SUCCESS)
+        ;
 }
 
 /*! \brief Sends a character with the USART.
@@ -793,9 +804,10 @@ extern int usart_putchar(volatile avr32_usart_t *usart, int c);
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ int usart_tx_empty(volatile avr32_usart_t *usart)
+extern __inline__ int
+usart_tx_empty(volatile avr32_usart_t *usart)
 {
-  return (usart->csr & AVR32_USART_CSR_TXEMPTY_MASK) != 0;
+    return (usart->csr & AVR32_USART_CSR_TXEMPTY_MASK) != 0;
 }
 
 /*! \brief Tests if the USART contains a received character.
@@ -807,9 +819,10 @@ extern __inline__ int usart_tx_empty(volatile avr32_usart_t *usart)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ int usart_test_hit(volatile avr32_usart_t *usart)
+extern __inline__ int
+usart_test_hit(volatile avr32_usart_t *usart)
 {
-  return (usart->csr & AVR32_USART_CSR_RXRDY_MASK) != 0;
+    return (usart->csr & AVR32_USART_CSR_RXRDY_MASK) != 0;
 }
 
 /*! \brief Checks the RX buffer for a received character, and stores it at the
@@ -862,9 +875,10 @@ extern int usart_get_echo_line(volatile avr32_usart_t *usart);
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void usart_lin_abort(volatile avr32_usart_t *usart)
+extern __inline__ void
+usart_lin_abort(volatile avr32_usart_t *usart)
 {
-  usart->cr = AVR32_USART_LINABT_MASK;
+    usart->cr = AVR32_USART_LINABT_MASK;
 }
 
 /*! \brief Tests if a LIN transfer has been completed.
@@ -876,14 +890,14 @@ extern __inline__ void usart_lin_abort(volatile avr32_usart_t *usart)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ int usart_lin_transfer_completed(volatile avr32_usart_t *usart)
+extern __inline__ int
+usart_lin_transfer_completed(volatile avr32_usart_t *usart)
 {
-  return (usart->csr & AVR32_USART_CSR_LINTC_MASK) != 0;
+    return (usart->csr & AVR32_USART_CSR_LINTC_MASK) != 0;
 }
 
-#endif  // USART rev. >= 4.0.0
+#endif // USART rev. >= 4.0.0
 
 //! @}
 
-
-#endif  // _USART_H_
+#endif // _USART_H_

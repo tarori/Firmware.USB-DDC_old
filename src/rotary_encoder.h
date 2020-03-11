@@ -38,32 +38,32 @@
 #define ROTARY_ENCODER_H_
 
 // DEFS for the Rotary Encoder VFO function
-#define ENC_PULSES			512					// Number of resolvable Encoder States per revolution.
-												// Note that the pulses per revolution parameter is not consistent
-												// for all encoders.  For some Rotary Encoders "pulses per revolution"
-												// indicates the number of pulses per revolution for each of the two
-												// phase outputs, while for others, this parameter indicates the total
-												// number of resolvable states.  In case of the former, the total number
-												// of resolvable states is 4 times the specified pulses per revolution.
-#define	ENC_RESOLUTION		(1<<23)/1000		// Resolution in increment for a full kiloHertz (2^23/1kHz), used to achieve 1kHz per
-												// revolution of the VFO (Rotary Encoder) knob.
+#define ENC_PULSES 512                  // Number of resolvable Encoder States per revolution.                   \
+                                        // Note that the pulses per revolution parameter is not consistent       \
+                                        // for all encoders.  For some Rotary Encoders "pulses per revolution"   \
+                                        // indicates the number of pulses per revolution for each of the two     \
+                                        // phase outputs, while for others, this parameter indicates the total   \
+                                        // number of resolvable states.  In case of the former, the total number \
+                                        // of resolvable states is 4 times the specified pulses per revolution.
+#define ENC_RESOLUTION (1 << 23) / 1000 // Resolution in increment for a full kiloHertz (2^23/1kHz), used to achieve 1kHz per \
+                                        // revolution of the VFO (Rotary Encoder) knob.
 
 // Definitions for Variable Speed Rotary Encoder function
 // The below parameters are hopefully more or less generic for any encoder, down to 32 pulses or so,
 // but are optimized for a 1024 state Rotary Encoder
-#define ENC_RTC_RATE		115000				// Rate of the Real Time Clock used to measure Angular Speed.
-#define ENC_FAST_ANGLE		(72.0/360.0)		// (1/5) Minimum travel angle for Encoder Fast Mode
-#define ENC_FAST_REV		(ENC_RTC_RATE/4)	// RTC_rate/Revolutions (4) for Encoder Fast Mode
-#define ENC_FAST_MULTIPLY	100					// Encoder click multiplier during FAST mode
-#define ENC_FAST_PATIENCE	5*(ENC_RTC_RATE/10)	// Time in 1/10th of seconds.  Time to revert to
-												// normal encoder mode if no encoder activity
+#define ENC_RTC_RATE 115000                       // Rate of the Real Time Clock used to measure Angular Speed.
+#define ENC_FAST_ANGLE (72.0 / 360.0)             // (1/5) Minimum travel angle for Encoder Fast Mode
+#define ENC_FAST_REV (ENC_RTC_RATE / 4)           // RTC_rate/Revolutions (4) for Encoder Fast Mode
+#define ENC_FAST_MULTIPLY 100                     // Encoder click multiplier during FAST mode
+#define ENC_FAST_PATIENCE 5 * (ENC_RTC_RATE / 10) // Time in 1/10th of seconds.  Time to revert to \
+                                                  // normal encoder mode if no encoder activity
 
-extern volatile int32_t 	freq_delta_from_enc;// Pass accumulated frequency delta from Rotary Interrupt function
-extern volatile int8_t 		menu_steps_from_enc;// 10 steps per rev, accumulated delta from Rotary Encoder, used by Menu function
-extern volatile int16_t		val_steps_from_enc;	// 100 steps per rev, accumulated delta from Rotary Encoder, used by Menu funciton
-extern volatile bool		FRQ_fromenc;		// Flag: New frequency delta ready from Rotary Interrupt function
-extern volatile bool		MENU_fromenc;		// Flag: New Menu selection ready from Rotary Interrupt function
-extern volatile bool		VAL_fromenc;		// Flag: New Value available from Rotary Interrupt function
-extern void 				encoder_init(void);	// Encoder Initialise, called by external function
+extern volatile int32_t freq_delta_from_enc; // Pass accumulated frequency delta from Rotary Interrupt function
+extern volatile int8_t menu_steps_from_enc;  // 10 steps per rev, accumulated delta from Rotary Encoder, used by Menu function
+extern volatile int16_t val_steps_from_enc;  // 100 steps per rev, accumulated delta from Rotary Encoder, used by Menu funciton
+extern volatile bool FRQ_fromenc;            // Flag: New frequency delta ready from Rotary Interrupt function
+extern volatile bool MENU_fromenc;           // Flag: New Menu selection ready from Rotary Interrupt function
+extern volatile bool VAL_fromenc;            // Flag: New Value available from Rotary Interrupt function
+extern void encoder_init(void);              // Encoder Initialise, called by external function
 
 #endif /* ROTARY_ENCODER_H_ */

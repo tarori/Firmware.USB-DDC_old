@@ -5,6 +5,6 @@
 //extern portBASE_TYPE xStatus;
 //extern struct dataLCD lcdQUEDATA;
 
-void vStartTaskEXERCISE( unsigned portBASE_TYPE uxPriority );
+void vStartTaskEXERCISE(unsigned portBASE_TYPE uxPriority);
 
 #endif

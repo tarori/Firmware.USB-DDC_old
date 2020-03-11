@@ -72,27 +72,23 @@
 
 #include "conf_usb.h"
 
-
 #if USB_DEVICE_FEATURE == ENABLED
 
-#include "usb_drv.h"
-#include "usb_descriptors.h"
-#include "hpsdr_usb_descriptors.h"
-#include "usb_standard_request.h"
-#include "usb_specific_request.h"
-#include "usart.h"
-#include "pm.h"
 #include "Mobo_config.h"
-#include "usb_audio.h"
 #include "device_audio_task.h"
 #include "hpsdr_device_audio_task.h"
-
+#include "hpsdr_usb_descriptors.h"
+#include "pm.h"
+#include "usart.h"
+#include "usb_audio.h"
+#include "usb_descriptors.h"
+#include "usb_drv.h"
+#include "usb_specific_request.h"
+#include "usb_standard_request.h"
 
 //_____ M A C R O S ________________________________________________________
 
-
 //_____ D E F I N I T I O N S ______________________________________________
-
 
 //_____ P R I V A T E   D E C L A R A T I O N S ____________________________
 
@@ -106,34 +102,34 @@
 // S_freq current_freq;
 // Bool freq_changed = FALSE;
 
-static U8    wValue_msb;
-static U8    wValue_lsb;
-static U16   wIndex;
-static U16   wLength;
+static U8 wValue_msb;
+static U8 wValue_lsb;
+static U16 wIndex;
+static U16 wLength;
 
 //_____ D E C L A R A T I O N S ____________________________________________
-
 
 //! @brief This function configures the endpoints of the device application.
 //! This function is called when the set configuration request has been received.
 //!
 void hpsdr_user_endpoint_init(U8 conf_nb)
 {
-	if( Is_usb_full_speed_mode() ) {
-		(void)Usb_configure_endpoint(HPSDR_EP_RF_IN, EP_ATTRIBUTES_1, DIRECTION_IN, EP_SIZE_1_FS, DOUBLE_BANK, 0);
-		(void)Usb_configure_endpoint(HPSDR_EP_IQ_IN, EP_ATTRIBUTES_2, DIRECTION_IN, EP_SIZE_2_FS, DOUBLE_BANK, 0);
-		(void)Usb_configure_endpoint(HPSDR_EP_IQ_OUT, EP_ATTRIBUTES_3, DIRECTION_OUT, EP_SIZE_3_FS, DOUBLE_BANK, 0);
-	} else {
-		(void)Usb_configure_endpoint(HPSDR_EP_RF_IN, EP_ATTRIBUTES_1, DIRECTION_IN, EP_SIZE_1_HS, DOUBLE_BANK, 0);
-		(void)Usb_configure_endpoint(HPSDR_EP_IQ_IN, EP_ATTRIBUTES_2, DIRECTION_IN, EP_SIZE_2_HS, DOUBLE_BANK, 0);
-		(void)Usb_configure_endpoint(HPSDR_EP_IQ_OUT, EP_ATTRIBUTES_3, DIRECTION_OUT, EP_SIZE_3_HS, DOUBLE_BANK, 0);
-	}
+    if (Is_usb_full_speed_mode()) {
+        (void)Usb_configure_endpoint(HPSDR_EP_RF_IN, EP_ATTRIBUTES_1, DIRECTION_IN, EP_SIZE_1_FS, DOUBLE_BANK, 0);
+        (void)Usb_configure_endpoint(HPSDR_EP_IQ_IN, EP_ATTRIBUTES_2, DIRECTION_IN, EP_SIZE_2_FS, DOUBLE_BANK, 0);
+        (void)Usb_configure_endpoint(HPSDR_EP_IQ_OUT, EP_ATTRIBUTES_3, DIRECTION_OUT, EP_SIZE_3_FS, DOUBLE_BANK, 0);
+    } else {
+        (void)Usb_configure_endpoint(HPSDR_EP_RF_IN, EP_ATTRIBUTES_1, DIRECTION_IN, EP_SIZE_1_HS, DOUBLE_BANK, 0);
+        (void)Usb_configure_endpoint(HPSDR_EP_IQ_IN, EP_ATTRIBUTES_2, DIRECTION_IN, EP_SIZE_2_HS, DOUBLE_BANK, 0);
+        (void)Usb_configure_endpoint(HPSDR_EP_IQ_OUT, EP_ATTRIBUTES_3, DIRECTION_OUT, EP_SIZE_3_HS, DOUBLE_BANK, 0);
+    }
 }
 
 //! @brief This function handles usb_set_interface side effects.
 //! This function is called from usb_set_interface in usb_standard_request
 //! in case there are side effects of the interface change to be handled.
-void hpsdr_user_set_interface(U8 wIndex, U8 wValue) {
+void hpsdr_user_set_interface(U8 wIndex, U8 wValue)
+{
 }
 
 //! This function is called by the standard USB read request function when
@@ -144,13 +140,13 @@ void hpsdr_user_set_interface(U8 wIndex, U8 wValue) {
 //!
 Bool hpsdr_user_read_request(U8 type, U8 request)
 {
-   // Read wValue
-   wValue_lsb = Usb_read_endpoint_data(EP_CONTROL, 8);
-   wValue_msb = Usb_read_endpoint_data(EP_CONTROL, 8);
-   wIndex = usb_format_usb_to_mcu_data(16, Usb_read_endpoint_data(EP_CONTROL, 16));
-   wLength = usb_format_usb_to_mcu_data(16, Usb_read_endpoint_data(EP_CONTROL, 16));
+    // Read wValue
+    wValue_lsb = Usb_read_endpoint_data(EP_CONTROL, 8);
+    wValue_msb = Usb_read_endpoint_data(EP_CONTROL, 8);
+    wIndex = usb_format_usb_to_mcu_data(16, Usb_read_endpoint_data(EP_CONTROL, 16));
+    wLength = usb_format_usb_to_mcu_data(16, Usb_read_endpoint_data(EP_CONTROL, 16));
 
-   return FALSE;  // No supported request
+    return FALSE; // No supported request
 }
 
-#endif  // USB_DEVICE_FEATURE == ENABLED
+#endif // USB_DEVICE_FEATURE == ENABLED

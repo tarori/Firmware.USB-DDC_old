@@ -55,22 +55,22 @@
 extern "C" {
 #endif
 
-#include <avr32/io.h>
 #include "compiler.h"
+#include <avr32/io.h>
 
 #ifndef AVR32_PM_VERSION_RESETVALUE
 // Support for UC3A, UC3A3, UC3B parts.
-  #include "pm.h"
+#include "pm.h"
 #else
 //! Device-specific data
-#if UC3L 
-  #include "pm_uc3l.h"
-  #include "scif_uc3l.h"
-  #include "flashcdw.h"
+#if UC3L
+#include "flashcdw.h"
+#include "pm_uc3l.h"
+#include "scif_uc3l.h"
 #elif UC3C
-  #include "pm_uc3c.h"
-  #include "scif_uc3c.h"
-  #include "flashc.h"
+#include "flashc.h"
+#include "pm_uc3c.h"
+#include "scif_uc3c.h"
 #endif
 #endif
 
@@ -79,73 +79,70 @@ extern "C" {
 //! @{
 
 //! The different oscillators
-typedef enum
-{
-  PCL_OSC0  = 0,
-  PCL_OSC1  = 1
+typedef enum {
+    PCL_OSC0 = 0,
+    PCL_OSC1 = 1
 } pcl_osc_t;
 
 //! The different DFLLs
-typedef enum
-{
-  PCL_DFLL0  = 0,
-  PCL_DFLL1  = 1
+typedef enum {
+    PCL_DFLL0 = 0,
+    PCL_DFLL1 = 1
 } pcl_dfll_t;
 
 //! Possible Main Clock Sources
-typedef enum
-{
-  PCL_MC_RCSYS,      // Default main clock source, supported by all (aka Slow Clock)
-  PCL_MC_OSC0,       // Supported by all
-  PCL_MC_OSC1,       // Supported by UC3C only
-  PCL_MC_OSC0_PLL0,  // Supported by UC3A, UC3B, UC3A3, UC3C (the main clock source is PLL0 with OSC0 as reference)
-  PCL_MC_OSC1_PLL0,  // Supported by UC3A, UC3B, UC3A3, UC3C (the main clock source is PLL0 with OSC1 as reference)
-  PCL_MC_OSC0_PLL1,  // Supported by UC3C  (the main clock source is PLL1 with OSC0 as reference)
-  PCL_MC_OSC1_PLL1,  // Supported by UC3C  (the main clock source is PLL1 with OSC1 as reference)
-  PCL_MC_DFLL0,      // Supported by UC3L
-  PCL_MC_DFLL1,      // Not supported yet
-  PCL_MC_RC120M,     // Supported by UC3L, UC3C
-  PCL_MC_RC8M,       // Supported by UC3C
-  PCL_MC_CRIPOSC     // Supported by UC3C
+typedef enum {
+    PCL_MC_RCSYS,     // Default main clock source, supported by all (aka Slow Clock)
+    PCL_MC_OSC0,      // Supported by all
+    PCL_MC_OSC1,      // Supported by UC3C only
+    PCL_MC_OSC0_PLL0, // Supported by UC3A, UC3B, UC3A3, UC3C (the main clock source is PLL0 with OSC0 as reference)
+    PCL_MC_OSC1_PLL0, // Supported by UC3A, UC3B, UC3A3, UC3C (the main clock source is PLL0 with OSC1 as reference)
+    PCL_MC_OSC0_PLL1, // Supported by UC3C  (the main clock source is PLL1 with OSC0 as reference)
+    PCL_MC_OSC1_PLL1, // Supported by UC3C  (the main clock source is PLL1 with OSC1 as reference)
+    PCL_MC_DFLL0,     // Supported by UC3L
+    PCL_MC_DFLL1,     // Not supported yet
+    PCL_MC_RC120M,    // Supported by UC3L, UC3C
+    PCL_MC_RC8M,      // Supported by UC3C
+    PCL_MC_CRIPOSC    // Supported by UC3C
 } pcl_mainclk_t;
 
 //! Input and output parameters to configure clocks with pcl_configure_clocks().
 // NOTE: regarding the frequency settings, always abide by the datasheet rules and min & max supported frequencies.
 #ifndef AVR32_PM_VERSION_RESETVALUE
 // Support for UC3A, UC3A3, UC3B parts.
-#define pcl_freq_param_t  pm_freq_param_t // See pm.h
+#define pcl_freq_param_t pm_freq_param_t // See pm.h
 #else
 // Support for UC3C, UC3L parts.
 typedef struct
 {
-  //! Main clock source selection (input argument).
-  pcl_mainclk_t main_clk_src;
+    //! Main clock source selection (input argument).
+    pcl_mainclk_t main_clk_src;
 
-  //! Target CPU frequency (input/output argument).
-  unsigned long cpu_f;
+    //! Target CPU frequency (input/output argument).
+    unsigned long cpu_f;
 
-  //! Target PBA frequency (input/output argument).
-  unsigned long pba_f;
+    //! Target PBA frequency (input/output argument).
+    unsigned long pba_f;
 
-  //! Target PBB frequency (input/output argument).
-  unsigned long pbb_f;
+    //! Target PBB frequency (input/output argument).
+    unsigned long pbb_f;
 
-  //! Target PBC frequency (input/output argument).
-  unsigned long pbc_f;
+    //! Target PBC frequency (input/output argument).
+    unsigned long pbc_f;
 
-  //! Oscillator 0's external crystal(or external clock) frequency (board dependant) (input argument).
-  unsigned long osc0_f;
+    //! Oscillator 0's external crystal(or external clock) frequency (board dependant) (input argument).
+    unsigned long osc0_f;
 
-  //! Oscillator 0's external crystal(or external clock) startup time: AVR32_PM_OSCCTRL0_STARTUP_x_RCOSC (input argument).
-  unsigned long osc0_startup;
+    //! Oscillator 0's external crystal(or external clock) startup time: AVR32_PM_OSCCTRL0_STARTUP_x_RCOSC (input argument).
+    unsigned long osc0_startup;
 
-  //! DFLL target frequency (input/output argument) (NOTE: the bigger, the most stable the frequency)
-  unsigned long dfll_f;
-  
-  //! Other parameters that might be necessary depending on the device (implementation-dependent).
-  // For the UC3L DFLL setup, this parameter should be pointing to a structure of
-  // type (scif_gclk_opt_t *).
-  void *pextra_params;
+    //! DFLL target frequency (input/output argument) (NOTE: the bigger, the most stable the frequency)
+    unsigned long dfll_f;
+
+    //! Other parameters that might be necessary depending on the device (implementation-dependent).
+    // For the UC3L DFLL setup, this parameter should be pointing to a structure of
+    // type (scif_gclk_opt_t *).
+    void *pextra_params;
 } pcl_freq_param_t;
 #endif
 
@@ -334,10 +331,10 @@ extern long int pcl_switch_to_osc(pcl_osc_t osc, unsigned int fcrystal, unsigned
  */
 #ifndef AVR32_PM_VERSION_RESETVALUE
 // Implementation for UC3A, UC3A3, UC3B parts.
-#define pcl_disable_module(module)  pm_disable_module(&AVR32_PM, module)
+#define pcl_disable_module(module) pm_disable_module(&AVR32_PM, module)
 #else
 // Implementation for UC3C, UC3L parts.
-#define pcl_disable_module(module)  pm_disable_module(module)
+#define pcl_disable_module(module) pm_disable_module(module)
 #endif
 
 /*! \brief Configure the USB Clock
@@ -362,7 +359,6 @@ extern long int pcl_configure_usb_clock(void);
  */
 extern unsigned long pcl_read_gplp(unsigned long gplp);
 
-
 /*!
  * \brief Write into the GPLP registers
  * \param gplp GPLP register index (0,1,... depending on the number of GPLP registers for a given part)
@@ -376,4 +372,4 @@ extern void pcl_write_gplp(unsigned long gplp, unsigned long value);
 }
 #endif
 
-#endif  // _POWER_CLOCKS_LIB_H_
+#endif // _POWER_CLOCKS_LIB_H_

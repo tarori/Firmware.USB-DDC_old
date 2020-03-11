@@ -70,24 +70,21 @@
 #ifndef _COMPOSITE_WIDGET_H_
 #define _COMPOSITE_WIDGET_H_
 
-
 //_____ I N C L U D E S ____________________________________________________
 
 #include "FreeRTOS.h"
-#include "task.h"
 #include "queue.h"
 #include "semphr.h"
+#include "task.h"
 
 //_____ D E F I N I T I O N S ______________________________________________
 
-#define COUNTER_TIME_OUT	1000000L		// how long to do AK5394A CAL before time out
-
+#define COUNTER_TIME_OUT 1000000L // how long to do AK5394A CAL before time out
 
 //_____ M A C R O S ________________________________________________________
-
 
 //_____ D E C L A R A T I O N S ____________________________________________
 
 extern xSemaphoreHandle mutexEP_IN;
 
-#endif  // _COMPOSITE_WIDGET_H_
+#endif // _COMPOSITE_WIDGET_H_

@@ -28,7 +28,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
 /* This source file is part of the ATMEL AVR32-UC3-SoftwareFramework-1.6.0 Release */
 
 /*This file has been prepared for Doxygen automatic documentation generation.*/
@@ -97,9 +96,8 @@
  *
  */
 
-#include "compiler.h"
 #include "ssc_i2s.h"
-
+#include "compiler.h"
 
 /*! \brief Sets the clock divider (DIV-field in CMR-register)
  *
@@ -121,49 +119,47 @@ static int set_clock_divider(volatile avr32_ssc_t *ssc,
                              unsigned int bit_rate,
                              unsigned int pba_hz)
 {
-  /*! \todo check input values */
+    /*! \todo check input values */
 
-  ssc->cmr = ((pba_hz + bit_rate) / (2 * bit_rate)) << AVR32_SSC_CMR_DIV_OFFSET;
+    ssc->cmr = ((pba_hz + bit_rate) / (2 * bit_rate)) << AVR32_SSC_CMR_DIV_OFFSET;
 
-  return SSC_I2S_OK;
+    return SSC_I2S_OK;
 }
 
-
 // This stops I2S TX permanently.
- void ssc_i2s_disable_tx(volatile avr32_ssc_t *ssc) {
-   /* Disable TX portion of SSC. See doc32072 page 525*/
-	  ssc->cr |= AVR32_SSC_CR_TXDIS_MASK;
+void ssc_i2s_disable_tx(volatile avr32_ssc_t *ssc)
+{
+    /* Disable TX portion of SSC. See doc32072 page 525*/
+    ssc->cr |= AVR32_SSC_CR_TXDIS_MASK;
 
-	  ssc->cr &= ~AVR32_SSC_CR_TXDIS_MASK;
- }
-
+    ssc->cr &= ~AVR32_SSC_CR_TXDIS_MASK;
+}
 
 // Will this work at all?
- void ssc_i2s_disable_rx(volatile avr32_ssc_t *ssc) {
-   /* Disable RX portion of SSC. See doc32072 page 525*/
- 	  ssc->cr |= AVR32_SSC_CR_RXDIS_MASK;
- }
+void ssc_i2s_disable_rx(volatile avr32_ssc_t *ssc)
+{
+    /* Disable RX portion of SSC. See doc32072 page 525*/
+    ssc->cr |= AVR32_SSC_CR_RXDIS_MASK;
+}
 
+void ssc_i2s_enable_rx_tx(volatile avr32_ssc_t *ssc)
+{
+    /* Enable RX and TX in SSC */
+    unsigned long txen_mask = 0x00000000,
+                  rxen_mask = 0x00000000;
 
- void ssc_i2s_enable_rx_tx(volatile avr32_ssc_t *ssc) {
-   /* Enable RX and TX in SSC */
-	    unsigned long txen_mask = 0x00000000,
-	                  rxen_mask = 0x00000000;
+    txen_mask = AVR32_SSC_CR_TXEN_MASK;
+    rxen_mask = AVR32_SSC_CR_RXEN_MASK;
 
-	    txen_mask = AVR32_SSC_CR_TXEN_MASK;
-        rxen_mask = AVR32_SSC_CR_RXEN_MASK;
+    /* Enable transceiver and/or receiver */
+    ssc->cr = txen_mask | rxen_mask;
+}
 
-        /* Enable transceiver and/or receiver */
-        ssc->cr = txen_mask | rxen_mask;
- }
-
-
- void ssc_i2s_reset(volatile avr32_ssc_t *ssc)
- {
-   /* Software reset SSC */
-  	  ssc->cr = AVR32_SSC_CR_SWRST_MASK;
- }
-
+void ssc_i2s_reset(volatile avr32_ssc_t *ssc)
+{
+    /* Software reset SSC */
+    ssc->cr = AVR32_SSC_CR_SWRST_MASK;
+}
 
 int ssc_i2s_init(volatile avr32_ssc_t *ssc,
                  unsigned int sample_frequency,
@@ -172,53 +168,50 @@ int ssc_i2s_init(volatile avr32_ssc_t *ssc,
                  unsigned char mode,
                  unsigned int pba_hz)
 {
-  /*! \todo check input values */
+    /*! \todo check input values */
 
     unsigned long txen_mask = 0x00000000,
                   rxen_mask = 0x00000000;
 
+    /* Reset */
+    ssc_i2s_reset(ssc);
 
-  /* Reset */
-  ssc_i2s_reset(ssc);
+    if (mode == SSC_I2S_MODE_SLAVE_STEREO_OUT) {
+        ssc->cmr = AVR32_SSC_CMR_DIV_NOT_ACTIVE << AVR32_SSC_CMR_DIV_OFFSET;
 
-  if (mode == SSC_I2S_MODE_SLAVE_STEREO_OUT)
-  {
-    ssc->cmr = AVR32_SSC_CMR_DIV_NOT_ACTIVE << AVR32_SSC_CMR_DIV_OFFSET;
-
-    ssc->tcmr = AVR32_SSC_TCMR_CKS_TK_PIN               << AVR32_SSC_TCMR_CKS_OFFSET    |
-                AVR32_SSC_TCMR_CKO_INPUT_ONLY           << AVR32_SSC_TCMR_CKO_OFFSET    |
-                0                                       << AVR32_SSC_TCMR_CKI_OFFSET    |
-                AVR32_SSC_TCMR_CKG_NONE                 << AVR32_SSC_TCMR_CKG_OFFSET    |
-                AVR32_SSC_TCMR_START_DETECT_ANY_EDGE_TF << AVR32_SSC_TCMR_START_OFFSET  |
-                1                                       << AVR32_SSC_TCMR_STTDLY_OFFSET |
-                0                                       << AVR32_SSC_TCMR_PERIOD_OFFSET;
+        ssc->tcmr = AVR32_SSC_TCMR_CKS_TK_PIN << AVR32_SSC_TCMR_CKS_OFFSET |
+                    AVR32_SSC_TCMR_CKO_INPUT_ONLY << AVR32_SSC_TCMR_CKO_OFFSET |
+                    0 << AVR32_SSC_TCMR_CKI_OFFSET |
+                    AVR32_SSC_TCMR_CKG_NONE << AVR32_SSC_TCMR_CKG_OFFSET |
+                    AVR32_SSC_TCMR_START_DETECT_ANY_EDGE_TF << AVR32_SSC_TCMR_START_OFFSET |
+                    1 << AVR32_SSC_TCMR_STTDLY_OFFSET |
+                    0 << AVR32_SSC_TCMR_PERIOD_OFFSET;
 #ifdef AVR32_SSC_220_H_INCLUDED
-    ssc->tfmr = (data_bit_res - 1)             << AVR32_SSC_TFMR_DATLEN_OFFSET  |
-                0                              << AVR32_SSC_TFMR_DATDEF_OFFSET  |
-                1                              << AVR32_SSC_TFMR_MSBF_OFFSET    |
-                (1 - 1)                        << AVR32_SSC_TFMR_DATNB_OFFSET   |
-                0                              << AVR32_SSC_TFMR_FSLEN_OFFSET   |
-                AVR32_SSC_TFMR_FSOS_INPUT_ONLY << AVR32_SSC_TFMR_FSOS_OFFSET    |
-                0                              << AVR32_SSC_TFMR_FSDEN_OFFSET   |
-                0                              << AVR32_SSC_TFMR_FSEDGE_OFFSET;
+        ssc->tfmr = (data_bit_res - 1) << AVR32_SSC_TFMR_DATLEN_OFFSET |
+                    0 << AVR32_SSC_TFMR_DATDEF_OFFSET |
+                    1 << AVR32_SSC_TFMR_MSBF_OFFSET |
+                    (1 - 1) << AVR32_SSC_TFMR_DATNB_OFFSET |
+                    0 << AVR32_SSC_TFMR_FSLEN_OFFSET |
+                    AVR32_SSC_TFMR_FSOS_INPUT_ONLY << AVR32_SSC_TFMR_FSOS_OFFSET |
+                    0 << AVR32_SSC_TFMR_FSDEN_OFFSET |
+                    0 << AVR32_SSC_TFMR_FSEDGE_OFFSET;
 #else
-    ssc->tfmr = (data_bit_res - 1)             << AVR32_SSC_TFMR_DATLEN_OFFSET  |
-                0                              << AVR32_SSC_TFMR_DATDEF_OFFSET  |
-                1                              << AVR32_SSC_TFMR_MSBF_OFFSET    |
-                (1 - 1)                        << AVR32_SSC_TFMR_DATNB_OFFSET   |
-                0                              << AVR32_SSC_TFMR_FSLEN_OFFSET   |
-                AVR32_SSC_TFMR_FSOS_INPUT_ONLY << AVR32_SSC_TFMR_FSOS_OFFSET    |
-                0                              << AVR32_SSC_TFMR_FSDEN_OFFSET   |
-                0                              << AVR32_SSC_TFMR_FSEDGE_OFFSET  |
-                0                              << AVR32_SSC_TFMR_FSLENHI_OFFSET;
+        ssc->tfmr = (data_bit_res - 1) << AVR32_SSC_TFMR_DATLEN_OFFSET |
+                    0 << AVR32_SSC_TFMR_DATDEF_OFFSET |
+                    1 << AVR32_SSC_TFMR_MSBF_OFFSET |
+                    (1 - 1) << AVR32_SSC_TFMR_DATNB_OFFSET |
+                    0 << AVR32_SSC_TFMR_FSLEN_OFFSET |
+                    AVR32_SSC_TFMR_FSOS_INPUT_ONLY << AVR32_SSC_TFMR_FSOS_OFFSET |
+                    0 << AVR32_SSC_TFMR_FSDEN_OFFSET |
+                    0 << AVR32_SSC_TFMR_FSEDGE_OFFSET |
+                    0 << AVR32_SSC_TFMR_FSLENHI_OFFSET;
 #endif
-    ssc->cr = AVR32_SSC_CR_TXEN_MASK;
-  }
+        ssc->cr = AVR32_SSC_CR_TXEN_MASK;
+    }
 
-  else if (mode == SSC_I2S_MODE_STEREO_OUT_STEREO_IN)
-  {
-	  ssc->cmr = AVR32_SSC_CMR_DIV_NOT_ACTIVE << AVR32_SSC_CMR_DIV_OFFSET;
-      /* Set transmit clock mode:
+    else if (mode == SSC_I2S_MODE_STEREO_OUT_STEREO_IN) {
+        ssc->cmr = AVR32_SSC_CMR_DIV_NOT_ACTIVE << AVR32_SSC_CMR_DIV_OFFSET;
+        /* Set transmit clock mode:
        *   CKS - use TK pin.  Signal from GCLK1
        *   CKO - no output on TK.  Input only.
        *   CKI - shift data on falling clock
@@ -229,18 +222,17 @@ int ssc_i2s_init(volatile avr32_ssc_t *ssc,
        *   PERIOD - generate framesync for each sample (FS is generated
        *            every (PERIOD + 1) * 2 clock)
        */
-      ssc->tcmr = AVR32_SSC_TCMR_CKS_TK_PIN	                << AVR32_SSC_TCMR_CKS_OFFSET    |
-                  AVR32_SSC_TCMR_CKO_INPUT_ONLY				<< AVR32_SSC_TCMR_CKO_OFFSET    |
-                  0                                         << AVR32_SSC_TCMR_CKI_OFFSET    |
-                  AVR32_SSC_TCMR_CKG_NONE                   << AVR32_SSC_TCMR_CKG_OFFSET    |
-//                AVR32_SSC_TCMR_START_DETECT_FALLING_TF	   << AVR32_SSC_TCMR_START_OFFSET  |	// Only transmit on falling BSB 20170605 see ssc_320.h
-                  AVR32_SSC_TCMR_START_DETECT_ANY_EDGE_TF   << AVR32_SSC_TCMR_START_OFFSET  |		// Transmit on rising and falling
-//                AVR32_SSC_TCMR_START_DETECT_LEVEL_CHANGE_TF   << AVR32_SSC_TCMR_START_OFFSET  |
-                  1                                         << AVR32_SSC_TCMR_STTDLY_OFFSET |
-                  (frame_bit_res - 1)                       << AVR32_SSC_TCMR_PERIOD_OFFSET;
+        ssc->tcmr = AVR32_SSC_TCMR_CKS_TK_PIN << AVR32_SSC_TCMR_CKS_OFFSET |
+                    AVR32_SSC_TCMR_CKO_INPUT_ONLY << AVR32_SSC_TCMR_CKO_OFFSET |
+                    0 << AVR32_SSC_TCMR_CKI_OFFSET |
+                    AVR32_SSC_TCMR_CKG_NONE << AVR32_SSC_TCMR_CKG_OFFSET |
+                    //                AVR32_SSC_TCMR_START_DETECT_FALLING_TF	   << AVR32_SSC_TCMR_START_OFFSET  |	// Only transmit on falling BSB 20170605 see ssc_320.h
+                    AVR32_SSC_TCMR_START_DETECT_ANY_EDGE_TF << AVR32_SSC_TCMR_START_OFFSET | // Transmit on rising and falling
+                                                                                             //                AVR32_SSC_TCMR_START_DETECT_LEVEL_CHANGE_TF   << AVR32_SSC_TCMR_START_OFFSET  |
+                    1 << AVR32_SSC_TCMR_STTDLY_OFFSET |
+                    (frame_bit_res - 1) << AVR32_SSC_TCMR_PERIOD_OFFSET;
 
-
-    /* Set transmit frame mode:
+        /* Set transmit frame mode:
      *  DATLEN - one sample for one channel
      *  DATDEF - Default to zero,
      *  MSBF - transmit msb first,
@@ -251,29 +243,28 @@ int ssc_i2s_init(volatile avr32_ssc_t *ssc,
      *  FSEDGE - detect frame sync positive edge
      */
 #ifdef AVR32_SSC_220_H_INCLUDED
-    ssc->tfmr = (data_bit_res - 1)                                 << AVR32_SSC_TFMR_DATLEN_OFFSET                              |
-                0                                                  << AVR32_SSC_TFMR_DATDEF_OFFSET                              |
-                1                                                  << AVR32_SSC_TFMR_MSBF_OFFSET                                |
-                (1 - 1)                                            << AVR32_SSC_TFMR_DATNB_OFFSET                               |
-                (((frame_bit_res - 1)                              << AVR32_SSC_TFMR_FSLEN_OFFSET) & AVR32_SSC_TFMR_FSLEN_MASK) |
-                AVR32_SSC_TFMR_FSOS_NEG_PULSE                      << AVR32_SSC_TFMR_FSOS_OFFSET                                |
-                0                                                  << AVR32_SSC_TFMR_FSDEN_OFFSET                               |
-                1                                                  << AVR32_SSC_TFMR_FSEDGE_OFFSET;
+        ssc->tfmr = (data_bit_res - 1) << AVR32_SSC_TFMR_DATLEN_OFFSET |
+                    0 << AVR32_SSC_TFMR_DATDEF_OFFSET |
+                    1 << AVR32_SSC_TFMR_MSBF_OFFSET |
+                    (1 - 1) << AVR32_SSC_TFMR_DATNB_OFFSET |
+                    (((frame_bit_res - 1) << AVR32_SSC_TFMR_FSLEN_OFFSET) & AVR32_SSC_TFMR_FSLEN_MASK) |
+                    AVR32_SSC_TFMR_FSOS_NEG_PULSE << AVR32_SSC_TFMR_FSOS_OFFSET |
+                    0 << AVR32_SSC_TFMR_FSDEN_OFFSET |
+                    1 << AVR32_SSC_TFMR_FSEDGE_OFFSET;
 #else
-    ssc->tfmr = (data_bit_res - 1)                                 << AVR32_SSC_TFMR_DATLEN_OFFSET                              |
-                0                                                  << AVR32_SSC_TFMR_DATDEF_OFFSET                              |
-                1                                                  << AVR32_SSC_TFMR_MSBF_OFFSET                                |
-                (1 - 1)                                            << AVR32_SSC_TFMR_DATNB_OFFSET                               |
-                (((frame_bit_res - 1)                              << AVR32_SSC_TFMR_FSLEN_OFFSET) & AVR32_SSC_TFMR_FSLEN_MASK) |
-                AVR32_SSC_TFMR_FSOS_NEG_PULSE                      << AVR32_SSC_TFMR_FSOS_OFFSET                                |
-                0                                                  << AVR32_SSC_TFMR_FSDEN_OFFSET                               |
-                1                                                  << AVR32_SSC_TFMR_FSEDGE_OFFSET                              |
-                ((frame_bit_res - 1) >> AVR32_SSC_TFMR_FSLEN_SIZE) << AVR32_SSC_TFMR_FSLENHI_OFFSET;
+        ssc->tfmr = (data_bit_res - 1) << AVR32_SSC_TFMR_DATLEN_OFFSET |
+                    0 << AVR32_SSC_TFMR_DATDEF_OFFSET |
+                    1 << AVR32_SSC_TFMR_MSBF_OFFSET |
+                    (1 - 1) << AVR32_SSC_TFMR_DATNB_OFFSET |
+                    (((frame_bit_res - 1) << AVR32_SSC_TFMR_FSLEN_OFFSET) & AVR32_SSC_TFMR_FSLEN_MASK) |
+                    AVR32_SSC_TFMR_FSOS_NEG_PULSE << AVR32_SSC_TFMR_FSOS_OFFSET |
+                    0 << AVR32_SSC_TFMR_FSDEN_OFFSET |
+                    1 << AVR32_SSC_TFMR_FSEDGE_OFFSET |
+                    ((frame_bit_res - 1) >> AVR32_SSC_TFMR_FSLEN_SIZE) << AVR32_SSC_TFMR_FSLENHI_OFFSET;
 #endif
-    txen_mask = AVR32_SSC_CR_TXEN_MASK;
+        txen_mask = AVR32_SSC_CR_TXEN_MASK;
 
-
-	     /* Set receive clock mode:
+        /* Set receive clock mode:
 	       *  CKS - use RK pin
 	       *  CKO - No clock output,
 	       *  CKI - shift data on rising edge,
@@ -285,44 +276,41 @@ int ssc_i2s_init(volatile avr32_ssc_t *ssc,
 	       *  PERIOD - No FS generation
 	       */
 
-	  ssc->rcmr = (AVR32_SSC_RCMR_CKS_RK_PIN << AVR32_SSC_RCMR_CKS_OFFSET) |
-	                (1                             << AVR32_SSC_RCMR_CKI_OFFSET)|
-	                (AVR32_SSC_RCMR_CKO_INPUT_ONLY << AVR32_SSC_RCMR_CKO_OFFSET) |
-//  I2S specs says data starts one SCLK after LRCK edge.  However testing shows that
-//  AK data starts showing up immediately
-//	                (1                         << AVR32_SSC_RCMR_STTDLY_OFFSET ) |
-	    	        (0                        << AVR32_SSC_RCMR_STTDLY_OFFSET ) |
-//	                (AVR32_SSC_RCMR_START_DETECT_FALLING_RF << AVR32_SSC_RCMR_START_OFFSET);
-					(AVR32_SSC_DETECT_LEVEL_CHANGE_RF << AVR32_SSC_RCMR_START_OFFSET);
-//	                (AVR32_SSC_RCMR_START_DETECT_RISING_RF << AVR32_SSC_RCMR_START_OFFSET);
+        ssc->rcmr = (AVR32_SSC_RCMR_CKS_RK_PIN << AVR32_SSC_RCMR_CKS_OFFSET) |
+                    (1 << AVR32_SSC_RCMR_CKI_OFFSET) |
+                    (AVR32_SSC_RCMR_CKO_INPUT_ONLY << AVR32_SSC_RCMR_CKO_OFFSET) |
+                    //  I2S specs says data starts one SCLK after LRCK edge.  However testing shows that
+                    //  AK data starts showing up immediately
+                    //	                (1                         << AVR32_SSC_RCMR_STTDLY_OFFSET ) |
+                    (0 << AVR32_SSC_RCMR_STTDLY_OFFSET) |
+                    //	                (AVR32_SSC_RCMR_START_DETECT_FALLING_RF << AVR32_SSC_RCMR_START_OFFSET);
+                    (AVR32_SSC_DETECT_LEVEL_CHANGE_RF << AVR32_SSC_RCMR_START_OFFSET);
+        //	                (AVR32_SSC_RCMR_START_DETECT_RISING_RF << AVR32_SSC_RCMR_START_OFFSET);
 
-
-      ssc->rfmr = (data_bit_res - 1)                               << AVR32_SSC_RFMR_DATLEN_OFFSET                              |
-                   1                                               << AVR32_SSC_RFMR_MSBF_OFFSET                                |
-                   (1 - 1)                                         << AVR32_SSC_RFMR_DATNB_OFFSET                               |
-                   (((frame_bit_res - 1)                           << AVR32_SSC_RFMR_FSLEN_OFFSET) & AVR32_SSC_RFMR_FSLEN_MASK) |
-                   AVR32_SSC_RFMR_FSOS_INPUT_ONLY                  << AVR32_SSC_RFMR_FSOS_OFFSET                                |
-                   1                                               << AVR32_SSC_RFMR_FSEDGE_OFFSET                              |
-                   ((frame_bit_res - 1) >> AVR32_SSC_RFMR_FSLEN_SIZE) << AVR32_SSC_RFMR_FSLENHI_OFFSET;
-
+        ssc->rfmr = (data_bit_res - 1) << AVR32_SSC_RFMR_DATLEN_OFFSET |
+                    1 << AVR32_SSC_RFMR_MSBF_OFFSET |
+                    (1 - 1) << AVR32_SSC_RFMR_DATNB_OFFSET |
+                    (((frame_bit_res - 1) << AVR32_SSC_RFMR_FSLEN_OFFSET) & AVR32_SSC_RFMR_FSLEN_MASK) |
+                    AVR32_SSC_RFMR_FSOS_INPUT_ONLY << AVR32_SSC_RFMR_FSOS_OFFSET |
+                    1 << AVR32_SSC_RFMR_FSEDGE_OFFSET |
+                    ((frame_bit_res - 1) >> AVR32_SSC_RFMR_FSLEN_SIZE) << AVR32_SSC_RFMR_FSLENHI_OFFSET;
 
         rxen_mask = AVR32_SSC_CR_RXEN_MASK;
 
         /* Enable transceiver and/or receiver */
         ssc->cr = txen_mask | rxen_mask;
 
-//		Also done in
-//		void ssc_i2s_enable_rx_tx(volatile avr32_ssc_t *ssc);
+        //		Also done in
+        //		void ssc_i2s_enable_rx_tx(volatile avr32_ssc_t *ssc);
 
-  }
+    }
 
-  else if (mode == SSC_I2S_MODE_SLAVE_STEREO_IN)
-  {
-	  ssc->cmr = AVR32_SSC_CMR_DIV_NOT_ACTIVE << AVR32_SSC_CMR_DIV_OFFSET;
-	  ssc->tcmr = 0;
-	  ssc->tfmr = 0;
+    else if (mode == SSC_I2S_MODE_SLAVE_STEREO_IN) {
+        ssc->cmr = AVR32_SSC_CMR_DIV_NOT_ACTIVE << AVR32_SSC_CMR_DIV_OFFSET;
+        ssc->tcmr = 0;
+        ssc->tfmr = 0;
 
-	     /* Set receive clock mode:
+        /* Set receive clock mode:
 	       *  CKS - use RK pin
 	       *  CKO - No clock output,
 	       *  CKI - shift data on rising edge,
@@ -334,36 +322,32 @@ int ssc_i2s_init(volatile avr32_ssc_t *ssc,
 	       *  PERIOD - No FS generation
 	       */
 
-	  ssc->rcmr = (AVR32_SSC_RCMR_CKS_RK_PIN << AVR32_SSC_RCMR_CKS_OFFSET) |
-	                (1                             << AVR32_SSC_RCMR_CKI_OFFSET)|
-	                (AVR32_SSC_RCMR_CKO_INPUT_ONLY << AVR32_SSC_RCMR_CKO_OFFSET) |
-//  I2S specs says data starts one SCLK after LRCK edge.  However testing shows that
-//  AK data starts showing up immediately
-//	                (1                         << AVR32_SSC_RCMR_STTDLY_OFFSET ) |
-	    	        (0                        << AVR32_SSC_RCMR_STTDLY_OFFSET ) |
-//	                (AVR32_SSC_RCMR_START_DETECT_FALLING_RF << AVR32_SSC_RCMR_START_OFFSET);
-					(AVR32_SSC_DETECT_LEVEL_CHANGE_RF << AVR32_SSC_RCMR_START_OFFSET);
-//	                (AVR32_SSC_RCMR_START_DETECT_RISING_RF << AVR32_SSC_RCMR_START_OFFSET);
+        ssc->rcmr = (AVR32_SSC_RCMR_CKS_RK_PIN << AVR32_SSC_RCMR_CKS_OFFSET) |
+                    (1 << AVR32_SSC_RCMR_CKI_OFFSET) |
+                    (AVR32_SSC_RCMR_CKO_INPUT_ONLY << AVR32_SSC_RCMR_CKO_OFFSET) |
+                    //  I2S specs says data starts one SCLK after LRCK edge.  However testing shows that
+                    //  AK data starts showing up immediately
+                    //	                (1                         << AVR32_SSC_RCMR_STTDLY_OFFSET ) |
+                    (0 << AVR32_SSC_RCMR_STTDLY_OFFSET) |
+                    //	                (AVR32_SSC_RCMR_START_DETECT_FALLING_RF << AVR32_SSC_RCMR_START_OFFSET);
+                    (AVR32_SSC_DETECT_LEVEL_CHANGE_RF << AVR32_SSC_RCMR_START_OFFSET);
+        //	                (AVR32_SSC_RCMR_START_DETECT_RISING_RF << AVR32_SSC_RCMR_START_OFFSET);
 
-
-      ssc->rfmr = (data_bit_res - 1)                               << AVR32_SSC_RFMR_DATLEN_OFFSET                              |
-                   1                                               << AVR32_SSC_RFMR_MSBF_OFFSET                                |
-                   (1 - 1)                                         << AVR32_SSC_RFMR_DATNB_OFFSET                               |
-                   (((frame_bit_res - 1)                           << AVR32_SSC_RFMR_FSLEN_OFFSET) & AVR32_SSC_RFMR_FSLEN_MASK) |
-                   AVR32_SSC_RFMR_FSOS_INPUT_ONLY                  << AVR32_SSC_RFMR_FSOS_OFFSET                                |
-                   1                                               << AVR32_SSC_RFMR_FSEDGE_OFFSET                              |
-                   ((frame_bit_res - 1) >> AVR32_SSC_RFMR_FSLEN_SIZE) << AVR32_SSC_RFMR_FSLENHI_OFFSET;
-
+        ssc->rfmr = (data_bit_res - 1) << AVR32_SSC_RFMR_DATLEN_OFFSET |
+                    1 << AVR32_SSC_RFMR_MSBF_OFFSET |
+                    (1 - 1) << AVR32_SSC_RFMR_DATNB_OFFSET |
+                    (((frame_bit_res - 1) << AVR32_SSC_RFMR_FSLEN_OFFSET) & AVR32_SSC_RFMR_FSLEN_MASK) |
+                    AVR32_SSC_RFMR_FSOS_INPUT_ONLY << AVR32_SSC_RFMR_FSOS_OFFSET |
+                    1 << AVR32_SSC_RFMR_FSEDGE_OFFSET |
+                    ((frame_bit_res - 1) >> AVR32_SSC_RFMR_FSLEN_SIZE) << AVR32_SSC_RFMR_FSLENHI_OFFSET;
 
         rxen_mask = AVR32_SSC_CR_RXEN_MASK;
 
         /* Enable transceiver and/or receiver */
         ssc->cr = txen_mask | rxen_mask;
-  }
-  else if (mode == SSC_I2S_MODE_STEREO_OUT_EXT_CLK)
-  {
-	  ssc->cmr = AVR32_SSC_CMR_DIV_NOT_ACTIVE << AVR32_SSC_CMR_DIV_OFFSET;
-      /* Set transmit clock mode:
+    } else if (mode == SSC_I2S_MODE_STEREO_OUT_EXT_CLK) {
+        ssc->cmr = AVR32_SSC_CMR_DIV_NOT_ACTIVE << AVR32_SSC_CMR_DIV_OFFSET;
+        /* Set transmit clock mode:
        *   CKS - external clock in TX pin,
        *   CKO - input only
        *   CKI - shift data on falling clock, (so that data will be valid on rising clock)
@@ -374,17 +358,16 @@ int ssc_i2s_init(volatile avr32_ssc_t *ssc,
        *   PERIOD - generate framesync for each sample (FS is generated
        *            every (PERIOD + 1) * 2 clock)
        */
-      ssc->tcmr = AVR32_SSC_TCMR_CKS_TK_PIN               << AVR32_SSC_TCMR_CKS_OFFSET    |
-                  AVR32_SSC_TCMR_CKO_INPUT_ONLY 			<< AVR32_SSC_TCMR_CKO_OFFSET    |
-                  0                                         << AVR32_SSC_TCMR_CKI_OFFSET    |
-                  AVR32_SSC_TCMR_CKG_NONE                   << AVR32_SSC_TCMR_CKG_OFFSET    |
-                  AVR32_SSC_TCMR_START_DETECT_ANY_EDGE_TF   << AVR32_SSC_TCMR_START_OFFSET  |
-   //               AVR32_SSC_TCMR_START_DETECT_LEVEL_CHANGE_TF   << AVR32_SSC_TCMR_START_OFFSET  |
-                  1                                         << AVR32_SSC_TCMR_STTDLY_OFFSET |
-                  (frame_bit_res - 1)                       << AVR32_SSC_TCMR_PERIOD_OFFSET;
+        ssc->tcmr = AVR32_SSC_TCMR_CKS_TK_PIN << AVR32_SSC_TCMR_CKS_OFFSET |
+                    AVR32_SSC_TCMR_CKO_INPUT_ONLY << AVR32_SSC_TCMR_CKO_OFFSET |
+                    0 << AVR32_SSC_TCMR_CKI_OFFSET |
+                    AVR32_SSC_TCMR_CKG_NONE << AVR32_SSC_TCMR_CKG_OFFSET |
+                    AVR32_SSC_TCMR_START_DETECT_ANY_EDGE_TF << AVR32_SSC_TCMR_START_OFFSET |
+                    //               AVR32_SSC_TCMR_START_DETECT_LEVEL_CHANGE_TF   << AVR32_SSC_TCMR_START_OFFSET  |
+                    1 << AVR32_SSC_TCMR_STTDLY_OFFSET |
+                    (frame_bit_res - 1) << AVR32_SSC_TCMR_PERIOD_OFFSET;
 
-
-    /* Set transmit frame mode:
+        /* Set transmit frame mode:
      *  DATLEN - one sample for one channel
      *  DATDEF - Default to zero,
      *  MSBF - transmit msb first,
@@ -395,42 +378,40 @@ int ssc_i2s_init(volatile avr32_ssc_t *ssc,
      *  FSEDGE - detect frame sync positive edge
      */
 #ifdef AVR32_SSC_220_H_INCLUDED
-    ssc->tfmr = (data_bit_res - 1)                                 << AVR32_SSC_TFMR_DATLEN_OFFSET                              |
-                0                                                  << AVR32_SSC_TFMR_DATDEF_OFFSET                              |
-                1                                                  << AVR32_SSC_TFMR_MSBF_OFFSET                                |
-                (1 - 1)                                            << AVR32_SSC_TFMR_DATNB_OFFSET                               |
-                (((frame_bit_res - 1)                              << AVR32_SSC_TFMR_FSLEN_OFFSET) & AVR32_SSC_TFMR_FSLEN_MASK) |
-                AVR32_SSC_TFMR_FSOS_NEG_PULSE                      << AVR32_SSC_TFMR_FSOS_OFFSET                                |
-                0                                                  << AVR32_SSC_TFMR_FSDEN_OFFSET                               |
-                1                                                  << AVR32_SSC_TFMR_FSEDGE_OFFSET;
+        ssc->tfmr = (data_bit_res - 1) << AVR32_SSC_TFMR_DATLEN_OFFSET |
+                    0 << AVR32_SSC_TFMR_DATDEF_OFFSET |
+                    1 << AVR32_SSC_TFMR_MSBF_OFFSET |
+                    (1 - 1) << AVR32_SSC_TFMR_DATNB_OFFSET |
+                    (((frame_bit_res - 1) << AVR32_SSC_TFMR_FSLEN_OFFSET) & AVR32_SSC_TFMR_FSLEN_MASK) |
+                    AVR32_SSC_TFMR_FSOS_NEG_PULSE << AVR32_SSC_TFMR_FSOS_OFFSET |
+                    0 << AVR32_SSC_TFMR_FSDEN_OFFSET |
+                    1 << AVR32_SSC_TFMR_FSEDGE_OFFSET;
 #else
-    ssc->tfmr = (data_bit_res - 1)                                 << AVR32_SSC_TFMR_DATLEN_OFFSET                              |
-                0                                                  << AVR32_SSC_TFMR_DATDEF_OFFSET                              |
-                1                                                  << AVR32_SSC_TFMR_MSBF_OFFSET                                |
-                (1 - 1)                                            << AVR32_SSC_TFMR_DATNB_OFFSET                               |
-                (((frame_bit_res - 1)                              << AVR32_SSC_TFMR_FSLEN_OFFSET) & AVR32_SSC_TFMR_FSLEN_MASK) |
-                AVR32_SSC_TFMR_FSOS_NEG_PULSE                      << AVR32_SSC_TFMR_FSOS_OFFSET                                |
-                0                                                  << AVR32_SSC_TFMR_FSDEN_OFFSET                               |
-                1                                                  << AVR32_SSC_TFMR_FSEDGE_OFFSET                              |
-                ((frame_bit_res - 1) >> AVR32_SSC_TFMR_FSLEN_SIZE) << AVR32_SSC_TFMR_FSLENHI_OFFSET;
+        ssc->tfmr = (data_bit_res - 1) << AVR32_SSC_TFMR_DATLEN_OFFSET |
+                    0 << AVR32_SSC_TFMR_DATDEF_OFFSET |
+                    1 << AVR32_SSC_TFMR_MSBF_OFFSET |
+                    (1 - 1) << AVR32_SSC_TFMR_DATNB_OFFSET |
+                    (((frame_bit_res - 1) << AVR32_SSC_TFMR_FSLEN_OFFSET) & AVR32_SSC_TFMR_FSLEN_MASK) |
+                    AVR32_SSC_TFMR_FSOS_NEG_PULSE << AVR32_SSC_TFMR_FSOS_OFFSET |
+                    0 << AVR32_SSC_TFMR_FSDEN_OFFSET |
+                    1 << AVR32_SSC_TFMR_FSEDGE_OFFSET |
+                    ((frame_bit_res - 1) >> AVR32_SSC_TFMR_FSLEN_SIZE) << AVR32_SSC_TFMR_FSLENHI_OFFSET;
 #endif
-    txen_mask = AVR32_SSC_CR_TXEN_MASK;
-    ssc->cr = txen_mask;
+        txen_mask = AVR32_SSC_CR_TXEN_MASK;
+        ssc->cr = txen_mask;
 
-  }
-
-  else
-  {
-    unsigned long txen_mask = 0x00000000,
-                  rxen_mask = 0x00000000;
-
-    if (mode != SSC_I2S_MODE_STEREO_OUT_EXT_CLK)
-    {
-      /* Set clock divider */
-      set_clock_divider(ssc, 2 * sample_frequency * frame_bit_res, pba_hz);
     }
 
-    /* SSC can only receive one channel of audio input.  In order
+    else {
+        unsigned long txen_mask = 0x00000000,
+                      rxen_mask = 0x00000000;
+
+        if (mode != SSC_I2S_MODE_STEREO_OUT_EXT_CLK) {
+            /* Set clock divider */
+            set_clock_divider(ssc, 2 * sample_frequency * frame_bit_res, pba_hz);
+        }
+
+        /* SSC can only receive one channel of audio input.  In order
      * to use two inputs, two SSC's must be used. The first (master)
      * deals with both output channels and the left input, and should
      * be set to mode=I2S_STEREO_OUT_MONO_IN, and the second to
@@ -440,12 +421,10 @@ int ssc_i2s_init(volatile avr32_ssc_t *ssc,
      * master-ssc:TK -> slave-ssc:RK
      */
 
-    /* If only slave I2S SSC, do not set transmit registers */
-    if (mode != SSC_I2S_MODE_RIGHT_IN)
-    {
-      if (mode != SSC_I2S_MODE_STEREO_OUT_EXT_CLK)
-      {
-        /* Set transmit clock mode:
+        /* If only slave I2S SSC, do not set transmit registers */
+        if (mode != SSC_I2S_MODE_RIGHT_IN) {
+            if (mode != SSC_I2S_MODE_STEREO_OUT_EXT_CLK) {
+                /* Set transmit clock mode:
          *   CKS - use divided clock,
          *   CKO - transmit continous clock on TK
          *   CKI - shift data on falling clock
@@ -456,17 +435,16 @@ int ssc_i2s_init(volatile avr32_ssc_t *ssc,
          *   PERIOD - generate framesync for each sample (FS is generated
          *            every (PERIOD + 1) * 2 clock)
          */
-        ssc->tcmr = AVR32_SSC_TCMR_CKS_DIV_CLOCK              << AVR32_SSC_TCMR_CKS_OFFSET    |
-                    AVR32_SSC_TCMR_CKO_CONTINOUS_CLOCK_OUTPUT << AVR32_SSC_TCMR_CKO_OFFSET    |
-                    0                                         << AVR32_SSC_TCMR_CKI_OFFSET    |
-                    AVR32_SSC_TCMR_CKG_NONE                   << AVR32_SSC_TCMR_CKG_OFFSET    |
-                    AVR32_SSC_TCMR_START_DETECT_ANY_EDGE_TF   << AVR32_SSC_TCMR_START_OFFSET  |
-                    1                                         << AVR32_SSC_TCMR_STTDLY_OFFSET |
-                    (frame_bit_res - 1)                       << AVR32_SSC_TCMR_PERIOD_OFFSET;
-      }
-      else // Stereo out using internal RX clock
-      {
-        /* Set transmit clock mode:
+                ssc->tcmr = AVR32_SSC_TCMR_CKS_DIV_CLOCK << AVR32_SSC_TCMR_CKS_OFFSET |
+                            AVR32_SSC_TCMR_CKO_CONTINOUS_CLOCK_OUTPUT << AVR32_SSC_TCMR_CKO_OFFSET |
+                            0 << AVR32_SSC_TCMR_CKI_OFFSET |
+                            AVR32_SSC_TCMR_CKG_NONE << AVR32_SSC_TCMR_CKG_OFFSET |
+                            AVR32_SSC_TCMR_START_DETECT_ANY_EDGE_TF << AVR32_SSC_TCMR_START_OFFSET |
+                            1 << AVR32_SSC_TCMR_STTDLY_OFFSET |
+                            (frame_bit_res - 1) << AVR32_SSC_TCMR_PERIOD_OFFSET;
+            } else // Stereo out using internal RX clock
+            {
+                /* Set transmit clock mode:
          *   CKS - use RX clock,
          *   CKO - transmit continuous clock on TK
          *   CKI - shift data on falling clock
@@ -477,20 +455,20 @@ int ssc_i2s_init(volatile avr32_ssc_t *ssc,
          *   PERIOD - generate framesync for each sample (FS is generated
          *            every (PERIOD + 1) * 2 clock)
          */
-        ssc->tcmr = AVR32_SSC_TCMR_CKS_RK_CLOCK               << AVR32_SSC_TCMR_CKS_OFFSET    |
-                    AVR32_SSC_TCMR_CKO_CONTINOUS_CLOCK_OUTPUT << AVR32_SSC_TCMR_CKO_OFFSET    |
-                    0                                         << AVR32_SSC_TCMR_CKI_OFFSET    |
-                    AVR32_SSC_TCMR_CKG_NONE                   << AVR32_SSC_TCMR_CKG_OFFSET    |
-                    AVR32_SSC_TCMR_START_DETECT_ANY_EDGE_TF   << AVR32_SSC_TCMR_START_OFFSET  |
-                    1                                         << AVR32_SSC_TCMR_STTDLY_OFFSET |
-                    (frame_bit_res - 1)                       << AVR32_SSC_TCMR_PERIOD_OFFSET;
-        /* Set receive clock mode:
+                ssc->tcmr = AVR32_SSC_TCMR_CKS_RK_CLOCK << AVR32_SSC_TCMR_CKS_OFFSET |
+                            AVR32_SSC_TCMR_CKO_CONTINOUS_CLOCK_OUTPUT << AVR32_SSC_TCMR_CKO_OFFSET |
+                            0 << AVR32_SSC_TCMR_CKI_OFFSET |
+                            AVR32_SSC_TCMR_CKG_NONE << AVR32_SSC_TCMR_CKG_OFFSET |
+                            AVR32_SSC_TCMR_START_DETECT_ANY_EDGE_TF << AVR32_SSC_TCMR_START_OFFSET |
+                            1 << AVR32_SSC_TCMR_STTDLY_OFFSET |
+                            (frame_bit_res - 1) << AVR32_SSC_TCMR_PERIOD_OFFSET;
+                /* Set receive clock mode:
          *  CKS - uses RK pin
          */
-        ssc->rcmr = (AVR32_SSC_RCMR_CKS_RK_PIN << AVR32_SSC_RCMR_CKS_OFFSET);
-      }
+                ssc->rcmr = (AVR32_SSC_RCMR_CKS_RK_PIN << AVR32_SSC_RCMR_CKS_OFFSET);
+            }
 
-      /* Set transmit frame mode:
+            /* Set transmit frame mode:
        *  DATLEN - one sample for one channel
        *  DATDEF - Default to zero,
        *  MSBF - transmit msb first,
@@ -501,34 +479,32 @@ int ssc_i2s_init(volatile avr32_ssc_t *ssc,
        *  FSEDGE - detect frame sync positive edge
        */
 #ifdef AVR32_SSC_220_H_INCLUDED
-      ssc->tfmr = (data_bit_res - 1)                                 << AVR32_SSC_TFMR_DATLEN_OFFSET                              |
-                  0                                                  << AVR32_SSC_TFMR_DATDEF_OFFSET                              |
-                  1                                                  << AVR32_SSC_TFMR_MSBF_OFFSET                                |
-                  (1 - 1)                                            << AVR32_SSC_TFMR_DATNB_OFFSET                               |
-                  (((frame_bit_res - 1)                              << AVR32_SSC_TFMR_FSLEN_OFFSET) & AVR32_SSC_TFMR_FSLEN_MASK) |
-                  AVR32_SSC_TFMR_FSOS_NEG_PULSE                      << AVR32_SSC_TFMR_FSOS_OFFSET                                |
-                  0                                                  << AVR32_SSC_TFMR_FSDEN_OFFSET                               |
-                  1                                                  << AVR32_SSC_TFMR_FSEDGE_OFFSET;
+            ssc->tfmr = (data_bit_res - 1) << AVR32_SSC_TFMR_DATLEN_OFFSET |
+                        0 << AVR32_SSC_TFMR_DATDEF_OFFSET |
+                        1 << AVR32_SSC_TFMR_MSBF_OFFSET |
+                        (1 - 1) << AVR32_SSC_TFMR_DATNB_OFFSET |
+                        (((frame_bit_res - 1) << AVR32_SSC_TFMR_FSLEN_OFFSET) & AVR32_SSC_TFMR_FSLEN_MASK) |
+                        AVR32_SSC_TFMR_FSOS_NEG_PULSE << AVR32_SSC_TFMR_FSOS_OFFSET |
+                        0 << AVR32_SSC_TFMR_FSDEN_OFFSET |
+                        1 << AVR32_SSC_TFMR_FSEDGE_OFFSET;
 #else
-      ssc->tfmr = (data_bit_res - 1)                                 << AVR32_SSC_TFMR_DATLEN_OFFSET                              |
-                  0                                                  << AVR32_SSC_TFMR_DATDEF_OFFSET                              |
-                  1                                                  << AVR32_SSC_TFMR_MSBF_OFFSET                                |
-                  (1 - 1)                                            << AVR32_SSC_TFMR_DATNB_OFFSET                               |
-                  (((frame_bit_res - 1)                              << AVR32_SSC_TFMR_FSLEN_OFFSET) & AVR32_SSC_TFMR_FSLEN_MASK) |
-                  AVR32_SSC_TFMR_FSOS_NEG_PULSE                      << AVR32_SSC_TFMR_FSOS_OFFSET                                |
-                  0                                                  << AVR32_SSC_TFMR_FSDEN_OFFSET                               |
-                  1                                                  << AVR32_SSC_TFMR_FSEDGE_OFFSET                              |
-                  ((frame_bit_res - 1) >> AVR32_SSC_TFMR_FSLEN_SIZE) << AVR32_SSC_TFMR_FSLENHI_OFFSET;
+            ssc->tfmr = (data_bit_res - 1) << AVR32_SSC_TFMR_DATLEN_OFFSET |
+                        0 << AVR32_SSC_TFMR_DATDEF_OFFSET |
+                        1 << AVR32_SSC_TFMR_MSBF_OFFSET |
+                        (1 - 1) << AVR32_SSC_TFMR_DATNB_OFFSET |
+                        (((frame_bit_res - 1) << AVR32_SSC_TFMR_FSLEN_OFFSET) & AVR32_SSC_TFMR_FSLEN_MASK) |
+                        AVR32_SSC_TFMR_FSOS_NEG_PULSE << AVR32_SSC_TFMR_FSOS_OFFSET |
+                        0 << AVR32_SSC_TFMR_FSDEN_OFFSET |
+                        1 << AVR32_SSC_TFMR_FSEDGE_OFFSET |
+                        ((frame_bit_res - 1) >> AVR32_SSC_TFMR_FSLEN_SIZE) << AVR32_SSC_TFMR_FSLENHI_OFFSET;
 #endif
-      txen_mask = AVR32_SSC_CR_TXEN_MASK;
-    }
+            txen_mask = AVR32_SSC_CR_TXEN_MASK;
+        }
 
-    /* If receiving data, set receiving clock register */
-    if ( (mode != SSC_I2S_MODE_STEREO_OUT) && (mode != SSC_I2S_MODE_STEREO_OUT_EXT_CLK) )
-    {
-      if ( (mode == SSC_I2S_MODE_STEREO_OUT_MONO_IN) || (mode == SSC_I2S_MODE_RIGHT_IN) )
-      {
-          /* Set receive clock mode:
+        /* If receiving data, set receiving clock register */
+        if ((mode != SSC_I2S_MODE_STEREO_OUT) && (mode != SSC_I2S_MODE_STEREO_OUT_EXT_CLK)) {
+            if ((mode == SSC_I2S_MODE_STEREO_OUT_MONO_IN) || (mode == SSC_I2S_MODE_RIGHT_IN)) {
+                /* Set receive clock mode:
            *  CKS - left ch uses TK, right (slave) uses RK pin
            *  CKO - No clock output,
            *  CKI - shift data on rising edge,
@@ -539,18 +515,18 @@ int ssc_i2s_init(volatile avr32_ssc_t *ssc,
            *           first bit on next word. Therefore, delay one cycle.
            *  PERIOD - No FS generation
            */
-          ssc->rcmr =
-            (( mode == SSC_I2S_MODE_RIGHT_IN ? AVR32_SSC_RCMR_CKS_RK_PIN : AVR32_SSC_RCMR_CKS_TK_CLOCK )
-                                           << AVR32_SSC_RCMR_CKS_OFFSET)|
-            (AVR32_SSC_RCMR_CKO_INPUT_ONLY << AVR32_SSC_RCMR_CKO_OFFSET)|
-            (1                             << AVR32_SSC_RCMR_CKI_OFFSET)|
-            (AVR32_SSC_RCMR_CKG_NONE       << AVR32_SSC_RCMR_CKG_OFFSET)|
-            (( mode == SSC_I2S_MODE_RIGHT_IN ? AVR32_SSC_RCMR_START_DETECT_RISING_RF : AVR32_SSC_RCMR_START_TRANSMIT_START )
-                                           << AVR32_SSC_RCMR_START_OFFSET)|
-            (1                             << AVR32_SSC_RCMR_STTDLY_OFFSET)|
-            (0                             << AVR32_SSC_RCMR_PERIOD_OFFSET);
+                ssc->rcmr =
+                    ((mode == SSC_I2S_MODE_RIGHT_IN ? AVR32_SSC_RCMR_CKS_RK_PIN : AVR32_SSC_RCMR_CKS_TK_CLOCK)
+                     << AVR32_SSC_RCMR_CKS_OFFSET) |
+                    (AVR32_SSC_RCMR_CKO_INPUT_ONLY << AVR32_SSC_RCMR_CKO_OFFSET) |
+                    (1 << AVR32_SSC_RCMR_CKI_OFFSET) |
+                    (AVR32_SSC_RCMR_CKG_NONE << AVR32_SSC_RCMR_CKG_OFFSET) |
+                    ((mode == SSC_I2S_MODE_RIGHT_IN ? AVR32_SSC_RCMR_START_DETECT_RISING_RF : AVR32_SSC_RCMR_START_TRANSMIT_START)
+                     << AVR32_SSC_RCMR_START_OFFSET) |
+                    (1 << AVR32_SSC_RCMR_STTDLY_OFFSET) |
+                    (0 << AVR32_SSC_RCMR_PERIOD_OFFSET);
 
-          /* Set receive frame mode:
+                /* Set receive frame mode:
            *  DATLEN - bits per sample
            *  LOOP - no loopback
            *  MSBF - msb first
@@ -559,92 +535,87 @@ int ssc_i2s_init(volatile avr32_ssc_t *ssc,
            *  FSOS - do not generate framesync
            *  FSEDGE - detect frame sync positive edge
            */
-          ssc->rfmr =
-            ((data_bit_res-1)               << AVR32_SSC_RFMR_DATLEN_OFFSET)|
-            (0                              << AVR32_SSC_RFMR_LOOP_OFFSET)|
-            (1                              << AVR32_SSC_RFMR_MSBF_OFFSET)|
-            (0                              << AVR32_SSC_RFMR_DATNB_OFFSET)|
-            (0                              << AVR32_SSC_RFMR_FSLEN_OFFSET)|
-            (AVR32_SSC_RFMR_FSOS_INPUT_ONLY << AVR32_SSC_RFMR_FSOS_OFFSET)|
-            (0                              << AVR32_SSC_RFMR_FSEDGE_OFFSET);
+                ssc->rfmr =
+                    ((data_bit_res - 1) << AVR32_SSC_RFMR_DATLEN_OFFSET) |
+                    (0 << AVR32_SSC_RFMR_LOOP_OFFSET) |
+                    (1 << AVR32_SSC_RFMR_MSBF_OFFSET) |
+                    (0 << AVR32_SSC_RFMR_DATNB_OFFSET) |
+                    (0 << AVR32_SSC_RFMR_FSLEN_OFFSET) |
+                    (AVR32_SSC_RFMR_FSOS_INPUT_ONLY << AVR32_SSC_RFMR_FSOS_OFFSET) |
+                    (0 << AVR32_SSC_RFMR_FSEDGE_OFFSET);
 
-            rxen_mask = AVR32_SSC_CR_RXEN_MASK;
-        }
-        else
-        {
-            ssc->rcmr = AVR32_SSC_RCMR_CKS_TK_CLOCK               << AVR32_SSC_RCMR_CKS_OFFSET    |
-                        AVR32_SSC_RCMR_CKO_CONTINOUS_CLOCK_OUTPUT << AVR32_SSC_RCMR_CKO_OFFSET    |
-                        0                                         << AVR32_SSC_RCMR_CKI_OFFSET    |
-                        AVR32_SSC_RCMR_CKG_NONE                   << AVR32_SSC_RCMR_CKG_OFFSET    |
-                        AVR32_SSC_RCMR_START_DETECT_ANY_EDGE_RF   << AVR32_SSC_RCMR_START_OFFSET  |
-                        1                                         << AVR32_SSC_RCMR_STTDLY_OFFSET |
-                        (frame_bit_res - 1)                       << AVR32_SSC_RCMR_PERIOD_OFFSET;
+                rxen_mask = AVR32_SSC_CR_RXEN_MASK;
+            } else {
+                ssc->rcmr = AVR32_SSC_RCMR_CKS_TK_CLOCK << AVR32_SSC_RCMR_CKS_OFFSET |
+                            AVR32_SSC_RCMR_CKO_CONTINOUS_CLOCK_OUTPUT << AVR32_SSC_RCMR_CKO_OFFSET |
+                            0 << AVR32_SSC_RCMR_CKI_OFFSET |
+                            AVR32_SSC_RCMR_CKG_NONE << AVR32_SSC_RCMR_CKG_OFFSET |
+                            AVR32_SSC_RCMR_START_DETECT_ANY_EDGE_RF << AVR32_SSC_RCMR_START_OFFSET |
+                            1 << AVR32_SSC_RCMR_STTDLY_OFFSET |
+                            (frame_bit_res - 1) << AVR32_SSC_RCMR_PERIOD_OFFSET;
 
 #ifdef AVR32_SSC_220_H_INCLUDED
-            ssc->rfmr = (data_bit_res - 1)                                 << AVR32_SSC_RFMR_DATLEN_OFFSET                              |
-                        1                                                  << AVR32_SSC_RFMR_MSBF_OFFSET                                |
-                        (1 - 1)                                            << AVR32_SSC_RFMR_DATNB_OFFSET                               |
-                        (((frame_bit_res - 1)                              << AVR32_SSC_RFMR_FSLEN_OFFSET) & AVR32_SSC_TFMR_FSLEN_MASK) |
-                        AVR32_SSC_RFMR_FSOS_NEG_PULSE                      << AVR32_SSC_RFMR_FSOS_OFFSET                                |
-                        1                                                  << AVR32_SSC_RFMR_FSEDGE_OFFSET;
+                ssc->rfmr = (data_bit_res - 1) << AVR32_SSC_RFMR_DATLEN_OFFSET |
+                            1 << AVR32_SSC_RFMR_MSBF_OFFSET |
+                            (1 - 1) << AVR32_SSC_RFMR_DATNB_OFFSET |
+                            (((frame_bit_res - 1) << AVR32_SSC_RFMR_FSLEN_OFFSET) & AVR32_SSC_TFMR_FSLEN_MASK) |
+                            AVR32_SSC_RFMR_FSOS_NEG_PULSE << AVR32_SSC_RFMR_FSOS_OFFSET |
+                            1 << AVR32_SSC_RFMR_FSEDGE_OFFSET;
 #else
-            ssc->rfmr = (data_bit_res - 1)                                 << AVR32_SSC_RFMR_DATLEN_OFFSET                              |
-                        1                                                  << AVR32_SSC_RFMR_MSBF_OFFSET                                |
-                        (1 - 1)                                            << AVR32_SSC_RFMR_DATNB_OFFSET                               |
-                        (((frame_bit_res - 1)                              << AVR32_SSC_RFMR_FSLEN_OFFSET) & AVR32_SSC_TFMR_FSLEN_MASK) |
-                        AVR32_SSC_RFMR_FSOS_NEG_PULSE                      << AVR32_SSC_RFMR_FSOS_OFFSET                                |
-                        1                                                  << AVR32_SSC_RFMR_FSEDGE_OFFSET                              |
-                        ((frame_bit_res - 1) >> AVR32_SSC_RFMR_FSLEN_SIZE) << AVR32_SSC_RFMR_FSLENHI_OFFSET;
+                ssc->rfmr = (data_bit_res - 1) << AVR32_SSC_RFMR_DATLEN_OFFSET |
+                            1 << AVR32_SSC_RFMR_MSBF_OFFSET |
+                            (1 - 1) << AVR32_SSC_RFMR_DATNB_OFFSET |
+                            (((frame_bit_res - 1) << AVR32_SSC_RFMR_FSLEN_OFFSET) & AVR32_SSC_TFMR_FSLEN_MASK) |
+                            AVR32_SSC_RFMR_FSOS_NEG_PULSE << AVR32_SSC_RFMR_FSOS_OFFSET |
+                            1 << AVR32_SSC_RFMR_FSEDGE_OFFSET |
+                            ((frame_bit_res - 1) >> AVR32_SSC_RFMR_FSLEN_SIZE) << AVR32_SSC_RFMR_FSLENHI_OFFSET;
 #endif
-            rxen_mask = AVR32_SSC_CR_RXEN_MASK;
+                rxen_mask = AVR32_SSC_CR_RXEN_MASK;
+            }
         }
+        /* Enable transceiver and/or receiver */
+        ssc->cr = txen_mask | rxen_mask;
+    }
 
-      }
-    /* Enable transceiver and/or receiver */
-    ssc->cr = txen_mask | rxen_mask;
-  }
-
-  return SSC_I2S_OK;
+    return SSC_I2S_OK;
 }
-
 
 int ssc_i2s_transfer(volatile avr32_ssc_t *ssc, unsigned int data)
 {
-  unsigned int timeout = SSC_I2S_TIMEOUT_VALUE;
+    unsigned int timeout = SSC_I2S_TIMEOUT_VALUE;
 
-  while( ( ssc->sr & (1<<AVR32_SSC_SR_TXRDY_OFFSET) ) == 0 &&
-      timeout > 0 ) {
-    timeout--;
-  }
+    while ((ssc->sr & (1 << AVR32_SSC_SR_TXRDY_OFFSET)) == 0 &&
+           timeout > 0) {
+        timeout--;
+    }
 
-  if( timeout <= 0 ) {
-    return SSC_I2S_TIMEOUT;
-  }
+    if (timeout <= 0) {
+        return SSC_I2S_TIMEOUT;
+    }
 
-  ssc->thr = data;
+    ssc->thr = data;
 
-  return SSC_I2S_OK;
+    return SSC_I2S_OK;
 }
-
 
 void ssc_i2s_disable_interrupts(volatile avr32_ssc_t *ssc, unsigned long int_mask)
 {
-  Bool global_interrupt_enabled = Is_global_interrupt_enabled();
+    Bool global_interrupt_enabled = Is_global_interrupt_enabled();
 
-  if (global_interrupt_enabled) Disable_global_interrupt();
-  ssc->idr = int_mask;
-  ssc->sr;
-  if (global_interrupt_enabled) Enable_global_interrupt();
+    if (global_interrupt_enabled)
+        Disable_global_interrupt();
+    ssc->idr = int_mask;
+    ssc->sr;
+    if (global_interrupt_enabled)
+        Enable_global_interrupt();
 }
-
 
 void ssc_i2s_enable_interrupts(volatile avr32_ssc_t *ssc, unsigned long int_mask)
 {
-  ssc->ier = int_mask;
+    ssc->ier = int_mask;
 }
-
 
 unsigned long ssc_i2s_get_status(volatile avr32_ssc_t *ssc)
 {
-  return ssc->sr;
+    return ssc->sr;
 }

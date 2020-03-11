@@ -47,8 +47,8 @@
  *
  */
 
-#include <avr32/io.h>
 #include "compiler.h"
+#include <avr32/io.h>
 
 /*! \brief Sets the WatchDog Timer Control register to the \a ctrl value thanks
  *         to the WatchDog Timer key.
@@ -59,60 +59,54 @@
  */
 static void wdt_set_ctrl(unsigned long ctrl)
 {
-  AVR32_WDT.ctrl = ctrl | (AVR32_WDT_KEY_VALUE << AVR32_WDT_CTRL_KEY_OFFSET);
-  AVR32_WDT.ctrl = ctrl | ((unsigned long) (~AVR32_WDT_KEY_VALUE << AVR32_WDT_CTRL_KEY_OFFSET) & AVR32_WDT_CTRL_KEY_MASK);
+    AVR32_WDT.ctrl = ctrl | (AVR32_WDT_KEY_VALUE << AVR32_WDT_CTRL_KEY_OFFSET);
+    AVR32_WDT.ctrl = ctrl | ((unsigned long)(~AVR32_WDT_KEY_VALUE << AVR32_WDT_CTRL_KEY_OFFSET) & AVR32_WDT_CTRL_KEY_MASK);
 }
-
 
 long long wdt_get_us_timeout_period(void)
 {
-  // Read CTRL.PSEL and translate it into us.
-  return (AVR32_WDT.ctrl & AVR32_WDT_CTRL_EN_MASK) ?
-           ((1ULL << (((AVR32_WDT.ctrl & AVR32_WDT_CTRL_PSEL_MASK) >> AVR32_WDT_CTRL_PSEL_OFFSET) + 1)) *
-            1000000 + AVR32_PM_RCOSC_FREQUENCY / 2) / AVR32_PM_RCOSC_FREQUENCY :
-            -1ULL;
+    // Read CTRL.PSEL and translate it into us.
+    return (AVR32_WDT.ctrl & AVR32_WDT_CTRL_EN_MASK) ? ((1ULL << (((AVR32_WDT.ctrl & AVR32_WDT_CTRL_PSEL_MASK) >> AVR32_WDT_CTRL_PSEL_OFFSET) + 1)) *
+                                                            1000000 +
+                                                        AVR32_PM_RCOSC_FREQUENCY / 2) /
+                                                           AVR32_PM_RCOSC_FREQUENCY
+                                                     : -1ULL;
 }
-
 
 void wdt_disable(void)
 {
-  wdt_set_ctrl(AVR32_WDT.ctrl & ~AVR32_WDT_CTRL_EN_MASK);
+    wdt_set_ctrl(AVR32_WDT.ctrl & ~AVR32_WDT_CTRL_EN_MASK);
 }
-
 
 unsigned long long wdt_enable(unsigned long long us_timeout_period)
 {
-#define MIN_US_TIMEOUT_PERIOD   (((1ULL <<  1                             ) * 1000000 + AVR32_PM_RCOSC_FREQUENCY / 2) / AVR32_PM_RCOSC_FREQUENCY)
-#define MAX_US_TIMEOUT_PERIOD   (((1ULL << (1 << AVR32_WDT_CTRL_PSEL_SIZE)) * 1000000 + AVR32_PM_RCOSC_FREQUENCY / 2) / AVR32_PM_RCOSC_FREQUENCY)
+#define MIN_US_TIMEOUT_PERIOD (((1ULL << 1) * 1000000 + AVR32_PM_RCOSC_FREQUENCY / 2) / AVR32_PM_RCOSC_FREQUENCY)
+#define MAX_US_TIMEOUT_PERIOD (((1ULL << (1 << AVR32_WDT_CTRL_PSEL_SIZE)) * 1000000 + AVR32_PM_RCOSC_FREQUENCY / 2) / AVR32_PM_RCOSC_FREQUENCY)
 
-  // Set the CTRL.EN bit and translate the us timeout to fit in CTRL.PSEL using
-  // the formula Twdt = 2pow(PSEL+1) / fRCosc
-  wdt_set_ctrl(AVR32_WDT_CTRL_EN_MASK |
-               ((32 - clz(((((Min(Max(us_timeout_period, MIN_US_TIMEOUT_PERIOD), MAX_US_TIMEOUT_PERIOD) *
-                              AVR32_PM_RCOSC_FREQUENCY + 500000) / 1000000) << 1) - 1) >> 1) - 1) <<
-                AVR32_WDT_CTRL_PSEL_OFFSET));
+    // Set the CTRL.EN bit and translate the us timeout to fit in CTRL.PSEL using
+    // the formula Twdt = 2pow(PSEL+1) / fRCosc
+    wdt_set_ctrl(AVR32_WDT_CTRL_EN_MASK |
+                 ((32 - clz(((((Min(Max(us_timeout_period, MIN_US_TIMEOUT_PERIOD), MAX_US_TIMEOUT_PERIOD) * AVR32_PM_RCOSC_FREQUENCY + 500000) / 1000000) << 1) - 1) >> 1) - 1) << AVR32_WDT_CTRL_PSEL_OFFSET));
 
-  // Return the actual wdt period in us.
-  return wdt_get_us_timeout_period();
+    // Return the actual wdt period in us.
+    return wdt_get_us_timeout_period();
 }
-
 
 void wdt_reenable(void)
 {
-  wdt_set_ctrl(AVR32_WDT.ctrl | AVR32_WDT_CTRL_EN_MASK);
+    wdt_set_ctrl(AVR32_WDT.ctrl | AVR32_WDT_CTRL_EN_MASK);
 }
-
 
 void wdt_clear(void)
 {
-  AVR32_WDT.clr = 0;
+    AVR32_WDT.clr = 0;
 }
-
 
 void wdt_reset_mcu(void)
 {
-  Disable_global_interrupt();
-  // Enable the WDT with a 0s period (fastest way to get a Watchdog reset).
-  wdt_enable(0);
-  while (1);
+    Disable_global_interrupt();
+    // Enable the WDT with a 0s period (fastest way to get a Watchdog reset).
+    wdt_enable(0);
+    while (1)
+        ;
 }

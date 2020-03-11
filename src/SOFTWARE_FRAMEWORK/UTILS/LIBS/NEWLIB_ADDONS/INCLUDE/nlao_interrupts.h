@@ -52,28 +52,27 @@
 
 _BEGIN_STD_C
 
-#define INT_GRPS          64
-#define INT_LINES         32
-#define INTPR_BASE        (__intc_base__ + 0x0000)
-#define INTREQ_BASE       (__intc_base__ + 64*4)
-#define INTCAUSE_BASE     (__intc_base__ + 2*64*4)
+#define INT_GRPS 64
+#define INT_LINES 32
+#define INTPR_BASE (__intc_base__ + 0x0000)
+#define INTREQ_BASE (__intc_base__ + 64 * 4)
+#define INTCAUSE_BASE (__intc_base__ + 2 * 64 * 4)
 
 //Register offsets
-#define INTLEVEL          30
-#define AUTOVECTOR        0
-#define AUTOVECTOR_BITS   14
+#define INTLEVEL 30
+#define AUTOVECTOR 0
+#define AUTOVECTOR_BITS 14
 
 //Priorities
-#define INT0              0
-#define INT1              1
-#define INT2              2
-#define INT3              3
+#define INT0 0
+#define INT1 1
+#define INT2 2
+#define INT3 3
 
-
-typedef void (*__newlib_int_handler)(int /* int_grp*/, void */*user_handle*/);
+typedef void (*__newlib_int_handler)(int /* int_grp*/, void * /*user_handle*/);
 
 __newlib_int_handler register_interrupt(__newlib_int_handler handler, int int_grp, int line, int priority,
-                                 .../* void *user_handle*/);
+                                        ... /* void *user_handle*/);
 void init_interrupts();
 void set_interrupts_base(void *base);
 

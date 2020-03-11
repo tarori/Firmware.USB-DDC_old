@@ -48,249 +48,238 @@
  *
  */
 
-#include "compiler.h"
 #include "pdca.h"
-
+#include "compiler.h"
 
 volatile avr32_pdca_channel_t *pdca_get_handler(unsigned int pdca_ch_number)
 {
-  // get the correct channel pointer
-  volatile avr32_pdca_channel_t *pdca_channel = &AVR32_PDCA.channel[pdca_ch_number];
+    // get the correct channel pointer
+    volatile avr32_pdca_channel_t *pdca_channel = &AVR32_PDCA.channel[pdca_ch_number];
 
-  if (pdca_ch_number >= AVR32_PDCA_CHANNEL_LENGTH)
-    return (volatile avr32_pdca_channel_t *)PDCA_INVALID_ARGUMENT;
+    if (pdca_ch_number >= AVR32_PDCA_CHANNEL_LENGTH)
+        return (volatile avr32_pdca_channel_t *)PDCA_INVALID_ARGUMENT;
 
-  return pdca_channel;
+    return pdca_channel;
 }
-
 
 int pdca_init_channel(unsigned int pdca_ch_number, const pdca_channel_options_t *opt)
 {
-  // get the correct channel pointer
-  volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
+    // get the correct channel pointer
+    volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
 
-  pdca_disable_interrupt_transfer_complete(pdca_ch_number); // disable channel interrupt
-  pdca_disable_interrupt_reload_counter_zero(pdca_ch_number); // disable channel interrupt
+    pdca_disable_interrupt_transfer_complete(pdca_ch_number);   // disable channel interrupt
+    pdca_disable_interrupt_reload_counter_zero(pdca_ch_number); // disable channel interrupt
 
-  Bool global_interrupt_enabled = Is_global_interrupt_enabled();
+    Bool global_interrupt_enabled = Is_global_interrupt_enabled();
 
-  if (global_interrupt_enabled) Disable_global_interrupt();
-  pdca_channel->mar = (unsigned long)opt->addr;
-  pdca_channel->tcr = opt->size;
-  pdca_channel->psr = opt->pid;
-  pdca_channel->marr = (unsigned long)opt->r_addr;
-  pdca_channel->tcrr = opt->r_size;
-  pdca_channel->mr =
-#if (defined AVR32_PDCA_120_H_INCLUDED ) || (defined AVR32_PDCA_121_H_INCLUDED ) || (defined AVR32_PDCA_122_H_INCLUDED )
-opt->etrig << AVR32_PDCA_ETRIG_OFFSET |
+    if (global_interrupt_enabled)
+        Disable_global_interrupt();
+    pdca_channel->mar = (unsigned long)opt->addr;
+    pdca_channel->tcr = opt->size;
+    pdca_channel->psr = opt->pid;
+    pdca_channel->marr = (unsigned long)opt->r_addr;
+    pdca_channel->tcrr = opt->r_size;
+    pdca_channel->mr =
+#if (defined AVR32_PDCA_120_H_INCLUDED) || (defined AVR32_PDCA_121_H_INCLUDED) || (defined AVR32_PDCA_122_H_INCLUDED)
+        opt->etrig << AVR32_PDCA_ETRIG_OFFSET |
 #endif // #ifdef AVR32_PDCA_120_H_INCLUDED
-                     opt->transfer_size << AVR32_PDCA_SIZE_OFFSET;
-  pdca_channel->cr = AVR32_PDCA_ECLR_MASK;
-  pdca_channel->isr;
-  if (global_interrupt_enabled) Enable_global_interrupt();
+        opt->transfer_size << AVR32_PDCA_SIZE_OFFSET;
+    pdca_channel->cr = AVR32_PDCA_ECLR_MASK;
+    pdca_channel->isr;
+    if (global_interrupt_enabled)
+        Enable_global_interrupt();
 
-  return PDCA_SUCCESS;
+    return PDCA_SUCCESS;
 }
-
 
 unsigned int pdca_get_channel_status(unsigned int pdca_ch_number)
 {
-  // get the correct channel pointer
-  volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
+    // get the correct channel pointer
+    volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
 
-  return (pdca_channel->sr & AVR32_PDCA_TEN_MASK) != 0;
+    return (pdca_channel->sr & AVR32_PDCA_TEN_MASK) != 0;
 }
-
 
 void pdca_disable(unsigned int pdca_ch_number)
 {
-	// get the correct channel pointer
-  volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
+    // get the correct channel pointer
+    volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
 
-  // Disable transfer
-  pdca_channel->cr = AVR32_PDCA_TDIS_MASK;
-
+    // Disable transfer
+    pdca_channel->cr = AVR32_PDCA_TDIS_MASK;
 }
-
 
 void pdca_enable(unsigned int pdca_ch_number)
 {
-  // get the correct channel pointer
-  volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
+    // get the correct channel pointer
+    volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
 
-  // Enable transfer
-  pdca_channel->cr = AVR32_PDCA_TEN_MASK;
+    // Enable transfer
+    pdca_channel->cr = AVR32_PDCA_TEN_MASK;
 }
-
 
 unsigned int pdca_get_load_size(unsigned int pdca_ch_number)
 {
-  // get the correct channel pointer
-  volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
+    // get the correct channel pointer
+    volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
 
-  return pdca_channel->tcr;
+    return pdca_channel->tcr;
 }
-
 
 void pdca_load_channel(unsigned int pdca_ch_number, volatile void *addr, unsigned int size)
 {
-  // get the correct channel pointer
-  volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
+    // get the correct channel pointer
+    volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
 
-  Bool global_interrupt_enabled = Is_global_interrupt_enabled();
+    Bool global_interrupt_enabled = Is_global_interrupt_enabled();
 
-  if (global_interrupt_enabled) Disable_global_interrupt();
-  pdca_channel->marr = (unsigned long)addr; // BSB mar -> marr ?
-  pdca_channel->tcr = size;
-  pdca_channel->cr = AVR32_PDCA_ECLR_MASK;
-  pdca_channel->isr;
-  if (global_interrupt_enabled) Enable_global_interrupt();
+    if (global_interrupt_enabled)
+        Disable_global_interrupt();
+    pdca_channel->marr = (unsigned long)addr; // BSB mar -> marr ?
+    pdca_channel->tcr = size;
+    pdca_channel->cr = AVR32_PDCA_ECLR_MASK;
+    pdca_channel->isr;
+    if (global_interrupt_enabled)
+        Enable_global_interrupt();
 }
-
 
 unsigned int pdca_get_reload_size(unsigned int pdca_ch_number)
 {
-  // get the correct channel pointer
-  volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
+    // get the correct channel pointer
+    volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
 
-  return pdca_channel->tcrr;
+    return pdca_channel->tcrr;
 }
-
 
 void pdca_reload_channel(unsigned int pdca_ch_number, volatile void *addr, unsigned int size)
 {
-  // get the correct channel pointer
-  volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
+    // get the correct channel pointer
+    volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
 
-  Bool global_interrupt_enabled = Is_global_interrupt_enabled();
+    Bool global_interrupt_enabled = Is_global_interrupt_enabled();
 
-  if (global_interrupt_enabled) Disable_global_interrupt();
-  // set up next memory address
-  pdca_channel->marr = (unsigned long)addr;
-  // set up next memory size
-  pdca_channel->tcrr = size;
-  pdca_channel->cr = AVR32_PDCA_ECLR_MASK;
-  pdca_channel->isr;
-  if (global_interrupt_enabled) Enable_global_interrupt();
+    if (global_interrupt_enabled)
+        Disable_global_interrupt();
+    // set up next memory address
+    pdca_channel->marr = (unsigned long)addr;
+    // set up next memory size
+    pdca_channel->tcrr = size;
+    pdca_channel->cr = AVR32_PDCA_ECLR_MASK;
+    pdca_channel->isr;
+    if (global_interrupt_enabled)
+        Enable_global_interrupt();
 }
-
 
 void pdca_set_peripheral_select(unsigned int pdca_ch_number, unsigned int pid)
 {
-  // get the correct channel pointer
-  volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
+    // get the correct channel pointer
+    volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
 
-  pdca_channel->psr = pid;
+    pdca_channel->psr = pid;
 }
-
 
 void pdca_set_transfer_size(unsigned int pdca_ch_number, unsigned int transfer_size)
 {
-  // get the correct channel pointer
-  volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
+    // get the correct channel pointer
+    volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
 
-  pdca_channel->mr = (pdca_channel->mr & ~AVR32_PDCA_SIZE_MASK) |
-                     transfer_size << AVR32_PDCA_SIZE_OFFSET;
+    pdca_channel->mr = (pdca_channel->mr & ~AVR32_PDCA_SIZE_MASK) |
+                       transfer_size << AVR32_PDCA_SIZE_OFFSET;
 }
 
-
-#if (defined AVR32_PDCA_120_H_INCLUDED ) || (defined AVR32_PDCA_121_H_INCLUDED ) || (defined AVR32_PDCA_122_H_INCLUDED )
-
+#if (defined AVR32_PDCA_120_H_INCLUDED) || (defined AVR32_PDCA_121_H_INCLUDED) || (defined AVR32_PDCA_122_H_INCLUDED)
 
 void pdca_disable_event_trigger(unsigned int pdca_ch_number)
 {
-  // get the correct channel pointer
-  volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
+    // get the correct channel pointer
+    volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
 
-  pdca_channel->mr &= ~AVR32_PDCA_ETRIG_MASK;
+    pdca_channel->mr &= ~AVR32_PDCA_ETRIG_MASK;
 }
-
 
 void pdca_enable_event_trigger(unsigned int pdca_ch_number)
 {
-  // get the correct channel pointer
-  volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
+    // get the correct channel pointer
+    volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
 
-  pdca_channel->mr |= AVR32_PDCA_ETRIG_MASK;
+    pdca_channel->mr |= AVR32_PDCA_ETRIG_MASK;
 }
-
 
 #endif // #ifdef AVR32_PDCA_120_H_INCLUDED
 
-
 void pdca_disable_interrupt_transfer_error(unsigned int pdca_ch_number)
 {
-  // get the correct channel pointer
-  volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
+    // get the correct channel pointer
+    volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
 
-  Bool global_interrupt_enabled = Is_global_interrupt_enabled();
+    Bool global_interrupt_enabled = Is_global_interrupt_enabled();
 
-  if (global_interrupt_enabled) Disable_global_interrupt();
-  pdca_channel->idr = AVR32_PDCA_TERR_MASK;
-  pdca_channel->isr;
-  if (global_interrupt_enabled) Enable_global_interrupt();
+    if (global_interrupt_enabled)
+        Disable_global_interrupt();
+    pdca_channel->idr = AVR32_PDCA_TERR_MASK;
+    pdca_channel->isr;
+    if (global_interrupt_enabled)
+        Enable_global_interrupt();
 }
-
 
 void pdca_enable_interrupt_transfer_error(unsigned int pdca_ch_number)
 {
-  // get the correct channel pointer
-  volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
+    // get the correct channel pointer
+    volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
 
-  pdca_channel->ier = AVR32_PDCA_TERR_MASK;
+    pdca_channel->ier = AVR32_PDCA_TERR_MASK;
 }
-
 
 void pdca_disable_interrupt_transfer_complete(unsigned int pdca_ch_number)
 {
-  // get the correct channel pointer
-  volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
+    // get the correct channel pointer
+    volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
 
-  Bool global_interrupt_enabled = Is_global_interrupt_enabled();
+    Bool global_interrupt_enabled = Is_global_interrupt_enabled();
 
-  if (global_interrupt_enabled) Disable_global_interrupt();
-  pdca_channel->idr = AVR32_PDCA_TRC_MASK;
-  pdca_channel->isr;
-  if (global_interrupt_enabled) Enable_global_interrupt();
+    if (global_interrupt_enabled)
+        Disable_global_interrupt();
+    pdca_channel->idr = AVR32_PDCA_TRC_MASK;
+    pdca_channel->isr;
+    if (global_interrupt_enabled)
+        Enable_global_interrupt();
 }
-
 
 void pdca_enable_interrupt_transfer_complete(unsigned int pdca_ch_number)
 {
-  // get the correct channel pointer
-  volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
+    // get the correct channel pointer
+    volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
 
-  pdca_channel->ier = AVR32_PDCA_TRC_MASK;
+    pdca_channel->ier = AVR32_PDCA_TRC_MASK;
 }
-
 
 void pdca_disable_interrupt_reload_counter_zero(unsigned int pdca_ch_number)
 {
-  // get the correct channel pointer
-  volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
+    // get the correct channel pointer
+    volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
 
-  Bool global_interrupt_enabled = Is_global_interrupt_enabled();
+    Bool global_interrupt_enabled = Is_global_interrupt_enabled();
 
-  if (global_interrupt_enabled) Disable_global_interrupt();
-  pdca_channel->idr = AVR32_PDCA_RCZ_MASK;
-  pdca_channel->isr;
-  if (global_interrupt_enabled) Enable_global_interrupt();
+    if (global_interrupt_enabled)
+        Disable_global_interrupt();
+    pdca_channel->idr = AVR32_PDCA_RCZ_MASK;
+    pdca_channel->isr;
+    if (global_interrupt_enabled)
+        Enable_global_interrupt();
 }
-
 
 void pdca_enable_interrupt_reload_counter_zero(unsigned int pdca_ch_number)
 {
-  // get the correct channel pointer
-  volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
+    // get the correct channel pointer
+    volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
 
-  pdca_channel->ier = AVR32_PDCA_RCZ_MASK;
+    pdca_channel->ier = AVR32_PDCA_RCZ_MASK;
 }
-
 
 unsigned long pdca_get_transfer_status(unsigned int pdca_ch_number)
 {
-  // get the correct channel pointer
-  volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
+    // get the correct channel pointer
+    volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(pdca_ch_number);
 
-  return pdca_channel->isr;
+    return pdca_channel->isr;
 }

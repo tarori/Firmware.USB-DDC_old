@@ -50,14 +50,13 @@
 #ifndef _FLASHC_H_
 #define _FLASHC_H_
 
+#include "compiler.h"
 #include <avr32/io.h>
 #include <stddef.h>
-#include "compiler.h"
 
 //! Number of flash regions defined by the FLASHC.
-#define AVR32_FLASHC_REGIONS  (AVR32_FLASHC_FLASH_SIZE /\
-                               (AVR32_FLASHC_PAGES_PR_REGION * AVR32_FLASHC_PAGE_SIZE))
-
+#define AVR32_FLASHC_REGIONS (AVR32_FLASHC_FLASH_SIZE / \
+                              (AVR32_FLASHC_PAGES_PR_REGION * AVR32_FLASHC_PAGE_SIZE))
 
 /*! \name Flash Properties
  */
@@ -101,7 +100,6 @@ extern unsigned int flashc_get_page_region(int page_number);
 extern unsigned int flashc_get_region_first_page_number(unsigned int region);
 
 //! @}
-
 
 /*! \name FLASHC Control
  */
@@ -161,7 +159,6 @@ extern void flashc_enable_prog_error_int(Bool enable);
 
 //! @}
 
-
 /*! \name FLASHC Status
  */
 //! @{
@@ -202,7 +199,6 @@ extern Bool flashc_is_programming_error(void);
 
 //! @}
 
-
 /*! \name FLASHC Command Control
  */
 //! @{
@@ -242,7 +238,6 @@ extern void flashc_issue_command(unsigned int command, int page_number);
 
 //! @}
 
-
 /*! \name FLASHC Global Commands
  */
 //! @{
@@ -273,7 +268,6 @@ extern void flashc_no_operation(void);
 extern void flashc_erase_all(void);
 
 //! @}
-
 
 /*! \name FLASHC Protection Mechanisms
  */
@@ -384,7 +378,6 @@ extern void flashc_lock_region(unsigned int region, Bool lock);
 extern void flashc_lock_all_regions(Bool lock);
 
 //! @}
-
 
 /*! \name Access to General-Purpose Fuses
  */
@@ -677,7 +670,6 @@ extern void flashc_set_all_gp_fuses(U64 value);
 
 //! @}
 
-
 /*! \name Access to Flash Pages
  */
 //! @{
@@ -952,7 +944,8 @@ extern volatile void *flashc_memset64(volatile void *dst, U64 src, size_t nbytes
  *       \ref flashc_is_programming_error is updated.
  */
 #define flashc_memset(dst, src, src_width, nbytes, erase) \
-          TPASTE2(flashc_memset, src_width)((dst), (src), (nbytes), (erase))
+    TPASTE2(flashc_memset, src_width)                     \
+    ((dst), (src), (nbytes), (erase))
 
 /*! \brief Copies \a nbytes bytes to the flash destination pointed to by \a dst
  *         from the source pointed to by \a src.
@@ -998,5 +991,4 @@ void flashc_set_flash_waitstate_and_readmode(unsigned long cpu_f_hz);
 
 //! @}
 
-
-#endif  // _FLASHC_H_
+#endif // _FLASHC_H_

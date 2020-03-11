@@ -75,91 +75,82 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
 #ifndef _CONF_USB_H_
 #define _CONF_USB_H_
 
-#include "compiler.h"
 #include "board.h"
+#include "compiler.h"
 #include "print_funcs.h"
 #include "usb_ids.h"
-
 
 //! @defgroup usb_general_conf USB application configuration
 //!
 //! @{
 
-  // _________________ USB MODE CONFIGURATION ____________________________
-  //
-  //! @defgroup USB_op_mode USB operating modes configuration
-  //! Defines to enable device or host USB operating modes
-  //! supported by the application
-  //! @{
+// _________________ USB MODE CONFIGURATION ____________________________
+//
+//! @defgroup USB_op_mode USB operating modes configuration
+//! Defines to enable device or host USB operating modes
+//! supported by the application
+//! @{
 
-    //! @brief ENABLE to activate the host software framework support
-    //!
-    //! Possible values ENABLED or DISABLED
-#define USB_HOST_FEATURE            DISABLED
-    //! @brief ENABLE to activate the device software framework support
-    //!
-    //! Possible values ENABLED or DISABLED
-#define USB_DEVICE_FEATURE          ENABLED
+//! @brief ENABLE to activate the host software framework support
+//!
+//! Possible values ENABLED or DISABLED
+#define USB_HOST_FEATURE DISABLED
+//! @brief ENABLE to activate the device software framework support
+//!
+//! Possible values ENABLED or DISABLED
+#define USB_DEVICE_FEATURE ENABLED
 
-#define USB_HIGH_SPEED_SUPPORT         ENABLED
+#define USB_HIGH_SPEED_SUPPORT ENABLED
 
-	// BSB 20130605 state machine debug selected here
-    //! @brief DEFINE to activate audio feedback state machine debugging on GPIO and UART
-    //!
-    //! Possible values defined and commented out
+// BSB 20130605 state machine debug selected here
+//! @brief DEFINE to activate audio feedback state machine debugging on GPIO and UART
+//!
+//! Possible values defined and commented out
 // #define USB_STATE_MACHINE_DEBUG // Depreciated here, moved to Makefile
-
 
 // BSB 20160311 demoing metallic noise
 // One historical bug on line 610 of uac2_dat.c
 // #define USB_METALLIC_NOISE_SIM // Only used for demo purposes
 
+//! @}
 
+// _________________ HOST MODE CONFIGURATION ____________________________
+//
+//! @defgroup USB_host_mode_cfg USB host operating mode configuration
+//!
+//! @{
 
-
-  //! @}
-
-
-  // _________________ HOST MODE CONFIGURATION ____________________________
-  //
-  //! @defgroup USB_host_mode_cfg USB host operating mode configuration
-  //!
-  //! @{
-
-
-
-  // _________________ DEVICE MODE CONFIGURATION __________________________
-  //
-  //! @defgroup USB_device_mode_cfg USB device operating mode configuration
-  //!
-  //! @{
+// _________________ DEVICE MODE CONFIGURATION __________________________
+//
+//! @defgroup USB_device_mode_cfg USB device operating mode configuration
+//!
+//! @{
 
 #if USB_DEVICE_FEATURE == ENABLED
 
 #define COMPOSITE_DEVICE
 
 // UAC1 endpoints
-#define UAC1_EP_HID_TX			1
+#define UAC1_EP_HID_TX 1
 // #define UAC1_EP_HID_RX			2
-#define UAC1_EP_AUDIO_OUT		4
-#define UAC1_EP_AUDIO_IN		5
-#define UAC1_EP_AUDIO_OUT_FB	3
+#define UAC1_EP_AUDIO_OUT 4
+#define UAC1_EP_AUDIO_IN 5
+#define UAC1_EP_AUDIO_OUT_FB 3
 
 // UAC2 endpoints
-#define UAC2_EP_AUDIO_IN		3
-#define UAC2_EP_AUDIO_OUT		2
-#define UAC2_EP_AUDIO_OUT_FB	1
-#define UAC2_EP_HID_TX			4
+#define UAC2_EP_AUDIO_IN 3
+#define UAC2_EP_AUDIO_OUT 2
+#define UAC2_EP_AUDIO_OUT_FB 1
+#define UAC2_EP_HID_TX 4
 // #define UAC2_EP_HID_RX			5
 
 // HPSDR endpoints
-#define HPSDR_EP_RF_IN			4
-#define HPSDR_EP_IQ_IN			6
-#define HPSDR_EP_IQ_OUT			2
+#define HPSDR_EP_RF_IN 4
+#define HPSDR_EP_IQ_IN 6
+#define HPSDR_EP_IQ_OUT 2
 
 // temporary resolution
 // #define EP_AUDIO_IN		UAC2_EP_AUDIO_IN
@@ -173,26 +164,25 @@
 //! @{
 // Write here the action to associate with each USB event.
 // Be careful not to waste time in order not to disturb the functions.
-#define Usb_sof_action()				print_dbg_char('A');
-#define Usb_wake_up_action()			print_dbg_char('B');
-#define Usb_resume_action()				print_dbg_char('C');
-#define Usb_suspend_action()			print_dbg_char('D');
-#define Usb_reset_action()				print_dbg_char('E');
-#define Usb_vbus_on_action()			print_dbg_char('F');
-#define Usb_vbus_off_action()			print_dbg_char('G');
-#define Usb_set_configuration_action()	print_dbg_char('H');
+#define Usb_sof_action() print_dbg_char('A');
+#define Usb_wake_up_action() print_dbg_char('B');
+#define Usb_resume_action() print_dbg_char('C');
+#define Usb_suspend_action() print_dbg_char('D');
+#define Usb_reset_action() print_dbg_char('E');
+#define Usb_vbus_on_action() print_dbg_char('F');
+#define Usb_vbus_off_action() print_dbg_char('G');
+#define Usb_set_configuration_action() print_dbg_char('H');
 //! @}
 
-#endif  // USB_DEVICE_FEATURE == ENABLED
+#endif // USB_DEVICE_FEATURE == ENABLED
 
 //! @}
-
 
 //! USB interrupt priority level
-#define USB_INT_LEVEL                   AVR32_INTC_INT0
+#define USB_INT_LEVEL AVR32_INTC_INT0
 
 //! Debug trace macro
-#define LOG_STR(str)                    //print_dbg(str)
+#define LOG_STR(str) //print_dbg(str)
 
 //! @defgroup usb_stream_control USB stream control parameters
 //! Defines the way the USB stream control will operate. The USB Stream Control embeds a mechanism
@@ -202,24 +192,21 @@
 
 //! Size of a buffer (in bytes) used in the USB stream FIFO. It shall be equivalent to the pipe/endpoint
 //! from which the stream comes to.
-#define USB_STREAM_BUFFER_SIZE        100   // Size in bytes.
+#define USB_STREAM_BUFFER_SIZE 100 // Size in bytes.
 
 //! Number of buffers used in the USB stream FIFO.
-#define USB_STREAM_BUFFER_NUMBER        8   // Unit is in number of buffers. Must be a 2-power number.
+#define USB_STREAM_BUFFER_NUMBER 8 // Unit is in number of buffers. Must be a 2-power number.
 
 //! Maximum gap (in number of buffers) between the stream reader and the stream writer, in which the FIFO
 //! operates without re-synchronization.
-#define USB_STREAM_IDLE_BUFFER_NUMBER   2   // Unit is in number of buffers.
+#define USB_STREAM_IDLE_BUFFER_NUMBER 2 // Unit is in number of buffers.
 
 //! Max sampling frequencies excursion (given in per-thousandth) that the USB Stream Control FIFO
 //! is supposed to softly correct.
-#define USB_STREAM_MAX_EXCURSION       100  // Unit is in per-thousandth (�/oo)
- 
- //! @}
- 
- 
+#define USB_STREAM_MAX_EXCURSION 100 // Unit is in per-thousandth (�/oo)
 
 //! @}
 
+//! @}
 
-#endif  // _CONF_USB_H_
+#endif // _CONF_USB_H_

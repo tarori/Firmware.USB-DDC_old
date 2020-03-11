@@ -53,22 +53,18 @@
 #ifndef _USB_DEVICE_TASK_H_
 #define _USB_DEVICE_TASK_H_
 
-
 #include "conf_usb.h"
 
 #if USB_DEVICE_FEATURE == DISABLED
-  #error usb_device_task.h is #included although USB_DEVICE_FEATURE is disabled
+#error usb_device_task.h is #included although USB_DEVICE_FEATURE is disabled
 #endif
-
 
 //! @defgroup usb_device_task USB device task module
 //! @{
 
 //_____ I N C L U D E S ____________________________________________________
 
-
 //_____ M A C R O S ________________________________________________________
-
 
 //_____ D E C L A R A T I O N S ____________________________________________
 
@@ -108,5 +104,4 @@ extern void usb_device_task(void);
 
 //! @}
 
-
-#endif  // _USB_DEVICE_TASK_H_
+#endif // _USB_DEVICE_TASK_H_

@@ -50,37 +50,33 @@
 #ifndef _HOST_AUDIO_TASK_H_
 #define _HOST_AUDIO_TASK_H_
 
-
 //_____ I N C L U D E S ____________________________________________________
 
 #include "conf_usb.h"
 
 #if USB_HOST_FEATURE == DISABLED
-  #error host_audio_task.h is #included although USB_HOST_FEATURE is disabled
+#error host_audio_task.h is #included although USB_HOST_FEATURE is disabled
 #endif
-
 
 #include "usb_host_task.h"
 
-
 //_____ M A C R O S ________________________________________________________
 
-#define Is_host_audio_configured()  (audio_connected && !Is_host_suspended())
-
+#define Is_host_audio_configured() (audio_connected && !Is_host_suspended())
 
 //_____ D E F I N I T I O N S ______________________________________________
 
-#define     MUTE_ON                         TRUE
-#define     MUTE_OFF                        FALSE
+#define MUTE_ON TRUE
+#define MUTE_OFF FALSE
 
 //! Define for each 'feature unit' the max numbers of bmControls
 #define MAX_BMA_CONTROLS 4
 
 typedef struct
 {
-   U8  unit;
-   U8  n_bmaControls;
-   U8  bmaControls[MAX_BMA_CONTROLS];
+    U8 unit;
+    U8 n_bmaControls;
+    U8 bmaControls[MAX_BMA_CONTROLS];
 } cs_feature_unit_t;
 
 //_____ D E C L A R A T I O N S ____________________________________________
@@ -88,9 +84,9 @@ typedef struct
 extern volatile Bool ms_connected;
 
 extern void host_audio_set_cur_mute(U16 unit, Bool cs_mute);
-extern U16  host_audio_get_max(     U16 unit, U16 channel_number);
-extern void host_audio_set_cur(     U16 unit, U16 channel_number, U16 volume);
-extern void host_set_sampling_rate( U16 endpoint, U32 sampling_rate);
+extern U16 host_audio_get_max(U16 unit, U16 channel_number);
+extern void host_audio_set_cur(U16 unit, U16 channel_number, U16 volume);
+extern void host_set_sampling_rate(U16 endpoint, U32 sampling_rate);
 extern void host_audio_task_init(void);
 #ifdef FREERTOS_USED
 extern void host_audio_task(void *pvParameters);
@@ -98,5 +94,4 @@ extern void host_audio_task(void *pvParameters);
 extern void host_audio_task(void);
 #endif
 
-
-#endif  // _HOST_AUDIO_TASK_H_
+#endif // _HOST_AUDIO_TASK_H_

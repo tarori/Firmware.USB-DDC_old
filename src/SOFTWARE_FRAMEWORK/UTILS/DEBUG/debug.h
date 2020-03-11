@@ -47,6 +47,7 @@
 #ifndef _DEBUG_H_
 #define _DEBUG_H_
 
+#include "compiler.h"
 #include "stringz.h"
 
 /*! \brief These macros are used to add traces memory.
@@ -56,32 +57,32 @@
  * Use Uc3_trace(something) to store "something" into the memory. The end of the trace
  * is signaled by the "0xdeadbeef" pattern.
  */
-#define Uc3_trace_init(debug_addr)   \
-      *(U32*)(debug_addr)=debug_addr+4
+#define Uc3_trace_init(debug_addr) \
+    *(U32 *)(debug_addr) = debug_addr + 4
 
-#define Uc3_trace(debug_addr, x)   \
-      *(U32*)(*(U32*)(debug_addr)  ) = (U32)(x)   ;\
-      *(U32*)(*(U32*)(debug_addr)+4) = 0xdeadbeef ;\
-      *(U32*)(debug_addr  ) = *(U32*)(debug_addr)+4
+#define Uc3_trace(debug_addr, x)                     \
+    *(U32 *)(*(U32 *)(debug_addr)) = (U32)(x);       \
+    *(U32 *)(*(U32 *)(debug_addr) + 4) = 0xdeadbeef; \
+    *(U32 *)(debug_addr) = *(U32 *)(debug_addr) + 4
 
 /*! \brief This macro is used to insert labels into assembly output.
  *
  */
-#define Insert_label(name)         \
-    __asm__ __volatile__ (STRINGZ(name)":");
+#define Insert_label(name) \
+    __asm__ __volatile__(STRINGZ(name) ":");
 
 #if (defined __GNUC__)
 /*! \brief Returns the number of total of used bytes allocated from the HEAP.
  *
  * \retval total number of used bytes.
  */
-U32 get_heap_total_used_size( void );
+U32 get_heap_total_used_size(void);
 
 /*! \brief Returns the number of bytes currently used from the HEAP.
  *
  * \retval total number of used bytes.
  */
-U32 get_heap_curr_used_size( void );
+U32 get_heap_curr_used_size(void);
 #endif
 
 /*! \brief Returns the number of free bytes in the HEAP.
@@ -90,7 +91,7 @@ U32 get_heap_curr_used_size( void );
  *
  * \retval number of free bytes.
  */
-extern U32 get_heap_free_size( void );
+extern U32 get_heap_free_size(void);
 
 /*! \name Traces function using a round buffer
  */
@@ -101,7 +102,7 @@ extern U32 get_heap_free_size( void );
  * \param buf   Base address of the buffer used for the trace.
  * \param size  Size of the round buffer. Must be a power of 2.
  */
-void uc3_round_trace_init(void* buf, U32 size);
+void uc3_round_trace_init(void *buf, U32 size);
 
 /*! \brief Trace a data in the round buffer.
  *
@@ -112,5 +113,4 @@ void uc3_round_trace(U32 val);
 
 //! @}
 
-
-#endif  // _DEBUG_H_
+#endif // _DEBUG_H_

@@ -54,21 +54,17 @@
 #ifndef _UAC2_DEVICE_AUDIO_TASK_H_
 #define _UAC2_DEVICE_AUDIO_TASK_H_
 
-
 //_____ I N C L U D E S ____________________________________________________
 
 #include "conf_usb.h"
 
 #if USB_DEVICE_FEATURE == DISABLED
-  #error uac2_device_audio_task.h is #included although USB_DEVICE_FEATURE is disabled
+#error uac2_device_audio_task.h is #included although USB_DEVICE_FEATURE is disabled
 #endif
-
 
 //_____ D E F I N I T I O N S ______________________________________________
 
-
 //_____ M A C R O S ________________________________________________________
-
 
 //_____ D E C L A R A T I O N S ____________________________________________
 
@@ -79,4 +75,4 @@ extern void uac2_device_audio_task(void *pvParameters);
 extern void uac2_device_audio_task(void);
 #endif
 
-#endif  // _UAC2_DEVICE_AUDIO_TASK_H_
+#endif // _UAC2_DEVICE_AUDIO_TASK_H_

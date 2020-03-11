@@ -76,36 +76,35 @@
 #ifndef _PRINT_FUNCS_H_
 #define _PRINT_FUNCS_H_
 
-#include <avr32/io.h>
 #include "board.h"
-
+#include <avr32/io.h>
 
 /*! \name USART Settings for the Debug Module
  */
 //! @{
 #if BOARD == EVK1100
-#  define DBG_USART               (&AVR32_USART1)
-#  define DBG_USART_RX_PIN        AVR32_USART1_RXD_0_0_PIN
-#  define DBG_USART_RX_FUNCTION   AVR32_USART1_RXD_0_0_FUNCTION
-#  define DBG_USART_TX_PIN        AVR32_USART1_TXD_0_0_PIN
-#  define DBG_USART_TX_FUNCTION   AVR32_USART1_TXD_0_0_FUNCTION
-#  define DBG_USART_BAUDRATE      57600
+#define DBG_USART (&AVR32_USART1)
+#define DBG_USART_RX_PIN AVR32_USART1_RXD_0_0_PIN
+#define DBG_USART_RX_FUNCTION AVR32_USART1_RXD_0_0_FUNCTION
+#define DBG_USART_TX_PIN AVR32_USART1_TXD_0_0_PIN
+#define DBG_USART_TX_FUNCTION AVR32_USART1_TXD_0_0_FUNCTION
+#define DBG_USART_BAUDRATE 57600
 #elif BOARD == EVK1101
-#  define DBG_USART               (&AVR32_USART1)
-#  define DBG_USART_RX_PIN        AVR32_USART1_RXD_0_0_PIN
-#  define DBG_USART_RX_FUNCTION   AVR32_USART1_RXD_0_0_FUNCTION
-#  define DBG_USART_TX_PIN        AVR32_USART1_TXD_0_0_PIN
-#  define DBG_USART_TX_FUNCTION   AVR32_USART1_TXD_0_0_FUNCTION
-#  define DBG_USART_BAUDRATE      57600
+#define DBG_USART (&AVR32_USART1)
+#define DBG_USART_RX_PIN AVR32_USART1_RXD_0_0_PIN
+#define DBG_USART_RX_FUNCTION AVR32_USART1_RXD_0_0_FUNCTION
+#define DBG_USART_TX_PIN AVR32_USART1_TXD_0_0_PIN
+#define DBG_USART_TX_FUNCTION AVR32_USART1_TXD_0_0_FUNCTION
+#define DBG_USART_BAUDRATE 57600
 #elif BOARD == EVK1103
-#  define DBG_USART               (&AVR32_USART2)
-#  define DBG_USART_RX_PIN        AVR32_USART2_RXD_0_1_PIN
-#  define DBG_USART_RX_FUNCTION   AVR32_USART2_RXD_0_1_FUNCTION
-#  define DBG_USART_TX_PIN        AVR32_USART2_TXD_0_1_PIN
-#  define DBG_USART_TX_FUNCTION   AVR32_USART2_TXD_0_1_FUNCTION
-#  define DBG_USART_BAUDRATE      57600
+#define DBG_USART (&AVR32_USART2)
+#define DBG_USART_RX_PIN AVR32_USART2_RXD_0_1_PIN
+#define DBG_USART_RX_FUNCTION AVR32_USART2_RXD_0_1_FUNCTION
+#define DBG_USART_TX_PIN AVR32_USART2_TXD_0_1_PIN
+#define DBG_USART_TX_FUNCTION AVR32_USART2_TXD_0_1_FUNCTION
+#define DBG_USART_BAUDRATE 57600
 #elif BOARD == EVK1104 || BOARD == SDRwdgtLite
-#  define DBG_USART               (&AVR32_USART1)
+#define DBG_USART (&AVR32_USART1)
 
 // BSB 20120716 re-implementing according to mail to Alex 20110126
 /*
@@ -115,131 +114,129 @@
 #  define DBG_USART_TX_FUNCTION   AVR32_USART1_TXD_0_0_FUNCTION
 */
 
-#  define DBG_USART_RX_PIN        AVR32_USART1_RXD_0_2_PIN
-#  define DBG_USART_RX_FUNCTION   AVR32_USART1_RXD_0_2_FUNCTION
-#  define DBG_USART_TX_PIN        AVR32_USART1_TXD_0_2_PIN
-#  define DBG_USART_TX_FUNCTION   AVR32_USART1_TXD_0_2_FUNCTION
+#define DBG_USART_RX_PIN AVR32_USART1_RXD_0_2_PIN
+#define DBG_USART_RX_FUNCTION AVR32_USART1_RXD_0_2_FUNCTION
+#define DBG_USART_TX_PIN AVR32_USART1_TXD_0_2_PIN
+#define DBG_USART_TX_FUNCTION AVR32_USART1_TXD_0_2_FUNCTION
 
-#  define DBG_USART_BAUDRATE      57600
+#define DBG_USART_BAUDRATE 57600
 #elif BOARD == EVK1105
-#  define DBG_USART               (&AVR32_USART0)
-#  define DBG_USART_RX_PIN        AVR32_USART0_RXD_0_0_PIN
-#  define DBG_USART_RX_FUNCTION   AVR32_USART0_RXD_0_0_FUNCTION
-#  define DBG_USART_TX_PIN        AVR32_USART0_TXD_0_0_PIN
-#  define DBG_USART_TX_FUNCTION   AVR32_USART0_TXD_0_0_FUNCTION
-#  define DBG_USART_BAUDRATE      57600
+#define DBG_USART (&AVR32_USART0)
+#define DBG_USART_RX_PIN AVR32_USART0_RXD_0_0_PIN
+#define DBG_USART_RX_FUNCTION AVR32_USART0_RXD_0_0_FUNCTION
+#define DBG_USART_TX_PIN AVR32_USART0_TXD_0_0_PIN
+#define DBG_USART_TX_FUNCTION AVR32_USART0_TXD_0_0_FUNCTION
+#define DBG_USART_BAUDRATE 57600
 #elif BOARD == STK1000
-#  define DBG_USART               (&AVR32_USART1)
-#  define DBG_USART_RX_PIN        AVR32_USART1_RXD_0_PIN
-#  define DBG_USART_RX_FUNCTION   AVR32_USART1_RXD_0_FUNCTION
-#  define DBG_USART_TX_PIN        AVR32_USART1_TXD_0_PIN
-#  define DBG_USART_TX_FUNCTION   AVR32_USART1_TXD_0_FUNCTION
-#  define DBG_USART_BAUDRATE      115200
+#define DBG_USART (&AVR32_USART1)
+#define DBG_USART_RX_PIN AVR32_USART1_RXD_0_PIN
+#define DBG_USART_RX_FUNCTION AVR32_USART1_RXD_0_FUNCTION
+#define DBG_USART_TX_PIN AVR32_USART1_TXD_0_PIN
+#define DBG_USART_TX_FUNCTION AVR32_USART1_TXD_0_FUNCTION
+#define DBG_USART_BAUDRATE 115200
 #elif BOARD == NGW100
-#  define DBG_USART               (&AVR32_USART1)
-#  define DBG_USART_RX_PIN        AVR32_USART1_RXD_0_PIN
-#  define DBG_USART_RX_FUNCTION   AVR32_USART1_RXD_0_FUNCTION
-#  define DBG_USART_TX_PIN        AVR32_USART1_TXD_0_PIN
-#  define DBG_USART_TX_FUNCTION   AVR32_USART1_TXD_0_FUNCTION
-#  define DBG_USART_BAUDRATE      115200
+#define DBG_USART (&AVR32_USART1)
+#define DBG_USART_RX_PIN AVR32_USART1_RXD_0_PIN
+#define DBG_USART_RX_FUNCTION AVR32_USART1_RXD_0_FUNCTION
+#define DBG_USART_TX_PIN AVR32_USART1_TXD_0_PIN
+#define DBG_USART_TX_FUNCTION AVR32_USART1_TXD_0_FUNCTION
+#define DBG_USART_BAUDRATE 115200
 #elif BOARD == STK600_RCUC3L0
-#  define DBG_USART               (&AVR32_USART1)
-#  define DBG_USART_RX_PIN        AVR32_USART1_RXD_0_1_PIN
-#  define DBG_USART_RX_FUNCTION   AVR32_USART1_RXD_0_1_FUNCTION
+#define DBG_USART (&AVR32_USART1)
+#define DBG_USART_RX_PIN AVR32_USART1_RXD_0_1_PIN
+#define DBG_USART_RX_FUNCTION AVR32_USART1_RXD_0_1_FUNCTION
 // For the RX pin, connect STK600.PORTE.PE3 to STK600.RS232 SPARE.RXD
-#  define DBG_USART_TX_PIN        AVR32_USART1_TXD_0_1_PIN
-#  define DBG_USART_TX_FUNCTION   AVR32_USART1_TXD_0_1_FUNCTION
+#define DBG_USART_TX_PIN AVR32_USART1_TXD_0_1_PIN
+#define DBG_USART_TX_FUNCTION AVR32_USART1_TXD_0_1_FUNCTION
 // For the TX pin, connect STK600.PORTE.PE2 to STK600.RS232 SPARE.TXD
-#  define DBG_USART_BAUDRATE      57600
-#  define DBG_USART_CLOCK_MASK    AVR32_USART1_CLK_PBA
+#define DBG_USART_BAUDRATE 57600
+#define DBG_USART_CLOCK_MASK AVR32_USART1_CLK_PBA
 #elif BOARD == UC3L_EK
-#  define DBG_USART               (&AVR32_USART3)
-#  define DBG_USART_RX_PIN        AVR32_USART3_RXD_0_0_PIN
-#  define DBG_USART_RX_FUNCTION   AVR32_USART3_RXD_0_0_FUNCTION
-#  define DBG_USART_TX_PIN        AVR32_USART3_TXD_0_0_PIN
-#  define DBG_USART_TX_FUNCTION   AVR32_USART3_TXD_0_0_FUNCTION
-#  define DBG_USART_BAUDRATE      57600
+#define DBG_USART (&AVR32_USART3)
+#define DBG_USART_RX_PIN AVR32_USART3_RXD_0_0_PIN
+#define DBG_USART_RX_FUNCTION AVR32_USART3_RXD_0_0_FUNCTION
+#define DBG_USART_TX_PIN AVR32_USART3_TXD_0_0_PIN
+#define DBG_USART_TX_FUNCTION AVR32_USART3_TXD_0_0_FUNCTION
+#define DBG_USART_BAUDRATE 57600
 #endif
 
-#if !defined(DBG_USART)             || \
-    !defined(DBG_USART_RX_PIN)      || \
+#if !defined(DBG_USART) ||             \
+    !defined(DBG_USART_RX_PIN) ||      \
     !defined(DBG_USART_RX_FUNCTION) || \
-    !defined(DBG_USART_TX_PIN)      || \
+    !defined(DBG_USART_TX_PIN) ||      \
     !defined(DBG_USART_TX_FUNCTION) || \
     !defined(DBG_USART_BAUDRATE)
-#  error The USART configuration to use for debug on your board is missing
+#error The USART configuration to use for debug on your board is missing
 #endif
 //! @}
 
 /*! \name VT100 Common Commands
  */
 //! @{
-#define CLEARSCR          "\x1B[2J\x1B[;H"    //!< Clear screen.
-#define CLEAREOL          "\x1B[K"            //!< Clear end of line.
-#define CLEAREOS          "\x1B[J"            //!< Clear end of screen.
-#define CLEARLCR          "\x1B[0K"           //!< Clear line cursor right.
-#define CLEARLCL          "\x1B[1K"           //!< Clear line cursor left.
-#define CLEARELN          "\x1B[2K"           //!< Clear entire line.
-#define CLEARCDW          "\x1B[0J"           //!< Clear cursor down.
-#define CLEARCUP          "\x1B[1J"           //!< Clear cursor up.
-#define GOTOYX            "\x1B[%.2d;%.2dH"   //!< Set cursor to (y, x).
-#define INSERTMOD         "\x1B[4h"           //!< Insert mode.
-#define OVERWRITEMOD      "\x1B[4l"           //!< Overwrite mode.
-#define DELAFCURSOR       "\x1B[K"            //!< Erase from cursor to end of line.
-#define CRLF              "\r\n"              //!< Carriage Return + Line Feed.
+#define CLEARSCR "\x1B[2J\x1B[;H" //!< Clear screen.
+#define CLEAREOL "\x1B[K"         //!< Clear end of line.
+#define CLEAREOS "\x1B[J"         //!< Clear end of screen.
+#define CLEARLCR "\x1B[0K"        //!< Clear line cursor right.
+#define CLEARLCL "\x1B[1K"        //!< Clear line cursor left.
+#define CLEARELN "\x1B[2K"        //!< Clear entire line.
+#define CLEARCDW "\x1B[0J"        //!< Clear cursor down.
+#define CLEARCUP "\x1B[1J"        //!< Clear cursor up.
+#define GOTOYX "\x1B[%.2d;%.2dH"  //!< Set cursor to (y, x).
+#define INSERTMOD "\x1B[4h"       //!< Insert mode.
+#define OVERWRITEMOD "\x1B[4l"    //!< Overwrite mode.
+#define DELAFCURSOR "\x1B[K"      //!< Erase from cursor to end of line.
+#define CRLF "\r\n"               //!< Carriage Return + Line Feed.
 //! @}
 
 /*! \name VT100 Cursor Commands
  */
 //! @{
-#define CURSON            "\x1B[?25h"         //!< Show cursor.
-#define CURSOFF           "\x1B[?25l"         //!< Hide cursor.
+#define CURSON "\x1B[?25h"  //!< Show cursor.
+#define CURSOFF "\x1B[?25l" //!< Hide cursor.
 //! @}
 
 /*! \name VT100 Character Commands
  */
 //! @{
-#define NORMAL            "\x1B[0m"           //!< Normal.
-#define BOLD              "\x1B[1m"           //!< Bold.
-#define UNDERLINE         "\x1B[4m"           //!< Underline.
-#define BLINKING          "\x1B[5m"           //!< Blink.
-#define INVVIDEO          "\x1B[7m"           //!< Inverse video.
+#define NORMAL "\x1B[0m"    //!< Normal.
+#define BOLD "\x1B[1m"      //!< Bold.
+#define UNDERLINE "\x1B[4m" //!< Underline.
+#define BLINKING "\x1B[5m"  //!< Blink.
+#define INVVIDEO "\x1B[7m"  //!< Inverse video.
 //! @}
 
 /*! \name VT100 Color Commands
  */
 //! @{
-#define CL_BLACK          "\033[22;30m"       //!< Black.
-#define CL_RED            "\033[22;31m"       //!< Red.
-#define CL_GREEN          "\033[22;32m"       //!< Green.
-#define CL_BROWN          "\033[22;33m"       //!< Brown.
-#define CL_BLUE           "\033[22;34m"       //!< Blue.
-#define CL_MAGENTA        "\033[22;35m"       //!< Magenta.
-#define CL_CYAN           "\033[22;36m"       //!< Cyan.
-#define CL_GRAY           "\033[22;37m"       //!< Gray.
-#define CL_DARKGRAY       "\033[01;30m"       //!< Dark gray.
-#define CL_LIGHTRED       "\033[01;31m"       //!< Light red.
-#define CL_LIGHTGREEN     "\033[01;32m"       //!< Light green.
-#define CL_YELLOW         "\033[01;33m"       //!< Yellow.
-#define CL_LIGHTBLUE      "\033[01;34m"       //!< Light blue.
-#define CL_LIGHTMAGENTA   "\033[01;35m"       //!< Light magenta.
-#define CL_LIGHTCYAN      "\033[01;36m"       //!< Light cyan.
-#define CL_WHITE          "\033[01;37m"       //!< White.
+#define CL_BLACK "\033[22;30m"        //!< Black.
+#define CL_RED "\033[22;31m"          //!< Red.
+#define CL_GREEN "\033[22;32m"        //!< Green.
+#define CL_BROWN "\033[22;33m"        //!< Brown.
+#define CL_BLUE "\033[22;34m"         //!< Blue.
+#define CL_MAGENTA "\033[22;35m"      //!< Magenta.
+#define CL_CYAN "\033[22;36m"         //!< Cyan.
+#define CL_GRAY "\033[22;37m"         //!< Gray.
+#define CL_DARKGRAY "\033[01;30m"     //!< Dark gray.
+#define CL_LIGHTRED "\033[01;31m"     //!< Light red.
+#define CL_LIGHTGREEN "\033[01;32m"   //!< Light green.
+#define CL_YELLOW "\033[01;33m"       //!< Yellow.
+#define CL_LIGHTBLUE "\033[01;34m"    //!< Light blue.
+#define CL_LIGHTMAGENTA "\033[01;35m" //!< Light magenta.
+#define CL_LIGHTCYAN "\033[01;36m"    //!< Light cyan.
+#define CL_WHITE "\033[01;37m"        //!< White.
 //! @}
-
 
 /////////////////////////////////////////////////////
 // BSB 20110128-20120717 Added read functionality
 /////////////////////////////////////////////////////
 
-#define DBG_CHECKSUM_NORMAL 	0
-#define DBG_CHECKSUM_RESET 		1
-#define DBG_CHECKSUM_READOUT	2
-#define DBG_ECHO 				1
-#define DBG_NO_ECHO 			0
-#define RTOS_WAIT				1 // Generously give a few ms to RTOS for each polling loop
-#define RTOS_NOWAIT				0 // Run continuous polling loops interrupted by task switcher
-
+#define DBG_CHECKSUM_NORMAL 0
+#define DBG_CHECKSUM_RESET 1
+#define DBG_CHECKSUM_READOUT 2
+#define DBG_ECHO 1
+#define DBG_NO_ECHO 0
+#define RTOS_WAIT 1   // Generously give a few ms to RTOS for each polling loop
+#define RTOS_NOWAIT 0 // Run continuous polling loops interrupted by task switcher
 
 /*! \brief Pascal-style readkey() for polling DBG_UART
  *
@@ -271,11 +268,9 @@ extern char read_dbg_char_hex(char echo, char rtos_delay); // char or int? exter
  */
 void print_dbg_char_char(int c);
 
-
 /////////////////////////////////////////////////////
 // BSB 20110128-20120717 End of insertion
 /////////////////////////////////////////////////////
-
 
 /*! \brief Sets up DBG_USART with 8N1 at DBG_USART_BAUDRATE.
  *
@@ -381,5 +376,4 @@ extern void print_short_hex(volatile avr32_usart_t *usart, unsigned short n);
  */
 extern void print_hex(volatile avr32_usart_t *usart, unsigned long n);
 
-
-#endif  // _PRINT_FUNCS_H_
+#endif // _PRINT_FUNCS_H_

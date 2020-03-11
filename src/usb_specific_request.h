@@ -68,20 +68,15 @@
 #ifndef _USB_SPECIFIC_REQUEST_H_
 #define _USB_SPECIFIC_REQUEST_H_
 
-
 //_____ I N C L U D E S ____________________________________________________
 
 #include "conf_usb.h"
 
 #if USB_DEVICE_FEATURE == DISABLED
-  #error usb_specific_request.h is #included although USB_DEVICE_FEATURE is disabled
+#error usb_specific_request.h is #included although USB_DEVICE_FEATURE is disabled
 #endif
 
-
-
-
 //_____ M A C R O S ________________________________________________________
-
 
 //_____ D E F I N I T I O N S ______________________________________________
 
@@ -93,59 +88,58 @@ extern U8 usb_report[3];
 
 extern U8 g_u8_report_rate;
 
-extern volatile  U16	usb_interface_nb;
-extern volatile  U8	usb_alternate_setting, usb_alternate_setting_out;
-extern volatile  Bool  usb_alternate_setting_changed, usb_alternate_setting_out_changed;
+extern volatile U16 usb_interface_nb;
+extern volatile U8 usb_alternate_setting, usb_alternate_setting_out;
+extern volatile Bool usb_alternate_setting_changed, usb_alternate_setting_out_changed;
 
 // Redefined BSB 20160320, USB volume limits
-#define VOL_DEFAULT		(S16)0x0000 // Because there is no way to change volume on PC/UAC2 (S16)0xF400	// -12dB // F400
-#define VOL_MIN      	(S16)0xC400	// -60dB
-#define VOL_INVALID		(S16)VOL_MIN - 0x0100	// Just below VOL_MIN
-#define VOL_MAX      	(S16)0x0000	// 0dB
-#define VOL_RES      	(S16)0x0080	// 0.5dB steps. Don't expect Windows to heed this.
-#define VOL_MULT_UNITY	0x10000000	// Encoding unity volume
-#define VOL_MULT_SHIFT	28			// The number of right shifts needed after multiplication by unity
-#define CH_LEFT			0x01		// Master:0 Left:1 Right:1
-#define CH_RIGHT		0x02
-#define VOL_READ		0x01
-#define VOL_WRITE		0x02
+#define VOL_DEFAULT (S16)0x0000            // Because there is no way to change volume on PC/UAC2 (S16)0xF400	// -12dB // F400
+#define VOL_MIN (S16)0xC400                // -60dB
+#define VOL_INVALID (S16) VOL_MIN - 0x0100 // Just below VOL_MIN
+#define VOL_MAX (S16)0x0000                // 0dB
+#define VOL_RES (S16)0x0080                // 0.5dB steps. Don't expect Windows to heed this.
+#define VOL_MULT_UNITY 0x10000000          // Encoding unity volume
+#define VOL_MULT_SHIFT 28                  // The number of right shifts needed after multiplication by unity
+#define CH_LEFT 0x01                       // Master:0 Left:1 Right:1
+#define CH_RIGHT 0x02
+#define VOL_READ 0x01
+#define VOL_WRITE 0x02
 
 // USB skip/insert limits
-#define SPK_GAP_USKIP DAC_BUFFER_SIZE * 7 / 4	// Almost a full buffer up in distance => enable skip/insert
-#define SPK_GAP_LSKIP DAC_BUFFER_SIZE * 1 / 4	// Almost a full buffer down in distance => enable skip/insert
-#define SPK_GAP_U2	DAC_BUFFER_SIZE * 6 / 4		// A half buffer up in distance	=> Speed up host a lot
-#define	SPK_GAP_U1	DAC_BUFFER_SIZE * 5 / 4		// A quarter buffer up in distance => Speed up host a bit
-#define SPK_GAP_NOM	DAC_BUFFER_SIZE * 4 / 4		// Ideal distance is half the size of linear buffer
-#define SPK_GAP_L1	DAC_BUFFER_SIZE * 3 / 4  	// A quarter buffer down in distance => Slow down host a bit
-#define SPK_GAP_L2	DAC_BUFFER_SIZE * 2 / 4  	// A half buffer down in distance => Slow down host a lot
+#define SPK_GAP_USKIP DAC_BUFFER_SIZE * 7 / 4 // Almost a full buffer up in distance => enable skip/insert
+#define SPK_GAP_LSKIP DAC_BUFFER_SIZE * 1 / 4 // Almost a full buffer down in distance => enable skip/insert
+#define SPK_GAP_U2 DAC_BUFFER_SIZE * 6 / 4    // A half buffer up in distance	=> Speed up host a lot
+#define SPK_GAP_U1 DAC_BUFFER_SIZE * 5 / 4    // A quarter buffer up in distance => Speed up host a bit
+#define SPK_GAP_NOM DAC_BUFFER_SIZE * 4 / 4   // Ideal distance is half the size of linear buffer
+#define SPK_GAP_L1 DAC_BUFFER_SIZE * 3 / 4    // A quarter buffer down in distance => Slow down host a bit
+#define SPK_GAP_L2 DAC_BUFFER_SIZE * 2 / 4    // A half buffer down in distance => Slow down host a lot
 
 // SPDIF buffer skip/insert limits
-#define SPK_GAP_L3	DAC_BUFFER_SIZE * 2.0 / 4	// Lower limit for safe operation, starting point for skip/insert
-#define SPK_GAP_LD	DAC_BUFFER_SIZE * 2.1 / 4	// Mega skip/insert landing position
-#define SPK_GAP_LM	DAC_BUFFER_SIZE * 2.4 / 4	// Narrowest starting point for mega skip/insert
-#define SPK_GAP_LX	DAC_BUFFER_SIZE * 1.8 / 4	// Starting point for oscillator toggle
+#define SPK_GAP_L3 DAC_BUFFER_SIZE * 2.0 / 4 // Lower limit for safe operation, starting point for skip/insert
+#define SPK_GAP_LD DAC_BUFFER_SIZE * 2.1 / 4 // Mega skip/insert landing position
+#define SPK_GAP_LM DAC_BUFFER_SIZE * 2.4 / 4 // Narrowest starting point for mega skip/insert
+#define SPK_GAP_LX DAC_BUFFER_SIZE * 1.8 / 4 // Starting point for oscillator toggle
 
-#define SPK_GAP_U3	DAC_BUFFER_SIZE * 6.0 / 4	// Upper limit for safe operation, starting point for skip/insert
-#define SPK_GAP_UD	DAC_BUFFER_SIZE * 5.9 / 4	// Mega skip/insert landing position
-#define SPK_GAP_UM	DAC_BUFFER_SIZE * 5.6 / 4	// Narrowest starting point for mega skip/insert
-#define SPK_GAP_UX	DAC_BUFFER_SIZE * 6.2 / 4	// Starting point for oscillator toggle
+#define SPK_GAP_U3 DAC_BUFFER_SIZE * 6.0 / 4 // Upper limit for safe operation, starting point for skip/insert
+#define SPK_GAP_UD DAC_BUFFER_SIZE * 5.9 / 4 // Mega skip/insert landing position
+#define SPK_GAP_UM DAC_BUFFER_SIZE * 5.6 / 4 // Narrowest starting point for mega skip/insert
+#define SPK_GAP_UX DAC_BUFFER_SIZE * 6.2 / 4 // Starting point for oscillator toggle
 
 // Various other defines
-#define	SPK_PACKETS_PER_GAP_CALCULATION 8		// This is UAC1 which counts in ms. Gap calculation every 8ms, EP reporting every 32
-#define	SPK_PACKETS_PER_GAP_SKIP 1				// After a skip/insert, recalculate gap immediately, then again after 1ms
-#define SPK_HOST_FB_DEAD_AFTER 200				// How many audio packets may arrive without host polling feedback, before we declare FB dead?
-#define SPK_SKIP_EN_GAP 1                      // Enable skip/insert due to low gap
-#define SPK_SKIP_EN_DEAD 2						// Enable skip/insert due to dead host feedback system
+#define SPK_PACKETS_PER_GAP_CALCULATION 8 // This is UAC1 which counts in ms. Gap calculation every 8ms, EP reporting every 32
+#define SPK_PACKETS_PER_GAP_SKIP 1        // After a skip/insert, recalculate gap immediately, then again after 1ms
+#define SPK_HOST_FB_DEAD_AFTER 200        // How many audio packets may arrive without host polling feedback, before we declare FB dead?
+#define SPK_SKIP_EN_GAP 1                 // Enable skip/insert due to low gap
+#define SPK_SKIP_EN_DEAD 2                // Enable skip/insert due to dead host feedback system
 
-#define SPK1_SKIP_LIMIT_14 2<<14 			    // 10.14 and 12.14 format. |accumulated error| must be > 2 samples.
-#define SPK2_SKIP_LIMIT_14 2<<14 			    // 10.14 and 12.14 format. |accumulated error| must be > 2 samples.
-#define SPK2_SKIP_LIMIT_16 2<<14 			    // 16.16 format for samples/250uS |accumulated error| must be > 2 samples.
-
+#define SPK1_SKIP_LIMIT_14 2 << 14 // 10.14 and 12.14 format. |accumulated error| must be > 2 samples.
+#define SPK2_SKIP_LIMIT_14 2 << 14 // 10.14 and 12.14 format. |accumulated error| must be > 2 samples.
+#define SPK2_SKIP_LIMIT_16 2 << 14 // 16.16 format for samples/250uS |accumulated error| must be > 2 samples.
 
 // For lack of a better place to put it, here is the volume control format message.
 // Input: 16-bit volume control word from USB, 256*dB
 // Output: 32-bit volume multiplier to volume control
-S32 usb_volume_format (S16 spk_vol_usb);
+S32 usb_volume_format(S16 spk_vol_usb);
 
 // For lack of a better place to put it... 8-bit RNG for dithering for 32-24 bit quantization
 // Source: http://stackoverflow.com/questions/16746971/what-is-the-fastest-way-to-generate-pseudo-random-number-by-8-bit-mcu
@@ -157,14 +151,14 @@ S16 usb_volume_flash(U8 channel, S16 volume, U8 rw);
 
 // convert an unsigned int sample rate, in Hz,
 // into the four bytes required for usb transfer
-#define Usb_sample_rate_as_bytes(rate)	(((rate)>>0)&0xff),(((rate)>>8)&0xff),(((rate)>>16)&0xff),(((rate)>>24)&0xff)
+#define Usb_sample_rate_as_bytes(rate) (((rate) >> 0) & 0xff), (((rate) >> 8) & 0xff), (((rate) >> 16) & 0xff), (((rate) >> 24) & 0xff)
 
 // a union to pun between
 // frequency as a 32 bit Hz value
 // and the bytes that make it up
 typedef union {
-	U32 frequency;
-	U8 freq_bytes[4];
+    U32 frequency;
+    U8 freq_bytes[4];
 } S_freq;
 
 extern S_freq current_freq, Mic_freq;
@@ -205,39 +199,37 @@ extern Bool usb_user_DG8SAQ(U8, U8); // for processing DG8SAQ type of commands
 //-----------------------------------------------------------------------------
 
 // CDC ACM class specifc requests
-#define SEND_ENCAPSULATED_COMMAND	0x00
-#define GET_ENCAPSULATED_RESPONSE	0x01
-#define SET_LINE_CODING				0x20
-#define GET_LINE_CODING				0x21
-#define SET_CONTROL_LINE_STATE		0x22
-#define SEND_BREAK					0x23
-
-
-//! @brief This function manages reception of line coding parameters (baudrate...).
-//!
-void  cdc_get_line_coding(void);
+#define SEND_ENCAPSULATED_COMMAND 0x00
+#define GET_ENCAPSULATED_RESPONSE 0x01
+#define SET_LINE_CODING 0x20
+#define GET_LINE_CODING 0x21
+#define SET_CONTROL_LINE_STATE 0x22
+#define SEND_BREAK 0x23
 
 //! @brief This function manages reception of line coding parameters (baudrate...).
 //!
-void  cdc_set_line_coding(void);
+void cdc_get_line_coding(void);
+
+//! @brief This function manages reception of line coding parameters (baudrate...).
+//!
+void cdc_set_line_coding(void);
 
 //! @brief This function manages the SET_CONTROL_LINE_LINE_STATE CDC request.
 //!
 //! @todo Manages here hardware flow control...
 //!
-void 	cdc_set_control_line_state (void);
+void cdc_set_control_line_state(void);
 
 // ____ T Y P E  D E F I N I T I O N _______________________________________
 
 typedef struct
 {
-   U32 dwDTERate;
-   U8 bCharFormat;
-   U8 bParityType;
-   U8 bDataBits;
-}S_line_coding;
+    U32 dwDTERate;
+    U8 bCharFormat;
+    U8 bParityType;
+    U8 bDataBits;
+} S_line_coding;
 
 //! @}
 
-
-#endif  // _USB_SPECIFIC_REQUEST_H_
+#endif // _USB_SPECIFIC_REQUEST_H_

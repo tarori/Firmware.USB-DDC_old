@@ -12,8 +12,8 @@
 // I2C Addresses for this chip can be:
 // 0x48. 0x4a, 0x4c, 0x0x4e
 // Normal address is 0x4e
-#define TMP100_I2C_ADDRESS	0x4e
-#define TMP101_I2C_ADDRESS	0x4a
+#define TMP100_I2C_ADDRESS 0x4e
+#define TMP101_I2C_ADDRESS 0x4a
 // default mode is 9 bit resolution, could be set at 12 bit resolution, but no need
 //     0 =    0 deg C
 // 32767 =  128 deg C

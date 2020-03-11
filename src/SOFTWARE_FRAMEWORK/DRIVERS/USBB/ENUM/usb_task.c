@@ -87,16 +87,15 @@
 
 //_____  I N C L U D E S ___________________________________________________
 
-#include "compiler.h"
-#include "intc.h"
-#include "FreeRTOS.h"
-#include "task.h"
-#include "semphr.h"
-#include "conf_usb.h"
-#include "usb_drv.h"
 #include "usb_task.h"
+#include "FreeRTOS.h"
+#include "compiler.h"
+#include "conf_usb.h"
 #include "gpio.h"
-
+#include "intc.h"
+#include "semphr.h"
+#include "task.h"
+#include "usb_drv.h"
 
 #include "usb_descriptors.h"
 #include "usb_device_task.h"
@@ -107,9 +106,7 @@
 #include "pm.h"
 #endif
 
-
 //_____ M A C R O S ________________________________________________________
-
 
 //_____ D E F I N I T I O N S ______________________________________________
 
@@ -123,10 +120,9 @@
 //! Is_usb_event(x)
 //! Usb_clear_all_event()
 volatile U16 g_usb_event = 0;
-#if ((USB_HOST_FEATURE == ENABLED) || (USB_DEVICE_FEATURE == ENABLED)) && (USB_HIGH_SPEED_SUPPORT==ENABLED)
+#if ((USB_HOST_FEATURE == ENABLED) || (USB_DEVICE_FEATURE == ENABLED)) && (USB_HIGH_SPEED_SUPPORT == ENABLED)
 // static U8 private_sof_counter_HS = 0;  // Full speed SOF = 1ms , High speed µSOF = 125µs
 #endif
-
 
 //!
 //! Public: Bool usb_connected
@@ -143,16 +139,14 @@ extern xTaskHandle usb_device_tsk;
 //! Handle to the USB task semaphore
 static xSemaphoreHandle usb_tsk_semphr = NULL;
 
-
 //_____ D E C L A R A T I O N S ____________________________________________
 
-
 #if (defined __GNUC__)
-	__attribute__((__noinline__))
+__attribute__((__noinline__))
 #endif
 
-static portBASE_TYPE usb_general_interrupt_non_naked(void);
-
+static portBASE_TYPE
+usb_general_interrupt_non_naked(void);
 
 //! @brief USB interrupt routine
 //!
@@ -161,18 +155,18 @@ static portBASE_TYPE usb_general_interrupt_non_naked(void);
 //! in order to have no stack frame. usb_general_interrupt_non_naked is
 //! therefore used for the required stack frame of the interrupt routine.
 #if (defined __GNUC__)
-	__attribute__((__naked__))
+__attribute__((__naked__))
 #elif __ICCAVR32__
-	#pragma shadow_registers = full
+#pragma shadow_registers = full
 #endif
 
-static void usb_general_interrupt(void)
+static void
+usb_general_interrupt(void)
 {
-  portENTER_SWITCHING_ISR();
-  usb_general_interrupt_non_naked();
-  portEXIT_SWITCHING_ISR();
+    portENTER_SWITCHING_ISR();
+    usb_general_interrupt_non_naked();
+    portEXIT_SWITCHING_ISR();
 }
-
 
 //! @brief This function initializes the USB process.
 //!
@@ -180,66 +174,61 @@ static void usb_general_interrupt(void)
 //! calls the coresponding USB mode initialization function
 void usb_task_init(void)
 {
-  // Create the semaphore
-  vSemaphoreCreateBinary(usb_tsk_semphr);
+    // Create the semaphore
+    vSemaphoreCreateBinary(usb_tsk_semphr);
 
-  xTaskCreate(usb_task,
-              configTSK_USB_NAME,
-              configTSK_USB_STACK_SIZE,
-              NULL,
-              configTSK_USB_PRIORITY,
-              NULL);
+    xTaskCreate(usb_task,
+                configTSK_USB_NAME,
+                configTSK_USB_STACK_SIZE,
+                NULL,
+                configTSK_USB_PRIORITY,
+                NULL);
 }
-
 
 void usb_task(void *pvParameters)
 {
-  // Register the USB interrupt handler to the interrupt controller and enable
-  // the USB interrupt.
-//  print_dbg_char('V');
+    // Register the USB interrupt handler to the interrupt controller and enable
+    // the USB interrupt.
+    //  print_dbg_char('V');
 
-  Disable_global_interrupt();
+    Disable_global_interrupt();
 
-  INTC_register_interrupt((__int_handler)&usb_general_interrupt, AVR32_USBB_IRQ, USB_INT_LEVEL);
-//  print_dbg_char('W'); // Very strange behaviour! The timing of print_dbg_char here and '!' below is critical!!
+    INTC_register_interrupt((__int_handler)&usb_general_interrupt, AVR32_USBB_IRQ, USB_INT_LEVEL);
+    //  print_dbg_char('W'); // Very strange behaviour! The timing of print_dbg_char here and '!' below is critical!!
 
-// Try to move 'W' out of the interrupt lock-out, then implement with some delay. Check if freertos delay will work or hang. 
-// Do we know the scheduler has started up properly when this function is called? Could the hang point be while waiting for the semaphore?
-// With external power applied, try all 4 combinations of:
-// Startup with USB signal present / not present
-// VBUS logical level from external / usb cable
-// All four must lead to clean boot and live indication in taskMoboCtrl
+    // Try to move 'W' out of the interrupt lock-out, then implement with some delay. Check if freertos delay will work or hang.
+    // Do we know the scheduler has started up properly when this function is called? Could the hang point be while waiting for the semaphore?
+    // With external power applied, try all 4 combinations of:
+    // Startup with USB signal present / not present
+    // VBUS logical level from external / usb cable
+    // All four must lead to clean boot and live indication in taskMoboCtrl
 
+    Enable_global_interrupt();
 
-  Enable_global_interrupt();
+    //  print_dbg_char('X');
 
-//  print_dbg_char('X');
+    while (TRUE) {
+        // Wait for the semaphore
+        while (!xSemaphoreTake(usb_tsk_semphr, portMAX_DELAY))
+            ;
 
-  while (TRUE)
-  {
-    // Wait for the semaphore
-    while (!xSemaphoreTake(usb_tsk_semphr, portMAX_DELAY));
+        // print_dbg_char('Y');
 
+        // ---- DEVICE-ONLY USB MODE ---------------------------------------------------
+        if (usb_device_tsk)
+            vTaskDelete(usb_device_tsk), usb_device_tsk = NULL;
 
-// print_dbg_char('Y');
+        // print_dbg_char('Z');
 
-// ---- DEVICE-ONLY USB MODE ---------------------------------------------------
-  if (usb_device_tsk) vTaskDelete(usb_device_tsk), usb_device_tsk = NULL;
+        Usb_force_device_mode();
 
-// print_dbg_char('Z');
+        // print_dbg_char('v');
 
-  Usb_force_device_mode();
+        usb_device_task_init();
 
-// print_dbg_char('v');
-
-  usb_device_task_init();
-
-//  print_dbg_char('w'); // UP Runs to here with both pluged and unplugged mode
-
-  }
+        //  print_dbg_char('w'); // UP Runs to here with both pluged and unplugged mode
+    }
 }
-
-
 
 //! @brief USB interrupt routine
 //!
@@ -281,93 +270,81 @@ __attribute__((__noinline__))
 #pragma optimize = no_inline
 #endif
 
-static portBASE_TYPE usb_general_interrupt_non_naked(void) {
-	portBASE_TYPE task_woken = pdFALSE;
+static portBASE_TYPE
+usb_general_interrupt_non_naked(void)
+{
+    portBASE_TYPE task_woken = pdFALSE;
 
-// BSB debug 20150823
-// print_dbg_char('!'); // Indicate USB interrupt .
+    // BSB debug 20150823
+    // print_dbg_char('!'); // Indicate USB interrupt .
 
-
-// ---------- DEVICE events management -----------------------------------------
+    // ---------- DEVICE events management -----------------------------------------
     // VBus state detection
-    if (Is_usb_vbus_transition() && Is_usb_vbus_interrupt_enabled())
-    {
-      Usb_ack_vbus_transition();
-      if (Is_usb_vbus_high())
-      {
-        usb_start_device();
-        Usb_send_event(EVT_USB_POWERED);
-        Usb_vbus_on_action();
-      }
-      else
-      {
-        Usb_unfreeze_clock();
-        Usb_detach();
-        usb_connected = FALSE;
-        usb_configuration_nb = 0;
-        Usb_send_event(EVT_USB_UNPOWERED);
-        Usb_vbus_off_action();
-        // Release the semaphore in order to start a new device/host task
-        taskENTER_CRITICAL();
-        xSemaphoreGiveFromISR(usb_tsk_semphr, &task_woken);
-        taskEXIT_CRITICAL();
-      }
+    if (Is_usb_vbus_transition() && Is_usb_vbus_interrupt_enabled()) {
+        Usb_ack_vbus_transition();
+        if (Is_usb_vbus_high()) {
+            usb_start_device();
+            Usb_send_event(EVT_USB_POWERED);
+            Usb_vbus_on_action();
+        } else {
+            Usb_unfreeze_clock();
+            Usb_detach();
+            usb_connected = FALSE;
+            usb_configuration_nb = 0;
+            Usb_send_event(EVT_USB_UNPOWERED);
+            Usb_vbus_off_action();
+            // Release the semaphore in order to start a new device/host task
+            taskENTER_CRITICAL();
+            xSemaphoreGiveFromISR(usb_tsk_semphr, &task_woken);
+            taskEXIT_CRITICAL();
+        }
     }
     // Device Start-of-Frame received
-    if (Is_usb_sof() && Is_usb_sof_interrupt_enabled())
-    {
-      Usb_ack_sof();
-      Usb_sof_action();
+    if (Is_usb_sof() && Is_usb_sof_interrupt_enabled()) {
+        Usb_ack_sof();
+        Usb_sof_action();
     }
     // Device Suspend event (no more USB activity detected)
-    if (Is_usb_suspend() && Is_usb_suspend_interrupt_enabled())
-    {
-      Usb_ack_suspend();
-      Usb_enable_wake_up_interrupt();
-      (void)Is_usb_wake_up_interrupt_enabled();
-      Usb_freeze_clock();
-      Usb_send_event(EVT_USB_SUSPEND);
-      Usb_suspend_action();
+    if (Is_usb_suspend() && Is_usb_suspend_interrupt_enabled()) {
+        Usb_ack_suspend();
+        Usb_enable_wake_up_interrupt();
+        (void)Is_usb_wake_up_interrupt_enabled();
+        Usb_freeze_clock();
+        Usb_send_event(EVT_USB_SUSPEND);
+        Usb_suspend_action();
     }
     // Wake-up event (USB activity detected): Used to resume
-    if (Is_usb_wake_up() && Is_usb_wake_up_interrupt_enabled())
-    {
-      Usb_unfreeze_clock();
-      (void)Is_usb_clock_frozen();
-      Usb_ack_wake_up();
-      Usb_disable_wake_up_interrupt();
-      Usb_wake_up_action();
-      Usb_send_event(EVT_USB_WAKE_UP);
+    if (Is_usb_wake_up() && Is_usb_wake_up_interrupt_enabled()) {
+        Usb_unfreeze_clock();
+        (void)Is_usb_clock_frozen();
+        Usb_ack_wake_up();
+        Usb_disable_wake_up_interrupt();
+        Usb_wake_up_action();
+        Usb_send_event(EVT_USB_WAKE_UP);
     }
     // Resume state bus detection
-    if (Is_usb_resume() && Is_usb_resume_interrupt_enabled())
-    {
-      Usb_disable_wake_up_interrupt();
-      Usb_ack_resume();
-      Usb_disable_resume_interrupt();
-      Usb_resume_action();
-      Usb_send_event(EVT_USB_RESUME);
+    if (Is_usb_resume() && Is_usb_resume_interrupt_enabled()) {
+        Usb_disable_wake_up_interrupt();
+        Usb_ack_resume();
+        Usb_disable_resume_interrupt();
+        Usb_resume_action();
+        Usb_send_event(EVT_USB_RESUME);
     }
     // USB bus reset detection
-    if (Is_usb_reset() && Is_usb_reset_interrupt_enabled())
-    {
-      Usb_ack_reset();
-      usb_init_device();
-      Usb_reset_action();
-      Usb_send_event(EVT_USB_RESET);
+    if (Is_usb_reset() && Is_usb_reset_interrupt_enabled()) {
+        Usb_ack_reset();
+        usb_init_device();
+        Usb_reset_action();
+        Usb_send_event(EVT_USB_RESET);
     }
 
-  return task_woken;
+    return task_woken;
 }
-
 
 void usb_suspend_action(void)
 {
-   volatile avr32_pm_t *pm = &AVR32_PM;
-   pm->AWEN.usb_waken = 1;
-   SLEEP(AVR32_PM_SMODE_STATIC);
-   pm->AWEN.usb_waken = 0;
+    volatile avr32_pm_t *pm = &AVR32_PM;
+    pm->AWEN.usb_waken = 1;
+    SLEEP(AVR32_PM_SMODE_STATIC);
+    pm->AWEN.usb_waken = 0;
 }
-
-
-

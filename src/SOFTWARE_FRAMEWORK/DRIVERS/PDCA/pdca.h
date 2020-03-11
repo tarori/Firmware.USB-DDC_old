@@ -53,15 +53,14 @@
 
 #include <avr32/io.h>
 
-
 //! Size of PDCA transfer: byte.
-#define PDCA_TRANSFER_SIZE_BYTE               AVR32_PDCA_BYTE
+#define PDCA_TRANSFER_SIZE_BYTE AVR32_PDCA_BYTE
 
 //! Size of PDCA transfer: half-word.
-#define PDCA_TRANSFER_SIZE_HALF_WORD          AVR32_PDCA_HALF_WORD
+#define PDCA_TRANSFER_SIZE_HALF_WORD AVR32_PDCA_HALF_WORD
 
 //! Size of PDCA transfer: word.
-#define PDCA_TRANSFER_SIZE_WORD               AVR32_PDCA_WORD
+#define PDCA_TRANSFER_SIZE_WORD AVR32_PDCA_WORD
 
 /*! \name PDCA Driver Status Codes
  */
@@ -73,34 +72,32 @@
 /*! \name PDCA Transfer Status Codes
  */
 //! @{
-#define PDCA_TRANSFER_ERROR                   AVR32_PDCA_TERR_MASK
-#define PDCA_TRANSFER_COMPLETE                AVR32_PDCA_TRC_MASK
-#define PDCA_TRANSFER_COUNTER_RELOAD_IS_ZERO  AVR32_PDCA_RCZ_MASK
+#define PDCA_TRANSFER_ERROR AVR32_PDCA_TERR_MASK
+#define PDCA_TRANSFER_COMPLETE AVR32_PDCA_TRC_MASK
+#define PDCA_TRANSFER_COUNTER_RELOAD_IS_ZERO AVR32_PDCA_RCZ_MASK
 //! @}
-
 
 //! PDCA channel options.
 typedef struct
 {
-  //! Memory address.
-  volatile  void         *addr          ;
-  //! Transfer counter.
-            unsigned int  size          ;
-  //! Next memory address.
-  volatile  void         *r_addr        ;
-  //! Next transfer counter.
-            unsigned int  r_size        ;
-  //! Select peripheral ID.
-            unsigned int  pid           ;
-  //! Select the size of the transfer (byte, half-word or word).
-            unsigned int  transfer_size ;
-#if (defined AVR32_PDCA_120_H_INCLUDED ) || (defined AVR32_PDCA_121_H_INCLUDED ) || (defined AVR32_PDCA_122_H_INCLUDED )
-// Note: the options in this preprocessor section are only available from the PDCA IP version 1.2.0 on.
-  //! Enable (\c 1) or disable (\c 0) the transfer upon event trigger.
-            unsigned char etrig         ;
+    //! Memory address.
+    volatile void *addr;
+    //! Transfer counter.
+    unsigned int size;
+    //! Next memory address.
+    volatile void *r_addr;
+    //! Next transfer counter.
+    unsigned int r_size;
+    //! Select peripheral ID.
+    unsigned int pid;
+    //! Select the size of the transfer (byte, half-word or word).
+    unsigned int transfer_size;
+#if (defined AVR32_PDCA_120_H_INCLUDED) || (defined AVR32_PDCA_121_H_INCLUDED) || (defined AVR32_PDCA_122_H_INCLUDED)
+    // Note: the options in this preprocessor section are only available from the PDCA IP version 1.2.0 on.
+    //! Enable (\c 1) or disable (\c 0) the transfer upon event trigger.
+    unsigned char etrig;
 #endif // #ifdef AVR32_PDCA_120_H_INCLUDED
 } pdca_channel_options_t;
-
 
 /*! \brief Get PDCA channel handler
  *
@@ -183,7 +180,7 @@ extern void pdca_set_peripheral_select(unsigned int pdca_ch_number, unsigned int
  */
 extern void pdca_set_transfer_size(unsigned int pdca_ch_number, unsigned int transfer_size);
 
-#if (defined AVR32_PDCA_120_H_INCLUDED ) || (defined AVR32_PDCA_121_H_INCLUDED ) || (defined AVR32_PDCA_122_H_INCLUDED )
+#if (defined AVR32_PDCA_120_H_INCLUDED) || (defined AVR32_PDCA_121_H_INCLUDED) || (defined AVR32_PDCA_122_H_INCLUDED)
 // Note: the functions in this preprocessor section are only available from the PDCA IP version 1.2.0 on.
 
 /*! \brief Disable the event-triggered transfer feature
@@ -247,5 +244,4 @@ extern void pdca_enable_interrupt_reload_counter_zero(unsigned int pdca_ch_numbe
  */
 extern unsigned long pdca_get_transfer_status(unsigned int pdca_ch_number);
 
-
-#endif  // _PDCA_H_
+#endif // _PDCA_H_

@@ -50,24 +50,22 @@
 
 #include "compiler.h"
 
-
 //! Structure holding private information, automatically initialized by the
 //! cpu_set_timeout() function.
 typedef struct
 {
-  //! The cycle count at the begining of the timeout.
-  unsigned long delay_start_cycle;
+    //! The cycle count at the begining of the timeout.
+    unsigned long delay_start_cycle;
 
-  //! The cycle count at the end of the timeout.
-  unsigned long delay_end_cycle;
+    //! The cycle count at the end of the timeout.
+    unsigned long delay_end_cycle;
 
-  //! Enable/disable the timout detection
-  unsigned char timer_state;
-  #define CPU_TIMER_STATE_STARTED 0
-  #define CPU_TIMER_STATE_REACHED 1
-  #define CPU_TIMER_STATE_STOPPED 2
+    //! Enable/disable the timout detection
+    unsigned char timer_state;
+#define CPU_TIMER_STATE_STARTED 0
+#define CPU_TIMER_STATE_REACHED 1
+#define CPU_TIMER_STATE_STOPPED 2
 } t_cpu_time;
-
 
 /*!
  * \brief Convert milli-seconds into CPU cycles.
@@ -80,11 +78,11 @@ typedef struct
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ U32 cpu_ms_2_cy(unsigned long ms, unsigned long fcpu_hz)
+extern __inline__ U32
+cpu_ms_2_cy(unsigned long ms, unsigned long fcpu_hz)
 {
-  return ((unsigned long long)ms * fcpu_hz + 999) / 1000;
+    return ((unsigned long long)ms * fcpu_hz + 999) / 1000;
 }
-
 
 /*!
  * \brief Convert micro-seconds into CPU cycles.
@@ -97,11 +95,11 @@ extern __inline__ U32 cpu_ms_2_cy(unsigned long ms, unsigned long fcpu_hz)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ U32 cpu_us_2_cy(unsigned long us, unsigned long fcpu_hz)
+extern __inline__ U32
+cpu_us_2_cy(unsigned long us, unsigned long fcpu_hz)
 {
-  return ((unsigned long long)us * fcpu_hz + 999999) / 1000000;
+    return ((unsigned long long)us * fcpu_hz + 999999) / 1000000;
 }
-
 
 /*!
  * \brief Convert CPU cycles into milli-seconds.
@@ -114,11 +112,11 @@ extern __inline__ U32 cpu_us_2_cy(unsigned long us, unsigned long fcpu_hz)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ U32 cpu_cy_2_ms(unsigned long cy, unsigned long fcpu_hz)
+extern __inline__ U32
+cpu_cy_2_ms(unsigned long cy, unsigned long fcpu_hz)
 {
-  return ((unsigned long long)cy * 1000 + fcpu_hz-1) / fcpu_hz;
+    return ((unsigned long long)cy * 1000 + fcpu_hz - 1) / fcpu_hz;
 }
-
 
 /*!
  * \brief Convert CPU cycles into micro-seconds.
@@ -131,11 +129,11 @@ extern __inline__ U32 cpu_cy_2_ms(unsigned long cy, unsigned long fcpu_hz)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ U32 cpu_cy_2_us(unsigned long cy, unsigned long fcpu_hz)
+extern __inline__ U32
+cpu_cy_2_us(unsigned long cy, unsigned long fcpu_hz)
 {
-  return ((unsigned long long)cy * 1000000 + fcpu_hz-1) / fcpu_hz;
+    return ((unsigned long long)cy * 1000000 + fcpu_hz - 1) / fcpu_hz;
 }
-
 
 /*!
  * \brief Set a timer variable.
@@ -152,13 +150,13 @@ extern __inline__ U32 cpu_cy_2_us(unsigned long cy, unsigned long fcpu_hz)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void cpu_set_timeout(unsigned long delay, t_cpu_time *cpu_time)
+extern __inline__ void
+cpu_set_timeout(unsigned long delay, t_cpu_time *cpu_time)
 {
-  cpu_time->delay_start_cycle = Get_system_register(AVR32_COUNT);
-  cpu_time->delay_end_cycle   = cpu_time->delay_start_cycle + delay;
-  cpu_time->timer_state       = CPU_TIMER_STATE_STARTED;
+    cpu_time->delay_start_cycle = Get_system_register(AVR32_COUNT);
+    cpu_time->delay_end_cycle = cpu_time->delay_start_cycle + delay;
+    cpu_time->timer_state = CPU_TIMER_STATE_STARTED;
 }
-
 
 /*!
  * \brief Test if a timer variable reached its timeout.
@@ -179,38 +177,33 @@ extern __inline__ void cpu_set_timeout(unsigned long delay, t_cpu_time *cpu_time
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ unsigned long cpu_is_timeout(t_cpu_time *cpu_time)
+extern __inline__ unsigned long
+cpu_is_timeout(t_cpu_time *cpu_time)
 {
-  unsigned long current_cycle_count = Get_system_register(AVR32_COUNT);
+    unsigned long current_cycle_count = Get_system_register(AVR32_COUNT);
 
-  if( cpu_time->timer_state==CPU_TIMER_STATE_STOPPED )
-    return FALSE;
+    if (cpu_time->timer_state == CPU_TIMER_STATE_STOPPED)
+        return FALSE;
 
-  // Test if the timeout as already occured.
-  else if (cpu_time->timer_state == CPU_TIMER_STATE_REACHED)
-    return TRUE;
+    // Test if the timeout as already occured.
+    else if (cpu_time->timer_state == CPU_TIMER_STATE_REACHED)
+        return TRUE;
 
-  // If the ending cycle count of this timeout is wrapped, ...
-  else if (cpu_time->delay_start_cycle > cpu_time->delay_end_cycle)
-  {
-    if (current_cycle_count < cpu_time->delay_start_cycle && current_cycle_count > cpu_time->delay_end_cycle)
-    {
-      cpu_time->timer_state = CPU_TIMER_STATE_REACHED;
-      return TRUE;
+    // If the ending cycle count of this timeout is wrapped, ...
+    else if (cpu_time->delay_start_cycle > cpu_time->delay_end_cycle) {
+        if (current_cycle_count < cpu_time->delay_start_cycle && current_cycle_count > cpu_time->delay_end_cycle) {
+            cpu_time->timer_state = CPU_TIMER_STATE_REACHED;
+            return TRUE;
+        }
+        return FALSE;
+    } else {
+        if (current_cycle_count < cpu_time->delay_start_cycle || current_cycle_count > cpu_time->delay_end_cycle) {
+            cpu_time->timer_state = CPU_TIMER_STATE_REACHED;
+            return TRUE;
+        }
+        return FALSE;
     }
-    return FALSE;
-  }
-  else
-  {
-    if (current_cycle_count < cpu_time->delay_start_cycle || current_cycle_count > cpu_time->delay_end_cycle)
-    {
-      cpu_time->timer_state = CPU_TIMER_STATE_REACHED;
-      return TRUE;
-    }
-    return FALSE;
-  }
 }
-
 
 /*!
  * \brief Stop a timeout detection.
@@ -226,11 +219,11 @@ extern __inline__ unsigned long cpu_is_timeout(t_cpu_time *cpu_time)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void cpu_stop_timeout(t_cpu_time *cpu_time)
+extern __inline__ void
+cpu_stop_timeout(t_cpu_time *cpu_time)
 {
-  cpu_time->timer_state = CPU_TIMER_STATE_STOPPED;
+    cpu_time->timer_state = CPU_TIMER_STATE_STOPPED;
 }
-
 
 /*!
  * \brief Test if a timer is stopped.
@@ -242,15 +235,15 @@ extern __inline__ void cpu_stop_timeout(t_cpu_time *cpu_time)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ unsigned long cpu_is_timer_stopped(t_cpu_time *cpu_time)
+extern __inline__ unsigned long
+cpu_is_timer_stopped(t_cpu_time *cpu_time)
 {
 
-  if( cpu_time->timer_state==CPU_TIMER_STATE_STOPPED )
-    return TRUE;
-  else
-    return FALSE;
+    if (cpu_time->timer_state == CPU_TIMER_STATE_STOPPED)
+        return TRUE;
+    else
+        return FALSE;
 }
-
 
 /*!
  * \brief Waits during at least the specified delay (in millisecond) before returning.
@@ -261,11 +254,13 @@ extern __inline__ unsigned long cpu_is_timer_stopped(t_cpu_time *cpu_time)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void cpu_delay_ms(unsigned long delay, unsigned long fcpu_hz)
+extern __inline__ void
+cpu_delay_ms(unsigned long delay, unsigned long fcpu_hz)
 {
-  t_cpu_time timer;
-  cpu_set_timeout( cpu_ms_2_cy(delay, fcpu_hz), &timer);
-  while( !cpu_is_timeout(&timer) );
+    t_cpu_time timer;
+    cpu_set_timeout(cpu_ms_2_cy(delay, fcpu_hz), &timer);
+    while (!cpu_is_timeout(&timer))
+        ;
 }
 
 /*!
@@ -277,11 +272,13 @@ extern __inline__ void cpu_delay_ms(unsigned long delay, unsigned long fcpu_hz)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void cpu_delay_us(unsigned long delay, unsigned long fcpu_hz)
+extern __inline__ void
+cpu_delay_us(unsigned long delay, unsigned long fcpu_hz)
 {
-  t_cpu_time timer;
-  cpu_set_timeout( cpu_us_2_cy(delay, fcpu_hz), &timer);
-  while( !cpu_is_timeout(&timer) );
+    t_cpu_time timer;
+    cpu_set_timeout(cpu_us_2_cy(delay, fcpu_hz), &timer);
+    while (!cpu_is_timeout(&timer))
+        ;
 }
 
 /*!
@@ -292,18 +289,18 @@ extern __inline__ void cpu_delay_us(unsigned long delay, unsigned long fcpu_hz)
 #if (defined __GNUC__)
 __attribute__((__always_inline__))
 #endif
-extern __inline__ void cpu_delay_cy(unsigned long delay)
+extern __inline__ void
+cpu_delay_cy(unsigned long delay)
 {
-  t_cpu_time timer;
-  cpu_set_timeout( delay, &timer);
-  while( !cpu_is_timeout(&timer) );
+    t_cpu_time timer;
+    cpu_set_timeout(delay, &timer);
+    while (!cpu_is_timeout(&timer))
+        ;
 }
 
-
-#define Get_sys_count()     ( Get_system_register(AVR32_COUNT)        )
+#define Get_sys_count() (Get_system_register(AVR32_COUNT))
 // #define Set_sys_count(x)    ( Set_system_register(AVR32_COUNT,   (x)) )
-#define Get_sys_compare()   ( Get_system_register(AVR32_COMPARE)      )
-#define Set_sys_compare(x)  ( Set_system_register(AVR32_COMPARE, (x)) )
-
+#define Get_sys_compare() (Get_system_register(AVR32_COMPARE))
+#define Set_sys_compare(x) (Set_system_register(AVR32_COMPARE, (x)))
 
 #endif // _CYCLE_COUNTER_H_

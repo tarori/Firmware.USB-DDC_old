@@ -84,5 +84,4 @@ extern void wdt_clear(void);
  */
 extern void wdt_reset_mcu(void);
 
-
-#endif  // _WDT_H_
+#endif // _WDT_H_

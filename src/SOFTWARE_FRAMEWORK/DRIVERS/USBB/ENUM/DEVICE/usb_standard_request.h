@@ -76,54 +76,51 @@
 #ifndef _USB_STANDARD_REQUEST_H_
 #define _USB_STANDARD_REQUEST_H_
 
-
 //_____ I N C L U D E S ____________________________________________________
 
 #include "conf_usb.h"
 
 #if USB_DEVICE_FEATURE == DISABLED
-  #error usb_standard_request.h is #included although USB_DEVICE_FEATURE is disabled
+#error usb_standard_request.h is #included although USB_DEVICE_FEATURE is disabled
 #endif
 
-
-#include "usb_task.h"
 #include "usb_descriptors.h"
-
+#include "usb_task.h"
 
 //-----------------------------------------------------------------------------
 // Definition of Standard device request
 //-----------------------------------------------------------------------------
 
 // Device Request Direction (bmRequestType bit7)
-#define DRD_MASK				0x80		// Mask for device request direction
-#define DRD_OUT					0x00		// OUT: host to device
-#define DRD_IN					0x80		// IN:	device to host
+#define DRD_MASK 0x80 // Mask for device request direction
+#define DRD_OUT 0x00  // OUT: host to device
+#define DRD_IN 0x80   // IN:	device to host
 
 // Device Request Type (bmRequestType bit6-5)
-#define DRT_MASK				0x60		// Mask for device request type
-#define DRT_STD					0x00		// Standard device request
-#define DRT_CLASS				0x20		// Class specific request
-#define DRT_VENDOR				0x40		// Vendor specific request
+#define DRT_MASK 0x60   // Mask for device request type
+#define DRT_STD 0x00    // Standard device request
+#define DRT_CLASS 0x20  // Class specific request
+#define DRT_VENDOR 0x40 // Vendor specific request
 
 // Device Request Recipient (bmRequestType bit4-0)
-#define DRR_MASK				0x1F		// Mask for device request recipient
-#define DRR_DEVICE				0x00		// Device
-#define DRR_INTERFACE			0x01		// Interface
-#define DRR_ENDPOINT			0x02		// Endpoint
+#define DRR_MASK 0x1F      // Mask for device request recipient
+#define DRR_DEVICE 0x00    // Device
+#define DRR_INTERFACE 0x01 // Interface
+#define DRR_ENDPOINT 0x02  // Endpoint
 
 // Define bmRequestType bitmaps
-#define OUT_DEVICE			(DRD_OUT | DRT_STD | DRR_DEVICE)		// Request made to device,
-#define IN_DEVICE			(DRD_IN  | DRT_STD | DRR_DEVICE)		// Request made to device,
-#define OUT_INTERFACE		(DRD_OUT | DRT_STD | DRR_INTERFACE)		// Request made to interface,
-#define IN_INTERFACE		(DRD_IN  | DRT_STD | DRR_INTERFACE)		// Request made to interface,
-#define OUT_ENDPOINT		(DRD_OUT | DRT_STD | DRR_ENDPOINT)		// Request made to endpoint,
-#define IN_ENDPOINT			(DRD_IN  | DRT_STD | DRR_ENDPOINT)		// Request made to endpoint,
+#define OUT_DEVICE (DRD_OUT | DRT_STD | DRR_DEVICE)       // Request made to device,
+#define IN_DEVICE (DRD_IN | DRT_STD | DRR_DEVICE)         // Request made to device,
+#define OUT_INTERFACE (DRD_OUT | DRT_STD | DRR_INTERFACE) // Request made to interface,
+#define IN_INTERFACE (DRD_IN | DRT_STD | DRR_INTERFACE)   // Request made to interface,
+#define OUT_ENDPOINT (DRD_OUT | DRT_STD | DRR_ENDPOINT)   // Request made to endpoint,
+#define IN_ENDPOINT (DRD_IN | DRT_STD | DRR_ENDPOINT)     // Request made to endpoint,
 
-#define OUT_CL_INTERFACE	(DRD_OUT | DRT_CLASS | DRR_INTERFACE)	// Request made to class interface,
-#define IN_CL_INTERFACE		(DRD_IN  | DRT_CLASS | DRR_INTERFACE)	// Request made to class interface,
+#define OUT_CL_INTERFACE (DRD_OUT | DRT_CLASS | DRR_INTERFACE) // Request made to class interface,
+#define IN_CL_INTERFACE (DRD_IN | DRT_CLASS | DRR_INTERFACE)   // Request made to class interface,
 
-#define OUT_VR_INTERFACE	(DRD_OUT | DRT_VENDOR | DRR_INTERFACE)	// Request made to vendor interface,
-#define IN_VR_INTERFACE		(DRD_IN  | DRT_VENDOR | DRR_INTERFACE)	// Request made to vendor interface,
+#define OUT_VR_INTERFACE (DRD_OUT | DRT_VENDOR | DRR_INTERFACE) // Request made to vendor interface,
+#define IN_VR_INTERFACE (DRD_IN | DRT_VENDOR | DRR_INTERFACE)   // Request made to vendor interface,
 
 /*
 // Standard Request Codes
@@ -143,87 +140,83 @@
 */
 
 // Descriptor type (GET_DESCRIPTOR and SET_DESCRIPTOR)
-#define DST_DEVICE				0x01		// Device Descriptor
-#define DST_CONFIG				0x02		// Configuration Descriptor
-#define DST_STRING				0x03		// String Descriptor
-#define DST_INTERFACE			0x04		// Interface Descriptor
-#define DST_ENDPOINT			0x05		// Endpoint Descriptor
+#define DST_DEVICE 0x01    // Device Descriptor
+#define DST_CONFIG 0x02    // Configuration Descriptor
+#define DST_STRING 0x03    // String Descriptor
+#define DST_INTERFACE 0x04 // Interface Descriptor
+#define DST_ENDPOINT 0x05  // Endpoint Descriptor
 
 // Define wValue bitmaps for Standard Feature Selectors
-#define DEVICE_REMOTE_WAKEUP	0x01		// Remote wakeup feature(not used)
-#define ENDPOINT_HALT			0x00		// Endpoint_Halt feature selector
+#define DEVICE_REMOTE_WAKEUP 0x01 // Remote wakeup feature(not used)
+#define ENDPOINT_HALT 0x00        // Endpoint_Halt feature selector
 
 //-----------------------------------------------------------------------------
 // Definition of device and endpoint state
 //-----------------------------------------------------------------------------
 
 // Define device states
-#define DEV_ATTACHED			0x00		// Device is in Attached State
-#define DEV_POWERED				0x01		// Device is in Powered State
-#define DEV_DEFAULT				0x02		// Device is in Default State
-#define DEV_ADDRESS				0x03		// Device is in Addressed State
-#define DEV_CONFIGURED			0x04		// Device is in Configured State
-#define DEV_SUSPENDED			0x05		// Device is in Suspended State
+#define DEV_ATTACHED 0x00   // Device is in Attached State
+#define DEV_POWERED 0x01    // Device is in Powered State
+#define DEV_DEFAULT 0x02    // Device is in Default State
+#define DEV_ADDRESS 0x03    // Device is in Addressed State
+#define DEV_CONFIGURED 0x04 // Device is in Configured State
+#define DEV_SUSPENDED 0x05  // Device is in Suspended State
 
 // Define Endpoint States
-#define EP_IDLE					0x00		// This signifies Endpoint Idle State
-#define EP_HALT					0x01		// Endpoint Halt State (return stalls)
+#define EP_IDLE 0x00 // This signifies Endpoint Idle State
+#define EP_HALT 0x01 // Endpoint Halt State (return stalls)
 // for EP0
-#define EP_TX					0x02		// Endpoint Transmit State
-#define EP_RX					0x03		// Endpoint Receive State
+#define EP_TX 0x02 // Endpoint Transmit State
+#define EP_RX 0x03 // Endpoint Receive State
 // Endpoint Stall (send procedural stall next status phase)
-#define EP_STALL				0x04
+#define EP_STALL 0x04
 
 //! @defgroup std_request USB device standard requests decoding module
 //! @{
 
-
 //_____ M A C R O S ________________________________________________________
-
 
 //_____ S T A N D A R D    D E F I N I T I O N S ___________________________
 
-        // Device State
-#define ATTACHED                          0
-#define POWERED                           1
-#define DEFAULT                           2
-#define ADDRESSED                         3
-#define CONFIGURED                        4
-#define SUSPENDED                         5
+// Device State
+#define ATTACHED 0
+#define POWERED 1
+#define DEFAULT 2
+#define ADDRESSED 3
+#define CONFIGURED 4
+#define SUSPENDED 5
 
-#define USB_CONFIG_ATTRIBUTES_RESERVED    0x80
-#define USB_CONFIG_BUSPOWERED            (USB_CONFIG_ATTRIBUTES_RESERVED | 0x00)
-#define USB_CONFIG_SELFPOWERED           (USB_CONFIG_ATTRIBUTES_RESERVED | 0x40)
-#define USB_CONFIG_REMOTEWAKEUP          (USB_CONFIG_ATTRIBUTES_RESERVED | 0x20)
-
+#define USB_CONFIG_ATTRIBUTES_RESERVED 0x80
+#define USB_CONFIG_BUSPOWERED (USB_CONFIG_ATTRIBUTES_RESERVED | 0x00)
+#define USB_CONFIG_SELFPOWERED (USB_CONFIG_ATTRIBUTES_RESERVED | 0x40)
+#define USB_CONFIG_REMOTEWAKEUP (USB_CONFIG_ATTRIBUTES_RESERVED | 0x20)
 
 //_____ D E C L A R A T I O N S ____________________________________________
 
-  //! @brief Returns TRUE when device connected and correctly enumerated with a host.
-  //! The device high-level application should test this before performing any applicative request.
-#define Is_device_enumerated()            (usb_configuration_nb != 0)
+//! @brief Returns TRUE when device connected and correctly enumerated with a host.
+//! The device high-level application should test this before performing any applicative request.
+#define Is_device_enumerated() (usb_configuration_nb != 0)
 
-  //! This function reads the SETUP request sent to the default control endpoint
-  //! and calls the appropriate function. When exiting of the usb_read_request
-  //! function, the device is ready to manage the next request.
-  //!
-  //! If the received request is not supported or a non-standard USB request, the function
-  //! will call the custom decoding function in usb_specific_request module.
-  //!
-  //! @note List of supported requests:
-  //! GET_DESCRIPTOR
-  //! GET_CONFIGURATION
-  //! SET_ADDRESS
-  //! SET_CONFIGURATION
-  //! CLEAR_FEATURE
-  //! SET_FEATURE
-  //! GET_STATUS
-  //!
+//! This function reads the SETUP request sent to the default control endpoint
+//! and calls the appropriate function. When exiting of the usb_read_request
+//! function, the device is ready to manage the next request.
+//!
+//! If the received request is not supported or a non-standard USB request, the function
+//! will call the custom decoding function in usb_specific_request module.
+//!
+//! @note List of supported requests:
+//! GET_DESCRIPTOR
+//! GET_CONFIGURATION
+//! SET_ADDRESS
+//! SET_CONFIGURATION
+//! CLEAR_FEATURE
+//! SET_FEATURE
+//! GET_STATUS
+//!
 extern void usb_process_request(void);
 
 extern volatile U8 usb_configuration_nb;
 
 //! @}
 
-
-#endif  // _USB_STANDARD_REQUEST_H_
+#endif // _USB_STANDARD_REQUEST_H_

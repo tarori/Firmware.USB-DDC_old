@@ -55,26 +55,26 @@
 /*! \name External Interrupt lines
  */
 //! @{
-#if (UC3A || UC3B)  
-#define EXT_INT0    AVR32_EIC_INT0 //!< Line 0
-#define EXT_INT1    AVR32_EIC_INT1 //!< Line 1
-#define EXT_INT2    AVR32_EIC_INT2 //!< Line 2
-#define EXT_INT3    AVR32_EIC_INT3 //!< Line 3
-#define EXT_INT4    AVR32_EIC_INT4 //!< Line 4
-#define EXT_INT5    AVR32_EIC_INT5 //!< Line 5
-#define EXT_INT6    AVR32_EIC_INT6 //!< Line 6
-#define EXT_INT7    AVR32_EIC_INT7 //!< Line 7
-#define EXT_NMI     AVR32_EIC_NMI  //!< Line 8
+#if (UC3A || UC3B)
+#define EXT_INT0 AVR32_EIC_INT0 //!< Line 0
+#define EXT_INT1 AVR32_EIC_INT1 //!< Line 1
+#define EXT_INT2 AVR32_EIC_INT2 //!< Line 2
+#define EXT_INT3 AVR32_EIC_INT3 //!< Line 3
+#define EXT_INT4 AVR32_EIC_INT4 //!< Line 4
+#define EXT_INT5 AVR32_EIC_INT5 //!< Line 5
+#define EXT_INT6 AVR32_EIC_INT6 //!< Line 6
+#define EXT_INT7 AVR32_EIC_INT7 //!< Line 7
+#define EXT_NMI AVR32_EIC_NMI   //!< Line 8
 #else
-#define EXT_INT0    AVR32_EIC_INT1  //!< Line 0
-#define EXT_INT1    AVR32_EIC_INT2 //!< Line 1
-#define EXT_INT2    AVR32_EIC_INT3 //!< Line 2
-#define EXT_INT3    AVR32_EIC_INT4 //!< Line 3
-#define EXT_INT4    AVR32_EIC_INT5 //!< Line 4
-#define EXT_INT5    AVR32_EIC_INT6 //!< Line 5
-#define EXT_INT6    AVR32_EIC_INT7 //!< Line 6
-#define EXT_INT7    AVR32_EIC_INT8 //!< Line 7
-#define EXT_NMI     AVR32_EIC_NMI  //!< Line 8
+#define EXT_INT0 AVR32_EIC_INT1 //!< Line 0
+#define EXT_INT1 AVR32_EIC_INT2 //!< Line 1
+#define EXT_INT2 AVR32_EIC_INT3 //!< Line 2
+#define EXT_INT3 AVR32_EIC_INT4 //!< Line 3
+#define EXT_INT4 AVR32_EIC_INT5 //!< Line 4
+#define EXT_INT5 AVR32_EIC_INT6 //!< Line 5
+#define EXT_INT6 AVR32_EIC_INT7 //!< Line 6
+#define EXT_INT7 AVR32_EIC_INT8 //!< Line 7
+#define EXT_NMI AVR32_EIC_NMI   //!< Line 8
 
 #endif
 
@@ -83,61 +83,60 @@
 /*! \name Mode Trigger Options
  */
 //! @{
-#define EIC_MODE_EDGE_TRIGGERED   AVR32_EIC_EDGE_IRQ //!<
-#define EIC_MODE_LEVEL_TRIGGERED  AVR32_EIC_LEVEL_IRQ //!<
+#define EIC_MODE_EDGE_TRIGGERED AVR32_EIC_EDGE_IRQ   //!<
+#define EIC_MODE_LEVEL_TRIGGERED AVR32_EIC_LEVEL_IRQ //!<
 //! @}
 
 /*! \name Edge level Options
  */
 //! @{
-#define EIC_EDGE_FALLING_EDGE     AVR32_EIC_FALLING_EDGE //!<
-#define EIC_EDGE_RISING_EDGE      AVR32_EIC_RISING_EDGE //!<
+#define EIC_EDGE_FALLING_EDGE AVR32_EIC_FALLING_EDGE //!<
+#define EIC_EDGE_RISING_EDGE AVR32_EIC_RISING_EDGE   //!<
 //! @}
 
 /*! \name Level Options
  */
 //! @{
-#define EIC_LEVEL_LOW_LEVEL       AVR32_EIC_LOW_LEVEL //!<
-#define EIC_LEVEL_HIGH_LEVEL      AVR32_EIC_HIGH_LEVEL //!<
+#define EIC_LEVEL_LOW_LEVEL AVR32_EIC_LOW_LEVEL   //!<
+#define EIC_LEVEL_HIGH_LEVEL AVR32_EIC_HIGH_LEVEL //!<
 //! @}
 
 /*! \name Filter Options
  */
 //! @{
-#define EIC_FILTER_ENABLED        AVR32_EIC_FILTER_ON //!<
-#define EIC_FILTER_DISABLED       AVR32_EIC_FILTER_OFF //!<
+#define EIC_FILTER_ENABLED AVR32_EIC_FILTER_ON   //!<
+#define EIC_FILTER_DISABLED AVR32_EIC_FILTER_OFF //!<
 //! @}
 
 /*! \name Synch Mode Options
  */
 //! @{
-#define EIC_SYNCH_MODE            AVR32_EIC_SYNC //!<
-#define EIC_ASYNCH_MODE           AVR32_EIC_USE_ASYNC //!<
+#define EIC_SYNCH_MODE AVR32_EIC_SYNC       //!<
+#define EIC_ASYNCH_MODE AVR32_EIC_USE_ASYNC //!<
 //! @}
 
 //! Configuration parameters of the EIC module.
 typedef struct
 {
-  //!Line
-  unsigned char eic_line;
+    //!Line
+    unsigned char eic_line;
 
-  //! Mode : EDGE_LEVEL or TRIGGER_LEVEL
-  unsigned char eic_mode;
+    //! Mode : EDGE_LEVEL or TRIGGER_LEVEL
+    unsigned char eic_mode;
 
-  //! Edge : FALLING_EDGE or RISING_EDGE
-  unsigned char eic_edge;
+    //! Edge : FALLING_EDGE or RISING_EDGE
+    unsigned char eic_edge;
 
-  //! Level :  LOW_LEVEL or HIGH_LEVEL
-  unsigned char eic_level;
+    //! Level :  LOW_LEVEL or HIGH_LEVEL
+    unsigned char eic_level;
 
-  //! Filter:  NOT_FILTERED or FILTERED
-  unsigned char eic_filter;
+    //! Filter:  NOT_FILTERED or FILTERED
+    unsigned char eic_filter;
 
-  //! Async:  SYNC mode or ASYNC
-  unsigned char eic_async;
+    //! Async:  SYNC mode or ASYNC
+    unsigned char eic_async;
 
 } eic_options_t;
-
 
 /*! \brief Init the EIC driver.
  *
@@ -271,5 +270,4 @@ extern unsigned long eic_get_interrupt_pad_scan(volatile avr32_eic_t *eic);
 
 //! @}
 
-
-#endif  // _EIC_H_
+#endif // _EIC_H_

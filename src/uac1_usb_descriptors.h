@@ -34,26 +34,23 @@
 #ifndef _UAC1_DESCRIPTORS_H_
 #define _UAC1_DESCRIPTORS_H_
 
-
 //_____ I N C L U D E S ____________________________________________________
 
 #include "conf_usb.h"
 #include "features.h"
 
 #if USB_DEVICE_FEATURE == DISABLED
-  #error uac1_descriptors.h is #included although USB_DEVICE_FEATURE is disabled
+#error uac1_descriptors.h is #included although USB_DEVICE_FEATURE is disabled
 #endif
 
+#include "hid.h"
+#include "usb_descriptors.h"
 #include "usb_standard_request.h"
 #include "usb_task.h"
-#include "usb_descriptors.h"
-#include "hid.h"
 
 //_____ M A C R O S ________________________________________________________
 
-
 //_____ U S B    D E F I N E S _____________________________________________
-
 
 // CONFIGURATION
 // BSB 20130604 disabling UAC1 IN #define NB_INTERFACE	   5	//!  DG8SAQ, HID, Audio (3)
@@ -61,87 +58,84 @@
 // Config interface at endpoint 0
 
 #ifdef FEATURE_HID
-	#ifdef FEATURE_CFG_INTERFACE
-		#define NB_INTERFACE	4  // Config, Audio control, audio streaming, HID     4: Was: Counting endpoints: Audio(2), HID(1), Widget-Control(1) // Audio (2), HID //4 !  DG8SAQ, Audio (2), HID
-	#else
-		#define NB_INTERFACE	3  //         Audio control, audio streaming, HID     3: Was: Counting endpoints: Audio(2), HID(1),                   // Audio (2), HID //4 !  DG8SAQ, Audio (2), HID
-	#endif
+#ifdef FEATURE_CFG_INTERFACE
+#define NB_INTERFACE 4 // Config, Audio control, audio streaming, HID     4: Was: Counting endpoints: Audio(2), HID(1), Widget-Control(1) // Audio (2), HID //4 !  DG8SAQ, Audio (2), HID
 #else
-	#ifdef FEATURE_CFG_INTERFACE
-		#define NB_INTERFACE	3  // Config, Audio control, audio streaming
-	#else
-		#define NB_INTERFACE	2  //         Audio control, audio streaming
-	#endif
+#define NB_INTERFACE 3 //         Audio control, audio streaming, HID     3: Was: Counting endpoints: Audio(2), HID(1),                   // Audio (2), HID //4 !  DG8SAQ, Audio (2), HID
+#endif
+#else
+#ifdef FEATURE_CFG_INTERFACE
+#define NB_INTERFACE 3 // Config, Audio control, audio streaming
+#else
+#define NB_INTERFACE 2 //         Audio control, audio streaming
+#endif
 #endif
 
-#define CONF_NB         	1	//! Number of this configuration
-#define CONF_INDEX        	0
-#define CONF_ATTRIBUTES   	USB_CONFIG_BUSPOWERED  // default is bus-powered FIX: make dynamic for USB-C applications!
-#define MAX_POWER         	250  // 500mA for bus-powered operation
-
+#define CONF_NB 1 //! Number of this configuration
+#define CONF_INDEX 0
+#define CONF_ATTRIBUTES USB_CONFIG_BUSPOWERED // default is bus-powered FIX: make dynamic for USB-C applications!
+#define MAX_POWER 250                         // 500mA for bus-powered operation
 
 //Audio Streaming (AS) interface descriptor
 #ifdef FEATURE_CFG_INTERFACE
-	#define STD_AS_INTERFACE_OUT		0x02   // Index of Std AS Interface for Audio Out
+#define STD_AS_INTERFACE_OUT 0x02 // Index of Std AS Interface for Audio Out
 #else
-	#define STD_AS_INTERFACE_OUT		0x01   // Index of Std AS Interface for Audio Out
+#define STD_AS_INTERFACE_OUT 0x01 // Index of Std AS Interface for Audio Out
 #endif
-
 
 // IAD for Audio
 #ifdef FEATURE_CFG_INTERFACE
-	#define FIRST_INTERFACE1	1
+#define FIRST_INTERFACE1 1
 #else
-	#define FIRST_INTERFACE1	0
+#define FIRST_INTERFACE1 0
 #endif
 // BSB 20130604 disabling UAC1 IN #define INTERFACE_COUNT1	3
-#define INTERFACE_COUNT1	2
-
+#define INTERFACE_COUNT1 2
 
 #ifdef FEATURE_CFG_INTERFACE
-	// USB DG8SAQ Interface descriptor
-	#define INTERFACE_NB0			    0
-	#define ALTERNATE_NB0	            0                  //! The alt setting nb of this interface
-	#define NB_ENDPOINT0			    0                  //! The number of endpoints this interface has
-	#define INTERFACE_CLASS0		    NO_CLASS          //! No Class
-	#define INTERFACE_SUB_CLASS0        NO_SUBCLASS        //! No Subclass
-	#define INTERFACE_PROTOCOL0    		NO_PROTOCOL		   //! No Protocol
-	#define INTERFACE_INDEX0       		0
+// USB DG8SAQ Interface descriptor
+#define INTERFACE_NB0 0
+#define ALTERNATE_NB0 0                  //! The alt setting nb of this interface
+#define NB_ENDPOINT0 0                   //! The number of endpoints this interface has
+#define INTERFACE_CLASS0 NO_CLASS        //! No Class
+#define INTERFACE_SUB_CLASS0 NO_SUBCLASS //! No Subclass
+#define INTERFACE_PROTOCOL0 NO_PROTOCOL  //! No Protocol
+#define INTERFACE_INDEX0 0
 
-	#define DSC_INTERFACE_DG8SAQ		INTERFACE_NB0
+#define DSC_INTERFACE_DG8SAQ INTERFACE_NB0
 #endif
 
 #ifdef FEATURE_HID
 
 // USB HID Interface descriptor
 #ifdef FEATURE_CFG_INTERFACE
-	#define INTERFACE_NB1			    3
+#define INTERFACE_NB1 3
 #else
-	#define INTERFACE_NB1			    2	// No config interface, HID interface = 2
+#define INTERFACE_NB1 2 // No config interface, HID interface = 2
 #endif
-#define ALTERNATE_NB1	            0                  //! The alt setting nb of this interface
-#define NB_ENDPOINT1			    1 // Was: 2                  //! The number of endpoints this interface has
-#define INTERFACE_CLASS1		    HID_CLASS          //! HID Class
-#define INTERFACE_SUB_CLASS1        NO_SUBCLASS        //! No Subclass
-#define INTERFACE_PROTOCOL1    		NO_PROTOCOL		   //! No Protocol
-#define INTERFACE_INDEX1       		0
+#define ALTERNATE_NB1 0                  //! The alt setting nb of this interface
+#define NB_ENDPOINT1 1                   // Was: 2                  //! The number of endpoints this interface has
+#define INTERFACE_CLASS1 HID_CLASS       //! HID Class
+#define INTERFACE_SUB_CLASS1 NO_SUBCLASS //! No Subclass
+#define INTERFACE_PROTOCOL1 NO_PROTOCOL  //! No Protocol
+#define INTERFACE_INDEX1 0
 
-#define DSC_INTERFACE_HID			INTERFACE_NB1
+#define DSC_INTERFACE_HID INTERFACE_NB1
 
 // HID descriptor
-#define HID_VERSION                 0x0111  //! HID Class Specification release number
-#define HID_COUNTRY_CODE            0x00    //! Hardware target country
-#define HID_NUM_DESCRIPTORS			0x01    //! Number of HID class descriptors to follow
+#define HID_VERSION 0x0111       //! HID Class Specification release number
+#define HID_COUNTRY_CODE 0x00    //! Hardware target country
+#define HID_NUM_DESCRIPTORS 0x01 //! Number of HID class descriptors to follow
 
 // USB Endpoint 1 descriptor
-#define ENDPOINT_NB_1           (UAC1_EP_HID_TX| MSK_EP_DIR)
-#define EP_ATTRIBUTES_1         TYPE_INTERRUPT
-#define EP_IN_LENGTH_1_FS       8
-#define EP_SIZE_1_FS            EP_IN_LENGTH_1_FS
-#define EP_IN_LENGTH_1_HS       8
-#define EP_SIZE_1_HS            EP_IN_LENGTH_1_HS
-#define EP_INTERVAL_1_FS        16 // frames = 16ms was: 5    //! Interrupt polling interval from host
-#define EP_INTERVAL_1_HS        16 // microframes = 2ms, here: 4ms was: 0x05    //! Interrupt polling interval from host
+#define ENDPOINT_NB_1 (UAC1_EP_HID_TX | MSK_EP_DIR)
+#define EP_ATTRIBUTES_1 TYPE_INTERRUPT
+#define EP_IN_LENGTH_1_FS 8
+#define EP_SIZE_1_FS EP_IN_LENGTH_1_FS
+#define EP_IN_LENGTH_1_HS 8
+#define EP_SIZE_1_HS EP_IN_LENGTH_1_HS
+#define EP_INTERVAL_1_FS 16 // frames = 16ms was: 5    //! Interrupt polling interval from host
+#define EP_INTERVAL_1_HS 16 // microframes = 2ms, here: 4ms was: 0x05    //! Interrupt polling interval from host
 
 /*
 // USB Endpoint 2 descriptor - not used
@@ -155,36 +149,35 @@
 */
 #endif
 
-
 // Standard Audio Control (AC) interface descriptor
 #ifdef FEATURE_CFG_INTERFACE
-	#define INTERFACE_NB2       		1
+#define INTERFACE_NB2 1
 #else
-	#define INTERFACE_NB2       		0	// No config interface, Audio control interface = 0
+#define INTERFACE_NB2 0 // No config interface, Audio control interface = 0
 #endif
-#define ALTERNATE_NB2       0
-#define NB_ENDPOINT2        0			     //! No endpoint for AC interface
-#define INTERFACE_CLASS2    AUDIO_CLASS  	//! Audio Class
-#define INTERFACE_SUB_CLASS2 0x01		     //! Audio_control sub class
-#define INTERFACE_PROTOCOL2  0x00		     //! Unused
-#define INTERFACE_INDEX2     0
+#define ALTERNATE_NB2 0
+#define NB_ENDPOINT2 0               //! No endpoint for AC interface
+#define INTERFACE_CLASS2 AUDIO_CLASS //! Audio Class
+#define INTERFACE_SUB_CLASS2 0x01    //! Audio_control sub class
+#define INTERFACE_PROTOCOL2 0x00     //! Unused
+#define INTERFACE_INDEX2 0
 
-#define DSC_INTERFACE_AUDIO			INTERFACE_NB2
+#define DSC_INTERFACE_AUDIO INTERFACE_NB2
 
 // USB Endpoint 3 descriptor
-#define ENDPOINT_NB_3       ( UAC1_EP_AUDIO_OUT )
-#define EP_ATTRIBUTES_3     0b00000101      // ISOCHRONOUS ASYNCHRONOUS DATA, EXPLICIT FEEDBACK in other EP
+#define ENDPOINT_NB_3 (UAC1_EP_AUDIO_OUT)
+#define EP_ATTRIBUTES_3 0b00000101 // ISOCHRONOUS ASYNCHRONOUS DATA, EXPLICIT FEEDBACK in other EP
 //#define EP_ATTRIBUTES_3     0b00001101      // ISOCHRONOUS SYNCHRONOUS
-#define EP_IN_LENGTH_3_HS   294				// 3 bytes * 48 khz * stereo + 6 bytes for add sample
-#define EP_IN_LENGTH_3_FS	294
-#define EP_SIZE_3_FS		EP_IN_LENGTH_3_FS
-#define EP_SIZE_3_HS        EP_IN_LENGTH_3_HS
-#define EP_INTERVAL_3_FS	0x01			 // one packet per uframe must set to 1 for ms
-#define EP_INTERVAL_3_HS    0x04			 // One packet per 8 uframe
-#define EP_REFRESH_3_FS		0x00 //0x00	// was 0x05		 // BSB 20130530 should be 0? Added as #define See USB audio 1.0 specification, Table 4-20: Standard AS Isochronous Audio Data Endpoint.
-#define EP_REFRESH_3_HS		0x00 //0x00	// was 0x05		 // BSB 20130530 should be 0? Added as #define
+#define EP_IN_LENGTH_3_HS 294 // 3 bytes * 48 khz * stereo + 6 bytes for add sample
+#define EP_IN_LENGTH_3_FS 294
+#define EP_SIZE_3_FS EP_IN_LENGTH_3_FS
+#define EP_SIZE_3_HS EP_IN_LENGTH_3_HS
+#define EP_INTERVAL_3_FS 0x01 // one packet per uframe must set to 1 for ms
+#define EP_INTERVAL_3_HS 0x04 // One packet per 8 uframe
+#define EP_REFRESH_3_FS 0x00  //0x00	// was 0x05		 // BSB 20130530 should be 0? Added as #define See USB audio 1.0 specification, Table 4-20: Standard AS Isochronous Audio Data Endpoint.
+#define EP_REFRESH_3_HS 0x00  //0x00	// was 0x05		 // BSB 20130530 should be 0? Added as #define
 //**** BSB: Is this correct with 0x05?? How about UAC1_EP_AUDIO_OUT_FB ??
-#define EP_BSYNC_ADDRESS_3	0x05			 // feedback EP is EP 5
+#define EP_BSYNC_ADDRESS_3 0x05 // feedback EP is EP 5
 //#define EP_BSYNC_ADDRESS_3	0x04			 // feedback EP is EP 4 - using audio input pipe to sync
 //#define EP_BSYNC_ADDRESS_3	0x00
 
@@ -204,24 +197,22 @@
 
 /* Note:  The EPs have to be re-arranged.  Feedback EP has to be immediately following the OUT EP
 // USB Endpoint 5 descriptor*/
-#define ENDPOINT_NB_5       ( UAC1_EP_AUDIO_OUT_FB | MSK_EP_DIR )
-#define EP_ATTRIBUTES_5     0b00010001      // ISOCHROUNOUS FEEDBACK // BSB 20131022 is this in correspondance with Table 4-22 of Audio10.PDF? Bit 6 reserved?
-#define EP_IN_LENGTH_5_FS   3				// 3 bytes
-#define EP_IN_LENGTH_5_HS	4				// 4 bytes
-#define EP_SIZE_5_FS		EP_IN_LENGTH_5_FS
-#define EP_SIZE_5_HS        EP_IN_LENGTH_5_HS
-#define EP_INTERVAL_5_FS	0x01  // BSB 20131022 Must set to 1 for ms
-#define EP_INTERVAL_5_HS    0x04
-#define EP_REFRESH_5_FS		0x05 // was: 0x05	 //  64ms, BSB 20130603: 0x05 measured as 32ms, 0x02 measured as 2ms but not always occuring
-#define EP_REFRESH_5_HS		0x05 // was: 0x05	 // 2^(10-1) = 512 uframe = 64ms
-
-
+#define ENDPOINT_NB_5 (UAC1_EP_AUDIO_OUT_FB | MSK_EP_DIR)
+#define EP_ATTRIBUTES_5 0b00010001 // ISOCHROUNOUS FEEDBACK // BSB 20131022 is this in correspondance with Table 4-22 of Audio10.PDF? Bit 6 reserved?
+#define EP_IN_LENGTH_5_FS 3        // 3 bytes
+#define EP_IN_LENGTH_5_HS 4        // 4 bytes
+#define EP_SIZE_5_FS EP_IN_LENGTH_5_FS
+#define EP_SIZE_5_HS EP_IN_LENGTH_5_HS
+#define EP_INTERVAL_5_FS 0x01 // BSB 20131022 Must set to 1 for ms
+#define EP_INTERVAL_5_HS 0x04
+#define EP_REFRESH_5_FS 0x05 // was: 0x05	 //  64ms, BSB 20130603: 0x05 measured as 32ms, 0x02 measured as 2ms but not always occuring
+#define EP_REFRESH_5_HS 0x05 // was: 0x05	 // 2^(10-1) = 512 uframe = 64ms
 
 // AC interface descriptor Audio specific
-#define AUDIO_CLASS_REVISION			0x0100
+#define AUDIO_CLASS_REVISION 0x0100
 // BSB 20130604 disabling UAC1 IN #define NB_OF_STREAMING_INTERFACE		0x02	// one for speaker out, one for mic in
-#define NB_OF_STREAMING_INTERFACE		0x01	// one for speaker out, one for mic in
-#define BELONGS_AUDIO_INTERFACE_OUT		STD_AS_INTERFACE_OUT
+#define NB_OF_STREAMING_INTERFACE 0x01 // one for speaker out, one for mic in
+#define BELONGS_AUDIO_INTERFACE_OUT STD_AS_INTERFACE_OUT
 // BSB 20130604 disabling UAC1 IN #define BELONGS_AUDIO_INTERFACE_IN		STD_AS_INTERFACE_IN
 
 // BSB 20130604 disabling UAC1 IN
@@ -244,150 +235,147 @@
 */
 
 // Output Terminal descriptor
-#define OUTPUT_TERMINAL_ID				0x03
-#define OUTPUT_TERMINAL_TYPE			0x0101 	// USB Streaming
-#define OUTPUT_TERMINAL_ASSOCIATION		0x00   	// No association
-#define OUTPUT_TERMINAL_SOURCE_ID		0x02	// From Feature Unit Terminal
+#define OUTPUT_TERMINAL_ID 0x03
+#define OUTPUT_TERMINAL_TYPE 0x0101      // USB Streaming
+#define OUTPUT_TERMINAL_ASSOCIATION 0x00 // No association
+#define OUTPUT_TERMINAL_SOURCE_ID 0x02   // From Feature Unit Terminal
 
 // Speaker Input Terminal
-#define SPK_INPUT_TERMINAL_ID			0x11
-#define SPK_INPUT_TERMINAL_TYPE			0x0101	// USB Streaming
-#define SPK_INPUT_TERMINAL_ASSOCIATION	0x00	// No association
-#define SPK_INPUT_TERMINAL_NB_CHANNELS	0x02	// Two channels - stereo
-#define SPK_INPUT_TERMINAL_CHANNEL_CONF	0x0003	// left front and right front
-#define SPK_INPUT_TERMINAL_CH_NAME_ID	0x00	// No channel name
+#define SPK_INPUT_TERMINAL_ID 0x11
+#define SPK_INPUT_TERMINAL_TYPE 0x0101         // USB Streaming
+#define SPK_INPUT_TERMINAL_ASSOCIATION 0x00    // No association
+#define SPK_INPUT_TERMINAL_NB_CHANNELS 0x02    // Two channels - stereo
+#define SPK_INPUT_TERMINAL_CHANNEL_CONF 0x0003 // left front and right front
+#define SPK_INPUT_TERMINAL_CH_NAME_ID 0x00     // No channel name
 
 // SPK Feature Unit
-#ifdef FEATURE_VOLUME_CTRL				// Only if volume control is compiled in do we expose it in the feature unit
-#define SPK_FEATURE_UNIT_ID				0x14	// Was: 0x14
-#define SPK_FEATURE_UNIT_SOURCE_ID		SPK_INPUT_TERMINAL_ID
-#define SPK_FEATURE_UNIT_CONTROL_SIZE	0x02	// 2 bytes for each control
-#define SPK_FEATURE_UNIT_CH_NAME_ID		0x00	// No name
-#define SPK_FEATURE_UNIT_BMA_CONTROLS_0 0x0001	// Mute
-#define SPK_FEATURE_UNIT_BMA_CONTROLS_1	0x0002	// Volume control on left front
-#define SPK_FEATURE_UNIT_BMA_CONTROLS_2	0x0002	// Volume control on right front
+#ifdef FEATURE_VOLUME_CTRL       // Only if volume control is compiled in do we expose it in the feature unit
+#define SPK_FEATURE_UNIT_ID 0x14 // Was: 0x14
+#define SPK_FEATURE_UNIT_SOURCE_ID SPK_INPUT_TERMINAL_ID
+#define SPK_FEATURE_UNIT_CONTROL_SIZE 0x02     // 2 bytes for each control
+#define SPK_FEATURE_UNIT_CH_NAME_ID 0x00       // No name
+#define SPK_FEATURE_UNIT_BMA_CONTROLS_0 0x0001 // Mute
+#define SPK_FEATURE_UNIT_BMA_CONTROLS_1 0x0002 // Volume control on left front
+#define SPK_FEATURE_UNIT_BMA_CONTROLS_2 0x0002 // Volume control on right front
 #endif
-
-
 
 // SPK Output Terminal
-#define SPK_OUTPUT_TERMINAL_ID			0x13
-#define SPK_OUTPUT_TERMINAL_TYPE		AUDIO_TE_TYPE_EXTERNAL_LINE_CONNECTOR // AUDIO_TE_TYPE_OUTPUT_SPEAKER //Speakers. Was: 0x0603 // Analog line out. Was: 0x0602	// 0x0302 for Headphones. Alternatively, 0x0602, "Digital Audio Interface" }Headphones or AUDIO_TE_TYPE_EXTERNAL_DIGITAL_AUDIO_INTERFACE
-#define SPK_OUTPUT_TERMINAL_ASSOCIATION	0x00	// No association
-#ifdef FEATURE_VOLUME_CTRL				// Only if volume control is compiled in do we expose it in the feature unit
-	#define SPK_OUTPUT_TERMINAL_SOURCE_ID	SPK_FEATURE_UNIT_ID	// From Feature Unit
+#define SPK_OUTPUT_TERMINAL_ID 0x13
+#define SPK_OUTPUT_TERMINAL_TYPE AUDIO_TE_TYPE_EXTERNAL_LINE_CONNECTOR // AUDIO_TE_TYPE_OUTPUT_SPEAKER //Speakers. Was: 0x0603 // Analog line out. Was: 0x0602	// 0x0302 for Headphones. Alternatively, 0x0602, "Digital Audio Interface" }Headphones or AUDIO_TE_TYPE_EXTERNAL_DIGITAL_AUDIO_INTERFACE
+#define SPK_OUTPUT_TERMINAL_ASSOCIATION 0x00                           // No association
+#ifdef FEATURE_VOLUME_CTRL                                             // Only if volume control is compiled in do we expose it in the feature unit
+#define SPK_OUTPUT_TERMINAL_SOURCE_ID SPK_FEATURE_UNIT_ID              // From Feature Unit
 #else
-	#define SPK_OUTPUT_TERMINAL_SOURCE_ID	SPK_INPUT_TERMINAL_ID	// From Feature Unit
+#define SPK_OUTPUT_TERMINAL_SOURCE_ID SPK_INPUT_TERMINAL_ID // From Feature Unit
 #endif
 
-#define SPK_ALT1_AS_NB_ENDPOINT			0x02	// OUT EP and FB EP
-#define SPK_ALT2_AS_NB_ENDPOINT			0x02	// OUT EP and FB EP
+#define SPK_ALT1_AS_NB_ENDPOINT 0x02 // OUT EP and FB EP
+#define SPK_ALT2_AS_NB_ENDPOINT 0x02 // OUT EP and FB EP
 //#define SPK_ALT1_AS_NB_ENDPOINT		0x01	// OUT EP
 
-#define SPK_AS_TERMINAL_LINK			0x11	// Unit Id of the speaker input terminal
-#define SPK_AS_DELAY					0x04	// Interface delay
-#define SPK_AS_FORMAT_TAG			    0x0001	// PCM
+#define SPK_AS_TERMINAL_LINK 0x11 // Unit Id of the speaker input terminal
+#define SPK_AS_DELAY 0x04         // Interface delay
+#define SPK_AS_FORMAT_TAG 0x0001  // PCM
 
 //Alternate O Audio Streaming (AS) interface descriptor
-#define ALT0_AS_INTERFACE_INDEX			0x00   // Index of Std AS interface Alt0
-#define ALT0_AS_NB_ENDPOINT				0x00   // Nb of endpoints for alt0 interface
-#define ALT0_AS_INTERFACE_CLASS			0x01   // Audio class
-#define ALT0_AS_INTERFACE_SUB_CLASS 	0x02   // Audio streamn sub class
-#define ALT0_AS_INTERFACE_PROTOCOL		0x00   // Unused
+#define ALT0_AS_INTERFACE_INDEX 0x00     // Index of Std AS interface Alt0
+#define ALT0_AS_NB_ENDPOINT 0x00         // Nb of endpoints for alt0 interface
+#define ALT0_AS_INTERFACE_CLASS 0x01     // Audio class
+#define ALT0_AS_INTERFACE_SUB_CLASS 0x02 // Audio streamn sub class
+#define ALT0_AS_INTERFACE_PROTOCOL 0x00  // Unused
 
 //Alternate 1 Audio Streaming (AS) interface descriptor
-#define ALT1_AS_INTERFACE_INDEX			0x01   // Index of Std AS interface Alt1
-#define ALT1_AS_NB_ENDPOINT				0x01   // Nb of endpoints for alt1 interface
-#define ALT1_AS_INTERFACE_CLASS			0x01   // Audio class
-#define ALT1_AS_INTERFACE_SUB_CLASS 	0x02   // Audio streamn sub class
-#define ALT1_AS_INTERFACE_PROTOCOL		0x00   // Unused
+#define ALT1_AS_INTERFACE_INDEX 0x01     // Index of Std AS interface Alt1
+#define ALT1_AS_NB_ENDPOINT 0x01         // Nb of endpoints for alt1 interface
+#define ALT1_AS_INTERFACE_CLASS 0x01     // Audio class
+#define ALT1_AS_INTERFACE_SUB_CLASS 0x02 // Audio streamn sub class
+#define ALT1_AS_INTERFACE_PROTOCOL 0x00  // Unused
 
 //Alternate 2 Audio Streaming (AS) interface descriptor
-#define ALT2_AS_INTERFACE_INDEX			0x02   // Index of Std AS interface Alt2
-#define ALT2_AS_NB_ENDPOINT				0x01   // Nb of endpoints for alt2 interface
-#define ALT2_AS_INTERFACE_CLASS			0x01   // Audio class
-#define ALT2_AS_INTERFACE_SUB_CLASS 	0x02   // Audio streamn sub class
-#define ALT2_AS_INTERFACE_PROTOCOL		0x00   // Unused
+#define ALT2_AS_INTERFACE_INDEX 0x02     // Index of Std AS interface Alt2
+#define ALT2_AS_NB_ENDPOINT 0x01         // Nb of endpoints for alt2 interface
+#define ALT2_AS_INTERFACE_CLASS 0x01     // Audio class
+#define ALT2_AS_INTERFACE_SUB_CLASS 0x02 // Audio streamn sub class
+#define ALT2_AS_INTERFACE_PROTOCOL 0x00  // Unused
 
 //AS general Interface descriptor
-#define AS_TERMINAL_LINK					0x03   // Unit Id of the output terminal
-#define AS_DELAY							0x01   // Interface delay
-#define AS_FORMAT_TAG						0x0001 // PCM Format
+#define AS_TERMINAL_LINK 0x03 // Unit Id of the output terminal
+#define AS_DELAY 0x01         // Interface delay
+#define AS_FORMAT_TAG 0x0001  // PCM Format
 // Format type for ALT1
-#define FORMAT_TYPE							0x01	// Format TypeI
-#define FORMAT_NB_CHANNELS					0x02	// Two Channels
-#define FORMAT_FRAME_SIZE_ALT1				0x03	// 3 bytes per audio sample
-#define FORMAT_BIT_RESOLUTION_ALT1			0x18	// 24 bits per sample
-#define FORMAT_FRAME_SIZE_ALT2				0x02	// 2 bytes per audio sample
-#define FORMAT_BIT_RESOLUTION_ALT2			0x10	// 16 bits per sample
-#define FORMAT_SAMPLE_FREQ_NB				0x02	// Two frequency supported
-#define FORMAT_LSBYTE_SAMPLE_FREQ_441		0xac44	// 44.1khz
-#define FORMAT_LSBYTE_SAMPLE_FREQ_48		0xbb80	// 48khz
-#define FORMAT_MSBYTE_SAMPLE_FREQ			0x00	// MsByte
+#define FORMAT_TYPE 0x01                     // Format TypeI
+#define FORMAT_NB_CHANNELS 0x02              // Two Channels
+#define FORMAT_FRAME_SIZE_ALT1 0x03          // 3 bytes per audio sample
+#define FORMAT_BIT_RESOLUTION_ALT1 0x18      // 24 bits per sample
+#define FORMAT_FRAME_SIZE_ALT2 0x02          // 2 bytes per audio sample
+#define FORMAT_BIT_RESOLUTION_ALT2 0x10      // 16 bits per sample
+#define FORMAT_SAMPLE_FREQ_NB 0x02           // Two frequency supported
+#define FORMAT_LSBYTE_SAMPLE_FREQ_441 0xac44 // 44.1khz
+#define FORMAT_LSBYTE_SAMPLE_FREQ_48 0xbb80  // 48khz
+#define FORMAT_MSBYTE_SAMPLE_FREQ 0x00       // MsByte
 //#define FORMAT_LSBYTE_SAMPLE_FREQ			0x7700	// 96khz
 //#define FORMAT_MSBYTE_SAMPLE_FREQ			0x01	// MsByte
 
-
 //Audio endpoint specific descriptor field
-#define AUDIO_EP_ATRIBUTES				0x01	 	// sampling freq, no pitch, no pading
-#define AUDIO_EP_DELAY_UNIT				0x00	 	// Unused
-#define AUDIO_EP_LOCK_DELAY				0x0000		// Unused
+#define AUDIO_EP_ATRIBUTES 0x01    // sampling freq, no pitch, no pading
+#define AUDIO_EP_DELAY_UNIT 0x00   // Unused
+#define AUDIO_EP_LOCK_DELAY 0x0000 // Unused
 
 typedef
 #if (defined __ICCAVR32__)
 #pragma pack(1)
 #endif
-struct
+    struct
 #if (defined __GNUC__)
-__attribute__((__packed__))
+    __attribute__((__packed__))
 #endif
 {
-	  S_usb_configuration_descriptor cfg;
+    S_usb_configuration_descriptor cfg;
 // Config interface at endpoint 0
 #ifdef FEATURE_CFG_INTERFACE
-	  S_usb_interface_descriptor	 ifc0;
+    S_usb_interface_descriptor ifc0;
 #endif
-	  S_usb_interface_association_descriptor iad1;
-	  S_usb_interface_descriptor     	ifc2;
-	  S_usb_ac_interface_descriptor_1  	audioac;
-	  // BSB 20130604 disabling UAC1 IN	  S_usb_in_ter_descriptor_1		 	mic_in_ter;
-	  // BSB 20130604 disabling UAC1 IN   S_usb_feature_unit_descriptor_1  	mic_fea_unit;
-	  // BSB 20130604 disabling UAC1 IN   S_usb_out_ter_descriptor_1	 	mic_out_ter;
-	  S_usb_in_ter_descriptor_1			spk_in_ter;
-#ifdef FEATURE_VOLUME_CTRL				// Only if volume control is compiled in do we expose it in the feature unit
-	  S_usb_feature_unit_descriptor_1	spk_fea_unit;
+    S_usb_interface_association_descriptor iad1;
+    S_usb_interface_descriptor ifc2;
+    S_usb_ac_interface_descriptor_1 audioac;
+    // BSB 20130604 disabling UAC1 IN	  S_usb_in_ter_descriptor_1		 	mic_in_ter;
+    // BSB 20130604 disabling UAC1 IN   S_usb_feature_unit_descriptor_1  	mic_fea_unit;
+    // BSB 20130604 disabling UAC1 IN   S_usb_out_ter_descriptor_1	 	mic_out_ter;
+    S_usb_in_ter_descriptor_1 spk_in_ter;
+#ifdef FEATURE_VOLUME_CTRL // Only if volume control is compiled in do we expose it in the feature unit
+    S_usb_feature_unit_descriptor_1 spk_fea_unit;
 #endif
-	  S_usb_out_ter_descriptor_1		spk_out_ter;
+    S_usb_out_ter_descriptor_1 spk_out_ter;
 
-	  // alt0
-	  S_usb_as_interface_descriptor 	spk_as_alt0;
+    // alt0
+    S_usb_as_interface_descriptor spk_as_alt0;
 
-	  // alt1
-	  S_usb_as_interface_descriptor 	spk_as_alt1;
-	  S_usb_as_g_interface_descriptor_1	spk_g_as;
-	  S_usb_format_type_1				spk_format_type;
-	  S_usb_endpoint_audio_descriptor_1	ep3;
-	  S_usb_endpoint_audio_specific_1 	ep3_s;
-	  S_usb_endpoint_audio_descriptor_1	ep5;
+    // alt1
+    S_usb_as_interface_descriptor spk_as_alt1;
+    S_usb_as_g_interface_descriptor_1 spk_g_as;
+    S_usb_format_type_1 spk_format_type;
+    S_usb_endpoint_audio_descriptor_1 ep3;
+    S_usb_endpoint_audio_specific_1 ep3_s;
+    S_usb_endpoint_audio_descriptor_1 ep5;
 
-	  // alt2
-	  S_usb_as_interface_descriptor 	spk_as_alt2;
-	  S_usb_as_g_interface_descriptor_1	spk_g_as_alt2;
-	  S_usb_format_type_1				spk_format_type_alt2;
-	  S_usb_endpoint_audio_descriptor_1	ep3_alt2;
-	  S_usb_endpoint_audio_specific_1 	ep3_s_alt2;
-	  S_usb_endpoint_audio_descriptor_1	ep5_alt2;
+    // alt2
+    S_usb_as_interface_descriptor spk_as_alt2;
+    S_usb_as_g_interface_descriptor_1 spk_g_as_alt2;
+    S_usb_format_type_1 spk_format_type_alt2;
+    S_usb_endpoint_audio_descriptor_1 ep3_alt2;
+    S_usb_endpoint_audio_specific_1 ep3_s_alt2;
+    S_usb_endpoint_audio_descriptor_1 ep5_alt2;
 
-	  // BSB 20130604 disabling UAC1 IN   S_usb_as_interface_descriptor 	mic_as_alt0;
-	  // BSB 20130604 disabling UAC1 IN   S_usb_as_interface_descriptor 	mic_as_alt1;
-	  // BSB 20130604 disabling UAC1 IN   S_usb_as_g_interface_descriptor_1	mic_g_as;
-	  // BSB 20130604 disabling UAC1 IN   S_usb_format_type_1				mic_format_type;
-	  // BSB 20130604 disabling UAC1 IN   S_usb_endpoint_audio_descriptor_1	ep4;
-	  // BSB 20130604 disabling UAC1 IN   S_usb_endpoint_audio_specific_1 	ep4_s;
+    // BSB 20130604 disabling UAC1 IN   S_usb_as_interface_descriptor 	mic_as_alt0;
+    // BSB 20130604 disabling UAC1 IN   S_usb_as_interface_descriptor 	mic_as_alt1;
+    // BSB 20130604 disabling UAC1 IN   S_usb_as_g_interface_descriptor_1	mic_g_as;
+    // BSB 20130604 disabling UAC1 IN   S_usb_format_type_1				mic_format_type;
+    // BSB 20130604 disabling UAC1 IN   S_usb_endpoint_audio_descriptor_1	ep4;
+    // BSB 20130604 disabling UAC1 IN   S_usb_endpoint_audio_specific_1 	ep4_s;
 #ifdef FEATURE_HID
-	  S_usb_interface_descriptor	ifc1;
-	  S_usb_hid_descriptor           hid;
-	  S_usb_endpoint_descriptor      ep1;
+    S_usb_interface_descriptor ifc1;
+    S_usb_hid_descriptor hid;
+    S_usb_endpoint_descriptor ep1;
 //	  S_usb_endpoint_descriptor		 ep2;
 #endif
 }
@@ -399,8 +387,8 @@ S_usb_user_configuration_descriptor;
 extern const S_usb_device_descriptor uac1_audio_usb_dev_desc;
 extern const S_usb_device_descriptor uac1_dg8saq_usb_dev_desc;
 
-#if (USB_HIGH_SPEED_SUPPORT==ENABLED)
-	extern const S_usb_device_qualifier_descriptor uac1_usb_qualifier_desc;
+#if (USB_HIGH_SPEED_SUPPORT == ENABLED)
+extern const S_usb_device_qualifier_descriptor uac1_usb_qualifier_desc;
 #endif
 
 #ifdef VDD_SENSE
@@ -411,15 +399,15 @@ extern const S_usb_user_configuration_descriptor uac1_usb_conf_desc_fs;
 extern const S_usb_user_configuration_descriptor uac1_usb_conf_desc_fs_widget;
 #endif
 
-#if (USB_HIGH_SPEED_SUPPORT==ENABLED)
+#if (USB_HIGH_SPEED_SUPPORT == ENABLED)
 #ifdef VDD_SENSE
-	extern S_usb_user_configuration_descriptor uac1_usb_conf_desc_hs;
-	extern S_usb_user_configuration_descriptor uac1_usb_conf_desc_hs_widget;
+extern S_usb_user_configuration_descriptor uac1_usb_conf_desc_hs;
+extern S_usb_user_configuration_descriptor uac1_usb_conf_desc_hs_widget;
 #else
-	extern const S_usb_user_configuration_descriptor uac1_usb_conf_desc_hs;
-	extern const S_usb_user_configuration_descriptor uac1_usb_conf_desc_hs_widget;
+extern const S_usb_user_configuration_descriptor uac1_usb_conf_desc_hs;
+extern const S_usb_user_configuration_descriptor uac1_usb_conf_desc_hs_widget;
 #endif
-	extern const S_usb_device_qualifier_descriptor uac1_usb_qualifier_desc;
+extern const S_usb_device_qualifier_descriptor uac1_usb_qualifier_desc;
 #endif
 
-#endif  // _UAC1_USB_DESCRIPTORS_H_
+#endif // _UAC1_USB_DESCRIPTORS_H_

@@ -70,16 +70,14 @@
 
 #include "compiler.h"
 
-
 /*! \name Identifiers of LEDs to Use with LED Functions
  */
 //! @{
-#define LED0  0x01
-#define LED1  0x02
-#define LED2  0x04
-#define LED3  0x08
+#define LED0 0x01
+#define LED1 0x02
+#define LED2 0x04
+#define LED3 0x08
 //! @}
-
 
 /*! \brief Gets the last state of all LEDs set through the LED API.
  *
@@ -200,4 +198,4 @@ extern U8 LED_Get_Intensity(U32 led);
  */
 extern void LED_Set_Intensity(U32 leds, U8 intensity);
 
-#endif  // _LED_H_
+#endif // _LED_H_

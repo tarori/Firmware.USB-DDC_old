@@ -47,169 +47,171 @@
  *
  */
 
-#include <avr32/io.h>
+#include "rtc.h"
 #include "compiler.h"
 #include "pm.h"
-#include "rtc.h"
-
+#include <avr32/io.h>
 
 int rtc_is_busy(volatile avr32_rtc_t *rtc)
 {
-  return (rtc->ctrl & AVR32_RTC_CTRL_BUSY_MASK) != 0;
+    return (rtc->ctrl & AVR32_RTC_CTRL_BUSY_MASK) != 0;
 }
-
 
 int rtc_init(volatile avr32_rtc_t *rtc, unsigned char osc_type, unsigned char psel)
 {
-  // If exit, it means that the configuration has not been set correctly
-  if (osc_type > (1 << AVR32_RTC_CTRL_CLK32_SIZE) - 1 ||
-      psel > (1 << AVR32_RTC_CTRL_PSEL_SIZE) - 1)
-    return 0;
+    // If exit, it means that the configuration has not been set correctly
+    if (osc_type > (1 << AVR32_RTC_CTRL_CLK32_SIZE) - 1 ||
+        psel > (1 << AVR32_RTC_CTRL_PSEL_SIZE) - 1)
+        return 0;
 
-  // If we use the 32-kHz oscillator, we have to enable it first
-  if (osc_type == RTC_OSC_32KHZ)
-  {
-    // Select the 32-kHz oscillator crystal
-    pm_enable_osc32_crystal(&AVR32_PM);
-    // Enable the 32-kHz clock
-    pm_enable_clk32_no_wait(&AVR32_PM, AVR32_PM_OSCCTRL32_STARTUP_0_RCOSC);
-  }
+    // If we use the 32-kHz oscillator, we have to enable it first
+    if (osc_type == RTC_OSC_32KHZ) {
+        // Select the 32-kHz oscillator crystal
+        pm_enable_osc32_crystal(&AVR32_PM);
+        // Enable the 32-kHz clock
+        pm_enable_clk32_no_wait(&AVR32_PM, AVR32_PM_OSCCTRL32_STARTUP_0_RCOSC);
+    }
 
-  // Wait until the rtc CTRL register is up-to-date
-  while (rtc_is_busy(rtc));
+    // Wait until the rtc CTRL register is up-to-date
+    while (rtc_is_busy(rtc))
+        ;
 
-  // Set the new RTC configuration
-  rtc->ctrl = osc_type << AVR32_RTC_CTRL_CLK32_OFFSET |
-              psel << AVR32_RTC_CTRL_PSEL_OFFSET |
-              AVR32_RTC_CTRL_CLKEN_MASK;
+    // Set the new RTC configuration
+    rtc->ctrl = osc_type << AVR32_RTC_CTRL_CLK32_OFFSET |
+                psel << AVR32_RTC_CTRL_PSEL_OFFSET |
+                AVR32_RTC_CTRL_CLKEN_MASK;
 
-  // BSB: For definitions see C:\Program Files (x86)\Atmel\AVR Tools\AVR Toolchain\avr32\include\avr32\rtc_231.h
+    // BSB: For definitions see C:\Program Files (x86)\Atmel\AVR Tools\AVR Toolchain\avr32\include\avr32\rtc_231.h
 
-  // Wait until write is done
-  while (rtc_is_busy(rtc));
+    // Wait until write is done
+    while (rtc_is_busy(rtc))
+        ;
 
-  // Set the counter value to 0
-  rtc_set_value(rtc, 0x00000000);
-  // Set the top value to 0xFFFFFFFF
-  rtc_set_top_value(rtc, 0xFFFFFFFF);
+    // Set the counter value to 0
+    rtc_set_value(rtc, 0x00000000);
+    // Set the top value to 0xFFFFFFFF
+    rtc_set_top_value(rtc, 0xFFFFFFFF);
 
-  return 1;
+    return 1;
 }
-
 
 void rtc_set_value(volatile avr32_rtc_t *rtc, unsigned long val)
 {
-  // Wait until we can write into the VAL register
-  while (rtc_is_busy(rtc));
-  // Set the new val value
-  rtc->val = val;
-  // Wait until write is done
-  while (rtc_is_busy(rtc));
+    // Wait until we can write into the VAL register
+    while (rtc_is_busy(rtc))
+        ;
+    // Set the new val value
+    rtc->val = val;
+    // Wait until write is done
+    while (rtc_is_busy(rtc))
+        ;
 }
-
 
 unsigned long rtc_get_value(volatile avr32_rtc_t *rtc)
 {
-  return rtc->val;
+    return rtc->val;
 }
-
 
 void rtc_enable_wake_up(volatile avr32_rtc_t *rtc)
 {
-  // Wait until the rtc CTRL register is up-to-date
-  while (rtc_is_busy(rtc));
-  // Enable the wake up of the RTC
-  rtc->ctrl |= AVR32_RTC_CTRL_WAKE_EN_MASK;
-  // Wait until write is done
-  while (rtc_is_busy(rtc));
+    // Wait until the rtc CTRL register is up-to-date
+    while (rtc_is_busy(rtc))
+        ;
+    // Enable the wake up of the RTC
+    rtc->ctrl |= AVR32_RTC_CTRL_WAKE_EN_MASK;
+    // Wait until write is done
+    while (rtc_is_busy(rtc))
+        ;
 }
-
 
 void rtc_disable_wake_up(volatile avr32_rtc_t *rtc)
 {
-  // Wait until the rtc CTRL register is up-to-date
-  while (rtc_is_busy(rtc));
-  // Disable the wake up of the RTC
-  rtc->ctrl &= ~AVR32_RTC_CTRL_WAKE_EN_MASK;
-  // Wait until write is done
-  while (rtc_is_busy(rtc));
+    // Wait until the rtc CTRL register is up-to-date
+    while (rtc_is_busy(rtc))
+        ;
+    // Disable the wake up of the RTC
+    rtc->ctrl &= ~AVR32_RTC_CTRL_WAKE_EN_MASK;
+    // Wait until write is done
+    while (rtc_is_busy(rtc))
+        ;
 }
-
 
 void rtc_enable(volatile avr32_rtc_t *rtc)
 {
-  // Wait until the rtc CTRL register is up-to-date
-  while (rtc_is_busy(rtc));
-  // Enable the RTC
-  rtc->ctrl |= AVR32_RTC_CTRL_EN_MASK;
-  // Wait until write is done
-  while (rtc_is_busy(rtc));
+    // Wait until the rtc CTRL register is up-to-date
+    while (rtc_is_busy(rtc))
+        ;
+    // Enable the RTC
+    rtc->ctrl |= AVR32_RTC_CTRL_EN_MASK;
+    // Wait until write is done
+    while (rtc_is_busy(rtc))
+        ;
 }
-
 
 void rtc_disable(volatile avr32_rtc_t *rtc)
 {
-  // Wait until the rtc CTRL register is up-to-date
-  while (rtc_is_busy(rtc));
-  // Disable the RTC
-  rtc->ctrl &= ~AVR32_RTC_CTRL_EN_MASK;
-  // Wait until write is done
-  while (rtc_is_busy(rtc));
+    // Wait until the rtc CTRL register is up-to-date
+    while (rtc_is_busy(rtc))
+        ;
+    // Disable the RTC
+    rtc->ctrl &= ~AVR32_RTC_CTRL_EN_MASK;
+    // Wait until write is done
+    while (rtc_is_busy(rtc))
+        ;
 }
-
 
 void rtc_enable_interrupt(volatile avr32_rtc_t *rtc)
 {
-  rtc->ier = AVR32_RTC_IER_TOPI_MASK;
+    rtc->ier = AVR32_RTC_IER_TOPI_MASK;
 }
-
 
 void rtc_disable_interrupt(volatile avr32_rtc_t *rtc)
 {
-  Bool global_interrupt_enabled = Is_global_interrupt_enabled();
+    Bool global_interrupt_enabled = Is_global_interrupt_enabled();
 
-  if (global_interrupt_enabled) Disable_global_interrupt();
-  rtc->idr = AVR32_RTC_IDR_TOPI_MASK;
-  rtc->imr;
-  if (global_interrupt_enabled) Enable_global_interrupt();
+    if (global_interrupt_enabled)
+        Disable_global_interrupt();
+    rtc->idr = AVR32_RTC_IDR_TOPI_MASK;
+    rtc->imr;
+    if (global_interrupt_enabled)
+        Enable_global_interrupt();
 }
-
 
 void rtc_clear_interrupt(volatile avr32_rtc_t *rtc)
 {
-  Bool global_interrupt_enabled = Is_global_interrupt_enabled();
+    Bool global_interrupt_enabled = Is_global_interrupt_enabled();
 
-  if (global_interrupt_enabled) Disable_global_interrupt();
-  rtc->icr = AVR32_RTC_ICR_TOPI_MASK;
-  rtc->isr;
-  if (global_interrupt_enabled) Enable_global_interrupt();
+    if (global_interrupt_enabled)
+        Disable_global_interrupt();
+    rtc->icr = AVR32_RTC_ICR_TOPI_MASK;
+    rtc->isr;
+    if (global_interrupt_enabled)
+        Enable_global_interrupt();
 }
-
 
 void rtc_set_top_value(volatile avr32_rtc_t *rtc, unsigned long top)
 {
-  // Wait until we can write into the VAL register
-  while (rtc_is_busy(rtc));
-  // Set the new val value
-  rtc->top = top;
-  // Wait until write is done
-  while (rtc_is_busy(rtc));
+    // Wait until we can write into the VAL register
+    while (rtc_is_busy(rtc))
+        ;
+    // Set the new val value
+    rtc->top = top;
+    // Wait until write is done
+    while (rtc_is_busy(rtc))
+        ;
 }
-
 
 unsigned long rtc_get_top_value(volatile avr32_rtc_t *rtc)
 {
-  return rtc->top;
+    return rtc->top;
 }
-
 
 int rtc_interrupt_enabled(volatile avr32_rtc_t *rtc)
 {
-  return (rtc->imr & AVR32_RTC_IMR_TOPI_MASK) != 0;
+    return (rtc->imr & AVR32_RTC_IMR_TOPI_MASK) != 0;
 }
-
 
 int rtc_is_interrupt(volatile avr32_rtc_t *rtc)
 {
-  return (rtc->isr & AVR32_RTC_ISR_TOPI_MASK) != 0;
+    return (rtc->isr & AVR32_RTC_ISR_TOPI_MASK) != 0;
 }

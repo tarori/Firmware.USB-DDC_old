@@ -15,7 +15,7 @@ typedef void (*widget_factory_reset_handler_t)(void);
 
 // the number of factory reset handlers allowed
 // there are 2 known at present: features and moboConfig
-#define WIDGET_FACTORY_RESET_HANDLERS	4
+#define WIDGET_FACTORY_RESET_HANDLERS 4
 
 // widget is in initialization
 extern int widget_is_initializing(void);

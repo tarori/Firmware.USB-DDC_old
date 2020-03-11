@@ -25,42 +25,42 @@
 //
 
 typedef enum {
-  feature_major_index = 0,		// major version number = feature_end_index
-  feature_minor_index,			// minor version number = feature_end_values
-  feature_board_index,			// board identifier
-  feature_image_index,			// image to boot
-  feature_in_index,				// keep or swap left/right channels on input
-  feature_out_index,			// keep or swap left/right channels on output
-  feature_adc_index,			// adc identifier
-  feature_dac_index,			// dac identifier
-  feature_lcd_index,			// lcd display type
-  feature_log_index,			// startup log display timing
-  feature_filter_index,			// setting of filter
-  feature_quirk_index,			// setting of various quirks
-  feature_msb_vol_L,			// left volume control, msb of usb value
-  feature_lsb_vol_L,			// left volume control, lsb
-  feature_msb_vol_R,			// right volume control, msb
-  feature_lsb_vol_R,			// right volume control, lsb
-  feature_end_index				// end marker, used to size arrays
+    feature_major_index = 0, // major version number = feature_end_index
+    feature_minor_index,     // minor version number = feature_end_values
+    feature_board_index,     // board identifier
+    feature_image_index,     // image to boot
+    feature_in_index,        // keep or swap left/right channels on input
+    feature_out_index,       // keep or swap left/right channels on output
+    feature_adc_index,       // adc identifier
+    feature_dac_index,       // dac identifier
+    feature_lcd_index,       // lcd display type
+    feature_log_index,       // startup log display timing
+    feature_filter_index,    // setting of filter
+    feature_quirk_index,     // setting of various quirks
+    feature_msb_vol_L,       // left volume control, msb of usb value
+    feature_lsb_vol_L,       // left volume control, lsb
+    feature_msb_vol_R,       // right volume control, msb
+    feature_lsb_vol_R,       // right volume control, lsb
+    feature_end_index        // end marker, used to size arrays
 } feature_index_t;
 
-#define FEATURE_INDEX_NAMES "major",				\
-		"minor",									\
-		"board",									\
-		"image",									\
-		"in",										\
-		"out",										\
-		"adc",										\
-		"dac",										\
-		"lcd",										\
-		"log",										\
-		"filter",									\
-		"quirk",									\
-		"msb_vol_L",								\
-		"lsb_vol_L",								\
-		"msb_vol_R",								\
-		"lsb_vol_R",								\
-		"end"
+#define FEATURE_INDEX_NAMES "major",     \
+                            "minor",     \
+                            "board",     \
+                            "image",     \
+                            "in",        \
+                            "out",       \
+                            "adc",       \
+                            "dac",       \
+                            "lcd",       \
+                            "log",       \
+                            "filter",    \
+                            "quirk",     \
+                            "msb_vol_L", \
+                            "lsb_vol_L", \
+                            "msb_vol_R", \
+                            "lsb_vol_R", \
+                            "end"
 
 //
 // the features are enumerated as single group
@@ -77,99 +77,99 @@ typedef enum {
 // so, for instance, if Alex wants to add a test image:
 // 1) insert feature_image_alex_test before feature_end_image;
 // 2) insert "alex_test" into the FEATURE_VALUE_NAMES;
-// 2) #define FEATURE_IMAGE_ALEX_TEST 
+// 2) #define FEATURE_IMAGE_ALEX_TEST
 //
 typedef enum {
-	feature_board_none = 0,		// board selection
-	feature_board_widget,
-	feature_board_usbi2s,
-	feature_board_usbdac,
-	feature_end_board,
-	feature_image_uac1_audio,
-//	feature_image_uac1_dg8saq,
-	feature_image_uac2_audio,
-//	feature_image_uac2_dg8saq,
-//	feature_image_hpsdr,
-//	feature_image_test,
-	feature_end_image,
-	feature_in_normal,			// input channel
-	feature_in_swapped,
-	feature_end_in,
-	feature_out_normal,			// output channel
-	feature_out_swapped,
-	feature_end_out,
-	feature_adc_none,			// adc
-	feature_adc_ak5394a,
-	feature_end_adc,
-	feature_dac_none,			// dac
-	feature_dac_cs4344,
-	feature_dac_generic,
-	feature_end_dac,
-	feature_lcd_none,			// lcd
-	feature_lcd_hd44780,		/* normal hd44780 lcd controller */
-	feature_lcd_ks0073,			/* ks0073 almost hd44780 compatible */
-	feature_end_lcd,
-	feature_log_none,			// log
-	feature_log_500ms,
-	feature_log_1sec,
-	feature_log_2sec,
-	feature_end_log,
-	feature_filter_fir,			// filter select
-	feature_filter_iir,
-	feature_end_filter,
-	feature_quirk_linux,		// Linux_quirk select
-	feature_quirk_ptest,		// Production test quirk
-	feature_quirk_none,			// No quirks, normal operation
-	feature_quirk_fb_Hstupid,	// BSB 20131101 emaulate stupid feedback system at Host
-	feature_quirk_fb_Hdead,		// BSB 20131101 emaulate stupid feedback system at Host
-	feature_quirk_fb_noskip,	// BSB 20131101 disable (future) skip/insert system
-	feature_end_quirk,			// BSB 20131101 renamed "lquirk" to "quirk"
-	feature_end_values			// end
+    feature_board_none = 0, // board selection
+    feature_board_widget,
+    feature_board_usbi2s,
+    feature_board_usbdac,
+    feature_end_board,
+    feature_image_uac1_audio,
+    //	feature_image_uac1_dg8saq,
+    feature_image_uac2_audio,
+    //	feature_image_uac2_dg8saq,
+    //	feature_image_hpsdr,
+    //	feature_image_test,
+    feature_end_image,
+    feature_in_normal, // input channel
+    feature_in_swapped,
+    feature_end_in,
+    feature_out_normal, // output channel
+    feature_out_swapped,
+    feature_end_out,
+    feature_adc_none, // adc
+    feature_adc_ak5394a,
+    feature_end_adc,
+    feature_dac_none, // dac
+    feature_dac_cs4344,
+    feature_dac_generic,
+    feature_end_dac,
+    feature_lcd_none,    // lcd
+    feature_lcd_hd44780, /* normal hd44780 lcd controller */
+    feature_lcd_ks0073,  /* ks0073 almost hd44780 compatible */
+    feature_end_lcd,
+    feature_log_none, // log
+    feature_log_500ms,
+    feature_log_1sec,
+    feature_log_2sec,
+    feature_end_log,
+    feature_filter_fir, // filter select
+    feature_filter_iir,
+    feature_end_filter,
+    feature_quirk_linux,      // Linux_quirk select
+    feature_quirk_ptest,      // Production test quirk
+    feature_quirk_none,       // No quirks, normal operation
+    feature_quirk_fb_Hstupid, // BSB 20131101 emaulate stupid feedback system at Host
+    feature_quirk_fb_Hdead,   // BSB 20131101 emaulate stupid feedback system at Host
+    feature_quirk_fb_noskip,  // BSB 20131101 disable (future) skip/insert system
+    feature_end_quirk,        // BSB 20131101 renamed "lquirk" to "quirk"
+    feature_end_values        // end
 } feature_values_t;
 
 #define FEATURE_VALUE_NAMES \
-		"none",															\
-		"widget",														\
-		"usbi2s",														\
-		"usbdac",														\
-		"end",															\
-		"uac1_audio",													\
-		"uac2_audio",													\
-		"end",															\
-		"normal",														\
-		"swapped",														\
-		"end",															\
-		"normal",														\
-		"swapped",														\
-		"end",															\
-		"none",															\
-		"ak5394a",														\
-		"end",															\
-		"none",															\
-		"cs4344",														\
-		"generic",														\
-		"end",															\
-		"none",															\
-		"hd44780",														\
-		"ks0073",														\
-		"end",															\
-		"none",															\
-		"500ms",														\
-		"1sec",															\
-		"2sec",															\
-		"end",															\
-		"fir",															\
-		"iir",															\
-		"end",															\
-		"quirk_linux",													\
-		"quirk_ptest",													\
-		"quirk_none",													\
-		"quirk_fb_Hstupid",												\
-		"quirk_fb_Hdead",												\
-		"quirk_fb_noskip",												\
-		"end",															\
-		"end"
-	
+    "none",                 \
+        "widget",           \
+        "usbi2s",           \
+        "usbdac",           \
+        "end",              \
+        "uac1_audio",       \
+        "uac2_audio",       \
+        "end",              \
+        "normal",           \
+        "swapped",          \
+        "end",              \
+        "normal",           \
+        "swapped",          \
+        "end",              \
+        "none",             \
+        "ak5394a",          \
+        "end",              \
+        "none",             \
+        "cs4344",           \
+        "generic",          \
+        "end",              \
+        "none",             \
+        "hd44780",          \
+        "ks0073",           \
+        "end",              \
+        "none",             \
+        "500ms",            \
+        "1sec",             \
+        "2sec",             \
+        "end",              \
+        "fir",              \
+        "iir",              \
+        "end",              \
+        "quirk_linux",      \
+        "quirk_ptest",      \
+        "quirk_none",       \
+        "quirk_fb_Hstupid", \
+        "quirk_fb_Hdead",   \
+        "quirk_fb_noskip",  \
+        "end",              \
+        "end"
+
 typedef uint8_t features_t[feature_end_index];
 
 extern features_t features_nvram, features;
@@ -182,60 +182,59 @@ extern const features_t features_default;
 // be eliminated.
 //
 
-#define FEATURE_MAJOR					(features[feature_major_index])
-#define FEATURE_MAJOR_NVRAM				(features_nvram[feature_major_index])
+#define FEATURE_MAJOR (features[feature_major_index])
+#define FEATURE_MAJOR_NVRAM (features_nvram[feature_major_index])
 
-#define FEATURE_MINOR					(features[feature_minor_index])
-#define FEATURE_MINOR_NVRAM				(features_nvram[feature_minor_index])
+#define FEATURE_MINOR (features[feature_minor_index])
+#define FEATURE_MINOR_NVRAM (features_nvram[feature_minor_index])
 
-#define FEATURE_BOARD_NONE				(features[feature_board_index] == (uint8_t)feature_board_none)
-#define FEATURE_BOARD_WIDGET			(features[feature_board_index] == (uint8_t)feature_board_widget)
-#define FEATURE_BOARD_USBI2S			(features[feature_board_index] == (uint8_t)feature_board_usbi2s)
-#define FEATURE_BOARD_USBDAC			(features[feature_board_index] == (uint8_t)feature_board_usbdac)
+#define FEATURE_BOARD_NONE (features[feature_board_index] == (uint8_t)feature_board_none)
+#define FEATURE_BOARD_WIDGET (features[feature_board_index] == (uint8_t)feature_board_widget)
+#define FEATURE_BOARD_USBI2S (features[feature_board_index] == (uint8_t)feature_board_usbi2s)
+#define FEATURE_BOARD_USBDAC (features[feature_board_index] == (uint8_t)feature_board_usbdac)
 
-#define FEATURE_IMAGE_UAC1_AUDIO		(features[feature_image_index] == (uint8_t)feature_image_uac1_audio)
+#define FEATURE_IMAGE_UAC1_AUDIO (features[feature_image_index] == (uint8_t)feature_image_uac1_audio)
 //#define FEATURE_IMAGE_UAC1_DG8SAQ		(features[feature_image_index] == (uint8_t)feature_image_uac1_dg8saq)
-#define FEATURE_IMAGE_UAC2_AUDIO		(features[feature_image_index] == (uint8_t)feature_image_uac2_audio)
+#define FEATURE_IMAGE_UAC2_AUDIO (features[feature_image_index] == (uint8_t)feature_image_uac2_audio)
 //#define FEATURE_IMAGE_UAC2_DG8SAQ		(features[feature_image_index] == (uint8_t)feature_image_uac2_dg8saq)
 //#define FEATURE_IMAGE_HPSDR				(features[feature_image_index] == (uint8_t)feature_image_hpsdr)
 //#define FEATURE_IMAGE_TEST				(features[feature_image_index] == (uint8_t)feature_image_test)
 
-#define FEATURE_IN_NORMAL				(features[feature_in_index] == (uint8_t)feature_in_normal)
-#define FEATURE_IN_SWAPPED				(features[feature_in_index] == (uint8_t)feature_in_swapped)
+#define FEATURE_IN_NORMAL (features[feature_in_index] == (uint8_t)feature_in_normal)
+#define FEATURE_IN_SWAPPED (features[feature_in_index] == (uint8_t)feature_in_swapped)
 
-#define FEATURE_OUT_NORMAL				(features[feature_out_index] == (uint8_t)feature_out_normal)
-#define FEATURE_OUT_SWAPPED				(features[feature_out_index] == (uint8_t)feature_out_swapped)
+#define FEATURE_OUT_NORMAL (features[feature_out_index] == (uint8_t)feature_out_normal)
+#define FEATURE_OUT_SWAPPED (features[feature_out_index] == (uint8_t)feature_out_swapped)
 
-#define FEATURE_ADC_NONE				(features[feature_adc_index] == (uint8_t)feature_adc_none)
-#define FEATURE_ADC_AK5394A				(features[feature_adc_index] == (uint8_t)feature_adc_ak5394a)
+#define FEATURE_ADC_NONE (features[feature_adc_index] == (uint8_t)feature_adc_none)
+#define FEATURE_ADC_AK5394A (features[feature_adc_index] == (uint8_t)feature_adc_ak5394a)
 
-#define FEATURE_DAC_NONE				(features[feature_dac_index] == (uint8_t)feature_dac_none)
-#define FEATURE_DAC_CS4344				(features[feature_dac_index] == (uint8_t)feature_dac_cs4344)
-#define FEATURE_DAC_GENERIC				(features[feature_dac_index] == (uint8_t)feature_dac_generic)
+#define FEATURE_DAC_NONE (features[feature_dac_index] == (uint8_t)feature_dac_none)
+#define FEATURE_DAC_CS4344 (features[feature_dac_index] == (uint8_t)feature_dac_cs4344)
+#define FEATURE_DAC_GENERIC (features[feature_dac_index] == (uint8_t)feature_dac_generic)
 
-#define FEATURE_LCD_NONE				(features[feature_lcd_index] == (uint8_t)feature_lcd_none)
-#define FEATURE_LCD_HD44780				(features[feature_lcd_index] == (uint8_t)feature_lcd_hd44780)
-#define FEATURE_LCD_KS0073				(features[feature_lcd_index] == (uint8_t)feature_lcd_ks0073)
+#define FEATURE_LCD_NONE (features[feature_lcd_index] == (uint8_t)feature_lcd_none)
+#define FEATURE_LCD_HD44780 (features[feature_lcd_index] == (uint8_t)feature_lcd_hd44780)
+#define FEATURE_LCD_KS0073 (features[feature_lcd_index] == (uint8_t)feature_lcd_ks0073)
 
-#define FEATURE_LOG_NONE				(features[feature_log_index] == (uint8_t)feature_log_none)
-#define FEATURE_LOG_500MS				(features[feature_log_index] == (uint8_t)feature_log_500ms)
-#define FEATURE_LOG_1SEC				(features[feature_log_index] == (uint8_t)feature_log_1sec)
-#define FEATURE_LOG_2SEC				(features[feature_log_index] == (uint8_t)feature_log_2sec)
+#define FEATURE_LOG_NONE (features[feature_log_index] == (uint8_t)feature_log_none)
+#define FEATURE_LOG_500MS (features[feature_log_index] == (uint8_t)feature_log_500ms)
+#define FEATURE_LOG_1SEC (features[feature_log_index] == (uint8_t)feature_log_1sec)
+#define FEATURE_LOG_2SEC (features[feature_log_index] == (uint8_t)feature_log_2sec)
 
-#define FEATURE_FILTER_FIR				(features[feature_filter_index] == (uint8_t)feature_filter_fir)
-#define FEATURE_FILTER_IIR				(features[feature_filter_index] == (uint8_t)feature_filter_iir)
+#define FEATURE_FILTER_FIR (features[feature_filter_index] == (uint8_t)feature_filter_fir)
+#define FEATURE_FILTER_IIR (features[feature_filter_index] == (uint8_t)feature_filter_iir)
 
-#define FEATURE_LINUX_QUIRK_ON			(features[feature_quirk_index] == (uint8_t)feature_quirk_linux)
-#define FEATURE_LINUX_QUIRK_OFF			(features[feature_quirk_index] != (uint8_t)feature_quirk_linux)
-#define FEATURE_PROD_TEST_ON			(features[feature_quirk_index] == (uint8_t)feature_quirk_ptest)
-#define FEATURE_PROD_TEST_OFF			(features[feature_quirk_index] != (uint8_t)feature_quirk_ptest)
-#define FEATURE_HSTUPID_ON				(features[feature_quirk_index] == (uint8_t)feature_quirk_fb_Hstupid)
-#define FEATURE_HSTUPID_OFF				(features[feature_quirk_index] != (uint8_t)feature_quirk_fb_Hstupid)
-#define FEATURE_HDEAD_ON				(features[feature_quirk_index] == (uint8_t)feature_quirk_fb_Hdead)
-#define FEATURE_HDEAD_OFF				(features[feature_quirk_index] != (uint8_t)feature_quirk_fb_Hdead)
-#define FEATURE_NOSKIP_ON				(features[feature_quirk_index] == (uint8_t)feature_quirk_fb_noskip)
-#define FEATURE_NOSKIP_OFF				(features[feature_quirk_index] != (uint8_t)feature_quirk_fb_noskip)
-
+#define FEATURE_LINUX_QUIRK_ON (features[feature_quirk_index] == (uint8_t)feature_quirk_linux)
+#define FEATURE_LINUX_QUIRK_OFF (features[feature_quirk_index] != (uint8_t)feature_quirk_linux)
+#define FEATURE_PROD_TEST_ON (features[feature_quirk_index] == (uint8_t)feature_quirk_ptest)
+#define FEATURE_PROD_TEST_OFF (features[feature_quirk_index] != (uint8_t)feature_quirk_ptest)
+#define FEATURE_HSTUPID_ON (features[feature_quirk_index] == (uint8_t)feature_quirk_fb_Hstupid)
+#define FEATURE_HSTUPID_OFF (features[feature_quirk_index] != (uint8_t)feature_quirk_fb_Hstupid)
+#define FEATURE_HDEAD_ON (features[feature_quirk_index] == (uint8_t)feature_quirk_fb_Hdead)
+#define FEATURE_HDEAD_OFF (features[feature_quirk_index] != (uint8_t)feature_quirk_fb_Hdead)
+#define FEATURE_NOSKIP_ON (features[feature_quirk_index] == (uint8_t)feature_quirk_fb_noskip)
+#define FEATURE_NOSKIP_OFF (features[feature_quirk_index] != (uint8_t)feature_quirk_fb_noskip)
 
 //
 // the version in the features specifies
@@ -244,8 +243,8 @@ extern const features_t features_default;
 // if there is a feature_major or feature_minor mismatch, then
 // the initial values in the build are copied into nvram
 //
-#define FEATURE_MAJOR_DEFAULT			feature_end_index
-#define FEATURE_MINOR_DEFAULT			feature_end_values
+#define FEATURE_MAJOR_DEFAULT feature_end_index
+#define FEATURE_MINOR_DEFAULT feature_end_values
 
 //
 // Check the defaults for this build
@@ -279,21 +278,21 @@ extern const features_t features_default;
 #error "FEATURE_QUIRK_DEFAULT must be defined by the Makefile"
 #endif
 
-#define FEATURES_DEFAULT FEATURE_MAJOR_DEFAULT,		\
-		FEATURE_MINOR_DEFAULT,						\
-		FEATURE_BOARD_DEFAULT,						\
-		FEATURE_IMAGE_DEFAULT,						\
-		FEATURE_IN_DEFAULT,							\
-		FEATURE_OUT_DEFAULT,						\
-		FEATURE_ADC_DEFAULT,						\
-		FEATURE_DAC_DEFAULT,						\
-		FEATURE_LCD_DEFAULT,						\
-		FEATURE_LOG_DEFAULT,						\
-		FEATURE_FILTER_DEFAULT,						\
-		FEATURE_QUIRK_DEFAULT
+#define FEATURES_DEFAULT FEATURE_MAJOR_DEFAULT,  \
+                         FEATURE_MINOR_DEFAULT,  \
+                         FEATURE_BOARD_DEFAULT,  \
+                         FEATURE_IMAGE_DEFAULT,  \
+                         FEATURE_IN_DEFAULT,     \
+                         FEATURE_OUT_DEFAULT,    \
+                         FEATURE_ADC_DEFAULT,    \
+                         FEATURE_DAC_DEFAULT,    \
+                         FEATURE_LCD_DEFAULT,    \
+                         FEATURE_LOG_DEFAULT,    \
+                         FEATURE_FILTER_DEFAULT, \
+                         FEATURE_QUIRK_DEFAULT
 
-extern const char * const feature_value_names[];
-extern const char * const feature_index_names[];
+extern const char *const feature_value_names[];
+extern const char *const feature_index_names[];
 extern void features_init();
 extern void features_display(char *title, features_t fp);
 extern void features_display_all();
@@ -305,13 +304,13 @@ extern uint8_t feature_get_default(uint8_t index);
 extern void feature_factory_reset(void);
 extern void feature_find_first_and_last_value(uint8_t index, uint8_t *first, uint8_t *last);
 
-#define FEATURE_DG8SAQ_COMMAND			0x71
-#define FEATURE_DG8SAQ_SET_NVRAM		3
-#define FEATURE_DG8SAQ_GET_NVRAM		4
-#define FEATURE_DG8SAQ_SET_RAM			5
-#define FEATURE_DG8SAQ_GET_RAM			6
-#define FEATURE_DG8SAQ_GET_INDEX_NAME	7
-#define FEATURE_DG8SAQ_GET_VALUE_NAME	8
-#define FEATURE_DG8SAQ_GET_DEFAULT		9
+#define FEATURE_DG8SAQ_COMMAND 0x71
+#define FEATURE_DG8SAQ_SET_NVRAM 3
+#define FEATURE_DG8SAQ_GET_NVRAM 4
+#define FEATURE_DG8SAQ_SET_RAM 5
+#define FEATURE_DG8SAQ_GET_RAM 6
+#define FEATURE_DG8SAQ_GET_INDEX_NAME 7
+#define FEATURE_DG8SAQ_GET_VALUE_NAME 8
+#define FEATURE_DG8SAQ_GET_DEFAULT 9
 
 #endif /* FEATURES_H_ */

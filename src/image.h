@@ -21,25 +21,25 @@
 // the necessary steps of bringing the image to life
 //
 typedef struct {
-	// image launch
-	void (*boot)(void);
-	void (*init)(void);
-	void (*task_init)(void);
-	// descriptor access
-	uint8_t *(*get_dev_desc_pointer)(void);
-	uint16_t (*get_dev_desc_length)(void);
-	uint8_t *(*get_conf_desc_pointer)(void);
-	uint16_t (*get_conf_desc_length)(void);
-	uint8_t *(*get_conf_desc_fs_pointer)(void);
-	uint16_t (*get_conf_desc_fs_length)(void);
-	uint8_t *(*get_conf_desc_hs_pointer)(void);
-	uint16_t (*get_conf_desc_hs_length)(void);
-	uint8_t *(*get_qualifier_desc_pointer)(void);
-	uint16_t (*get_qualifier_desc_length)(void);
-	// usb specific request handling
-	void (*user_endpoint_init)(uint8_t conf_nb);
-	Bool (*user_read_request)(uint8_t type, uint8_t request);
-	void (*user_set_interface)(U8 wIndex, U8 wValue);
+    // image launch
+    void (*boot)(void);
+    void (*init)(void);
+    void (*task_init)(void);
+    // descriptor access
+    uint8_t *(*get_dev_desc_pointer)(void);
+    uint16_t (*get_dev_desc_length)(void);
+    uint8_t *(*get_conf_desc_pointer)(void);
+    uint16_t (*get_conf_desc_length)(void);
+    uint8_t *(*get_conf_desc_fs_pointer)(void);
+    uint16_t (*get_conf_desc_fs_length)(void);
+    uint8_t *(*get_conf_desc_hs_pointer)(void);
+    uint16_t (*get_conf_desc_hs_length)(void);
+    uint8_t *(*get_qualifier_desc_pointer)(void);
+    uint16_t (*get_qualifier_desc_length)(void);
+    // usb specific request handling
+    void (*user_endpoint_init)(uint8_t conf_nb);
+    Bool (*user_read_request)(uint8_t type, uint8_t request);
+    void (*user_set_interface)(U8 wIndex, U8 wValue);
 } image_t;
 
 //

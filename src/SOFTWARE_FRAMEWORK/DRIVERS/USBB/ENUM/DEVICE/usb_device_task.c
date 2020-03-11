@@ -54,7 +54,6 @@
 
 #include "conf_usb.h"
 
-
 #if USB_DEVICE_FEATURE == ENABLED
 
 #include "compiler.h"
@@ -62,17 +61,15 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #endif
-#include "usb_drv.h"
-#include "usb_task.h"
 #include "usb_descriptors.h"
-#include "usb_standard_request.h"
 #include "usb_device_task.h"
+#include "usb_drv.h"
+#include "usb_standard_request.h"
+#include "usb_task.h"
 
 #include "features.h"
 
-
 //_____ M A C R O S ________________________________________________________
-
 
 //_____ D E F I N I T I O N S ______________________________________________
 
@@ -88,7 +85,6 @@ volatile Bool usb_connected;
 xTaskHandle usb_device_tsk = NULL;
 #endif
 
-
 //_____ D E C L A R A T I O N S ____________________________________________
 
 //!
@@ -100,34 +96,33 @@ xTaskHandle usb_device_tsk = NULL;
 //!
 void usb_device_task_init(void)
 {
-  usb_connected = FALSE;
-  usb_configuration_nb = 0;
-  //! @todo Implement this on the silicon version
-  //Pll_start_auto();
-  //Wait_pll_ready();
-  Disable_global_interrupt();
-  Usb_disable();
-  (void)Is_usb_enabled();
-  Enable_global_interrupt();
-  Usb_disable_otg_pad();
-  Usb_enable_otg_pad();
-  Usb_enable();
-  Usb_unfreeze_clock();
-  (void)Is_usb_clock_frozen();
-  Usb_ack_suspend();  // A suspend condition may be detected right after enabling the USB macro
-  Usb_enable_vbus_interrupt();
-  Enable_global_interrupt();
+    usb_connected = FALSE;
+    usb_configuration_nb = 0;
+    //! @todo Implement this on the silicon version
+    //Pll_start_auto();
+    //Wait_pll_ready();
+    Disable_global_interrupt();
+    Usb_disable();
+    (void)Is_usb_enabled();
+    Enable_global_interrupt();
+    Usb_disable_otg_pad();
+    Usb_enable_otg_pad();
+    Usb_enable();
+    Usb_unfreeze_clock();
+    (void)Is_usb_clock_frozen();
+    Usb_ack_suspend(); // A suspend condition may be detected right after enabling the USB macro
+    Usb_enable_vbus_interrupt();
+    Enable_global_interrupt();
 
 #ifdef FREERTOS_USED
-  xTaskCreate(usb_device_task,
-              configTSK_USB_DEV_NAME,
-              configTSK_USB_DEV_STACK_SIZE,
-              NULL,
-              configTSK_USB_DEV_PRIORITY,
-              &usb_device_tsk);
-#endif  // FREERTOS_USED
+    xTaskCreate(usb_device_task,
+                configTSK_USB_DEV_NAME,
+                configTSK_USB_DEV_STACK_SIZE,
+                NULL,
+                configTSK_USB_DEV_PRIORITY,
+                &usb_device_tsk);
+#endif // FREERTOS_USED
 }
-
 
 //!
 //! @brief This function starts the USB device controller.
@@ -140,24 +135,23 @@ void usb_device_task_init(void)
 //!
 void usb_start_device(void)
 {
-  Usb_enable_suspend_interrupt();
-  Usb_enable_reset_interrupt();
+    Usb_enable_suspend_interrupt();
+    Usb_enable_reset_interrupt();
 
-#if (USB_HIGH_SPEED_SUPPORT==DISABLED)
-  Usb_force_full_speed_mode();
+#if (USB_HIGH_SPEED_SUPPORT == DISABLED)
+    Usb_force_full_speed_mode();
 #else
-//  if(FEATURE_IMAGE_UAC1_AUDIO || FEATURE_IMAGE_UAC1_DG8SAQ)
-  if (FEATURE_IMAGE_UAC1_AUDIO)
-	  Usb_force_full_speed_mode();
-  else
-	  Usb_use_dual_speed_mode();
+    //  if(FEATURE_IMAGE_UAC1_AUDIO || FEATURE_IMAGE_UAC1_DG8SAQ)
+    if (FEATURE_IMAGE_UAC1_AUDIO)
+        Usb_force_full_speed_mode();
+    else
+        Usb_use_dual_speed_mode();
 #endif
-  
-  usb_init_device();  // Configure the USB controller EP0
-  Usb_attach();
-  usb_connected = TRUE;
-}
 
+    usb_init_device(); // Configure the USB controller EP0
+    Usb_attach();
+    usb_connected = TRUE;
+}
 
 //!
 //! @brief Entry point of the USB device mamagement
@@ -174,37 +168,32 @@ void usb_device_task(void)
 #endif
 {
 #ifdef FREERTOS_USED
-  portTickType xLastWakeTime;
+    portTickType xLastWakeTime;
 
-  xLastWakeTime = xTaskGetTickCount();
-  while (TRUE)
-  {
-    vTaskDelayUntil(&xLastWakeTime, configTSK_USB_DEV_PERIOD);
+    xLastWakeTime = xTaskGetTickCount();
+    while (TRUE) {
+        vTaskDelayUntil(&xLastWakeTime, configTSK_USB_DEV_PERIOD);
 
-#endif  // FREERTOS_USED
-    if (!usb_connected && Is_usb_vbus_high())
-    {
-      usb_start_device();
-      Usb_send_event(EVT_USB_POWERED);
-      Usb_vbus_on_action();
-    }
+#endif // FREERTOS_USED
+        if (!usb_connected && Is_usb_vbus_high()) {
+            usb_start_device();
+            Usb_send_event(EVT_USB_POWERED);
+            Usb_vbus_on_action();
+        }
 
-    if (Is_usb_event(EVT_USB_RESET))
-    {
-      Usb_ack_event(EVT_USB_RESET);
-      Usb_reset_endpoint(EP_CONTROL);
-      usb_configuration_nb = 0;
-    }
+        if (Is_usb_event(EVT_USB_RESET)) {
+            Usb_ack_event(EVT_USB_RESET);
+            Usb_reset_endpoint(EP_CONTROL);
+            usb_configuration_nb = 0;
+        }
 
-    // Connection to the device enumeration process
-    if (Is_usb_setup_received())
-    {
-      usb_process_request();
-    }
+        // Connection to the device enumeration process
+        if (Is_usb_setup_received()) {
+            usb_process_request();
+        }
 #ifdef FREERTOS_USED
-  }
+    }
 #endif
 }
 
-
-#endif  // USB_DEVICE_FEATURE == ENABLED
+#endif // USB_DEVICE_FEATURE == ENABLED

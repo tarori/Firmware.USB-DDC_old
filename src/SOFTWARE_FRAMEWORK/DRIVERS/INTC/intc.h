@@ -52,13 +52,11 @@
 
 #include "compiler.h"
 
-
 //! Maximal number of interrupt request lines per group.
-#define AVR32_INTC_MAX_NUM_IRQS_PER_GRP             32
+#define AVR32_INTC_MAX_NUM_IRQS_PER_GRP 32
 
 //! Number of interrupt priority levels.
-#define AVR32_INTC_NUM_INT_LEVELS                   (1 << AVR32_INTC_IPR_INTLEVEL_SIZE)
-
+#define AVR32_INTC_NUM_INT_LEVELS (1 << AVR32_INTC_IPR_INTLEVEL_SIZE)
 
 #ifdef __AVR32_ABI_COMPILER__ // Automatically defined when compiling for AVR32, not when assembling.
 
@@ -66,9 +64,8 @@
 #if (defined __GNUC__)
 typedef void (*__int_handler)(void);
 #elif (defined __ICCAVR32__)
-typedef void (__interrupt *__int_handler)(void);
+typedef void(__interrupt *__int_handler)(void);
 #endif
-
 
 /*! \brief Initializes the hardware interrupt controller driver.
  *
@@ -94,7 +91,6 @@ extern void INTC_init_interrupts(void);
  */
 extern void INTC_register_interrupt(__int_handler handler, unsigned int irq, unsigned int int_level);
 
-#endif  // __AVR32_ABI_COMPILER__
+#endif // __AVR32_ABI_COMPILER__
 
-
-#endif  // _INTC_H_
+#endif // _INTC_H_

@@ -20,20 +20,15 @@
 #ifndef _UAC1_USB_SPECIFIC_REQUEST_H_
 #define _UAC1_USB_SPECIFIC_REQUEST_H_
 
-
 //_____ I N C L U D E S ____________________________________________________
 
 #include "conf_usb.h"
 
 #if USB_DEVICE_FEATURE == DISABLED
-  #error usb_specific_request.h is #included although USB_DEVICE_FEATURE is disabled
+#error usb_specific_request.h is #included although USB_DEVICE_FEATURE is disabled
 #endif
 
-
-
-
 //_____ M A C R O S ________________________________________________________
-
 
 //_____ D E F I N I T I O N S ______________________________________________
 
@@ -61,5 +56,4 @@ extern Bool uac1_user_read_request(U8, U8);
 
 //! @}
 
-
-#endif  // _UAC2_USB_SPECIFIC_REQUEST_H_
+#endif // _UAC2_USB_SPECIFIC_REQUEST_H_

@@ -71,43 +71,37 @@
 
 #include <avr32/io.h>
 
-
-#define SSC_I2S_TIMEOUT_VALUE   10000
+#define SSC_I2S_TIMEOUT_VALUE 10000
 
 #ifdef AVR32_SSC_330_H_INCLUDED
-#define AVR32_SSC_TCMR_CKS_TK_PIN                         0x2
-#define AVR32_SSC_TCMR_START_DETECT_ANY_EDGE_TF           0x7
-#define AVR32_SSC_RCMR_CKS_RK_PIN                         0x2
-#define AVR32_SSC_RCMR_CKG_NONE                           0x0
-#define AVR32_SSC_RCMR_START_DETECT_ANY_EDGE_RF           0x7
+#define AVR32_SSC_TCMR_CKS_TK_PIN 0x2
+#define AVR32_SSC_TCMR_START_DETECT_ANY_EDGE_TF 0x7
+#define AVR32_SSC_RCMR_CKS_RK_PIN 0x2
+#define AVR32_SSC_RCMR_CKG_NONE 0x0
+#define AVR32_SSC_RCMR_START_DETECT_ANY_EDGE_RF 0x7
 #endif
 
-
 //! Error codes used by SSC I2S driver.
-enum
-{
-  SSC_I2S_ERROR = -1,
-  SSC_I2S_OK = 0,
-  SSC_I2S_TIMEOUT = 1,
-  SSC_I2S_ERROR_ARGUMENT,
-  SSC_I2S_ERROR_RX,
-  SSC_I2S_ERROR_TX
+enum {
+    SSC_I2S_ERROR = -1,
+    SSC_I2S_OK = 0,
+    SSC_I2S_TIMEOUT = 1,
+    SSC_I2S_ERROR_ARGUMENT,
+    SSC_I2S_ERROR_RX,
+    SSC_I2S_ERROR_TX
 };
 
 //! SSC I2S modes.
-enum
-{
-  SSC_I2S_MODE_STEREO_OUT = 1,
-  SSC_I2S_MODE_STEREO_OUT_EXT_CLK,
-  SSC_I2S_MODE_SLAVE_STEREO_OUT,
-  SSC_I2S_MODE_STEREO_OUT_MONO_IN,
-  SSC_I2S_MODE_RIGHT_IN,
-  SSC_I2S_MODE_STEREO_IN,
-  SSC_I2S_MODE_STEREO_OUT_STEREO_IN,
-  SSC_I2S_MODE_SLAVE_STEREO_IN
+enum {
+    SSC_I2S_MODE_STEREO_OUT = 1,
+    SSC_I2S_MODE_STEREO_OUT_EXT_CLK,
+    SSC_I2S_MODE_SLAVE_STEREO_OUT,
+    SSC_I2S_MODE_STEREO_OUT_MONO_IN,
+    SSC_I2S_MODE_RIGHT_IN,
+    SSC_I2S_MODE_STEREO_IN,
+    SSC_I2S_MODE_STEREO_OUT_STEREO_IN,
+    SSC_I2S_MODE_SLAVE_STEREO_IN
 };
-
-
 
 /*! \brief Disable the TX part of SSC module. Not functional!
  *
@@ -115,21 +109,17 @@ enum
  */
 void ssc_i2s_disable_tx(volatile avr32_ssc_t *ssc);
 
-
 /*! \brief Disable the RX part of SSC module. Not functional!
  *
  *  \param ssc pointer to the correct volatile avr32_ssc_t struct
  */
 void ssc_i2s_disable_rx(volatile avr32_ssc_t *ssc);
 
-
 /*! \brief Enable RX and TX part of SSC module. Untested
  *
  *  \param ssc pointer to the correct volatile avr32_ssc_t struct
  */
 void ssc_i2s_enable_rx_tx(volatile avr32_ssc_t *ssc);
-
-
 
 /*! \brief Resets the SSC module
  *
@@ -198,5 +188,4 @@ extern void ssc_i2s_enable_interrupts(volatile avr32_ssc_t *ssc, unsigned long i
  */
 extern unsigned long ssc_i2s_get_status(volatile avr32_ssc_t *ssc);
 
-
-#endif  // _SSC_I2S_H_
+#endif // _SSC_I2S_H_

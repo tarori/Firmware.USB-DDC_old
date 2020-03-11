@@ -50,18 +50,15 @@
 #ifndef _DEVICE_MOUSE_HID_TASK_H_
 #define _DEVICE_MOUSE_HID_TASK_H_
 
-
 //_____ I N C L U D E S ____________________________________________________
 
 #include "conf_usb.h"
 
 #if USB_DEVICE_FEATURE == DISABLED
-  #error device_mouse_hid_task.h is #included although USB_DEVICE_FEATURE is disabled
+#error device_mouse_hid_task.h is #included although USB_DEVICE_FEATURE is disabled
 #endif
 
-
 //_____ M A C R O S ________________________________________________________
-
 
 //_____ D E C L A R A T I O N S ____________________________________________
 
@@ -73,5 +70,4 @@ extern void device_mouse_hid_task(void *pvParameters);
 extern void device_mouse_hid_task(void);
 #endif
 
-
-#endif  // _DEVICE_MOUSE_HID_TASK_H_
+#endif // _DEVICE_MOUSE_HID_TASK_H_

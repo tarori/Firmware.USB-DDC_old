@@ -30,76 +30,77 @@
 //_____  I N C L U D E S ___________________________________________________
 
 //#include <stdio.h>
-#include "usart.h"     // Shall be included before FreeRTOS header files, since 'inline' is defined to ''; leading to
-                       // link errors
+#include "usart.h" // Shall be included before FreeRTOS header files, since 'inline' is defined to ''; leading to
+                   // link errors
 #include "conf_usb.h"
-
 
 #include <avr32/io.h>
 #if __GNUC__
-#  include "intc.h"
+#include "intc.h"
 #endif
 #include "board.h"
 #ifdef FREERTOS_USED
 #include "FreeRTOS.h"
-#include "task.h"
 #include "FreeRTOSConfig.h"
 #include "semphr.h"
+#include "task.h"
 #endif
-#include "usb_drv.h"
-#include "gpio.h"
-#include "ssc_i2s.h"
-#include "pm.h"
-#include "pdca.h"
-#include "usb_standard_request.h"
-#include "features.h"
-#include "usb_specific_request.h"
-#include "device_audio_task.h"
-#include "uac2_device_audio_task.h"
-#include "uac2_usb_descriptors.h"
-#include "taskAK5394A.h"
-#include "uac2_taskAK5394A.h"
 #include "Mobo_config.h"
+#include "device_audio_task.h"
+#include "features.h"
+#include "gpio.h"
+#include "pdca.h"
+#include "pm.h"
+#include "ssc_i2s.h"
+#include "taskAK5394A.h"
+#include "uac2_device_audio_task.h"
+#include "uac2_taskAK5394A.h"
+#include "uac2_usb_descriptors.h"
+#include "usb_drv.h"
+#include "usb_specific_request.h"
+#include "usb_standard_request.h"
 
 //_____ M A C R O S ________________________________________________________
 
 //_____ D E F I N I T I O N S ______________________________________________
 //_____ D E C L A R A T I O N S ____________________________________________
 
-void uac2_AK5394A_task(void*);
+void uac2_AK5394A_task(void *);
 
 //!
 //! @brief This function initializes the hardware/software resources
 //! required for device CDC task.
 //!
-void uac2_AK5394A_task_init(void) {
-//	current_freq.frequency = FREQ_96;
-	current_freq.frequency = FREQ_44;
-	AK5394A_task_init(FALSE);
+void uac2_AK5394A_task_init(void)
+{
+    //	current_freq.frequency = FREQ_96;
+    current_freq.frequency = FREQ_44;
+    AK5394A_task_init(FALSE);
 
 //clear samplerate indication FIX: move to different _init() routine
 #if defined(HW_GEN_AB1X)
-	gpio_clr_gpio_pin(SAMPLEFREQ_VAL1);
-	gpio_set_gpio_pin(SAMPLEFREQ_VAL0);
+    gpio_clr_gpio_pin(SAMPLEFREQ_VAL1);
+    gpio_set_gpio_pin(SAMPLEFREQ_VAL0);
 #endif
 
-	xTaskCreate(uac2_AK5394A_task,
-				configTSK_AK5394A_NAME,
-				configTSK_AK5394A_STACK_SIZE,
-				NULL,
-				UAC2_configTSK_AK5394A_PRIORITY,
-				NULL);
+    xTaskCreate(uac2_AK5394A_task,
+                configTSK_AK5394A_NAME,
+                configTSK_AK5394A_STACK_SIZE,
+                NULL,
+                UAC2_configTSK_AK5394A_PRIORITY,
+                NULL);
 }
 
 //!
 //! @brief Entry point of the AK5394A task management
 //!
-void uac2_AK5394A_task(void *pvParameters) {
-	portTickType xLastWakeTime;
-	xLastWakeTime = xTaskGetTickCount();
-	volatile S32 usb_buffer_toggle;
+void uac2_AK5394A_task(void *pvParameters)
+{
+    portTickType xLastWakeTime;
+    xLastWakeTime = xTaskGetTickCount();
+    volatile S32 usb_buffer_toggle;
 
-/*
+    /*
 	U32 poolingFreq;
 	U32 FB_rate_int;
 	U32 FB_rate_frac;
@@ -109,38 +110,36 @@ void uac2_AK5394A_task(void *pvParameters) {
 	U32 old_sampling_rate = 48*(UAC2_configTSK_AK5394A_PERIOD/10)*NUM_INTERVAL;
 	int sampling_count = 0;
 */
-	while (TRUE) {
-		// All the hard work is done by the pdca and the interrupt handler.
-		// This does some periodic checking such as whether USB data out is stalled
+    while (TRUE) {
+        // All the hard work is done by the pdca and the interrupt handler.
+        // This does some periodic checking such as whether USB data out is stalled
 
-		vTaskDelayUntil(&xLastWakeTime, UAC2_configTSK_AK5394A_PERIOD);
+        vTaskDelayUntil(&xLastWakeTime, UAC2_configTSK_AK5394A_PERIOD);
 
-		// silence speaker if USB data out is stalled, as indicated by heart-beat counter
-		if (old_spk_usb_heart_beat == spk_usb_heart_beat){
-			if ( (input_select == MOBO_SRC_UAC2) || (input_select == MOBO_SRC_NONE) ) {
+        // silence speaker if USB data out is stalled, as indicated by heart-beat counter
+        if (old_spk_usb_heart_beat == spk_usb_heart_beat) {
+            if ((input_select == MOBO_SRC_UAC2) || (input_select == MOBO_SRC_NONE)) {
 
-				// This is quite busy while idle
-				#ifdef USB_STATE_MACHINE_DEBUG
-//					print_dbg_char_char('?');
-				#endif
-				mobo_clear_dac_channel();
-			}
+// This is quite busy while idle
+#ifdef USB_STATE_MACHINE_DEBUG
+                //					print_dbg_char_char('?');
+#endif
+                mobo_clear_dac_channel();
+            }
 
-			// BSB 20131209 attempting improved playerstarted detection
-			// Next iteration of uacX_device_audio_task will set playerStarted to FALSE
-			if (usb_buffer_toggle < USB_BUFFER_TOGGLE_LIM)
-				usb_buffer_toggle = USB_BUFFER_TOGGLE_LIM;
-		}
-		old_spk_usb_heart_beat = spk_usb_heart_beat;
+            // BSB 20131209 attempting improved playerstarted detection
+            // Next iteration of uacX_device_audio_task will set playerStarted to FALSE
+            if (usb_buffer_toggle < USB_BUFFER_TOGGLE_LIM)
+                usb_buffer_toggle = USB_BUFFER_TOGGLE_LIM;
+        }
+        old_spk_usb_heart_beat = spk_usb_heart_beat;
 
-/*
+        /*
 		if (FEATURE_IMAGE_UAC2_DG8SAQ) {
 			spk_mute = TX_state ? FALSE : TRUE;
 			mute = TX_state ? TRUE : FALSE;
 		}
 */
 
-	} // end while (TRUE)
+    } // end while (TRUE)
 }
-
-

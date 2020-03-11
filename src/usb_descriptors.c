@@ -74,18 +74,15 @@
 
 #if USB_DEVICE_FEATURE == ENABLED
 
-#include "usb_drv.h"
-#include "usb_descriptors.h"
-#include "usb_standard_request.h"
-#include "usb_specific_request.h"
 #include "usb_audio.h"
-
+#include "usb_descriptors.h"
+#include "usb_drv.h"
+#include "usb_specific_request.h"
+#include "usb_standard_request.h"
 
 //_____ M A C R O S ________________________________________________________
 
-
 //_____ D E F I N I T I O N S ______________________________________________
-
 
 // image specific definitions moved to *_usb_descriptors.c
 
@@ -93,123 +90,101 @@ U16 configTSK_USB_DEV_PERIOD;
 
 // usb_user_language_id
 const S_usb_language_id usb_user_language_id =
-{
-  sizeof(S_usb_language_id),
-  STRING_DESCRIPTOR,
-  Usb_format_mcu_to_usb_data(16, LANGUAGE_ID)
-};
-
+    {
+        sizeof(S_usb_language_id),
+        STRING_DESCRIPTOR,
+        Usb_format_mcu_to_usb_data(16, LANGUAGE_ID)};
 
 // usb_user_manufacturer_string_descriptor
 const S_usb_manufacturer_string_descriptor usb_user_manufacturer_string_descriptor =
-{
-  sizeof(S_usb_manufacturer_string_descriptor),
-  STRING_DESCRIPTOR,
-  USB_MANUFACTURER_NAME
-};
-
+    {
+        sizeof(S_usb_manufacturer_string_descriptor),
+        STRING_DESCRIPTOR,
+        USB_MANUFACTURER_NAME};
 
 // usb_user_product_string_descriptor
 const S_usb_product_string_descriptor usb_user_product_string_descriptor =
-{
-  sizeof(S_usb_product_string_descriptor),
-  STRING_DESCRIPTOR,
-  USB_PRODUCT_NAME
-};
-
+    {
+        sizeof(S_usb_product_string_descriptor),
+        STRING_DESCRIPTOR,
+        USB_PRODUCT_NAME};
 
 // usb_user_serial_number
 const S_usb_serial_number usb_user_serial_number =
-{
-  sizeof(S_usb_serial_number),
-  STRING_DESCRIPTOR,
-  USB_SERIAL_NUMBER
-};
+    {
+        sizeof(S_usb_serial_number),
+        STRING_DESCRIPTOR,
+        USB_SERIAL_NUMBER};
 
 //usb_user_clock_source_1
 const S_usb_clock_source_1 usb_user_clock_source_1 =
-{
-	sizeof(S_usb_clock_source_1),
-	STRING_DESCRIPTOR,
-	USB_CLOCK_SOURCE_1
-};
-
+    {
+        sizeof(S_usb_clock_source_1),
+        STRING_DESCRIPTOR,
+        USB_CLOCK_SOURCE_1};
 
 //usb_user_clock_source_2
 const S_usb_clock_source_2 usb_user_clock_source_2 =
-{
-	sizeof(S_usb_clock_source_2),
-	STRING_DESCRIPTOR,
-	USB_CLOCK_SOURCE_2
-};
-
+    {
+        sizeof(S_usb_clock_source_2),
+        STRING_DESCRIPTOR,
+        USB_CLOCK_SOURCE_2};
 
 //usb_user_clock_selector
 const S_usb_clock_selector usb_user_clock_selector =
-{
-	sizeof(S_usb_clock_selector),
-	STRING_DESCRIPTOR,
-	USB_CLOCK_SELECTOR
-};
+    {
+        sizeof(S_usb_clock_selector),
+        STRING_DESCRIPTOR,
+        USB_CLOCK_SELECTOR};
 
 //usb_user_wl
 const S_usb_wl usb_user_wl =
-{
-	sizeof(S_usb_wl),
-	STRING_DESCRIPTOR,
-	USB_WL
-};
+    {
+        sizeof(S_usb_wl),
+        STRING_DESCRIPTOR,
+        USB_WL};
 
 //usb_user_ait
 const S_usb_ait usb_user_ait =
-{
-	sizeof(S_usb_ait),
-	STRING_DESCRIPTOR,
-	USB_AIT
-};
+    {
+        sizeof(S_usb_ait),
+        STRING_DESCRIPTOR,
+        USB_AIT};
 
 //usb_user_aot
 const S_usb_aot usb_user_aot =
-{
-	sizeof(S_usb_aot),
-	STRING_DESCRIPTOR,
-	USB_AOT
-};
+    {
+        sizeof(S_usb_aot),
+        STRING_DESCRIPTOR,
+        USB_AOT};
 
 //usb_user_ain
 const S_usb_ain usb_user_ain =
-{
-	sizeof(S_usb_ain),
-	STRING_DESCRIPTOR,
-	USB_AIN
-};
+    {
+        sizeof(S_usb_ain),
+        STRING_DESCRIPTOR,
+        USB_AIN};
 
 //usb_user_aia
 const S_usb_aia usb_user_aia =
-{
-	sizeof(S_usb_aia),
-	STRING_DESCRIPTOR,
-	USB_AIA
-};
+    {
+        sizeof(S_usb_aia),
+        STRING_DESCRIPTOR,
+        USB_AIA};
 
 //usb_left_channel
 const S_usb_left_channel usb_left_channel =
-{
-	sizeof(S_usb_left_channel),
-	STRING_DESCRIPTOR,
-	USB_LEFT_CH
-};
+    {
+        sizeof(S_usb_left_channel),
+        STRING_DESCRIPTOR,
+        USB_LEFT_CH};
 
 //usb_right_channel
 const S_usb_right_channel usb_right_channel =
-{
-	sizeof(S_usb_right_channel),
-	STRING_DESCRIPTOR,
-	USB_RIGHT_CH
-};
-
-
-
+    {
+        sizeof(S_usb_right_channel),
+        STRING_DESCRIPTOR,
+        USB_RIGHT_CH};
 
 /*
 // usb_hid_report_descriptor
@@ -252,43 +227,43 @@ const U8 usb_hid_report_descriptor[USB_HID_REPORT_DESC] =
 // BSB 20120711: Changed according to BasicAudioDevice-10.pdf table 8-4
 // BSB 20181226: Touched up according to https://www.silabs.com/documents/public/application-notes/AN249.pdf
 const U8 usb_hid_report_descriptor[USB_HID_REPORT_DESC] =
-{
-		0x05, 0x0C, // Usage page (Consumer Devices) // still holding in there
-	  	0x09, 0x01, // Usage ID (Consumer Remote Control)
-	  	0xA1, 0x01, // Collection (Application)
-	  	0x85, 0x01, // Report ID (0x01) - Byte 0 in report - Match or coincidence??
+    {
+        0x05, 0x0C, // Usage page (Consumer Devices) // still holding in there
+        0x09, 0x01, // Usage ID (Consumer Remote Control)
+        0xA1, 0x01, // Collection (Application)
+        0x85, 0x01, // Report ID (0x01) - Byte 0 in report - Match or coincidence??
         0x15, 0x00, // Logical Minimum (0) Button pressed or not, 2 values
-        0x25, 0x01,	// Logical Maximum (1)
+        0x25, 0x01, // Logical Maximum (1)
         0x75, 0x01, // Report Size (1 bit)
         0x95, 0x01, // Report Count
 
-		0x09, 0xE9, // USAGE (Volume Up) - LSB of ReportByte1 (XX in uart HID protocol)
-		0x81, 0x02, // INPUT (Data, Var, Abs)
-		0x09, 0xEA, // USAGE (Volume Down)
-		0x81, 0x02, // INPUT (Data, Var, Abs)
-		0x09, 0xCD, // USAGE (Play/Pause)
-		0x81, 0x02, // INPUT (Data, Var, Abs)
-		0x09, 0xB5, // USAGE (Scan Next Track)
-		0x81, 0x02, // INPUT (Data, Var, Abs)
-		0x09, 0xB6, // USAGE (Scan Previous Track)
-		0x81, 0x02, // INPUT (Data, Var, Abs)
-		0x09, 0xB7, // USAGE (Stop)
-		0x81, 0x02, // INPUT (Data, Var, Abs)
-		0x09, 0xB3, // USAGE (Fast Forward)
- 		0x81, 0x02, // INPUT (Data, Var, Abs)
-		0x09, 0xB4, // USAGE (Rewind) - MSB of ReportByte1 (XX in uart HID protocol)
-		0x81, 0x02, // INPUT (Data, Var, Abs)
+        0x09, 0xE9, // USAGE (Volume Up) - LSB of ReportByte1 (XX in uart HID protocol)
+        0x81, 0x02, // INPUT (Data, Var, Abs)
+        0x09, 0xEA, // USAGE (Volume Down)
+        0x81, 0x02, // INPUT (Data, Var, Abs)
+        0x09, 0xCD, // USAGE (Play/Pause)
+        0x81, 0x02, // INPUT (Data, Var, Abs)
+        0x09, 0xB5, // USAGE (Scan Next Track)
+        0x81, 0x02, // INPUT (Data, Var, Abs)
+        0x09, 0xB6, // USAGE (Scan Previous Track)
+        0x81, 0x02, // INPUT (Data, Var, Abs)
+        0x09, 0xB7, // USAGE (Stop)
+        0x81, 0x02, // INPUT (Data, Var, Abs)
+        0x09, 0xB3, // USAGE (Fast Forward)
+        0x81, 0x02, // INPUT (Data, Var, Abs)
+        0x09, 0xB4, // USAGE (Rewind) - MSB of ReportByte1 (XX in uart HID protocol)
+        0x81, 0x02, // INPUT (Data, Var, Abs)
 
-		0x05, 0x0B, // USAGE_PAGE (Telephony Devices) - Start of byte 2 in report ??
-		0x09, 0x24, // USAGE (Re-dial) - LSB of ReportByte2 (YY in uart HID protocol)
-		0x81, 0x02, // INPUT (Data, Var, Abs)
-		0x09, 0x20, // USAGE (Hook Switch)
-		0x81, 0x02, // INPUT (Data, Var, Abs)
-		0x09, 0x2F, // USAGE (Microphone Mute) - ReportByte2 (YY in uart HID protocol)
-		0x81, 0x06, // INPUT (Data, Var, Rel)
-		0x95, 0x05, // REPORT_COUNT (5) - Assumption: With the remaining 5 bits DO:
-		0x81, 0x01, // INPUT (Cnst) (Pad report to 8 bits) - zero-pad
-		0xC0	// end collection
+        0x05, 0x0B, // USAGE_PAGE (Telephony Devices) - Start of byte 2 in report ??
+        0x09, 0x24, // USAGE (Re-dial) - LSB of ReportByte2 (YY in uart HID protocol)
+        0x81, 0x02, // INPUT (Data, Var, Abs)
+        0x09, 0x20, // USAGE (Hook Switch)
+        0x81, 0x02, // INPUT (Data, Var, Abs)
+        0x09, 0x2F, // USAGE (Microphone Mute) - ReportByte2 (YY in uart HID protocol)
+        0x81, 0x06, // INPUT (Data, Var, Rel)
+        0x95, 0x05, // REPORT_COUNT (5) - Assumption: With the remaining 5 bits DO:
+        0x81, 0x01, // INPUT (Cnst) (Pad report to 8 bits) - zero-pad
+        0xC0        // end collection
 };
 
 // BSB 20120711: This is supposed to mesh with BasicAudioDevice-10.pdf
@@ -297,4 +272,4 @@ const U8 usb_hid_report_descriptor[USB_HID_REPORT_DESC] =
 // Byte 1 7:0 Rewind FForward Stop ScanPrevious ScanNext Play VolumeDn VolumeUp
 // Byte 2 7:0 Reserved Reserved Reserved Reserved Reserved MicMute HookSwitch Redial
 
-#endif  // USB_DEVICE_FEATURE == ENABLED
+#endif // USB_DEVICE_FEATURE == ENABLED

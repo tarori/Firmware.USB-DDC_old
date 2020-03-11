@@ -1,32 +1,31 @@
+#include "compiler.h"
 #include "gpio.h"
 #include <avr32/io.h>
-#include "compiler.h"
 #include <stdint.h>
 
 //! GPIO module instance.
-#define GPIO  AVR32_GPIO
+#define GPIO AVR32_GPIO
 
-
-int32_t getcounter(void) {
-	return Get_system_register(AVR32_COUNT);
+int32_t getcounter(void)
+{
+    return Get_system_register(AVR32_COUNT);
 }
 
+int32_t BSBmult(int32_t A, int32_t V)
+{
+    int32_t X;
 
-int32_t BSBmult(int32_t A, int32_t V) {
-	int32_t X;
+    asm volatile(
+        "muls.d		r10, %2, %1		\n\t"         // Double multiply, r9 holds 63:31, r8 holds 32:0
+        "lsr     	r10, 28			\n\t"         // r9:r8 right-shifted arithmetically by 28 so that V=0x10000000 is unity gain
+        "or			%0, r10, r11 << 4	\n\t" // Merging stuff back together into X. (Try compiling "return A >> 28;" with S64 A !)
 
-	asm volatile(
-		"muls.d		r10, %2, %1		\n\t"	// Double multiply, r9 holds 63:31, r8 holds 32:0
-		"lsr     	r10, 28			\n\t"	// r9:r8 right-shifted arithmetically by 28 so that V=0x10000000 is unity gain
-		"or			%0, r10, r11 << 4	\n\t"	// Merging stuff back together into X. (Try compiling "return A >> 28;" with S64 A !)
-		
-		:	"=r"(X)							// One output register X=%0
-		:	"r"(A), "r"(V)					// No input registers  A=%1, V=%2
-		:	"r10"							// Clobber registers, r10 is the the return of the muls.d, r11 follows. Declare it as clobber??
-	);
+        : "=r"(X)        // One output register X=%0
+        : "r"(A), "r"(V) // No input registers  A=%1, V=%2
+        : "r10"          // Clobber registers, r10 is the the return of the muls.d, r11 follows. Declare it as clobber??
+    );
 
-
-	return X;
+    return X;
 }
 /* builds
 	muls.d		r10, r11, r12
@@ -34,23 +33,18 @@ int32_t BSBmult(int32_t A, int32_t V) {
 	or			r12, r10, r11 << 4
 */
 
+S32 Cmult(int32_t A, int32_t V)
+{
+    //	int64_t X = (int64_t)( (int64_t)A * (int64_t)V ) >> 28;
+    //	return ( (int32_t)(X >> 0) );
 
-S32 Cmult(int32_t A, int32_t V) {
-//	int64_t X = (int64_t)( (int64_t)A * (int64_t)V ) >> 28;
-//	return ( (int32_t)(X >> 0) );
-
-	return (S32)( (int64_t)( (int64_t)A * (int64_t)V ) >> 28) ;
-
+    return (S32)((int64_t)((int64_t)A * (int64_t)V) >> 28);
 }
 /* builds
 	muls.d  	r10, r11, r12
 	lsr     	r12, r10, 28
 	or			r12, r12, r11 << 4
 */
-
-
-
-
 
 /*
 S64 sshhiifftt(S64 A) {
@@ -63,20 +57,15 @@ return A >> 28;
 }
 */
 
+int foo(void)
+{
 
+    // Not immediately operational... Is IO pin really indexed correctly? Does it need to be init'ed?
 
+#define TIMEOUT_LIM 8000;
+    int timeout = 8000;
 
-
-
-int foo(void) {
-	
-	// Not immediately operational... Is IO pin really indexed correctly? Does it need to be init'ed?
-
-
-	#define TIMEOUT_LIM 8000;
-	int timeout = 8000;
-
-/*
+    /*
 	// Code to determine GPIO constants, rewrite this (2 positions!) first, compile this section, then modify asm
 	volatile avr32_gpio_port_t *gpio_port = &GPIO.port[AVR32_PIN_PA04 >> 5];
 	while ( (timeout != 0) && ( ((gpio_port->pvr >> (AVR32_PIN_PA04 & 0x1F)) & 1) == 0) ) {
@@ -84,16 +73,14 @@ int foo(void) {
 	}
 */
 
-	// Code to determine GPIO constants, rewrite this (2 positions!) first, compile this section, then modify asm
-	// GEN_DIN20 / SP_DAC02 moved to PX09
-	volatile avr32_gpio_port_t *gpio_port = &GPIO.port[AVR32_PIN_PX09 >> 5];
-	while ( (timeout != 0) && ( ((gpio_port->pvr >> (AVR32_PIN_PX09 & 0x1F)) & 1) == 0) ) {
-		timeout --;
-	}
+    // Code to determine GPIO constants, rewrite this (2 positions!) first, compile this section, then modify asm
+    // GEN_DIN20 / SP_DAC02 moved to PX09
+    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[AVR32_PIN_PX09 >> 5];
+    while ((timeout != 0) && (((gpio_port->pvr >> (AVR32_PIN_PX09 & 0x1F)) & 1) == 0)) {
+        timeout--;
+    }
 
-
-
-/*
+    /*
 	// Determining speed at TP16 / DAC_0P / PA04 for now.
 	int timeout;
 	
@@ -152,10 +139,8 @@ int foo(void) {
 	);
 */
 
-	return timeout;
+    return timeout;
 }
-
-
 
 /* Drafting a sample rate detector. Compile with something like this:
  * http://www.delorie.com/djgpp/v2faq/faq8_20.html
