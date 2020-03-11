@@ -818,7 +818,7 @@ static void vtaskMoboCtrl(void *pcParameters)
             if (i2c.ad7991) {
                 if (ad7991_poll(cdata.AD7991_I2C_addr) == 0) { // Poll the AD7991 for all four values, success == 0
 
-#if POWER_SWR // Power/SWR measurements and related actions \
+#if POWER_SWR                   // Power/SWR measurements and related actions \
     // SWR Protect
                     Test_SWR(); // Calculate SWR and control the PTT2 output
                                 // (SWR protect).  Updates measured_SWR variable (SWR*100)

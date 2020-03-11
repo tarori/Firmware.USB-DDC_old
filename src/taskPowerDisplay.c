@@ -257,7 +257,7 @@ static void vtaskPowerDisplay(void *pcParameters)
 
                     lcd_q_print(lcd_prt2);
 
-#if SWR_ALARM_FUNC // SWR alarm function, activates a secondary PTT \
+#if SWR_ALARM_FUNC                 // SWR alarm function, activates a secondary PTT \
     //------------------------------                                \
     // Display a SWR Alarm situation                                \
     //------------------------------
