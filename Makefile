@@ -102,31 +102,14 @@ AUDIO_WIDGET_DEFAULTS=-DFEATURE_BOARD_DEFAULT=feature_board_usbi2s \
 #	-DFEATURE_CFG_INTERFACE \
 #	-DFEATURE_PRODUCT_AB1x
 
-all:: audio-widget widget-control
-
-Release/widget.elf::
-	rm -f Release/widget.elf Release/src/features.o
-	./make-widget
-
-#prod-test:: 
-#	rm -f Release/widget.elf Release/src/features.o
-#	CFLAGS="$(PROD_TEST_DEFAULTS)" ./make-widget
+all:: audio-widget
 
 audio-widget::
 	rm -f Release/widget.elf Release/src/features.o
 	CFLAGS="$(AUDIO_WIDGET_DEFAULTS)" ./make-widget
 
-#sdr-widget::
-#	rm -f Release/widget.elf Release/src/features.o
-#	CFLAGS="$(SDR_WIDGET_DEFAULTS)" ./make-widget
-
-widget-control: widget-control.c src/features.h
-	gcc $(AUDIO_WIDGET_DEFAULTS) -o widget-control widget-control.c -lusb-1.0
-
 clean::
-	rm -f widget-control widget-control.exe
 	cd Release && make clean
-	rm -f widget-control
 
 write:: audio-widget
 	./program_widget
