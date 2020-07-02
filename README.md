@@ -1,5 +1,6 @@
 This is a firmware for USB to I2S converter.
 
+* Convert 192kHz/24bit USB audio to I2S (no DSD)
 * use AT32UC3A3 microcontroller
 * use two crystal clocks as 44.1kHz and 48kHz master clock
 * USB Audio class 2.0 compatible
