@@ -127,33 +127,14 @@
 #define DG8SAQ_VENDOR_ID 0x16c0 //!  DG8SAQ device
 #define DG8SAQ_PRODUCT_ID 0x05dc
 
-#ifdef COMPILING_FOR_DRIVER_DEVELOPMENT
-// "internal lab use only" VID=0x16C0
-// UAC1 PID=0x03ed, UAC2 PID is one above.
-// Hence use increment of 2 if Host computer needs new PID
-// to continue debugging
-
-#ifndef FEATURE_PRODUCT_AB1x
-#define FEATURE_PRODUCT_AB1x
-#endif
-
-#define AUDIO_VENDOR_ID 0x16c0
-#define AUDIO_PRODUCT_ID_9 0x03ed                  // UAC1 PID
-#define AUDIO_PRODUCT_ID_10 AUDIO_PRODUCT_ID_9 + 1 // UAC2 PID
-#else
 // Use product-specific VID/PIDs
-#if defined(FEATURE_PRODUCT_SDR_WIDGET)
-#define AUDIO_VENDOR_ID 0x16d0
-#define AUDIO_PRODUCT_ID_1 0x0761 //!  SDR-WIDGET	UAC1 PID
-#define AUDIO_PRODUCT_ID_2 0x0762 //!  SDR-WIDGET	UAC2 PID
-#elif (defined(FEATURE_PRODUCT_AB1x))
-#define AUDIO_VENDOR_ID 0x16d0     //!  AB-1.x	VID
-#define AUDIO_PRODUCT_ID_9 0x075c  //!  AB-1.x	UAC1 PID
-#define AUDIO_PRODUCT_ID_10 0x075d //!  AB-1.x	UAC2 PID
+#if defined(FEATURE_PRODUCT_AB1x)
+#define AUDIO_VENDOR_ID 0x16d0     // VID
+#define AUDIO_PRODUCT_ID_9 0x075c  // UAC1 PID
+#define AUDIO_PRODUCT_ID_10 0x075d // UAC2 PID
 #else
 #error No recognized FEATURE_PRODUCT... is defined in Makefile, aborting.
 #endif
-#endif // DRIVER_DEVELOPMENT
 
 #define HPSDR_VENDOR_ID 0xfffe //! Ozy Device
 #define HPSDR_PRODUCT_ID 0x0007
@@ -183,15 +164,8 @@
 #define LANG_ID 0x00
 
 // BSB 20120928 new VID/PID system
-#if defined(FEATURE_PRODUCT_SDR_WIDGET) // AUDIO_PRODUCT_ID_1 and _2
-#define USB_MN_LENGTH 10
-#define USB_MANUFACTURER_NAME                                                                        \
-    {                                                                                                \
-        Usb_unicode('S'), Usb_unicode('D'), Usb_unicode('R'), Usb_unicode('-'), Usb_unicode('W'),    \
-            Usb_unicode('i'), Usb_unicode('d'), Usb_unicode('g'), Usb_unicode('e'), Usb_unicode('t') \
-    }
-#elif defined(FEATURE_PRODUCT_AB1x) // AUDIO_PRODUCT_ID_9 and _10
-#define USB_MN_LENGTH 12
+#if defined(FEATURE_PRODUCT_AB1x) // AUDIO_PRODUCT_ID_9 and _10
+#define USB_MN_LENGTH 13
 #define USB_MANUFACTURER_NAME                                                                                           \
     {                                                                                                                   \
         Usb_unicode('A'), Usb_unicode('u'), Usb_unicode('d'), Usb_unicode('i'), Usb_unicode('o'), Usb_unicode(' '),     \
@@ -203,26 +177,7 @@
 #endif
 
 // BSB 20120928 new VID/PID system
-#if defined(FEATURE_PRODUCT_SDR_WIDGET) // AUDIO_PRODUCT_ID_1 and _2
-#define USB_PN_LENGTH 19
-#define USB_PRODUCT_NAME                                                                              \
-    {                                                                                                 \
-        Usb_unicode('Y'), Usb_unicode('o'), Usb_unicode('y'), Usb_unicode('o'), Usb_unicode('d'),     \
-            Usb_unicode('y'), Usb_unicode('n'), Usb_unicode('e'), Usb_unicode(' '),                   \
-            Usb_unicode('S'), Usb_unicode('D'), Usb_unicode('R'), Usb_unicode('-'), Usb_unicode('W'), \
-            Usb_unicode('i'), Usb_unicode('d'), Usb_unicode('g'), Usb_unicode('e'), Usb_unicode('t')  \
-    }
-#elif defined(FEATURE_PRODUCT_AB1x) // AUDIO_PRODUCT_ID_9 and _10
-#ifdef COMPILING_FOR_DRIVER_DEVELOPMENT
-#define USB_PN_LENGTH 20
-#define USB_PRODUCT_NAME                                                                                                \
-    {                                                                                                                   \
-        Usb_unicode('D'), Usb_unicode('r'), Usb_unicode('i'), Usb_unicode('v'), Usb_unicode('e'), Usb_unicode('r'),     \
-            Usb_unicode(' '), Usb_unicode('D'), Usb_unicode('e'), Usb_unicode('v'), Usb_unicode('e'), Usb_unicode('l'), \
-            Usb_unicode('.'), Usb_unicode(' '), Usb_unicode('A'), Usb_unicode('B'), Usb_unicode('-'), Usb_unicode('1'), \
-            Usb_unicode('.'), Usb_unicode('2')                                                                          \
-    }
-#else
+#if defined(FEATURE_PRODUCT_AB1x) // AUDIO_PRODUCT_ID_9 and _10
 #define USB_PN_LENGTH 28
 #define USB_PRODUCT_NAME                                                                                                \
     {                                                                                                                   \
@@ -231,24 +186,9 @@
             Usb_unicode('0')                                                                                            \
     }
 
-#endif
 #else
 #error No recognized FEATURE_PRODUCT... is defined in Makefile, aborting.
 #endif
-
-#define HPSDR_USB_PN_LENGTH 9
-#define HPSDR_USB_PRODUCT_NAME \
-    {                          \
-        Usb_unicode('O'),      \
-            Usb_unicode('Z'),  \
-            Usb_unicode('Y'),  \
-            Usb_unicode(' '),  \
-            Usb_unicode('C'),  \
-            Usb_unicode('L'),  \
-            Usb_unicode('O'),  \
-            Usb_unicode('N'),  \
-            Usb_unicode('E')   \
-    }
 
 #if defined(FEATURE_PRODUCT_AB1x)
 #define USB_SN_LENGTH 13 // Encode the build date and user prefix
@@ -332,22 +272,6 @@
 // Revised for Mac UAC1 naming
 #define USB_WL_LENGTH USB_PN_LENGTH
 #define USB_WL USB_PRODUCT_NAME
-/*
-#define USB_WL_LENGTH         10
-#define USB_WL \
-{\
-  Usb_unicode('S'),\
-  Usb_unicode('D'),\
-  Usb_unicode('R'),\
-  Usb_unicode('-'),\
-  Usb_unicode('W'),\
-  Usb_unicode('i'),\
-  Usb_unicode('d'),\
-  Usb_unicode('g'),\
-  Usb_unicode('e'),\
-  Usb_unicode('t')\
-}
-*/
 
 #define USB_AIT_LENGTH 12
 #define USB_AIT               \

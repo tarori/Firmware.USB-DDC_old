@@ -12,7 +12,7 @@ DDC_DEFAULTS=-DFEATURE_BOARD_DEFAULT=feature_board_usbi2s \
 	-DFEATURE_PRODUCT_AB1x \
 	-DHW_GEN_AB1X
 
-main:: clean
+main:: 	
 	CFLAGS="$(DDC_DEFAULTS)" ./make-widget
 
 clean::
