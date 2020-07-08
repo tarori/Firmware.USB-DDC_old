@@ -130,8 +130,8 @@
 // Use product-specific VID/PIDs
 #if defined(FEATURE_PRODUCT_AB1x)
 #define AUDIO_VENDOR_ID 0x6340     // VID
-#define AUDIO_PRODUCT_ID_9 0x0030  // UAC1 PID
-#define AUDIO_PRODUCT_ID_10 0x0031 // UAC2 PID
+#define AUDIO_PRODUCT_ID_9 0x0040  // UAC1 PID
+#define AUDIO_PRODUCT_ID_10 0x0041 // UAC2 PID
 #else
 #error No recognized FEATURE_PRODUCT... is defined in Makefile, aborting.
 #endif
@@ -182,7 +182,7 @@
 #endif
 
 #if defined(FEATURE_PRODUCT_AB1x) // AUDIO_PRODUCT_ID_9 and _10
-#define USB_PN_LENGTH 11
+#define USB_PN_LENGTH 9
 #define USB_PRODUCT_NAME      \
     {                         \
         Usb_unicode('A'),     \
@@ -190,12 +190,10 @@
             Usb_unicode('4'), \
             Usb_unicode('4'), \
             Usb_unicode('9'), \
-            Usb_unicode('0'), \
+            Usb_unicode('3'), \
             Usb_unicode(' '), \
-            Usb_unicode('T'), \
-            Usb_unicode('E'), \
-            Usb_unicode('S'), \
-            Usb_unicode('T')  \
+            Usb_unicode('v'), \
+            Usb_unicode('4')  \
     }
 
 #else
