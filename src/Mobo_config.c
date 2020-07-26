@@ -67,31 +67,31 @@ void mobo_led(uint8_t fled)
 
     if (gpio_get_pin_value(AVR32_PIN_PA04) == 1) { // Active high
         if (fled == FLED_DARK) {
-            gpio_clr_gpio_pin(AVR32_PIN_PX29); // Clear RED light on external AB-1.1 LED
-            gpio_clr_gpio_pin(AVR32_PIN_PX32); // Clear GREEN light on external AB-1.1 LED
+            gpio_clr_gpio_pin(AVR32_PIN_PX33); // Clear RED light on external AB-1.1 LED
+            gpio_clr_gpio_pin(AVR32_PIN_PX29); // Clear GREEN light on external AB-1.1 LED
         } else if (fled == FLED_RED) {
-            gpio_set_gpio_pin(AVR32_PIN_PX29); // Set RED light on external AB-1.1 LED
-            gpio_clr_gpio_pin(AVR32_PIN_PX32); // Clear GREEN light on external AB-1.1 LED
+            gpio_set_gpio_pin(AVR32_PIN_PX33); // Set RED light on external AB-1.1 LED
+            gpio_clr_gpio_pin(AVR32_PIN_PX29); // Clear GREEN light on external AB-1.1 LED
         } else if (fled == FLED_GREEN) {
-            gpio_clr_gpio_pin(AVR32_PIN_PX29); // Clear RED light on external AB-1.1 LED
-            gpio_set_gpio_pin(AVR32_PIN_PX32); // Set GREEN light on external AB-1.1 LED
+            gpio_clr_gpio_pin(AVR32_PIN_PX33); // Clear RED light on external AB-1.1 LED
+            gpio_set_gpio_pin(AVR32_PIN_PX29); // Set GREEN light on external AB-1.1 LED
         } else if (fled == FLED_YELLOW) {
-            gpio_set_gpio_pin(AVR32_PIN_PX29); // Set RED light on external AB-1.1 LED
-            gpio_set_gpio_pin(AVR32_PIN_PX32); // Set GREEN light on external AB-1.1 LED
+            gpio_set_gpio_pin(AVR32_PIN_PX33); // Set RED light on external AB-1.1 LED
+            gpio_set_gpio_pin(AVR32_PIN_PX29); // Set GREEN light on external AB-1.1 LED
         }
     } else { // Active low
         if (fled == FLED_DARK) {
-            gpio_set_gpio_pin(AVR32_PIN_PX29); // Clear RED light on external AB-1.1 LED
-            gpio_set_gpio_pin(AVR32_PIN_PX32); // Clear GREEN light on external AB-1.1 LED
+            gpio_set_gpio_pin(AVR32_PIN_PX33); // Clear RED light on external AB-1.1 LED
+            gpio_set_gpio_pin(AVR32_PIN_PX29); // Clear GREEN light on external AB-1.1 LED
         } else if (fled == FLED_RED) {
-            gpio_clr_gpio_pin(AVR32_PIN_PX29); // Set RED light on external AB-1.1 LED
-            gpio_set_gpio_pin(AVR32_PIN_PX32); // Clear GREEN light on external AB-1.1 LED
+            gpio_clr_gpio_pin(AVR32_PIN_PX33); // Set RED light on external AB-1.1 LED
+            gpio_set_gpio_pin(AVR32_PIN_PX29); // Clear GREEN light on external AB-1.1 LED
         } else if (fled == FLED_GREEN) {
-            gpio_set_gpio_pin(AVR32_PIN_PX29); // Clear RED light on external AB-1.1 LED
-            gpio_clr_gpio_pin(AVR32_PIN_PX32); // Set GREEN light on external AB-1.1 LED
+            gpio_set_gpio_pin(AVR32_PIN_PX33); // Clear RED light on external AB-1.1 LED
+            gpio_clr_gpio_pin(AVR32_PIN_PX29); // Set GREEN light on external AB-1.1 LED
         } else if (fled == FLED_YELLOW) {
-            gpio_clr_gpio_pin(AVR32_PIN_PX29); // Set RED light on external AB-1.1 LED
-            gpio_clr_gpio_pin(AVR32_PIN_PX32); // Set GREEN light on external AB-1.1 LED
+            gpio_clr_gpio_pin(AVR32_PIN_PX33); // Set RED light on external AB-1.1 LED
+            gpio_clr_gpio_pin(AVR32_PIN_PX29); // Set GREEN light on external AB-1.1 LED
         }
     }
     gpio_disable_pin_pull_up(AVR32_PIN_PA04); // Floating: Active high. GND: Active low
@@ -192,13 +192,13 @@ void mobo_led(uint8_t fled2, uint8_t fled1, uint8_t fled0)
         gpio_set_gpio_pin(AVR32_PIN_PA21); // FLED1_B
 
     if (fled2 & FLED_RED)
-        gpio_clr_gpio_pin(AVR32_PIN_PX29); // FLED2_R
+        gpio_clr_gpio_pin(AVR32_PIN_PX33); // FLED2_R
     else
-        gpio_set_gpio_pin(AVR32_PIN_PX29); // FLED2_R
+        gpio_set_gpio_pin(AVR32_PIN_PX33); // FLED2_R
     if (fled2 & FLED_GREEN)
-        gpio_clr_gpio_pin(AVR32_PIN_PX32); // FLED2_G
+        gpio_clr_gpio_pin(AVR32_PIN_PX29); // FLED2_G
     else
-        gpio_set_gpio_pin(AVR32_PIN_PX32); // FLED2_G
+        gpio_set_gpio_pin(AVR32_PIN_PX29); // FLED2_G
     if (fled2 & FLED_BLUE)
         gpio_clr_gpio_pin(AVR32_PIN_PC00); // FLED2_B
     else

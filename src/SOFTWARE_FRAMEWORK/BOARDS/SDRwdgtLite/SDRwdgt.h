@@ -97,8 +97,8 @@
 #endif
 
 #if LED_STATUS == LED_STATUS_AB
-#define LED0_GPIO AVR32_PIN_PX29 // Red on AB-1.1
-#define LED1_GPIO AVR32_PIN_PX32 // Green on AB-1.1
+#define LED0_GPIO AVR32_PIN_PX33 // Red on AB-1.1
+#define LED1_GPIO AVR32_PIN_PX29 // Green on AB-1.1
 #endif
 
 #define LED2_GPIO AVR32_PIN_PX50
