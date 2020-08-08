@@ -114,29 +114,29 @@
 // USB Device descriptor
 
 // BSB Added 20110901 according to mail from Roger
-#define USB_1_1_SPECIFICATION 0x0110  // BSB 20130605 changed from 0x0101 to 0x0110 to happify USBlyzer
+#define USB_1_1_SPECIFICATION 0x0110 // BSB 20130605 changed from 0x0101 to 0x0110 to happify USBlyzer
 
 #define USB_SPECIFICATION 0x0200
-#define DEVICE_CLASS_UAC2 0xef      //!	BSB 20160320 unchanged in UAC2, set to 0 in UAC1
-#define DEVICE_SUB_CLASS_UAC2 0x02  //!
-#define DEVICE_PROTOCOL_UAC2 0x01   //! IAD Device
+#define DEVICE_CLASS_UAC2 0xef     //!	BSB 20160320 unchanged in UAC2, set to 0 in UAC1
+#define DEVICE_SUB_CLASS_UAC2 0x02 //!
+#define DEVICE_PROTOCOL_UAC2 0x01  //! IAD Device
 #define DEVICE_CLASS_UAC1 0
 #define DEVICE_SUB_CLASS_UAC1 0
 #define DEVICE_PROTOCOL_UAC1 0
 #define EP_CONTROL_LENGTH 64
-#define DG8SAQ_VENDOR_ID 0x16c0  //!  DG8SAQ device
+#define DG8SAQ_VENDOR_ID 0x16c0 //!  DG8SAQ device
 #define DG8SAQ_PRODUCT_ID 0x05dc
 
 // Use product-specific VID/PIDs
 #if defined(FEATURE_PRODUCT_AB1x)
-#define AUDIO_VENDOR_ID 0x6340      // VID
-#define AUDIO_PRODUCT_ID_9 0x0600   // UAC1 PID
-#define AUDIO_PRODUCT_ID_10 0x0601  // UAC2 PID
+#define AUDIO_VENDOR_ID 0x6340     // VID
+#define AUDIO_PRODUCT_ID_9 0x0610  // UAC1 PID
+#define AUDIO_PRODUCT_ID_10 0x0611 // UAC2 PID
 #else
 #error No recognized FEATURE_PRODUCT... is defined in Makefile, aborting.
 #endif
 
-#define HPSDR_VENDOR_ID 0xfffe  //! Ozy Device
+#define HPSDR_VENDOR_ID 0xfffe //! Ozy Device
 #define HPSDR_PRODUCT_ID 0x0007
 #define RELEASE_NUMBER 0x1000
 #define MAN_INDEX 0x01
@@ -151,7 +151,7 @@
 #define AOT_INDEX 0x09
 #define AIN_INDEX 0x0A
 #define AIA_INDEX 0x0B
-#define LEFT_CH_INDEX 0x0C  // Must be consecutive
+#define LEFT_CH_INDEX 0x0C // Must be consecutive
 #define RIGHT_CH_INDEX 0x0D
 
 #define NB_CONFIGURATION 1
@@ -159,12 +159,12 @@
 // image specific information moved to *_usb_descriptors.h
 
 #define DEVICE_STATUS SELF_POWERED
-#define INTERFACE_STATUS 0x00  // TBD
+#define INTERFACE_STATUS 0x00 // TBD
 
 #define LANG_ID 0x00
 
 // BSB 20120928 new VID/PID system
-#if defined(FEATURE_PRODUCT_AB1x)  // AUDIO_PRODUCT_ID_9 and _10
+#if defined(FEATURE_PRODUCT_AB1x) // AUDIO_PRODUCT_ID_9 and _10
 #define USB_MN_LENGTH 12
 #define USB_MANUFACTURER_NAME \
     {                         \
@@ -186,8 +186,8 @@
 #endif
 
 // BSB 20120928 new VID/PID system
-#if defined(FEATURE_PRODUCT_AB1x)  // AUDIO_PRODUCT_ID_9 and _10
-#define USB_PN_LENGTH 12
+#if defined(FEATURE_PRODUCT_AB1x) // AUDIO_PRODUCT_ID_9 and _10
+#define USB_PN_LENGTH 14
 #define USB_PRODUCT_NAME      \
     {                         \
         Usb_unicode('A'),     \
@@ -201,7 +201,9 @@
             Usb_unicode('C'), \
             Usb_unicode(' '), \
             Usb_unicode('v'), \ 
-            Usb_unicode('6')  \
+            Usb_unicode('6'), \
+            Usb_unicode('.'), \
+            Usb_unicode('1')  \
     }
 
 #else
@@ -209,7 +211,7 @@
 #endif
 
 #if defined(FEATURE_PRODUCT_AB1x)
-#define USB_SN_LENGTH 11  // Encode the build date and user prefix
+#define USB_SN_LENGTH 11 // Encode the build date and user prefix
 #define USB_SERIAL_NUMBER     \
     {                         \
         Usb_unicode('2'),     \
@@ -217,29 +219,15 @@
             Usb_unicode('2'), \
             Usb_unicode('0'), \
             Usb_unicode('0'), \
-            Usb_unicode('7'), \
-            Usb_unicode('2'), \
-            Usb_unicode('6'), \
+            Usb_unicode('8'), \
+            Usb_unicode('0'), \
+            Usb_unicode('8'), \
             Usb_unicode('D'), \
             Usb_unicode('A'), \
             Usb_unicode('C')  \
-    }  //
+    } //
 #else
-#define USB_SN_LENGTH 11  // Encode the build date and user prefix
-#define USB_SERIAL_NUMBER     \
-    {                         \
-        Usb_unicode('2'),     \
-            Usb_unicode('0'), \
-            Usb_unicode('2'), \
-            Usb_unicode('0'), \
-            Usb_unicode('0'), \
-            Usb_unicode('7'), \
-            Usb_unicode('2'), \
-            Usb_unicode('6'), \
-            Usb_unicode('D'), \
-            Usb_unicode('A'), \
-            Usb_unicode('C')  \
-    }
+#error No recognized FEATURE_PRODUCT... is defined in Makefile, aborting.
 #endif
 
 #define USB_CS1_LENGTH 7
@@ -390,9 +378,9 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;                  //!< Size of this descriptor in U8s
-    U8 bDescriptorType;          //!< STRING descriptor type
-    U16 wstring[USB_WL_LENGTH];  //!< Unicode characters
+    U8 bLength;                 //!< Size of this descriptor in U8s
+    U8 bDescriptorType;         //!< STRING descriptor type
+    U16 wstring[USB_WL_LENGTH]; //!< Unicode characters
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -411,9 +399,9 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;                   //!< Size of this descriptor in U8s
-    U8 bDescriptorType;           //!< STRING descriptor type
-    U16 wstring[USB_AIT_LENGTH];  //!< Unicode characters
+    U8 bLength;                  //!< Size of this descriptor in U8s
+    U8 bDescriptorType;          //!< STRING descriptor type
+    U16 wstring[USB_AIT_LENGTH]; //!< Unicode characters
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -432,9 +420,9 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;                   //!< Size of this descriptor in U8s
-    U8 bDescriptorType;           //!< STRING descriptor type
-    U16 wstring[USB_AOT_LENGTH];  //!< Unicode characters
+    U8 bLength;                  //!< Size of this descriptor in U8s
+    U8 bDescriptorType;          //!< STRING descriptor type
+    U16 wstring[USB_AOT_LENGTH]; //!< Unicode characters
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -453,9 +441,9 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;                   //!< Size of this descriptor in U8s
-    U8 bDescriptorType;           //!< STRING descriptor type
-    U16 wstring[USB_AIN_LENGTH];  //!< Unicode characters
+    U8 bLength;                  //!< Size of this descriptor in U8s
+    U8 bDescriptorType;          //!< STRING descriptor type
+    U16 wstring[USB_AIN_LENGTH]; //!< Unicode characters
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -474,9 +462,9 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;                   //!< Size of this descriptor in U8s
-    U8 bDescriptorType;           //!< STRING descriptor type
-    U16 wstring[USB_AIA_LENGTH];  //!< Unicode characters
+    U8 bLength;                  //!< Size of this descriptor in U8s
+    U8 bDescriptorType;          //!< STRING descriptor type
+    U16 wstring[USB_AIA_LENGTH]; //!< Unicode characters
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -495,9 +483,9 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;                       //!< Size of this descriptor in U8s
-    U8 bDescriptorType;               //!< STRING descriptor type
-    U16 wstring[USB_LEFT_CH_LENGTH];  //!< Unicode characters
+    U8 bLength;                      //!< Size of this descriptor in U8s
+    U8 bDescriptorType;              //!< STRING descriptor type
+    U16 wstring[USB_LEFT_CH_LENGTH]; //!< Unicode characters
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -516,9 +504,9 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;                        //!< Size of this descriptor in U8s
-    U8 bDescriptorType;                //!< STRING descriptor type
-    U16 wstring[USB_RIGHT_CH_LENGTH];  //!< Unicode characters
+    U8 bLength;                       //!< Size of this descriptor in U8s
+    U8 bDescriptorType;               //!< STRING descriptor type
+    U16 wstring[USB_RIGHT_CH_LENGTH]; //!< Unicode characters
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -538,11 +526,11 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bmRequestType;  //!< Characteristics of the request
-    U8 bRequest;       //!< Specific request
-    U16 wValue;        //!< Field that varies according to request
-    U16 wIndex;        //!< Field that varies according to request
-    U16 wLength;       //!< Number of bytes to transfer if Data
+    U8 bmRequestType; //!< Characteristics of the request
+    U8 bRequest;      //!< Specific request
+    U16 wValue;       //!< Field that varies according to request
+    U16 wIndex;       //!< Field that varies according to request
+    U16 wLength;      //!< Number of bytes to transfer if Data
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -559,20 +547,20 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;             //!< Size of this descriptor in bytes
-    U8 bDescriptorType;     //!< DEVICE descriptor type
-    U16 bscUSB;             //!< Binay Coded Decimal Spec. release
-    U8 bDeviceClass;        //!< Class code assigned by the USB
-    U8 bDeviceSubClass;     //!< Subclass code assigned by the USB
-    U8 bDeviceProtocol;     //!< Protocol code assigned by the USB
-    U8 bMaxPacketSize0;     //!< Max packet size for EP0
-    U16 idVendor;           //!< Vendor ID. ATMEL = 0x03EB
-    U16 idProduct;          //!< Product ID assigned by the manufacturer
-    U16 bcdDevice;          //!< Device release number
-    U8 iManufacturer;       //!< Index of manu. string descriptor
-    U8 iProduct;            //!< Index of prod. string descriptor
-    U8 iSerialNumber;       //!< Index of S.N.  string descriptor
-    U8 bNumConfigurations;  //!< Number of possible configurations
+    U8 bLength;            //!< Size of this descriptor in bytes
+    U8 bDescriptorType;    //!< DEVICE descriptor type
+    U16 bscUSB;            //!< Binay Coded Decimal Spec. release
+    U8 bDeviceClass;       //!< Class code assigned by the USB
+    U8 bDeviceSubClass;    //!< Subclass code assigned by the USB
+    U8 bDeviceProtocol;    //!< Protocol code assigned by the USB
+    U8 bMaxPacketSize0;    //!< Max packet size for EP0
+    U16 idVendor;          //!< Vendor ID. ATMEL = 0x03EB
+    U16 idProduct;         //!< Product ID assigned by the manufacturer
+    U16 bcdDevice;         //!< Device release number
+    U8 iManufacturer;      //!< Index of manu. string descriptor
+    U8 iProduct;           //!< Index of prod. string descriptor
+    U8 iSerialNumber;      //!< Index of S.N.  string descriptor
+    U8 bNumConfigurations; //!< Number of possible configurations
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -589,14 +577,14 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;              //!< Size of this descriptor in bytes
-    U8 bDescriptorType;      //!< CONFIGURATION descriptor type
-    U16 wTotalLength;        //!< Total length of data returned
-    U8 bNumInterfaces;       //!< Number of interfaces for this conf.
-    U8 bConfigurationValue;  //!< Value for SetConfiguration resquest
-    U8 iConfiguration;       //!< Index of string descriptor
-    U8 bmAttributes;         //!< Configuration characteristics
-    U8 MaxPower;             //!< Maximum power consumption
+    U8 bLength;             //!< Size of this descriptor in bytes
+    U8 bDescriptorType;     //!< CONFIGURATION descriptor type
+    U16 wTotalLength;       //!< Total length of data returned
+    U8 bNumInterfaces;      //!< Number of interfaces for this conf.
+    U8 bConfigurationValue; //!< Value for SetConfiguration resquest
+    U8 iConfiguration;      //!< Index of string descriptor
+    U8 bmAttributes;        //!< Configuration characteristics
+    U8 MaxPower;            //!< Maximum power consumption
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -613,15 +601,15 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;             //!< Size of this descriptor in bytes
-    U8 bDescriptorType;     //!< INTERFACE descriptor type
-    U8 bInterfaceNumber;    //!< Number of interface
-    U8 bAlternateSetting;   //!< Value to select alternate setting
-    U8 bNumEndpoints;       //!< Number of EP except EP 0
-    U8 bInterfaceClass;     //!< Class code assigned by the USB
-    U8 bInterfaceSubClass;  //!< Subclass code assigned by the USB
-    U8 bInterfaceProtocol;  //!< Protocol code assigned by the USB
-    U8 iInterface;          //!< Index of string descriptor
+    U8 bLength;            //!< Size of this descriptor in bytes
+    U8 bDescriptorType;    //!< INTERFACE descriptor type
+    U8 bInterfaceNumber;   //!< Number of interface
+    U8 bAlternateSetting;  //!< Value to select alternate setting
+    U8 bNumEndpoints;      //!< Number of EP except EP 0
+    U8 bInterfaceClass;    //!< Class code assigned by the USB
+    U8 bInterfaceSubClass; //!< Subclass code assigned by the USB
+    U8 bInterfaceProtocol; //!< Protocol code assigned by the USB
+    U8 iInterface;         //!< Index of string descriptor
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -638,12 +626,12 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;           //!< Size of this descriptor in bytes
-    U8 bDescriptorType;   //!< ENDPOINT descriptor type
-    U8 bEndpointAddress;  //!< Address of the endpoint
-    U8 bmAttributes;      //!< Endpoint's attributes
-    U16 wMaxPacketSize;   //!< Maximum packet size for this EP
-    U8 bInterval;         //!< Interval for polling EP in ms
+    U8 bLength;          //!< Size of this descriptor in bytes
+    U8 bDescriptorType;  //!< ENDPOINT descriptor type
+    U8 bEndpointAddress; //!< Address of the endpoint
+    U8 bmAttributes;     //!< Endpoint's attributes
+    U16 wMaxPacketSize;  //!< Maximum packet size for this EP
+    U8 bInterval;        //!< Interval for polling EP in ms
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -660,14 +648,14 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;            // Size of this Descriptor in BYTEs
-    U8 bDescriptorType;    // INTERFACE_ASSOCIATION Descriptor Type (0x0B)
-    U8 bFirstInterface;    // Interface number of the first one associated with this function
-    U8 bInterfaceCount;    // Number of contiguous interface associated with this function
-    U8 bFunctionClass;     // The class triad of this interface,
-    U8 bFunctionSubClass;  //   usually same as the triad of the first interface
+    U8 bLength;           // Size of this Descriptor in BYTEs
+    U8 bDescriptorType;   // INTERFACE_ASSOCIATION Descriptor Type (0x0B)
+    U8 bFirstInterface;   // Interface number of the first one associated with this function
+    U8 bInterfaceCount;   // Number of contiguous interface associated with this function
+    U8 bFunctionClass;    // The class triad of this interface,
+    U8 bFunctionSubClass; //   usually same as the triad of the first interface
     U8 bFunctionProcotol;
-    U8 iInterface;  // Index of String Desc for this function
+    U8 iInterface; // Index of String Desc for this function
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -690,10 +678,10 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;             // Size of this Descriptor in BYTEs
-    U8 bDescriptorType;     // CS_INTERFACE Descriptor Type
-    U8 bDescriptorSubtype;  // CS_CDC_HEADER subtype
-    U16 bcdCDC;             // bcdCDC (CDC spec release number, 1.1
+    U8 bLength;            // Size of this Descriptor in BYTEs
+    U8 bDescriptorType;    // CS_INTERFACE Descriptor Type
+    U8 bDescriptorSubtype; // CS_CDC_HEADER subtype
+    U16 bcdCDC;            // bcdCDC (CDC spec release number, 1.1
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -712,11 +700,11 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;             // Size of this Descriptor in BYTEs
-    U8 bDescriptorType;     // CS_INTERFACE Descriptor Type
-    U8 bDescriptorSubtype;  // CS_CDC_CALL_MAN subtype
-    U8 bmCapabilities;      // Capabilities bitmap
-    U8 bDataInterface;      // Interface number
+    U8 bLength;            // Size of this Descriptor in BYTEs
+    U8 bDescriptorType;    // CS_INTERFACE Descriptor Type
+    U8 bDescriptorSubtype; // CS_CDC_CALL_MAN subtype
+    U8 bmCapabilities;     // Capabilities bitmap
+    U8 bDataInterface;     // Interface number
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -735,10 +723,10 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;             // Size of this Descriptor in BYTEs
-    U8 bDescriptorType;     // CS_INTERFACE Descriptor Type
-    U8 bDescriptorSubtype;  // CS_CDC_ABST_CNTRL subtype
-    U8 bmCapabilities;      // Capabilities bitmap
+    U8 bLength;            // Size of this Descriptor in BYTEs
+    U8 bDescriptorType;    // CS_INTERFACE Descriptor Type
+    U8 bDescriptorSubtype; // CS_CDC_ABST_CNTRL subtype
+    U8 bmCapabilities;     // Capabilities bitmap
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -757,11 +745,11 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;             // Size of this Descriptor in BYTEs
-    U8 bDescriptorType;     // CS_INTERFACE Descriptor Typ
-    U8 bDescriptorSubtype;  // CS_CDC_UNION_FUNC subtype
-    U8 bMasterInterface;    // Interface number master
-    U8 bSlaveInterface0;    // Interface number slave
+    U8 bLength;            // Size of this Descriptor in BYTEs
+    U8 bDescriptorType;    // CS_INTERFACE Descriptor Typ
+    U8 bDescriptorSubtype; // CS_CDC_UNION_FUNC subtype
+    U8 bMasterInterface;   // Interface number master
+    U8 bSlaveInterface0;   // Interface number slave
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -778,15 +766,15 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;             //!< Size of this descriptor in BYTEs
-    U8 bDescriptorType;     //!< DEVICE_QUALIFIER descriptor type
-    U16 bscUSB;             //!< Binay Coded Decimal Spec. release
-    U8 bDeviceClass;        //!< Class code assigned by the USB
-    U8 bDeviceSubClass;     //!< Subclass code assigned by the USB
-    U8 bDeviceProtocol;     //!< Protocol code assigned by the USB
-    U8 bMaxPacketSize0;     //!< Max packet size for EP0
-    U8 bNumConfigurations;  //!< Number of possible configurations
-    U8 bReserved;           //!< Reserved for future use, must be zero
+    U8 bLength;            //!< Size of this descriptor in BYTEs
+    U8 bDescriptorType;    //!< DEVICE_QUALIFIER descriptor type
+    U16 bscUSB;            //!< Binay Coded Decimal Spec. release
+    U8 bDeviceClass;       //!< Class code assigned by the USB
+    U8 bDeviceSubClass;    //!< Subclass code assigned by the USB
+    U8 bDeviceProtocol;    //!< Protocol code assigned by the USB
+    U8 bMaxPacketSize0;    //!< Max packet size for EP0
+    U8 bNumConfigurations; //!< Number of possible configurations
+    U8 bReserved;          //!< Reserved for future use, must be zero
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -803,9 +791,9 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;          //!< Size of this descriptor in U8s
-    U8 bDescriptorType;  //!< STRING descriptor type
-    U16 wlangid;         //!< Language id
+    U8 bLength;         //!< Size of this descriptor in U8s
+    U8 bDescriptorType; //!< STRING descriptor type
+    U16 wlangid;        //!< Language id
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -824,9 +812,9 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;                  //!< Size of this descriptor in BYTEs
-    U8 bDescriptorType;          //!< STRING descriptor type
-    U16 wstring[USB_MN_LENGTH];  //!< Unicode characters
+    U8 bLength;                 //!< Size of this descriptor in BYTEs
+    U8 bDescriptorType;         //!< STRING descriptor type
+    U16 wstring[USB_MN_LENGTH]; //!< Unicode characters
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -845,9 +833,9 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;                  //!< Size of this descriptor in U8s
-    U8 bDescriptorType;          //!< STRING descriptor type
-    U16 wstring[USB_PN_LENGTH];  //!< Unicode characters
+    U8 bLength;                 //!< Size of this descriptor in U8s
+    U8 bDescriptorType;         //!< STRING descriptor type
+    U16 wstring[USB_PN_LENGTH]; //!< Unicode characters
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -866,9 +854,9 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;                  //!< Size of this descriptor in U8s
-    U8 bDescriptorType;          //!< STRING descriptor type
-    U16 wstring[USB_SN_LENGTH];  //!< Unicode characters
+    U8 bLength;                 //!< Size of this descriptor in U8s
+    U8 bDescriptorType;         //!< STRING descriptor type
+    U16 wstring[USB_SN_LENGTH]; //!< Unicode characters
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -887,9 +875,9 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;                   //!< Size of this descriptor in U8s
-    U8 bDescriptorType;           //!< STRING descriptor type
-    U16 wstring[USB_CS1_LENGTH];  //!< Unicode characters
+    U8 bLength;                  //!< Size of this descriptor in U8s
+    U8 bDescriptorType;          //!< STRING descriptor type
+    U16 wstring[USB_CS1_LENGTH]; //!< Unicode characters
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -908,9 +896,9 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;                   //!< Size of this descriptor in U8s
-    U8 bDescriptorType;           //!< STRING descriptor type
-    U16 wstring[USB_CS2_LENGTH];  //!< Unicode characters
+    U8 bLength;                  //!< Size of this descriptor in U8s
+    U8 bDescriptorType;          //!< STRING descriptor type
+    U16 wstring[USB_CS2_LENGTH]; //!< Unicode characters
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -929,9 +917,9 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;                  //!< Size of this descriptor in U8s
-    U8 bDescriptorType;          //!< STRING descriptor type
-    U16 wstring[USB_CX_LENGTH];  //!< Unicode characters
+    U8 bLength;                 //!< Size of this descriptor in U8s
+    U8 bDescriptorType;         //!< STRING descriptor type
+    U16 wstring[USB_CX_LENGTH]; //!< Unicode characters
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -950,13 +938,13 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;           //!< Size of this descriptor in BYTEs
-    U8 bDescriptorType;   //!< HID descriptor type
-    U16 bcdHID;           //!< HID Class Specification release number
-    U8 bCountryCode;      //!< Hardware target country
-    U8 bNumDescriptors;   //!< Number of HID class descriptors to follow
-    U8 bRDescriptorType;  //!< Report descriptor type
-    U16 wItemLength;      //!< Total length of Report descriptor
+    U8 bLength;          //!< Size of this descriptor in BYTEs
+    U8 bDescriptorType;  //!< HID descriptor type
+    U16 bcdHID;          //!< HID Class Specification release number
+    U8 bCountryCode;     //!< Hardware target country
+    U8 bNumDescriptors;  //!< Number of HID class descriptors to follow
+    U8 bRDescriptorType; //!< Report descriptor type
+    U16 wItemLength;     //!< Total length of Report descriptor
 }
 #if (defined __ICCAVR32__)
 #pragma pack()
@@ -1098,18 +1086,18 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLenght;             // 0
-    U8 bDescriptorType;     // 1
-    U8 bDescriptorSubType;  // 2
-    U8 bFormatType;         // 3
-    U8 bNrChannels;         // 4
-    U8 bSubFrameSize;       // 5
-    U8 bBitResolution;      // 6
-    U8 bSampleFreqType;     // 7
-    U16 wLsbyteiSamFreq_1;  // 8, 9
-    U8 bMsbyteiSamFreq_1;   // 10
-    U16 wLsbyteiSamFreq_2;  // 11, 12
-    U8 bMsbyteiSamFreq_2;   // 13
+    U8 bLenght;            // 0
+    U8 bDescriptorType;    // 1
+    U8 bDescriptorSubType; // 2
+    U8 bFormatType;        // 3
+    U8 bNrChannels;        // 4
+    U8 bSubFrameSize;      // 5
+    U8 bBitResolution;     // 6
+    U8 bSampleFreqType;    // 7
+    U16 wLsbyteiSamFreq_1; // 8, 9
+    U8 bMsbyteiSamFreq_1;  // 10
+    U16 wLsbyteiSamFreq_2; // 11, 12
+    U8 bMsbyteiSamFreq_2;  // 13
 } S_usb_format_type_1;
 
 //! Endpoint AUDIO Specific descriptor
@@ -1140,12 +1128,12 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;           //!< Size of this descriptor in bytes
-    U8 bDescriptorType;   //!< ENDPOINT descriptor type
-    U8 bEndpointAddress;  //!< Address of the endpoint
-    U8 bmAttributes;      //!< Endpoint's attributes
-    U16 wMaxPacketSize;   //!< Maximum packet size for this EP
-    U8 bInterval;         //!< Interval for polling EP in ms
+    U8 bLength;          //!< Size of this descriptor in bytes
+    U8 bDescriptorType;  //!< ENDPOINT descriptor type
+    U8 bEndpointAddress; //!< Address of the endpoint
+    U8 bmAttributes;     //!< Endpoint's attributes
+    U16 wMaxPacketSize;  //!< Maximum packet size for this EP
+    U8 bInterval;        //!< Interval for polling EP in ms
     U8 bRefresh;
     U8 bSynAddress;
 } S_usb_endpoint_audio_descriptor_1;
@@ -1190,7 +1178,7 @@ typedef
     U8 iClockSource;      /* String descriptor of this clock source */
 } S_usb_clock_source_descriptor;
 
-#ifdef FEATURE_CLOCK_SELECTOR  // Only if clock selector is compiled in do we expose it in the feature unit
+#ifdef FEATURE_CLOCK_SELECTOR // Only if clock selector is compiled in do we expose it in the feature unit
 
 //! Clock Selector descriptor pp 4.7.2.2
 typedef
@@ -1202,15 +1190,15 @@ typedef
     __attribute__((__packed__))
 #endif
 {
-    U8 bLength;                               /* Size of this descriptor in bytes */
-    U8 bDescriptorType;                       /* CS_INTERFACE descriptor type */
-    U8 bDescritorSubtype;                     /* CLOCK_SELECTOR subtype */
-    U8 bClockID;                              /* Clock Selector ID */
-    U8 bNrInPins; /* Number of Input Pins */  // Set to 1
-    U8 baCSourceID1;                          /* variable length */
-                                              //  U8  baCSourceID2;		// Only one...
-    U8 bmControls;                            /* Clock selector control bitmap  */
-    U8 iClockSelector;                        /* String descriptor of this clock selector */
+    U8 bLength;                              /* Size of this descriptor in bytes */
+    U8 bDescriptorType;                      /* CS_INTERFACE descriptor type */
+    U8 bDescritorSubtype;                    /* CLOCK_SELECTOR subtype */
+    U8 bClockID;                             /* Clock Selector ID */
+    U8 bNrInPins; /* Number of Input Pins */ // Set to 1
+    U8 baCSourceID1;                         /* variable length */
+                                             //  U8  baCSourceID2;		// Only one...
+    U8 bmControls;                           /* Clock selector control bitmap  */
+    U8 iClockSelector;                       /* String descriptor of this clock selector */
 } S_usb_clock_selector_descriptor;
 
 #endif
@@ -1470,10 +1458,10 @@ extern const S_usb_left_channel usb_left_channel;
 extern const S_usb_right_channel usb_right_channel;
 
 // #define USB_HID_REPORT_DESC 47
-#define USB_HID_REPORT_DESC 67  // BSB 20120711: Changed according to BasicAudioDevice-10.pdf table 8-2
+#define USB_HID_REPORT_DESC 67 // BSB 20120711: Changed according to BasicAudioDevice-10.pdf table 8-2
 // extern const U8 usb_hid_report_descriptor[OUT_CL_INTERFACE];
-extern const U8 usb_hid_report_descriptor[USB_HID_REPORT_DESC];  // The length was completely off!
+extern const U8 usb_hid_report_descriptor[USB_HID_REPORT_DESC]; // The length was completely off!
 
 extern U16 configTSK_USB_DEV_PERIOD;
 
-#endif  // _USB_DESCRIPTORS_H_
+#endif // _USB_DESCRIPTORS_H_
