@@ -146,6 +146,7 @@ void widget_display_clear(void)
 
 void widget_display_string_and_scroll(char* string)
 {
+    (void)string;
 #if LCD_DISPLAY
     widget_display_grab();
     if (display_row == 4) {
@@ -168,6 +169,7 @@ void widget_display_string_and_scroll(char* string)
 
 void widget_display_string_scroll_and_delay(char* string, unsigned delay)
 {
+    (void)string, (void)delay;
 #if LCD_DISPLAY
     widget_display_string_and_scroll(string);
     widget_delay_task(delay);
@@ -181,6 +183,7 @@ void widget_display_string_scroll_and_delay(char* string, unsigned delay)
 //
 void widget_oops(char* message)
 {
+    (void)message;
 #if LCD_DISPLAY
     if (widget_is_tasking()) {
         widget_display_grab();
@@ -311,8 +314,8 @@ void widget_factory_reset(void)
 // blink a dot-space code: dot is on, space is off
 //
 #define BLINKY_WPM 15  // words per minute to blink
-#define PARIS_DPW 50   // dit clocks in PARIS
-#define CODEX_DPW 60   // dit clocks in CODEX
+#define PARIS_DPW 50  // dit clocks in PARIS
+#define CODEX_DPW 60  // dit clocks in CODEX
 
 // LED0_GPIO - mounted led0, contended for by uac
 // LED1_GPIO - mounted led1, contended for by uac
@@ -566,7 +569,7 @@ void widget_init(void)
 
 void widget_ready(char* msg)
 {
-    // widget_blink_morse(msg);
+    (void)msg;
 }
 
 void widget_report(void)

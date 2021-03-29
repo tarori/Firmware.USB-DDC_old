@@ -161,7 +161,7 @@ uint8_t rand8(void)
 #define MULT_HI (MULT & 256)
     static uint8_t state[STATE_BYTES] = {0x87, 0xdd, 0xdc, 0x10, 0x35, 0xbc, 0x5c};
     static uint16_t c = 0x42;
-    static int i = 0;
+    static uint16_t i = 0;
     uint16_t t;
     uint8_t x;
 

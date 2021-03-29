@@ -9,6 +9,7 @@
 
 static void vtaskEXERCISE(void* pcParameters)
 {
+    (void)pcParameters;
     portTickType xLastWakeTime;
     xLastWakeTime = xTaskGetTickCount();
 
@@ -20,6 +21,7 @@ static void vtaskEXERCISE(void* pcParameters)
 
 void vStartTaskEXERCISE(unsigned portBASE_TYPE uxPriority)
 {
+    (void)uxPriority;
     xTaskCreate(vtaskEXERCISE,
         (signed char*)"taskEXERCISE",
         configTSK_EXERCISE_STACK_SIZE,

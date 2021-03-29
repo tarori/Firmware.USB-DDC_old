@@ -73,4 +73,5 @@ int flashyBlinky(void)
             }
         }
     }
+    return 0;
 }

@@ -30,7 +30,7 @@ char flt_lcd[5];   // LCD Print formatting for filters
  */
 void display_frequency(void)
 {
-#if LCD_DISPLAY        // Multi-line LCD display
+#if LCD_DISPLAY  // Multi-line LCD display
 #if FRQ_IN_FIRST_LINE  // Normal Frequency display in first line of LCD. Can be disabled for Debug
 
     // Translate frequency to a double precision float
@@ -88,7 +88,7 @@ void SetFilter(uint32_t freq)
             if (Freq.w0 < cdata.FilterCrossOver[i])
                 break;
         }
-#if SCRAMBLED_FILTERS                                     // Enable a non contiguous order of filters
+#if SCRAMBLED_FILTERS  // Enable a non contiguous order of filters
         data = cdata.FilterNumber[i] & 0x07;              // We only want 3 bits
         pcf8574_mobo_data_out &= 0xf8;                    // clear and leave upper 5 bits untouched
         pcf8574_mobo_set(cdata.PCF_I2C_Mobo_addr, data);  // Combine the two and write out
@@ -111,7 +111,7 @@ void SetFilter(uint32_t freq)
             if (Freq.w0 < cdata.FilterCrossOver[i])
                 break;
         }
-#if SCRAMBLED_FILTERS                         // Enable a non contiguous order of filters
+#if SCRAMBLED_FILTERS  // Enable a non contiguous order of filters
         data = cdata.FilterNumber[i] & 0x03;  // We only want 2 bits
 
         selectedFilters[0] = cdata.FilterNumber[i];  // Used for LCD Print indication
@@ -146,7 +146,7 @@ void SetFilter(uint32_t freq)
 #if PCF_LPF  // External Port Expander Control of Low Pass filters
     // If we write to I2C without the device being present, then later I2C writes produce unexpected results
     if (i2c.pcflpf1) {
-#if SCRAMBLED_FILTERS                               // Enable a non contiguous order of filters
+#if SCRAMBLED_FILTERS  // Enable a non contiguous order of filters
         band_sel.w = 1 << cdata.TXFilterNumber[i];  // Set bit in a 16 bit register
         pcf8574_out_byte(cdata.PCF_I2C_lpf1_addr, band_sel.b1);
 #if PCF_16LPF  // External Port Expander Control of 16 Low Pass filters
@@ -163,7 +163,7 @@ void SetFilter(uint32_t freq)
         if (i2c.pcflpf2)
             pcf8574_out_byte(cdata.PCF_I2C_lpf2_addr, band_sel.b0);
 #endif
-        selectedFilters[1] = i;                        // Used for LCD Print indication
+        selectedFilters[1] = i;  // Used for LCD Print indication
 #endif  // SCRAMBLED_FILTERS
     }
     //else selectedFilters[1] = 0x0f;			// Error indication
@@ -173,14 +173,14 @@ void SetFilter(uint32_t freq)
         // we can use Widget PTT_1/PTT_2/PTT_2 for LPF control output
         if (i2c.pcfmobo) {
             uint8_t j;
-#if SCRAMBLED_FILTERS                                      // Enable a non contiguous order of filters
+#if SCRAMBLED_FILTERS  // Enable a non contiguous order of filters
             band_sel.b1 = cdata.TXFilterNumber[i] & 0x07;  // Set and Enforce bounds for a 3 bit value
             j = band_sel.b1 << 3;                          // leftshift x 3 for bits 3 - 5
             selectedFilters[1] = cdata.TXFilterNumber[i];  // Used for LCD Print indication
 #else
-            band_sel.b1 = i & 0x07;                    // Set and Enforce bounds for a 3 bit value
-            j = band_sel.b1 << 3;                      // leftshift x 3 for bits 3 - 5
-            selectedFilters[1] = i;                    // Used for LCD Print indication
+            band_sel.b1 = i & 0x07;  // Set and Enforce bounds for a 3 bit value
+            j = band_sel.b1 << 3;    // leftshift x 3 for bits 3 - 5
+            selectedFilters[1] = i;  // Used for LCD Print indication
 #endif
             // Manipulate 3 bit binary output to set the 8 LPF
             if (j & 0b00000001)
@@ -206,7 +206,7 @@ void SetFilter(uint32_t freq)
 #if PCF_FILTER_IO  // 8x BCD control for LPF switching, switches P1 pins 4-6
     if (i2c.pcfmobo) {
         uint8_t j;
-#if SCRAMBLED_FILTERS                                  // Enable a non contiguous order of filters
+#if SCRAMBLED_FILTERS  // Enable a non contiguous order of filters
         band_sel.b1 = cdata.TXFilterNumber[i] & 0x07;  // Set and Enforce bounds for a 3 bit value
         j = band_sel.b1 << 3;                          // leftshift x 3 for bits 3 - 5
         pcf8574_mobo_data_out &= 0b11000111;           // Clear out old data before adding new
@@ -240,7 +240,7 @@ void SetFilter(uint32_t freq)
 #endif
 #endif
 
-#if LCD_DISPLAY        // Multi-line LCD display
+#if LCD_DISPLAY  // Multi-line LCD display
 #if FRQ_IN_FIRST_LINE  // Normal Frequency display in first line of LCD. Can be disabled for Debug
     if (!MENU_mode) {
         // Display Selected Filters
@@ -265,7 +265,6 @@ void SetFilter(uint32_t freq)
 uint8_t new_freq_and_filters(uint32_t freq)
 {
     uint8_t status = 0;    // Is the Si570 On Line?
-    static uint8_t band;   // which BPF frequency band? (used with CALC_BAND_MUL_ADD)
     double set_frequency;  // Frequency in double precision floating point
 
     // Translate frequency to a double precision float
@@ -280,7 +279,7 @@ uint8_t new_freq_and_filters(uint32_t freq)
     cdata.Freq[0] = freq;  // Some Command calls to this func do not update si570.Freq[0]
 
 #if !FRQ_CGH_DURING_TX  // Do not allow Si570 frequency change and corresponding filter change during TX
-    if (TX_flag)        // Oops, we are transmitting... return without changing frequency
+    if (TX_flag)  // Oops, we are transmitting... return without changing frequency
         return TWI_INVALID_ARGUMENT;
 #endif
 
@@ -295,11 +294,11 @@ uint8_t new_freq_and_filters(uint32_t freq)
 
     status = SetFrequency(set_frequency);
 
-#if BPF_LPF_Module       // Band Pass and Low Pass filter switcing
+#if BPF_LPF_Module  // Band Pass and Low Pass filter switcing
 #if !FLTR_CGH_DURING_TX  // Do not allow Filter changes when frequency is changed during TX
-    if (!TX_flag)        // Only change filters when not transmitting
+    if (!TX_flag)  // Only change filters when not transmitting
 #endif
-#if CALC_BAND_MUL_ADD            // Band dependent Frequency Subtract and Multiply
+#if CALC_BAND_MUL_ADD  // Band dependent Frequency Subtract and Multiply
         band = SetFilter(freq);  // Select Band Pass Filter, according to the frequency selected
 #else
     SetFilter(freq);  // Select Band Pass Filter, according to the frequency selected

@@ -200,7 +200,7 @@
             Usb_unicode('A'), \
             Usb_unicode('C'), \
             Usb_unicode(' '), \
-            Usb_unicode('v'), \ 
+            Usb_unicode('v'), \
             Usb_unicode('7'), \
             Usb_unicode('.'), \
             Usb_unicode('0')  \

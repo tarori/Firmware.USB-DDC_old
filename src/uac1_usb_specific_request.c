@@ -129,6 +129,7 @@ extern U16 data_to_transfer;
 //!
 void uac1_user_endpoint_init(U8 conf_nb)
 {
+    (void)conf_nb;
     if (Is_usb_full_speed_mode()) {
 #ifdef FEATURE_HID
         (void)Usb_configure_endpoint(UAC1_EP_HID_TX, EP_ATTRIBUTES_1, DIRECTION_IN, EP_SIZE_1_FS, SINGLE_BANK, 0);
@@ -317,6 +318,7 @@ static Bool uac1_user_get_interface_descriptor()
 //!
 void uac1_usb_hid_set_idle(U8 u8_report_id, U8 u8_duration)
 {  // BSB 20120710 prefix "uac1_" added
+    (void)u8_report_id, (void)u8_duration;
 #ifdef FEATURE_HID
     Usb_ack_setup_received_free();
 
@@ -335,6 +337,7 @@ void uac1_usb_hid_set_idle(U8 u8_report_id, U8 u8_duration)
 //!
 void uac1_usb_hid_get_idle(U8 u8_report_id)
 {  // BSB 20120710 prefix "uac1_" added
+    (void)u8_report_id;
 #ifdef FEATURE_HID
     Usb_ack_setup_received_free();
 

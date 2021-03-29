@@ -141,6 +141,7 @@ void uac1_device_audio_task_init(U8 ep_in, U8 ep_out, U8 ep_out_fb)
 
 void uac1_device_audio_task(void* pvParameters)
 {
+    (void)pvParameters;
     Bool playerStarted = FALSE;  // BSB 20150516: changed into global variable
     int i;
     U16 num_samples, num_remaining, gap = 0;
@@ -160,9 +161,9 @@ void uac1_device_audio_task(void* pvParameters)
     const U8 EP_AUDIO_OUT = ep_audio_out;
     const U8 EP_AUDIO_OUT_FB = ep_audio_out_fb;
     uint32_t silence_USB = SILENCE_USB_LIMIT;  // BSB 20150621: detect silence in USB channel, initially assume silence
-    uint32_t silence_det_L = 0;
-    uint32_t silence_det_R = 0;
-    uint8_t silence_det = 0;
+    int32_t silence_det_L = 0;
+    int32_t silence_det_R = 0;
+    int8_t silence_det = 0;
     U8 DAC_buf_DMA_read_local = 0;  // Local copy read in atomic operations
 
 #if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)
@@ -238,7 +239,7 @@ void uac1_device_audio_task(void* pvParameters)
                 num_remaining = pdca_channel->tcr;
                 if (ADC_buf_DMA_write != ADC_buf_USB_IN) {
                     // AK and USB using same buffer
-                    if (index < (ADC_BUFFER_SIZE - num_remaining))
+                    if (index < (U16)(ADC_BUFFER_SIZE - num_remaining))
                         gap = ADC_BUFFER_SIZE - num_remaining - index;
                     else
                         gap = ADC_BUFFER_SIZE - index + ADC_BUFFER_SIZE - num_remaining + ADC_BUFFER_SIZE;
@@ -313,8 +314,8 @@ void uac1_device_audio_task(void* pvParameters)
         if ((usb_alternate_setting_out >= 1) && (usb_ch_swap == USB_CH_NOSWAP)) {  // bBitResolution
 //			if ( (usb_alternate_setting_out == 1) && (usb_ch_swap == USB_CH_NOSWAP) ) {
 #else
-        if (usb_alternate_setting_out >= 1) {                          // bBitResolution
-                                                                       //				if (usb_alternate_setting_out == 1) {
+        if (usb_alternate_setting_out >= 1) {  // bBitResolution
+                                               //				if (usb_alternate_setting_out == 1) {
 #endif
             // BSB 20131031 actual gap calculation moved to after OUT data processing
 
@@ -336,7 +337,7 @@ void uac1_device_audio_task(void* pvParameters)
 
                 if (Is_usb_full_speed_mode()) {
                     // FB rate is 3 bytes in 10.14 format
-#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)                                                      // With WM8805 input, USB subsystem will be running off a completely wacko MCLK!
+#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)  // With WM8805 input, USB subsystem will be running off a completely wacko MCLK!
                     if ((input_select != MOBO_SRC_UAC1) || (FEATURE_HSTUPID_ON) || (FEATURE_HDEAD_ON)) {  // BSB 20131101
 #else
                     if ((FEATURE_HSTUPID_ON) || (FEATURE_HDEAD_ON)) {  // BSB 20131101
@@ -355,7 +356,7 @@ void uac1_device_audio_task(void* pvParameters)
                 } else {
                     // HS mode - Not likely to ever be used in UAC1 - UNTESTED code!
                     // FB rate is 4 bytes in 12.14 format
-#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)                                                      // With WM8805 input, USB subsystem will be running off a completely wacko MCLK!
+#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)  // With WM8805 input, USB subsystem will be running off a completely wacko MCLK!
                     if ((input_select != MOBO_SRC_UAC1) || (FEATURE_HSTUPID_ON) || (FEATURE_HDEAD_ON)) {  // BSB 20131101
 #else
                     if ((FEATURE_HSTUPID_ON) || (FEATURE_HDEAD_ON)) {  // BSB 20131101
@@ -661,7 +662,7 @@ void uac1_device_audio_task(void* pvParameters)
                     if ((USB_IS_SILENT()) && (input_select == MOBO_SRC_UAC1) && (playerStarted != FALSE)) {  // Oops, we just went silent, probably from pause
                         playerStarted = FALSE;
 
-#ifdef HW_GEN_DIN20                                         // Dedicated mute pin
+#ifdef HW_GEN_DIN20  // Dedicated mute pin
                         mobo_i2s_enable(MOBO_I2S_DISABLE);  // Hard-mute of I2S pin
 #endif
 
@@ -714,7 +715,7 @@ void uac1_device_audio_task(void* pvParameters)
                             // Which buffer is in use, and does it truly correspond to the num_remaining value?
                             // Read DAC_buf_DMA_read before and after num_remaining in order to determine validity
                             if (DAC_buf_USB_OUT != DAC_buf_DMA_read_local) {  // CS4344 and USB using same buffer
-                                if (spk_index < (DAC_BUFFER_SIZE - num_remaining))
+                                if (spk_index < (U16)(DAC_BUFFER_SIZE - num_remaining))
                                     gap = DAC_BUFFER_SIZE - num_remaining - spk_index;
                                 else
                                     gap = DAC_BUFFER_SIZE - spk_index + DAC_BUFFER_SIZE - num_remaining + DAC_BUFFER_SIZE;
@@ -815,7 +816,7 @@ void uac1_device_audio_task(void* pvParameters)
                 if ((input_select == MOBO_SRC_UAC1) && (playerStarted != FALSE)) {  // Set from playing nonzero USB
                     playerStarted = FALSE;                                          // Inserted here in mobodebug untested fix, removed above
 
-#ifdef HW_GEN_DIN20                                     // Dedicated mute pin
+#ifdef HW_GEN_DIN20  // Dedicated mute pin
                     mobo_i2s_enable(MOBO_I2S_DISABLE);  // Hard-mute of I2S pin
 #endif
 

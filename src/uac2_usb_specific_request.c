@@ -430,6 +430,7 @@ void uac2_freq_change_handler()
 //!
 void uac2_user_endpoint_init(U8 conf_nb)
 {
+    (void)conf_nb;
     if (Is_usb_full_speed_mode()) {
         (void)Usb_configure_endpoint(UAC2_EP_AUDIO_OUT_FB, EP_ATTRIBUTES_3, DIRECTION_IN, EP_SIZE_3_FS, DOUBLE_BANK, 0);
         (void)Usb_configure_endpoint(UAC2_EP_AUDIO_OUT, EP_ATTRIBUTES_2, DIRECTION_OUT, EP_SIZE_2_FS, DOUBLE_BANK, 0);
@@ -584,6 +585,7 @@ static Bool uac2_user_get_interface_descriptor()
 //!
 void uac2_usb_hid_set_idle(U8 u8_report_id, U8 u8_duration)
 {  // BSB 20120710 prefix "uac2_" added
+    (void)u8_report_id, (void)u8_duration;
 #ifdef FEATURE_HID
     Usb_ack_setup_received_free();
 
@@ -602,6 +604,7 @@ void uac2_usb_hid_set_idle(U8 u8_report_id, U8 u8_duration)
 //!
 void uac2_usb_hid_get_idle(U8 u8_report_id)
 {  // BSB 20120710 prefix "uac2_" added
+    (void)u8_report_id;
 #ifdef FEATURE_HID
     Usb_ack_setup_received_free();
 

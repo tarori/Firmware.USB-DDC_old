@@ -169,21 +169,19 @@ void device_mouse_hid_task_init(U8 ep_tx)
 //!
 #ifdef FREERTOS_USED
 void device_mouse_hid_task(void* pvParameters)
+{
+    (void)pvParameters;
 #else
 void device_mouse_hid_task(void)
-#endif
 {
-    //  U8 data_length; // BSB 20120718 unused variable, sane?
-    //  const U8 EP_HID_RX = ep_hid_rx; // BSB 20120718 unused variable, sane?
-    const U8 EP_HID_TX = ep_hid_tx;
+#endif
 
     // BSB 20120810 HID variables moved up
-    const U8 ReportByte0 = 0x01;  // Report ID doesn't change
-    U8 ReportByte1 = 0;           // 1st variable byte of HID report
-    U8 ReportByte2 = 0;           // 2nd variable byte of HID report
-    U8 ReportByte1_prev = 0;      // Previous ReportByte1
-    char a = 0;                   // ASCII character as part of HID protocol over uart
-    char gotcmd = 0;              // Initially, no user command was recorded
+    U8 ReportByte1 = 0;       // 1st variable byte of HID report
+    U8 ReportByte2 = 0;       // 2nd variable byte of HID report
+    U8 ReportByte1_prev = 0;  // Previous ReportByte1
+    char a = 0;               // ASCII character as part of HID protocol over uart
+    char gotcmd = 0;          // Initially, no user command was recorded
 
 #ifdef FREERTOS_USED
     portTickType xLastWakeTime;
@@ -567,7 +565,7 @@ void device_mouse_hid_task(void)
             }  // if (readkey())
 
             else {  // GPIO pin _changes_ are sent to Host
-                    /*
+                /*
     		if ( (gpio_get_pin_value(PRG_BUTTON) == 0) ) {	// Check if Prog button is pushed down
 				ReportByte1 = 0x04;							// Encode the Play/Pause HID command
 				ReportByte2 = 0x00;							// This command is 0x00 until HID becomes more refined...

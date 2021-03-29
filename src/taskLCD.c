@@ -200,7 +200,7 @@ void ___lcd_puthex(U8 c)
 // **************  TASK DRIVER  ****************
 static void vtaskLCD(void* pcParameters)
 {
-
+    (void)pcParameters;
     portBASE_TYPE xStatus;
     struct dataLCD lcdQUEDATA;
 

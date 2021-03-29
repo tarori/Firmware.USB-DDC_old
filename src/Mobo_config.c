@@ -706,6 +706,7 @@ void mobo_handle_spdif(uint8_t width)
  */
 void mobo_xo_select(U32 frequency, uint8_t source)
 {
+    (void)source;
     // XO control and SPI muxing on ab1x hardware generation
     static U32 prev_frequency = FREQ_INVALID;
 

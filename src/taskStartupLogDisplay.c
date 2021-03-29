@@ -28,6 +28,7 @@
  */
 static void vtaskStartupLogDisplay(void* pcParameters)
 {
+    (void)pcParameters;
     MENU_mode = TRUE;  // Grab LCD from Mobo tasks
 
     widget_initialization_start();

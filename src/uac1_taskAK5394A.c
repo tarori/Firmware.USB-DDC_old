@@ -82,6 +82,7 @@ void uac1_AK5394A_task_init(void)
 //!
 void uac1_AK5394A_task(void* pvParameters)
 {
+    (void)pvParameters;
     portTickType xLastWakeTime;
     xLastWakeTime = xTaskGetTickCount();
 

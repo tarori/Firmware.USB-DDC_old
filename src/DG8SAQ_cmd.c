@@ -42,6 +42,7 @@ volatile bool FRQ_lcdupdate = FALSE;   // Flag: Update LCD frequency printout
 */
 void dg8saqFunctionWrite(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* Buffer, uint8_t len)
 {
+    (void)wValue;
     //uint64_t *Buf64;
     uint32_t* Buf32;
     uint16_t* Buf16;
@@ -66,7 +67,7 @@ void dg8saqFunctionWrite(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* Buf
         }
         break;
 #if CALC_FREQ_MUL_ADD  // Frequency Subtract and Multiply Routines (for smart VFO)
-    case 0x31:         // Write the frequency subtract multiply to the eeprom
+    case 0x31:  // Write the frequency subtract multiply to the eeprom
         if (len == 2 * sizeof(uint32_t)) {
             cdata.FreqSub = Buf32[1];
             cdata.FreqMul = Buf32[0];
@@ -76,7 +77,7 @@ void dg8saqFunctionWrite(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* Buf
         break;
 #endif
 #if CALC_BAND_MUL_ADD  // Frequency Subtract and Multiply Routines (for smart VFO)
-    case 0x31:         // Write the frequency subtract multiply to the eeprom
+    case 0x31:  // Write the frequency subtract multiply to the eeprom
         if (len == 2 * sizeof(uint32_t)) {
             cdata.BandSub[wIndex & 0x0f] = Buf32[1];
             cdata.BandMul[wIndex & 0x0f] = Buf32[0];
@@ -225,9 +226,9 @@ uint8_t dg8saqFunctionSetup(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* 
         else {
             wIndex = wIndex & 0xff;  // Remove high byte
 
-#if PCF_FILTER_IO            // 8x BCD TX filter control, switches P1 pins 4-6
+#if PCF_FILTER_IO  // 8x BCD TX filter control, switches P1 pins 4-6
             if (wIndex < 8)  // Make sure we don't overwrite other parts of table
-#elif M0RZF_FILTER_IO        // M0RZF 20W amplifier LPF switching, switches P1 pins 4-6
+#elif M0RZF_FILTER_IO  // M0RZF 20W amplifier LPF switching, switches P1 pins 4-6
             if (wIndex < 4)  // Make sure we don't overwrite other parts of table
 #else
             if (wIndex < 16)  // Make sure we don't overwrite other parts of table
@@ -244,7 +245,7 @@ uint8_t dg8saqFunctionSetup(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* 
     }
 
 #if SCRAMBLED_FILTERS  // Enable a non contiguous order of Filters
-    case 0x18:         // Set the Band Pass Filter Address for one band: 0,1,2...7
+    case 0x18:  // Set the Band Pass Filter Address for one band: 0,1,2...7
         cdata.FilterNumber[wIndex] = wValue;
         flashc_memset8((void*)&nvram_cdata.FilterNumber[wIndex], wValue, sizeof(uint8_t), TRUE);
         // passthrough to case 0x19
@@ -288,13 +289,13 @@ uint8_t dg8saqFunctionSetup(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* 
         // 	we use usbFunctionWrite() to transfer data
 
 #if CALC_FREQ_MUL_ADD  // Frequency Subtract and Multiply Routines (for smart VFO)
-    case 0x39:         // Return the current Subtract and Multiply values
+    case 0x39:  // Return the current Subtract and Multiply values
         Buf32[1] = cdata.FreqSub;
         Buf32[0] = cdata.FreqMul;
         return 2 * sizeof(uint32_t);
 #endif
 #if CALC_BAND_MUL_ADD  // Frequency Subtract and Multiply Routines (for smart VFO)
-    case 0x39:         // Return the current Subtract and Multiply values
+    case 0x39:  // Return the current Subtract and Multiply values
         Buf32[1] = cdata.BandSub[wIndex & 0x0f];
         Buf32[0] = cdata.BandMul[wIndex & 0x0f];
         return 2 * sizeof(uint32_t);

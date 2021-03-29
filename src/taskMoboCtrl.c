@@ -182,7 +182,7 @@ void lcd_display_V_C_T_in_2nd_line(void)
 #if LCD_DISPLAY  // Multi-line LCD display
     // TMP100 dependent printouts
     if (i2c.tmp100) {
-#if DISP_FAHRENHEIT      // Display temperature in Fahrenheit
+#if DISP_FAHRENHEIT  // Display temperature in Fahrenheit
         uint16_t tmp_F;  // (threshold still set in deg C)
         tmp_F = ((tmp100_data >> 7) * 9) / 10 + 32;
 #else
@@ -351,13 +351,13 @@ void Test_SWR(void)
                 else  // There have been two or more consecutive measurements
                       // with high SWR, take action
                 {
-                    SWR_alarm = TRUE;                                           // Set SWR alarm flag
-#if REVERSE_PTT2_LOGIC                                                          // Switch the PTT2 logic
+                    SWR_alarm = TRUE;  // Set SWR alarm flag
+#if REVERSE_PTT2_LOGIC  // Switch the PTT2 logic
                     pcf8574_mobo_clear(cdata.PCF_I2C_Mobo_addr, Mobo_PCF_TX2);  // Clear PTT2 line
-#else                                                                           //not REVERSE_PTT2_LOGIC					// Normal PTT2 logic
-                    pcf8574_mobo_set(cdata.PCF_I2C_Mobo_addr, Mobo_PCF_TX2);    // Set PTT2 line
-#endif                                                                          //REVERSE_PTT2_LOGIC						// end of Switch the PTT2 logic
-                    timer = cdata.SWR_Protect_Timer;                            // Seed SWR Alarm patience timer
+#else  //not REVERSE_PTT2_LOGIC					// Normal PTT2 logic
+                    pcf8574_mobo_set(cdata.PCF_I2C_Mobo_addr, Mobo_PCF_TX2);  // Set PTT2 line
+#endif  //REVERSE_PTT2_LOGIC						// end of Switch the PTT2 logic
+                    timer = cdata.SWR_Protect_Timer;  // Seed SWR Alarm patience timer
                 }
             }
             // If SWR OK and timer has been zeroed, set the PTT2 line
@@ -365,12 +365,12 @@ void Test_SWR(void)
                 if (timer == 0) {
                     SWR_alarm = FALSE;  // Clear SWR alarm flag
 
-#if REVERSE_PTT2_LOGIC                                                        // Switch the PTT2 logic
+#if REVERSE_PTT2_LOGIC  // Switch the PTT2 logic
                     pcf8574_mobo_set(cdata.PCF_I2C_Mobo_addr, Mobo_PCF_TX2);  // Set PTT2 line
-#else                                                                         //not REVERSE_PTT2_LOGIC					// Normal PTT2 logic
+#else  //not REVERSE_PTT2_LOGIC					// Normal PTT2 logic
                     pcf8574_mobo_clear(cdata.PCF_I2C_Mobo_addr, Mobo_PCF_TX2);  // Clear PTT2 line
-#endif                                                                        //REVERSE_PTT2_LOGIC						// end of Switch the PTT2 logic
-                    second_pass = 0;                                          // clear second pass flag
+#endif  //REVERSE_PTT2_LOGIC						// end of Switch the PTT2 logic
+                    second_pass = 0;  // clear second pass flag
                 } else {
                     timer--;
                 }
@@ -385,11 +385,11 @@ void Test_SWR(void)
     else {
         SWR_alarm = FALSE;  // Clear SWR alarm flag
         if (i2c.pcfmobo)
-#if REVERSE_PTT2_LOGIC                                                  // Switch the PTT2 logic
+#if REVERSE_PTT2_LOGIC  // Switch the PTT2 logic
             pcf8574_mobo_clear(cdata.PCF_I2C_Mobo_addr, Mobo_PCF_TX2);  // Clear PTT2 line
-#else                                                                   //not REVERSE_PTT2_LOGIC					// Normal PTT2 logic
+#else  //not REVERSE_PTT2_LOGIC					// Normal PTT2 logic
         pcf8574_mobo_set(cdata.PCF_I2C_Mobo_addr, Mobo_PCF_TX2);  // Set PTT2 line
-#endif                                                                  //REVERSE_PTT2_LOGIC						// end of Switch the PTT2 logic
+#endif  //REVERSE_PTT2_LOGIC						// end of Switch the PTT2 logic
     }
 }
 #endif  //POWER_SWR												// Power and SWR measurement
@@ -400,7 +400,7 @@ void Test_SWR(void)
  */
 void PA_bias(void)
 {
-    uint8_t static calibrate = 0;  // Current calibrate value
+    static uint8_t calibrate = 0;  // Current calibrate value
 
     switch (cdata.Bias_Select) {
     //-------------------------------------------------------------
@@ -496,9 +496,8 @@ static void mobo_ctrl_factory_reset_handler(void)
  */
 static void vtaskMoboCtrl(void* pcParameters)
 {
-
-    uint32_t time, ten_s_counter = 0;      // Time management
-    uint32_t lastIteration = 0, Timerval;  // Counters to keep track of time
+    (void)pcParameters;
+    uint32_t time = 0;  // Time management
 
 #ifdef HW_GEN_DIN20
     uint8_t usb_ch_counter = 0;  // How many poll periods have passed since a USB change detection?
@@ -725,7 +724,7 @@ static void vtaskMoboCtrl(void* pcParameters)
                 if (feature_get_nvram(feature_image_index) == feature_image_uac1_audio)
                     mobo_led(FLED_DARK, FLED_DARK, FLED_RED);  // With UAC1
                 else
-                    mobo_led(FLED_DARK, FLED_DARK, FLED_GREEN);     // With UAC != 1
+                    mobo_led(FLED_DARK, FLED_DARK, FLED_GREEN);  // With UAC != 1
 #else
 #error undefined hardware
 #endif
@@ -818,13 +817,13 @@ static void vtaskMoboCtrl(void* pcParameters)
             if (i2c.ad7991) {
                 if (ad7991_poll(cdata.AD7991_I2C_addr) == 0) {  // Poll the AD7991 for all four values, success == 0
 
-#if POWER_SWR                    // Power/SWR measurements and related actions \
+#if POWER_SWR  // Power/SWR measurements and related actions \
     // SWR Protect
                     Test_SWR();  // Calculate SWR and control the PTT2 output
                                  // (SWR protect).  Updates measured_SWR variable (SWR*100)
                                  // Writes to the PCF8574 every time (2 bytes)
                                  // => constant traffic on I2C (can be improved to slightly
-#endif                           // reduce I2C traffic, at the cost of a few extra bytes)
+#endif  // reduce I2C traffic, at the cost of a few extra bytes)
                 }
             }
         }
@@ -914,7 +913,7 @@ static void vtaskMoboCtrl(void* pcParameters)
                 if (i2c.tmp100)
                     tmp100_read(cdata.TMP100_I2C_addr);  // Update temperature reading,
                                                          // value read into tmp100data variable
-#if TMP_V_I_SECOND_LINE                                  // Normal Temp/Voltage/Current disp in second line of LCD, Disable for Debug
+#if TMP_V_I_SECOND_LINE  // Normal Temp/Voltage/Current disp in second line of LCD, Disable for Debug
                 if (!MENU_mode) {
                     lcd_display_V_C_T_in_2nd_line();  // Print LCD 2nd line stuff
                 }
@@ -969,10 +968,10 @@ static void vtaskMoboCtrl(void* pcParameters)
             if (i2c.pcfmobo)  // Make sure the Mobo PCF is present
             {
                 pcf8574_mobo_clear(cdata.PCF_I2C_Mobo_addr, Mobo_PCF_TX);
-                if (i2c.pcflpf1)                         // If the PCF for Low Pass switching is
-                {                                        // also present, then we can use Widget PTT_1
-                                                         // for additional PTT control
-                                                         //					#if !defined(HW_GEN_DIN10) // PTT_1 line recycled in HW_GEN_DIN10
+                if (i2c.pcflpf1)  // If the PCF for Low Pass switching is
+                {                 // also present, then we can use Widget PTT_1
+                                  // for additional PTT control
+                                  //					#if !defined(HW_GEN_DIN10) // PTT_1 line recycled in HW_GEN_DIN10
 #if !((defined HW_GEN_DIN10) || (defined HW_GEN_DIN20))  // PTT_1 (PX45) line recycled in HW_GEN_DIN10
                     gpio_set_gpio_pin(PTT_1);
 #endif
@@ -984,7 +983,7 @@ static void vtaskMoboCtrl(void* pcParameters)
                 gpio_set_gpio_pin(PTT_1);
 #endif
 
-#if LCD_DISPLAY        // Multi-line LCD display
+#if LCD_DISPLAY  // Multi-line LCD display
 #if FRQ_IN_FIRST_LINE  // Normal Frequency display in first line of LCD. Can be disabled for Debug
             if (!MENU_mode) {
                 xSemaphoreTake(mutexQueLCD, portMAX_DELAY);
@@ -1004,9 +1003,9 @@ static void vtaskMoboCtrl(void* pcParameters)
             if (i2c.pcfmobo)  // Make sure the Mobo PCF is present
             {
                 pcf8574_mobo_set(cdata.PCF_I2C_Mobo_addr, Mobo_PCF_TX);
-                if (i2c.pcflpf1)                         // If the PCF for Low Pass switching is
-                {                                        // also present, then we can use Widget PTT_1
-                                                         // for additional PTT control
+                if (i2c.pcflpf1)  // If the PCF for Low Pass switching is
+                {                 // also present, then we can use Widget PTT_1
+                                  // for additional PTT control
 #if !((defined HW_GEN_DIN10) || (defined HW_GEN_DIN20))  // PTT_1 line recycled in HW_GEN_DIN10
                     gpio_clr_gpio_pin(PTT_1);
 #endif
@@ -1018,7 +1017,7 @@ static void vtaskMoboCtrl(void* pcParameters)
 #endif
 
             if (!MENU_mode) {
-#if LCD_DISPLAY        // Multi-line LCD display
+#if LCD_DISPLAY  // Multi-line LCD display
 #if FRQ_IN_FIRST_LINE  // Normal Frequency display in first line of LCD. Can be disabled for Debug
                 xSemaphoreTake(mutexQueLCD, portMAX_DELAY);
                 //lcd_q_clear();
@@ -1027,7 +1026,7 @@ static void vtaskMoboCtrl(void* pcParameters)
                 xSemaphoreGive(mutexQueLCD);
 #endif
 #endif
-#if TMP_V_I_SECOND_LINE                           // Normal Temp/Voltage/Current disp in second line of LCD, Disable for Debug
+#if TMP_V_I_SECOND_LINE  // Normal Temp/Voltage/Current disp in second line of LCD, Disable for Debug
                 lcd_display_V_C_T_in_2nd_line();  // Print LCD 2nd line stuff
 #endif
 

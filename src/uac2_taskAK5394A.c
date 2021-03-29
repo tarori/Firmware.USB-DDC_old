@@ -96,6 +96,7 @@ void uac2_AK5394A_task_init(void)
 //!
 void uac2_AK5394A_task(void* pvParameters)
 {
+    (void)pvParameters;
     portTickType xLastWakeTime;
     xLastWakeTime = xTaskGetTickCount();
     volatile S32 usb_buffer_toggle;
