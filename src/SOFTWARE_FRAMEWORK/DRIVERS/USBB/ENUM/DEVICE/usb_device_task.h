@@ -97,11 +97,11 @@ extern void usb_start_device(void);
 //! the usb_process_request() function is call in the usb_standard_request.c file
 //!
 #ifdef FREERTOS_USED
-extern void usb_device_task(void *pvParameters);
+extern void usb_device_task(void* pvParameters);
 #else
 extern void usb_device_task(void);
 #endif
 
 //! @}
 
-#endif // _USB_DEVICE_TASK_H_
+#endif  // _USB_DEVICE_TASK_H_

@@ -70,9 +70,9 @@
 
 extern void uac2_device_audio_task_init(U8 ep_in, U8 ep_out, U8 ep_out_fb);
 #ifdef FREERTOS_USED
-extern void uac2_device_audio_task(void *pvParameters);
+extern void uac2_device_audio_task(void* pvParameters);
 #else
 extern void uac2_device_audio_task(void);
 #endif
 
-#endif // _UAC2_DEVICE_AUDIO_TASK_H_
+#endif  // _UAC2_DEVICE_AUDIO_TASK_H_

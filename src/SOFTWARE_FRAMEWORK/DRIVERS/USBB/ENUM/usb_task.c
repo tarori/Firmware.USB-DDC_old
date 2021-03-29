@@ -178,14 +178,14 @@ void usb_task_init(void)
     vSemaphoreCreateBinary(usb_tsk_semphr);
 
     xTaskCreate(usb_task,
-                configTSK_USB_NAME,
-                configTSK_USB_STACK_SIZE,
-                NULL,
-                configTSK_USB_PRIORITY,
-                NULL);
+        configTSK_USB_NAME,
+        configTSK_USB_STACK_SIZE,
+        NULL,
+        configTSK_USB_PRIORITY,
+        NULL);
 }
 
-void usb_task(void *pvParameters)
+void usb_task(void* pvParameters)
 {
     // Register the USB interrupt handler to the interrupt controller and enable
     // the USB interrupt.
@@ -343,7 +343,7 @@ usb_general_interrupt_non_naked(void)
 
 void usb_suspend_action(void)
 {
-    volatile avr32_pm_t *pm = &AVR32_PM;
+    volatile avr32_pm_t* pm = &AVR32_PM;
     pm->AWEN.usb_waken = 1;
     SLEEP(AVR32_PM_SMODE_STATIC);
     pm->AWEN.usb_waken = 0;

@@ -12,7 +12,7 @@
 #include "image.h"
 
 // this pointer gets set to the correct image_t
-static const image_t *image;
+static const image_t* image;
 
 // boot gets called before anything
 // initializes to setup whatever
@@ -50,7 +50,7 @@ void image_task_init(void)
 }
 
 // descriptor access
-uint8_t *image_get_dev_desc_pointer(void)
+uint8_t* image_get_dev_desc_pointer(void)
 {
     return image->get_dev_desc_pointer();
 }
@@ -58,7 +58,7 @@ uint16_t image_get_dev_desc_length(void)
 {
     return image->get_dev_desc_length();
 }
-uint8_t *image_get_conf_desc_pointer(void)
+uint8_t* image_get_conf_desc_pointer(void)
 {
     return image->get_conf_desc_pointer();
 }
@@ -66,7 +66,7 @@ uint16_t image_get_conf_desc_length(void)
 {
     return image->get_conf_desc_length();
 }
-uint8_t *image_get_conf_desc_fs_pointer(void)
+uint8_t* image_get_conf_desc_fs_pointer(void)
 {
     return image->get_conf_desc_fs_pointer();
 }
@@ -74,7 +74,7 @@ uint16_t image_get_conf_desc_fs_length(void)
 {
     return image->get_conf_desc_fs_length();
 }
-uint8_t *image_get_conf_desc_hs_pointer(void)
+uint8_t* image_get_conf_desc_hs_pointer(void)
 {
     return image->get_conf_desc_hs_pointer();
 }
@@ -82,7 +82,7 @@ uint16_t image_get_conf_desc_hs_length(void)
 {
     return image->get_conf_desc_hs_length();
 }
-uint8_t *image_get_qualifier_desc_pointer(void)
+uint8_t* image_get_qualifier_desc_pointer(void)
 {
     return image->get_qualifier_desc_pointer();
 }

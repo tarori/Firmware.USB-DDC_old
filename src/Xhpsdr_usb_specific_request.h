@@ -56,4 +56,4 @@ extern Bool hpsdr_user_read_request(U8, U8);
 
 //! @}
 
-#endif // _HPSDR_USB_SPECIFIC_REQUEST_H_
+#endif  // _HPSDR_USB_SPECIFIC_REQUEST_H_

@@ -71,7 +71,7 @@ extern "C" {
 /* Used to hide the implementation of the co-routine control block.  The
 control block structure however has to be included in the header due to
 the macro implementation of the co-routine functionality. */
-typedef void *xCoRoutineHandle;
+typedef void* xCoRoutineHandle;
 
 /* Defines the prototype to which co-routine functions must conform. */
 typedef void (*crCOROUTINE_CODE)(xCoRoutineHandle, unsigned portBASE_TYPE);
@@ -229,8 +229,8 @@ void vCoRoutineSchedule(void);
  * \defgroup crSTART crSTART
  * \ingroup Tasks
  */
-#define crSTART(pxCRCB)                     \
-    switch (((corCRCB *)pxCRCB)->uxState) { \
+#define crSTART(pxCRCB)                    \
+    switch (((corCRCB*)pxCRCB)->uxState) { \
     case 0:
 
 /**
@@ -268,13 +268,13 @@ void vCoRoutineSchedule(void);
  * These macros are intended for internal use by the co-routine implementation
  * only.  The macros should not be used directly by application writers.
  */
-#define crSET_STATE0(xHandle)                       \
-    ((corCRCB *)xHandle)->uxState = (__LINE__ * 2); \
-    return;                                         \
+#define crSET_STATE0(xHandle)                      \
+    ((corCRCB*)xHandle)->uxState = (__LINE__ * 2); \
+    return;                                        \
     case (__LINE__ * 2):
-#define crSET_STATE1(xHandle)                             \
-    ((corCRCB *)xHandle)->uxState = ((__LINE__ * 2) + 1); \
-    return;                                               \
+#define crSET_STATE1(xHandle)                            \
+    ((corCRCB*)xHandle)->uxState = ((__LINE__ * 2) + 1); \
+    return;                                              \
     case ((__LINE__ * 2) + 1):
 
 /**
@@ -732,7 +732,7 @@ void vCoRoutineSchedule(void);
  * Removes the current co-routine from its ready list and places it in the
  * appropriate delayed list.
  */
-void vCoRoutineAddToDelayedList(portTickType xTicksToDelay, xList *pxEventList);
+void vCoRoutineAddToDelayedList(portTickType xTicksToDelay, xList* pxEventList);
 
 /*
  * This function is intended for internal use by the queue implementation only.
@@ -741,7 +741,7 @@ void vCoRoutineAddToDelayedList(portTickType xTicksToDelay, xList *pxEventList);
  * Removes the highest priority co-routine from the event list and places it in
  * the pending ready list.
  */
-signed portBASE_TYPE xCoRoutineRemoveFromEventList(const xList *pxEventList);
+signed portBASE_TYPE xCoRoutineRemoveFromEventList(const xList* pxEventList);
 
 #ifdef __cplusplus
 }

@@ -41,20 +41,20 @@ void widget_initialization_finish(void) { initialization_count -= 1; }
 #define STARTUP_LOG_LINES 64
 
 static char startup_log[STARTUP_LOG_SIZE];
-static char *startup_log_lines[STARTUP_LOG_LINES + 2];
-static char *startup_log_ptr = (char *)startup_log;
-static char **startup_log_line_ptr = (char **)startup_log_lines;
+static char* startup_log_lines[STARTUP_LOG_LINES + 2];
+static char* startup_log_ptr = (char*)startup_log;
+static char** startup_log_line_ptr = (char**)startup_log_lines;
 static int startup_log_line_start = 1;
 
 void widget_startup_log_char(char c)
 {
     // if we have room to remamber another character
-    if (startup_log_ptr < (char *)startup_log + STARTUP_LOG_SIZE) {
+    if (startup_log_ptr < (char*)startup_log + STARTUP_LOG_SIZE) {
 
         // if we are at the beginning of a line, remember where it starts
         if (startup_log_line_start) {
             // but only if we have room to remember another line start
-            if (startup_log_line_ptr < (char **)startup_log_lines + STARTUP_LOG_LINES) {
+            if (startup_log_line_ptr < (char**)startup_log_lines + STARTUP_LOG_LINES) {
                 *startup_log_line_ptr = startup_log_ptr;
                 startup_log_line_ptr += 1;
             }
@@ -73,28 +73,28 @@ void widget_startup_log_char(char c)
     }
 }
 
-void widget_startup_log_string(char *string)
+void widget_startup_log_string(char* string)
 {
     while (*string)
         widget_startup_log_char(*string++);
 }
 
-void widget_startup_log_line(char *string)
+void widget_startup_log_line(char* string)
 {
     widget_startup_log_string(string);
     widget_startup_log_char('\0');
 }
 
-void widget_get_startup_buffer_lines(char ***buffer_lines, int *lines)
+void widget_get_startup_buffer_lines(char*** buffer_lines, int* lines)
 {
     // append a usage summary to any startup log listing
     static char log_usage[2][20];
-    sprintf(log_usage[0], "log %d/%d lines", (int)(startup_log_line_ptr - (char **)startup_log_lines), STARTUP_LOG_LINES);
+    sprintf(log_usage[0], "log %d/%d lines", (int)(startup_log_line_ptr - (char**)startup_log_lines), STARTUP_LOG_LINES);
     sprintf(log_usage[1], "log %d/%d chars", (int)(startup_log_ptr - startup_log), STARTUP_LOG_SIZE);
     startup_log_line_ptr[0] = log_usage[0];
     startup_log_line_ptr[1] = log_usage[1];
-    *buffer_lines = (char **)startup_log_lines;
-    *lines = (startup_log_line_ptr - (char **)startup_log_lines) + 2;
+    *buffer_lines = (char**)startup_log_lines;
+    *lines = (startup_log_line_ptr - (char**)startup_log_lines) + 2;
 }
 
 //
@@ -144,7 +144,7 @@ void widget_display_clear(void)
 #endif
 }
 
-void widget_display_string_and_scroll(char *string)
+void widget_display_string_and_scroll(char* string)
 {
 #if LCD_DISPLAY
     widget_display_grab();
@@ -166,7 +166,7 @@ void widget_display_string_and_scroll(char *string)
 #endif
 }
 
-void widget_display_string_scroll_and_delay(char *string, unsigned delay)
+void widget_display_string_scroll_and_delay(char* string, unsigned delay)
 {
 #if LCD_DISPLAY
     widget_display_string_and_scroll(string);
@@ -179,7 +179,7 @@ void widget_display_string_scroll_and_delay(char *string, unsigned delay)
 // only works when taskLCD is active
 // shows a message for 30 seconds
 //
-void widget_oops(char *message)
+void widget_oops(char* message)
 {
 #if LCD_DISPLAY
     if (widget_is_tasking()) {
@@ -233,7 +233,7 @@ void widget_delay_task(unsigned us)
 //
 void widget_delay_rtc(unsigned us)
 {
-#define RTC_HZ 115000 // 115kHz Real Time Counter
+#define RTC_HZ 115000  // 115kHz Real Time Counter
     unsigned tick = (unsigned long long)us * RTC_HZ / 1000000;
     unsigned start = rtc_get_value(&AVR32_RTC);
     while ((rtc_get_value(&AVR32_RTC) - start) < tick)
@@ -243,7 +243,7 @@ void widget_delay_rtc(unsigned us)
 //
 // decode the reset cause to a string
 //
-char *widget_reset_cause(void)
+char* widget_reset_cause(void)
 {
     if (AVR32_PM.RCAUSE.wdt) /* watch dog timer reset*/
         return "watch dog";
@@ -264,9 +264,9 @@ char *widget_reset_cause(void)
 //
 void widget_reset(void)
 {
-    wdt_enable(5000000); // Enable Watchdog with 500ms patience
+    wdt_enable(5000000);  // Enable Watchdog with 500ms patience
     while (1)
-        ; // Wait for it to fire
+        ;  // Wait for it to fire
 }
 
 //
@@ -304,22 +304,22 @@ void widget_factory_reset(void)
     for (i = 0; i < WIDGET_FACTORY_RESET_HANDLERS; i += 1)
         if (handlers[i] != NULL)
             handlers[i]();
-    widget_reset(); // reset
+    widget_reset();  // reset
 }
 
 //
 // blink a dot-space code: dot is on, space is off
 //
-#define BLINKY_WPM 15 // words per minute to blink
-#define PARIS_DPW 50  // dit clocks in PARIS
-#define CODEX_DPW 60  // dit clocks in CODEX
+#define BLINKY_WPM 15  // words per minute to blink
+#define PARIS_DPW 50   // dit clocks in PARIS
+#define CODEX_DPW 60   // dit clocks in CODEX
 
 // LED0_GPIO - mounted led0, contended for by uac
 // LED1_GPIO - mounted led1, contended for by uac
 // PTT_1 - one of these three gets set eventually
 // PTT_2
 // PTT_3
-void widget_blink(char *dotspace)
+void widget_blink(char* dotspace)
 {
     // take the number of clocks per second, divide by the dits per second
     const int32_t us_per_dot = 1000000 / (BLINKY_WPM * PARIS_DPW / 60);
@@ -350,7 +350,7 @@ void widget_blink(char *dotspace)
     gpio_set_gpio_pin(PTT_3);
 }
 
-void widget_blink_morse(char *ascii)
+void widget_blink_morse(char* ascii)
 {
     while (*ascii != 0) {
         switch (*ascii++) {
@@ -564,7 +564,7 @@ void widget_init(void)
     //		widget_blink_morse(" super");
 }
 
-void widget_ready(char *msg)
+void widget_ready(char* msg)
 {
     // widget_blink_morse(msg);
 }

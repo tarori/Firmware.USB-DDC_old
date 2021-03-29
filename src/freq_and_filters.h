@@ -10,8 +10,8 @@
 
 #include <stdint.h>
 
-typedef union { // Union of unsigned and signed 16 bit
-    uint16_t w; // and 8bit[2]
+typedef union {  // Union of unsigned and signed 16 bit
+    uint16_t w;  // and 8bit[2]
     //int16_t		i;
     struct {
         uint8_t b0;
@@ -19,8 +19,8 @@ typedef union { // Union of unsigned and signed 16 bit
     };
 } sint16_t;
 
-typedef union {  // Union of an unsigned 32bit and the
-    uint32_t dw; // above defined sint16_t[2]
+typedef union {   // Union of an unsigned 32bit and the
+    uint32_t dw;  // above defined sint16_t[2]
     struct {
         uint16_t w0;
         uint16_t w1;

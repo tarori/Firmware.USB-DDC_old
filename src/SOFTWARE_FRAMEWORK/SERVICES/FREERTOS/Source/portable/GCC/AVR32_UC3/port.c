@@ -121,7 +121,7 @@ int _init_startup(void)
 #if configHEAP_INIT
     extern void __heap_start__;
     extern void __heap_end__;
-    portBASE_TYPE *pxMem;
+    portBASE_TYPE* pxMem;
 #endif
 
     /* Load the Exception Vector Base Address in the corresponding system register. */
@@ -136,7 +136,7 @@ int _init_startup(void)
 #if configHEAP_INIT
 
     /* Initialize the heap used by malloc. */
-    for (pxMem = &__heap_start__; pxMem < (portBASE_TYPE *)&__heap_end__;) {
+    for (pxMem = &__heap_start__; pxMem < (portBASE_TYPE*)&__heap_end__;) {
         *pxMem++ = 0xA5A5A5A5;
     }
 
@@ -148,15 +148,14 @@ int _init_startup(void)
 /* Code section present if and only if the debug trace is activated. */
 #if configDBG
     {
-        static const gpio_map_t DBG_USART_GPIO_MAP =
-            {
-                {configDBG_USART_RX_PIN, configDBG_USART_RX_FUNCTION},
-                {configDBG_USART_TX_PIN, configDBG_USART_TX_FUNCTION}};
+        static const gpio_map_t DBG_USART_GPIO_MAP = {
+            {configDBG_USART_RX_PIN, configDBG_USART_RX_FUNCTION},
+            {configDBG_USART_TX_PIN, configDBG_USART_TX_FUNCTION}};
 
         /* Initialize the USART used for the debug trace with the configured parameters. */
-        set_usart_base((void *)configDBG_USART);
+        set_usart_base((void*)configDBG_USART);
         gpio_enable_module(DBG_USART_GPIO_MAP,
-                           sizeof(DBG_USART_GPIO_MAP) / sizeof(DBG_USART_GPIO_MAP[0]));
+            sizeof(DBG_USART_GPIO_MAP) / sizeof(DBG_USART_GPIO_MAP[0]));
         usart_init(configDBG_USART_BAUDRATE);
     }
 #endif
@@ -185,7 +184,7 @@ int _init_startup(void)
  * safe section as memory allocation management uses global data.
  * See the aforementioned details.
  */
-void __malloc_lock(struct _reent *ptr)
+void __malloc_lock(struct _reent* ptr)
 {
     vTaskSuspendAll();
 }
@@ -195,16 +194,16 @@ void __malloc_lock(struct _reent *ptr)
  * a safe section as memory allocation management uses global data.
  * See the aforementioned details.
  */
-void __malloc_unlock(struct _reent *ptr)
+void __malloc_unlock(struct _reent* ptr)
 {
     xTaskResumeAll();
 }
 /*-----------------------------------------------------------*/
 
 /* Added as there is no such function in FreeRTOS. */
-void *pvPortRealloc(void *pv, size_t xWantedSize)
+void* pvPortRealloc(void* pv, size_t xWantedSize)
 {
-    void *pvReturn;
+    void* pvReturn;
 
     vTaskSuspendAll();
     {
@@ -287,7 +286,7 @@ __attribute__((__noinline__)) void vPortExitCritical(void)
  *
  * See header file for description.
  */
-portSTACK_TYPE *pxPortInitialiseStack(portSTACK_TYPE *pxTopOfStack, pdTASK_CODE pxCode, void *pvParameters)
+portSTACK_TYPE* pxPortInitialiseStack(portSTACK_TYPE* pxTopOfStack, pdTASK_CODE pxCode, void* pvParameters)
 {
     /* Setup the initial stack of the task.  The stack is set exactly as
 	expected by the portRESTORE_CONTEXT() macro. */
@@ -363,46 +362,44 @@ static void prvSetupTimerInterrupt(void)
 {
 #if (configTICK_USE_TC == 1)
 
-    volatile avr32_tc_t *tc = &AVR32_TC;
+    volatile avr32_tc_t* tc = &AVR32_TC;
 
     // Options for waveform genration.
-    tc_waveform_opt_t waveform_opt =
-        {
-            .channel = configTICK_TC_CHANNEL, /* Channel selection. */
+    tc_waveform_opt_t waveform_opt = {
+        .channel = configTICK_TC_CHANNEL, /* Channel selection. */
 
-            .bswtrg = TC_EVT_EFFECT_NOOP, /* Software trigger effect on TIOB. */
-            .beevt = TC_EVT_EFFECT_NOOP,  /* External event effect on TIOB. */
-            .bcpc = TC_EVT_EFFECT_NOOP,   /* RC compare effect on TIOB. */
-            .bcpb = TC_EVT_EFFECT_NOOP,   /* RB compare effect on TIOB. */
+        .bswtrg = TC_EVT_EFFECT_NOOP, /* Software trigger effect on TIOB. */
+        .beevt = TC_EVT_EFFECT_NOOP,  /* External event effect on TIOB. */
+        .bcpc = TC_EVT_EFFECT_NOOP,   /* RC compare effect on TIOB. */
+        .bcpb = TC_EVT_EFFECT_NOOP,   /* RB compare effect on TIOB. */
 
-            .aswtrg = TC_EVT_EFFECT_NOOP, /* Software trigger effect on TIOA. */
-            .aeevt = TC_EVT_EFFECT_NOOP,  /* External event effect on TIOA. */
-            .acpc = TC_EVT_EFFECT_NOOP,   /* RC compare effect on TIOA: toggle. */
-            .acpa = TC_EVT_EFFECT_NOOP,   /* RA compare effect on TIOA: toggle (other possibilities are none, set and clear). */
+        .aswtrg = TC_EVT_EFFECT_NOOP, /* Software trigger effect on TIOA. */
+        .aeevt = TC_EVT_EFFECT_NOOP,  /* External event effect on TIOA. */
+        .acpc = TC_EVT_EFFECT_NOOP,   /* RC compare effect on TIOA: toggle. */
+        .acpa = TC_EVT_EFFECT_NOOP,   /* RA compare effect on TIOA: toggle (other possibilities are none, set and clear). */
 
-            .wavsel = TC_WAVEFORM_SEL_UP_MODE_RC_TRIGGER, /* Waveform selection: Up mode without automatic trigger on RC compare. */
-            .enetrg = FALSE,                              /* External event trigger enable. */
-            .eevt = 0,                                    /* External event selection. */
-            .eevtedg = TC_SEL_NO_EDGE,                    /* External event edge selection. */
-            .cpcdis = FALSE,                              /* Counter disable when RC compare. */
-            .cpcstop = FALSE,                             /* Counter clock stopped with RC compare. */
+        .wavsel = TC_WAVEFORM_SEL_UP_MODE_RC_TRIGGER, /* Waveform selection: Up mode without automatic trigger on RC compare. */
+        .enetrg = FALSE,                              /* External event trigger enable. */
+        .eevt = 0,                                    /* External event selection. */
+        .eevtedg = TC_SEL_NO_EDGE,                    /* External event edge selection. */
+        .cpcdis = FALSE,                              /* Counter disable when RC compare. */
+        .cpcstop = FALSE,                             /* Counter clock stopped with RC compare. */
 
-            .burst = FALSE,               /* Burst signal selection. */
-            .clki = FALSE,                /* Clock inversion. */
-            .tcclks = TC_CLOCK_SOURCE_TC3 /* Internal source clock 3. */
-        };
+        .burst = FALSE,               /* Burst signal selection. */
+        .clki = FALSE,                /* Clock inversion. */
+        .tcclks = TC_CLOCK_SOURCE_TC3 /* Internal source clock 3. */
+    };
 
-    tc_interrupt_t tc_interrupt =
-        {
-            .etrgs = 0,
-            .ldrbs = 0,
-            .ldras = 0,
-            .cpcs = 1,
-            .cpbs = 0,
-            .cpas = 0,
-            .lovrs = 0,
-            .covfs = 0,
-        };
+    tc_interrupt_t tc_interrupt = {
+        .etrgs = 0,
+        .ldrbs = 0,
+        .ldras = 0,
+        .cpcs = 1,
+        .cpbs = 0,
+        .cpas = 0,
+        .lovrs = 0,
+        .covfs = 0,
+    };
 
 #endif
 

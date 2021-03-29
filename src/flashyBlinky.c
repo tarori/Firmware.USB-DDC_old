@@ -31,10 +31,7 @@
 #define GPIO_PIN_EXAMPLE_3 GPIO_PUSH_BUTTON_SW2
 #endif
 
-#if !defined(GPIO_PIN_EXAMPLE_1) || \
-    !defined(GPIO_PIN_EXAMPLE_2) || \
-    !defined(GPIO_PIN_EXAMPLE_3) || \
-    !defined(ENCODER_SWITCH)
+#if !defined(GPIO_PIN_EXAMPLE_1) || !defined(GPIO_PIN_EXAMPLE_2) || !defined(GPIO_PIN_EXAMPLE_3) || !defined(ENCODER_SWITCH)
 #error The pin configuration to use in this example is missing.
 #endif
 //! @}
@@ -59,11 +56,7 @@ int flashyBlinky(void)
 
         // Poll push button value.
         for (i = 0; i < 200; i++) {
-            if (gpio_get_pin_value(GPIO_PIN_EXAMPLE_3) == 0 ||
-                gpio_get_pin_value(GPIO_CW_KEY_1) == 0 ||
-                gpio_get_pin_value(GPIO_CW_KEY_2) == 0 ||
-                gpio_get_pin_value(GPIO_PTT_INPUT) == 0 ||
-                gpio_get_pin_value(ENCODER_SWITCH)) {
+            if (gpio_get_pin_value(GPIO_PIN_EXAMPLE_3) == 0 || gpio_get_pin_value(GPIO_CW_KEY_1) == 0 || gpio_get_pin_value(GPIO_CW_KEY_2) == 0 || gpio_get_pin_value(GPIO_PTT_INPUT) == 0 || gpio_get_pin_value(ENCODER_SWITCH)) {
                 gpio_clr_gpio_pin(GPIO_PIN_EXAMPLE_2);
                 gpio_clr_gpio_pin(TWI_SCL);
                 gpio_clr_gpio_pin(TWI_SDA);

@@ -66,7 +66,7 @@ extern "C" {
 
 #include "mpu_wrappers.h"
 
-typedef void *xQueueHandle;
+typedef void* xQueueHandle;
 
 /* For internal use only. */
 #define queueSEND_TO_BACK (0)
@@ -463,7 +463,7 @@ xQueueHandle xQueueCreate(unsigned portBASE_TYPE uxQueueLength, unsigned portBAS
  * \defgroup xQueueSend xQueueSend
  * \ingroup QueueManagement
  */
-signed portBASE_TYPE xQueueGenericSend(xQueueHandle xQueue, const void *const pvItemToQueue, portTickType xTicksToWait, portBASE_TYPE xCopyPosition);
+signed portBASE_TYPE xQueueGenericSend(xQueueHandle xQueue, const void* const pvItemToQueue, portTickType xTicksToWait, portBASE_TYPE xCopyPosition);
 
 /**
  * queue. h
@@ -748,7 +748,7 @@ signed portBASE_TYPE xQueueGenericSend(xQueueHandle xQueue, const void *const pv
  * \defgroup xQueueReceive xQueueReceive
  * \ingroup QueueManagement
  */
-signed portBASE_TYPE xQueueGenericReceive(xQueueHandle xQueue, void *const pvBuffer, portTickType xTicksToWait, portBASE_TYPE xJustPeek);
+signed portBASE_TYPE xQueueGenericReceive(xQueueHandle xQueue, void* const pvBuffer, portTickType xTicksToWait, portBASE_TYPE xJustPeek);
 
 /**
  * queue. h
@@ -1069,7 +1069,7 @@ void vQueueDelete(xQueueHandle xQueue);
  * \defgroup xQueueSendFromISR xQueueSendFromISR
  * \ingroup QueueManagement
  */
-signed portBASE_TYPE xQueueGenericSendFromISR(xQueueHandle pxQueue, const void *const pvItemToQueue, signed portBASE_TYPE *pxHigherPriorityTaskWoken, portBASE_TYPE xCopyPosition);
+signed portBASE_TYPE xQueueGenericSendFromISR(xQueueHandle pxQueue, const void* const pvItemToQueue, signed portBASE_TYPE* pxHigherPriorityTaskWoken, portBASE_TYPE xCopyPosition);
 
 /**
  * queue. h
@@ -1158,7 +1158,7 @@ signed portBASE_TYPE xQueueGenericSendFromISR(xQueueHandle pxQueue, const void *
  * \defgroup xQueueReceiveFromISR xQueueReceiveFromISR
  * \ingroup QueueManagement
  */
-signed portBASE_TYPE xQueueReceiveFromISR(xQueueHandle pxQueue, void *const pvBuffer, signed portBASE_TYPE *pxTaskWoken);
+signed portBASE_TYPE xQueueReceiveFromISR(xQueueHandle pxQueue, void* const pvBuffer, signed portBASE_TYPE* pxTaskWoken);
 
 /*
  * Utilities to query queue that are safe to use from an ISR.  These utilities
@@ -1182,8 +1182,8 @@ unsigned portBASE_TYPE uxQueueMessagesWaitingFromISR(const xQueueHandle pxQueue)
  * responsiveness to gain execution speed, whereas the fully featured API
  * sacrifices execution speed to ensure better interrupt responsiveness.
  */
-signed portBASE_TYPE xQueueAltGenericSend(xQueueHandle pxQueue, const void *const pvItemToQueue, portTickType xTicksToWait, portBASE_TYPE xCopyPosition);
-signed portBASE_TYPE xQueueAltGenericReceive(xQueueHandle pxQueue, void *const pvBuffer, portTickType xTicksToWait, portBASE_TYPE xJustPeeking);
+signed portBASE_TYPE xQueueAltGenericSend(xQueueHandle pxQueue, const void* const pvItemToQueue, portTickType xTicksToWait, portBASE_TYPE xCopyPosition);
+signed portBASE_TYPE xQueueAltGenericReceive(xQueueHandle pxQueue, void* const pvBuffer, portTickType xTicksToWait, portBASE_TYPE xJustPeeking);
 #define xQueueAltSendToFront(xQueue, pvItemToQueue, xTicksToWait) xQueueAltGenericSend(xQueue, pvItemToQueue, xTicksToWait, queueSEND_TO_FRONT)
 #define xQueueAltSendToBack(xQueue, pvItemToQueue, xTicksToWait) xQueueAltGenericSend(xQueue, pvItemToQueue, xTicksToWait, queueSEND_TO_BACK)
 #define xQueueAltReceive(xQueue, pvBuffer, xTicksToWait) xQueueAltGenericReceive(xQueue, pvBuffer, xTicksToWait, pdFALSE)
@@ -1198,10 +1198,10 @@ signed portBASE_TYPE xQueueAltGenericReceive(xQueueHandle pxQueue, void *const p
  * should not be called directly from application code.  Instead use the macro
  * wrappers defined within croutine.h.
  */
-signed portBASE_TYPE xQueueCRSendFromISR(xQueueHandle pxQueue, const void *pvItemToQueue, signed portBASE_TYPE xCoRoutinePreviouslyWoken);
-signed portBASE_TYPE xQueueCRReceiveFromISR(xQueueHandle pxQueue, void *pvBuffer, signed portBASE_TYPE *pxTaskWoken);
-signed portBASE_TYPE xQueueCRSend(xQueueHandle pxQueue, const void *pvItemToQueue, portTickType xTicksToWait);
-signed portBASE_TYPE xQueueCRReceive(xQueueHandle pxQueue, void *pvBuffer, portTickType xTicksToWait);
+signed portBASE_TYPE xQueueCRSendFromISR(xQueueHandle pxQueue, const void* pvItemToQueue, signed portBASE_TYPE xCoRoutinePreviouslyWoken);
+signed portBASE_TYPE xQueueCRReceiveFromISR(xQueueHandle pxQueue, void* pvBuffer, signed portBASE_TYPE* pxTaskWoken);
+signed portBASE_TYPE xQueueCRSend(xQueueHandle pxQueue, const void* pvItemToQueue, portTickType xTicksToWait);
+signed portBASE_TYPE xQueueCRReceive(xQueueHandle pxQueue, void* pvBuffer, portTickType xTicksToWait);
 
 /*
  * For internal use only.  Use xSemaphoreCreateMutex() or
@@ -1238,7 +1238,7 @@ portBASE_TYPE xQueueGiveMutexRecursive(xQueueHandle xMutex);
  * name that the kernel aware debugger will display.
  */
 #if configQUEUE_REGISTRY_SIZE > 0
-void vQueueAddToRegistry(xQueueHandle xQueue, signed char *pcName);
+void vQueueAddToRegistry(xQueueHandle xQueue, signed char* pcName);
 #endif
 
 #ifdef __cplusplus

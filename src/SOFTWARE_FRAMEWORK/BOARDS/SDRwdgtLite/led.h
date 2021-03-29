@@ -198,4 +198,4 @@ extern U8 LED_Get_Intensity(U32 led);
  */
 extern void LED_Set_Intensity(U32 leds, U8 intensity);
 
-#endif // _LED_H_
+#endif  // _LED_H_

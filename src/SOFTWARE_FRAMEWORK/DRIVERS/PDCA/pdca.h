@@ -81,11 +81,11 @@
 typedef struct
 {
     //! Memory address.
-    volatile void *addr;
+    volatile void* addr;
     //! Transfer counter.
     unsigned int size;
     //! Next memory address.
-    volatile void *r_addr;
+    volatile void* r_addr;
     //! Next transfer counter.
     unsigned int r_size;
     //! Select peripheral ID.
@@ -96,7 +96,7 @@ typedef struct
     // Note: the options in this preprocessor section are only available from the PDCA IP version 1.2.0 on.
     //! Enable (\c 1) or disable (\c 0) the transfer upon event trigger.
     unsigned char etrig;
-#endif // #ifdef AVR32_PDCA_120_H_INCLUDED
+#endif  // #ifdef AVR32_PDCA_120_H_INCLUDED
 } pdca_channel_options_t;
 
 /*! \brief Get PDCA channel handler
@@ -105,14 +105,14 @@ typedef struct
  *
  * \return channel handled or PDCA_INVALID_ARGUMENT
  */
-extern volatile avr32_pdca_channel_t *pdca_get_handler(unsigned int pdca_ch_number);
+extern volatile avr32_pdca_channel_t* pdca_get_handler(unsigned int pdca_ch_number);
 
 /*! \brief Set the channel configuration
  *
  * \param pdca_ch_number PDCA channel
  * \param opt channel option
  */
-extern int pdca_init_channel(unsigned int pdca_ch_number, const pdca_channel_options_t *opt);
+extern int pdca_init_channel(unsigned int pdca_ch_number, const pdca_channel_options_t* opt);
 
 /*! \brief Get the PDCA channel transfer enable status
  *
@@ -148,7 +148,7 @@ extern unsigned int pdca_get_load_size(unsigned int pdca_ch_number);
  * \param addr           address where data to load are stored
  * \param size           size of the data block to load
  */
-extern void pdca_load_channel(unsigned int pdca_ch_number, volatile void *addr, unsigned int size);
+extern void pdca_load_channel(unsigned int pdca_ch_number, volatile void* addr, unsigned int size);
 
 /*! \brief Get PDCA channel reload size
  *
@@ -164,7 +164,7 @@ extern unsigned int pdca_get_reload_size(unsigned int pdca_ch_number);
  * \param addr           address where data to load are stored
  * \param size           size of the data block to load
  */
-extern void pdca_reload_channel(unsigned int pdca_ch_number, volatile void *addr, unsigned int size);
+extern void pdca_reload_channel(unsigned int pdca_ch_number, volatile void* addr, unsigned int size);
 
 /*! \brief Set the peripheral function to use with the PDCA channel
  *
@@ -195,7 +195,7 @@ extern void pdca_disable_event_trigger(unsigned int pdca_ch_number);
  */
 extern void pdca_enable_event_trigger(unsigned int pdca_ch_number);
 
-#endif // #ifdef AVR32_PDCA_120_H_INCLUDED
+#endif  // #ifdef AVR32_PDCA_120_H_INCLUDED
 
 /*! \brief Disable PDCA transfer error interrupt
  *
@@ -244,4 +244,4 @@ extern void pdca_enable_interrupt_reload_counter_zero(unsigned int pdca_ch_numbe
  */
 extern unsigned long pdca_get_transfer_status(unsigned int pdca_ch_number);
 
-#endif // _PDCA_H_
+#endif  // _PDCA_H_

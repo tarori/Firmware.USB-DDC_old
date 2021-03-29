@@ -55,13 +55,13 @@ _BEGIN_STD_C
 typedef char u8;
 typedef unsigned int u32;
 
-#define __raw_writeb(v, a) (*(volatile unsigned char *)(a) = (v))
-#define __raw_writew(v, a) (*(volatile unsigned short *)(a) = (v))
-#define __raw_writel(v, a) (*(volatile unsigned int *)(a) = (v))
+#define __raw_writeb(v, a) (*(volatile unsigned char*)(a) = (v))
+#define __raw_writew(v, a) (*(volatile unsigned short*)(a) = (v))
+#define __raw_writel(v, a) (*(volatile unsigned int*)(a) = (v))
 
-#define __raw_readb(a) (*(volatile unsigned char *)(a))
-#define __raw_readw(a) (*(volatile unsigned short *)(a))
-#define __raw_readl(a) (*(volatile unsigned int *)(a))
+#define __raw_readb(a) (*(volatile unsigned char*)(a))
+#define __raw_readw(a) (*(volatile unsigned short*)(a))
+#define __raw_readl(a) (*(volatile unsigned int*)(a))
 
 /* As long as I/O is only performed in P4 (or possibly P3), we're safe */
 #define writeb(v, a) __raw_writeb(v, a)

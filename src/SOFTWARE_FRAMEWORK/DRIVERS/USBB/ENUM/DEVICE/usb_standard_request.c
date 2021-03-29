@@ -86,7 +86,7 @@
 #include "usb_standard_request.h"
 #include "usb_task.h"
 
-#include "gpio.h" // To access 'scope debug pin
+#include "gpio.h"  // To access 'scope debug pin
 
 //_____ M A C R O S ________________________________________________________
 
@@ -106,7 +106,7 @@ static void usb_set_interface(void);
 
 //_____ D E C L A R A T I O N S ____________________________________________
 
-const void *pbuffer;
+const void* pbuffer;
 U16 data_to_transfer;
 static U8 bmRequestType;
 volatile U8 usb_configuration_nb;
@@ -115,7 +115,7 @@ extern volatile Bool usb_connected;
 //extern  const     S_usb_device_descriptor             usb_user_device_descriptor;
 //extern  const     S_usb_user_configuration_descriptor usb_user_configuration_descriptor;
 #define NB_INTERFACE 8
-static U8 usb_interface_status[NB_INTERFACE]; // All interface with default setting
+static U8 usb_interface_status[NB_INTERFACE];  // All interface with default setting
 
 //! This function reads the SETUP request sent to the default control endpoint
 //! and calls the appropriate function. When exiting of the usb_read_request
@@ -210,14 +210,14 @@ void usb_process_request(void)
 
     case SET_DESCRIPTOR:
     case SYNCH_FRAME:
-    default: //!< unsupported request => call to user read request
+    default:  //!< unsupported request => call to user read request
     unsupported_request:
         if (!usb_user_read_request(bmRequestType, bRequest)) {
             Usb_enable_stall_handshake(EP_CONTROL);
             Usb_ack_setup_received_free();
         }
         break;
-    } // end switch
+    }  // end switch
 }
 
 //! This function manages the SET ADDRESS request. When complete, the device
@@ -230,10 +230,10 @@ void usb_set_address(void)
 
     Usb_ack_setup_received_free();
 
-    Usb_ack_control_in_ready_send(); //!< send a ZLP for STATUS phase
+    Usb_ack_control_in_ready_send();  //!< send a ZLP for STATUS phase
     while (!Is_usb_control_in_ready())
-        ;   //!< waits for status phase done
-            //!< before using the new address
+        ;  //!< waits for status phase done
+           //!< before using the new address
     Usb_enable_address();
 }
 
@@ -250,10 +250,10 @@ void usb_set_configuration(void)
         Usb_ack_setup_received_free();
         usb_configuration_nb = configuration_number;
 
-        usb_user_endpoint_init(usb_configuration_nb); //!< endpoint configuration
+        usb_user_endpoint_init(usb_configuration_nb);  //!< endpoint configuration
         Usb_set_configuration_action();
 
-        Usb_ack_control_in_ready_send(); //!< send a ZLP for STATUS phase
+        Usb_ack_control_in_ready_send();  //!< send a ZLP for STATUS phase
     } else {
         //!< keep that order (set StallRq/clear RxSetup) or a
         //!< OUT request following the SETUP may be acknowledged
@@ -287,39 +287,39 @@ void usb_get_descriptor(void)
 
     switch (descriptor_type) {
     case DEVICE_DESCRIPTOR:
-        data_to_transfer = Usb_get_dev_desc_length(); //!< sizeof(usb_dev_desc);
+        data_to_transfer = Usb_get_dev_desc_length();  //!< sizeof(usb_dev_desc);
         pbuffer = Usb_get_dev_desc_pointer();
         break;
 
 #if (USB_HIGH_SPEED_SUPPORT == DISABLED)
     case CONFIGURATION_DESCRIPTOR:
-        data_to_transfer = Usb_get_conf_desc_length(); //!< sizeof(usb_conf_desc);
+        data_to_transfer = Usb_get_conf_desc_length();  //!< sizeof(usb_conf_desc);
         pbuffer = Usb_get_conf_desc_pointer();
         break;
 
 #else
     case CONFIGURATION_DESCRIPTOR:
         if (Is_usb_full_speed_mode()) {
-            data_to_transfer = Usb_get_conf_desc_fs_length(); //!< sizeof(usb_conf_desc_fs);
+            data_to_transfer = Usb_get_conf_desc_fs_length();  //!< sizeof(usb_conf_desc_fs);
             pbuffer = Usb_get_conf_desc_fs_pointer();
         } else {
-            data_to_transfer = Usb_get_conf_desc_hs_length(); //!< sizeof(usb_conf_desc_hs);
+            data_to_transfer = Usb_get_conf_desc_hs_length();  //!< sizeof(usb_conf_desc_hs);
             pbuffer = Usb_get_conf_desc_hs_pointer();
         }
         break;
 
     case OTHER_SPEED_CONFIGURATION_DESCRIPTOR:
         if (!Is_usb_full_speed_mode()) {
-            data_to_transfer = Usb_get_conf_desc_fs_length(); //!< sizeof(usb_conf_desc_fs);
+            data_to_transfer = Usb_get_conf_desc_fs_length();  //!< sizeof(usb_conf_desc_fs);
             pbuffer = Usb_get_conf_desc_fs_pointer();
         } else {
-            data_to_transfer = Usb_get_conf_desc_hs_length(); //!< sizeof(usb_conf_desc_hs);
+            data_to_transfer = Usb_get_conf_desc_hs_length();  //!< sizeof(usb_conf_desc_hs);
             pbuffer = Usb_get_conf_desc_hs_pointer();
         }
         break;
 
     case DEVICE_QUALIFIER_DESCRIPTOR:
-        data_to_transfer = Usb_get_qualifier_desc_length(); //!< sizeof(usb_qualifier_desc);
+        data_to_transfer = Usb_get_qualifier_desc_length();  //!< sizeof(usb_qualifier_desc);
         pbuffer = Usb_get_qualifier_desc_pointer();
         break;
 
@@ -334,18 +334,18 @@ void usb_get_descriptor(void)
         break;
     }
 
-    temp.u32 = Usb_read_endpoint_data(EP_CONTROL, 32);     //!< read wIndex and wLength with a 32-bit access
-                                                           //!< since this access is aligned with a 32-bit
-                                                           //!< boundary from the beginning of the endpoint
-    wLength = usb_format_usb_to_mcu_data(16, temp.u16[1]); //!< ignore wIndex, keep and format wLength
-    Usb_ack_setup_received_free();                         //!< clear the setup received flag
+    temp.u32 = Usb_read_endpoint_data(EP_CONTROL, 32);      //!< read wIndex and wLength with a 32-bit access
+                                                            //!< since this access is aligned with a 32-bit
+                                                            //!< boundary from the beginning of the endpoint
+    wLength = usb_format_usb_to_mcu_data(16, temp.u16[1]);  //!< ignore wIndex, keep and format wLength
+    Usb_ack_setup_received_free();                          //!< clear the setup received flag
 
     if (wLength > data_to_transfer) {
-        zlp = !(data_to_transfer % EP_CONTROL_LENGTH); //!< zero length packet condition
+        zlp = !(data_to_transfer % EP_CONTROL_LENGTH);  //!< zero length packet condition
     } else {
         // No need to test ZLP sending since we send the exact number of bytes as
         // expected by the host.
-        data_to_transfer = wLength; //!< send only requested number of data bytes
+        data_to_transfer = wLength;  //!< send only requested number of data bytes
     }
 
     Usb_ack_nak_out(EP_CONTROL);
@@ -355,11 +355,11 @@ void usb_get_descriptor(void)
             ;
 
         if (Is_usb_nak_out(EP_CONTROL))
-            break; // don't clear the flag now, it will be cleared after
+            break;  // don't clear the flag now, it will be cleared after
 
         Usb_reset_endpoint_fifo_access(EP_CONTROL);
 
-#if (USB_HIGH_SPEED_SUPPORT == ENABLED) // To support other descriptors like OTHER_SPEED_CONFIGURATION_DESCRIPTOR
+#if (USB_HIGH_SPEED_SUPPORT == ENABLED)  // To support other descriptors like OTHER_SPEED_CONFIGURATION_DESCRIPTOR
         if (b_first_data) {
             b_first_data = FALSE;
             if (0 != data_to_transfer) {
@@ -368,19 +368,19 @@ void usb_get_descriptor(void)
             }
             if (0 != data_to_transfer) {
                 usb_write_ep_txpacket(EP_CONTROL, &descriptor_type, 1, NULL);
-                pbuffer = ((const U8 *)pbuffer) + 1;
+                pbuffer = ((const U8*)pbuffer) + 1;
                 data_to_transfer--;
             }
         }
 #endif
         if (0 != data_to_transfer) {
             data_to_transfer = usb_write_ep_txpacket(EP_CONTROL, pbuffer,
-                                                     data_to_transfer, &pbuffer);
+                data_to_transfer, &pbuffer);
         }
         if (Is_usb_nak_out(EP_CONTROL))
             break;
 
-        Usb_ack_control_in_ready_send(); //!< Send data until necessary
+        Usb_ack_control_in_ready_send();  //!< Send data until necessary
     }
 
     if (zlp && !Is_usb_nak_out(EP_CONTROL)) {
@@ -434,7 +434,7 @@ void usb_get_status(void)
         break;
 
     case REQUEST_ENDPOINT_STATUS:
-        Usb_read_endpoint_data(EP_CONTROL, 16); //!< dummy read (wValue)
+        Usb_read_endpoint_data(EP_CONTROL, 16);  //!< dummy read (wValue)
         wIndex = Usb_read_endpoint_data(EP_CONTROL, 8);
         wIndex = Get_desc_ep_nbr(wIndex);
         Usb_ack_setup_received_free();
@@ -470,10 +470,8 @@ void usb_set_feature(void)
 
     switch (wValue) {
     case FEATURE_ENDPOINT_HALT:
-        wIndex = Get_desc_ep_nbr(wIndex); // clear direction flag
-        if (bmRequestType != ENDPOINT_TYPE ||
-            wIndex == EP_CONTROL ||
-            !Is_usb_endpoint_enabled(wIndex))
+        wIndex = Get_desc_ep_nbr(wIndex);  // clear direction flag
+        if (bmRequestType != ENDPOINT_TYPE || wIndex == EP_CONTROL || !Is_usb_endpoint_enabled(wIndex))
             goto unsupported_request;
 
         Usb_enable_stall_handshake(wIndex);
@@ -483,8 +481,7 @@ void usb_set_feature(void)
 
 #if (USB_HIGH_SPEED_SUPPORT == ENABLED)
     case FEATURE_TEST_MODE:
-        if (bmRequestType != DEVICE_TYPE ||
-            wIndex & 0x00FF)
+        if (bmRequestType != DEVICE_TYPE || wIndex & 0x00FF)
             goto unsupported_request;
 
         switch (wIndex >> 8) {
@@ -515,20 +512,19 @@ void usb_set_feature(void)
             break;
 
         case TEST_PACKET: {
-            static const U8 test_packet[] =
-                {
-                    // 00000000 * 9
-                    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                    // 01010101 * 8
-                    0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA,
-                    // 01110111 * 8
-                    0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE,
-                    // 0, {111111S * 15}, 111111
-                    0xFE, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-                    // S, 111111S, {0111111S * 7}
-                    0x7F, 0xBF, 0xDF, 0xEF, 0xF7, 0xFB, 0xFD,
-                    // 00111111, {S0111111 * 9}, S0
-                    0xFC, 0x7E, 0xBF, 0xDF, 0xEF, 0xF7, 0xFB, 0xFD, 0x7E};
+            static const U8 test_packet[] = {
+                // 00000000 * 9
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                // 01010101 * 8
+                0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA,
+                // 01110111 * 8
+                0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE,
+                // 0, {111111S * 15}, 111111
+                0xFE, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+                // S, 111111S, {0111111S * 7}
+                0x7F, 0xBF, 0xDF, 0xEF, 0xF7, 0xFB, 0xFD,
+                // 00111111, {S0111111 * 9}, S0
+                0xFC, 0x7E, 0xBF, 0xDF, 0xEF, 0xF7, 0xFB, 0xFD, 0x7E};
 
             Usb_ack_setup_received_free();
             Usb_ack_control_in_ready_send();
@@ -544,7 +540,7 @@ void usb_set_feature(void)
             Usb_send_in(EP_CONTROL);
         } break;
 
-        case TEST_FORCE_ENABLE: // Only for downstream facing hub ports
+        case TEST_FORCE_ENABLE:  // Only for downstream facing hub ports
         default:
             goto unsupported_request;
         }
@@ -579,7 +575,7 @@ void usb_clear_feature(void)
         wValue = Usb_read_endpoint_data(EP_CONTROL, 8);
 
         if (wValue == FEATURE_ENDPOINT_HALT) {
-            Usb_read_endpoint_data(EP_CONTROL, 8); //!< dummy read (MSB of wValue)
+            Usb_read_endpoint_data(EP_CONTROL, 8);  //!< dummy read (MSB of wValue)
             wIndex = Usb_read_endpoint_data(EP_CONTROL, 8);
             wIndex = Get_desc_ep_nbr(wIndex);
 
@@ -643,14 +639,14 @@ void usb_set_interface(void)
     // Get descriptor
 #if (USB_HIGH_SPEED_SUPPORT == ENABLED)
     if (Is_usb_full_speed_mode()) {
-        data_to_transfer = Usb_get_conf_desc_fs_length(); //!< sizeof(usb_conf_desc_fs);
+        data_to_transfer = Usb_get_conf_desc_fs_length();  //!< sizeof(usb_conf_desc_fs);
         pbuffer = Usb_get_conf_desc_fs_pointer();
     } else {
-        data_to_transfer = Usb_get_conf_desc_hs_length(); //!< sizeof(usb_conf_desc_hs);
+        data_to_transfer = Usb_get_conf_desc_hs_length();  //!< sizeof(usb_conf_desc_hs);
         pbuffer = Usb_get_conf_desc_hs_pointer();
     }
 #else
-    data_to_transfer = Usb_get_conf_desc_length(); //!< sizeof(usb_conf_desc);
+    data_to_transfer = Usb_get_conf_desc_length();  //!< sizeof(usb_conf_desc);
     pbuffer = Usb_get_conf_desc_pointer();
 #endif
 
@@ -665,39 +661,39 @@ void usb_set_interface(void)
     }
     u8_i = usb_configuration_nb;
     while (u8_i != 0) {
-        if (CONFIGURATION_DESCRIPTOR != ((S_usb_configuration_descriptor *)pbuffer)->bDescriptorType) {
-            data_to_transfer -= ((S_usb_configuration_descriptor *)pbuffer)->bLength;
-            pbuffer = (U8 *)pbuffer + ((S_usb_configuration_descriptor *)pbuffer)->bLength;
+        if (CONFIGURATION_DESCRIPTOR != ((S_usb_configuration_descriptor*)pbuffer)->bDescriptorType) {
+            data_to_transfer -= ((S_usb_configuration_descriptor*)pbuffer)->bLength;
+            pbuffer = (U8*)pbuffer + ((S_usb_configuration_descriptor*)pbuffer)->bLength;
             continue;
         }
         u8_i--;
         if (u8_i != 0) {
-            data_to_transfer -= ((S_usb_configuration_descriptor *)pbuffer)->wTotalLength;
-            pbuffer = (U8 *)pbuffer + ((S_usb_configuration_descriptor *)pbuffer)->wTotalLength;
+            data_to_transfer -= ((S_usb_configuration_descriptor*)pbuffer)->wTotalLength;
+            pbuffer = (U8*)pbuffer + ((S_usb_configuration_descriptor*)pbuffer)->wTotalLength;
         }
     }
 
     //* Find interface selected
-    if (wIndex >= ((S_usb_configuration_descriptor *)pbuffer)->bNumInterfaces) {
+    if (wIndex >= ((S_usb_configuration_descriptor*)pbuffer)->bNumInterfaces) {
         // Interface number unknown
         Usb_enable_stall_handshake(EP_CONTROL);
         Usb_ack_setup_received_free();
         return;
     }
     while (1) {
-        if (data_to_transfer <= ((S_usb_interface_descriptor *)pbuffer)->bLength) {
+        if (data_to_transfer <= ((S_usb_interface_descriptor*)pbuffer)->bLength) {
             // Interface unknown
             Usb_enable_stall_handshake(EP_CONTROL);
             Usb_ack_setup_received_free();
             return;
         }
-        data_to_transfer -= ((S_usb_interface_descriptor *)pbuffer)->bLength;
-        pbuffer = (U8 *)pbuffer + ((S_usb_interface_descriptor *)pbuffer)->bLength;
-        if (INTERFACE_DESCRIPTOR != ((S_usb_interface_descriptor *)pbuffer)->bDescriptorType)
+        data_to_transfer -= ((S_usb_interface_descriptor*)pbuffer)->bLength;
+        pbuffer = (U8*)pbuffer + ((S_usb_interface_descriptor*)pbuffer)->bLength;
+        if (INTERFACE_DESCRIPTOR != ((S_usb_interface_descriptor*)pbuffer)->bDescriptorType)
             continue;
-        if (wIndex != ((S_usb_interface_descriptor *)pbuffer)->bInterfaceNumber)
+        if (wIndex != ((S_usb_interface_descriptor*)pbuffer)->bInterfaceNumber)
             continue;
-        if (wValue != ((S_usb_interface_descriptor *)pbuffer)->bAlternateSetting)
+        if (wValue != ((S_usb_interface_descriptor*)pbuffer)->bAlternateSetting)
             continue;
         break;
     }
@@ -706,15 +702,15 @@ void usb_set_interface(void)
 
     //* Find endpoints of interface and reset it
     while (1) {
-        if (data_to_transfer <= ((S_usb_endpoint_descriptor *)pbuffer)->bLength)
-            break; // End of interface
-        data_to_transfer -= ((S_usb_endpoint_descriptor *)pbuffer)->bLength;
-        pbuffer = (U8 *)pbuffer + ((S_usb_endpoint_descriptor *)pbuffer)->bLength;
-        if (INTERFACE_DESCRIPTOR == ((S_usb_endpoint_descriptor *)pbuffer)->bDescriptorType)
-            break; // End of interface
-        if (ENDPOINT_DESCRIPTOR == ((S_usb_endpoint_descriptor *)pbuffer)->bDescriptorType) {
+        if (data_to_transfer <= ((S_usb_endpoint_descriptor*)pbuffer)->bLength)
+            break;  // End of interface
+        data_to_transfer -= ((S_usb_endpoint_descriptor*)pbuffer)->bLength;
+        pbuffer = (U8*)pbuffer + ((S_usb_endpoint_descriptor*)pbuffer)->bLength;
+        if (INTERFACE_DESCRIPTOR == ((S_usb_endpoint_descriptor*)pbuffer)->bDescriptorType)
+            break;  // End of interface
+        if (ENDPOINT_DESCRIPTOR == ((S_usb_endpoint_descriptor*)pbuffer)->bDescriptorType) {
             // Reset endpoint
-            u8_i = ((S_usb_endpoint_descriptor *)pbuffer)->bEndpointAddress & (~MSK_EP_DIR);
+            u8_i = ((S_usb_endpoint_descriptor*)pbuffer)->bEndpointAddress & (~MSK_EP_DIR);
             Usb_disable_stall_handshake(u8_i);
             Usb_reset_endpoint(u8_i);
             Usb_reset_data_toggle(u8_i);
@@ -727,4 +723,4 @@ void usb_set_interface(void)
         ;
 }
 
-#endif // USB_DEVICE_FEATURE == ENABLED
+#endif  // USB_DEVICE_FEATURE == ENABLED

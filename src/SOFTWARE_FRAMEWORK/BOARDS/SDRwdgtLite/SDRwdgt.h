@@ -24,9 +24,9 @@
 
 #include "compiler.h"
 
-#ifdef __AVR32_ABI_COMPILER__ // Automatically defined when compiling for AVR32, not when assembling.
+#ifdef __AVR32_ABI_COMPILER__  // Automatically defined when compiling for AVR32, not when assembling.
 #include "led.h"
-#endif // __AVR32_ABI_COMPILER__
+#endif  // __AVR32_ABI_COMPILER__
 
 /*! \name Oscillator Definitions
  */
@@ -37,16 +37,16 @@
 // part.
 //#define FRCOSC          AVR32_PM_RCOSC_FREQUENCY              //!< RCOsc frequency: Hz.
 
-#define FOSC32 32768                                        //!< Osc32 frequency: Hz.
-#define OSC32_STARTUP AVR32_PM_OSCCTRL32_STARTUP_8192_RCOSC //!< Osc32 startup time: RCOsc periods.
+#define FOSC32 32768                                         //!< Osc32 frequency: Hz.
+#define OSC32_STARTUP AVR32_PM_OSCCTRL32_STARTUP_8192_RCOSC  //!< Osc32 startup time: RCOsc periods.
 
-#define FOSC0 12000000                                    //!< Osc0 frequency: Hz.
-#define OSC0_STARTUP AVR32_PM_OSCCTRL0_STARTUP_2048_RCOSC //!< Osc0 startup time: RCOsc periods.
+#define FOSC0 12000000                                     //!< Osc0 frequency: Hz.
+#define OSC0_STARTUP AVR32_PM_OSCCTRL0_STARTUP_2048_RCOSC  //!< Osc0 startup time: RCOsc periods.
 
 // Osc1 crystal is not mounted by default. Set the following definitions to the
 // appropriate values if a custom Osc1 crystal is mounted on your board.
-#define FOSC1 12288000                                    //!< Osc1 frequency: Hz.
-#define OSC1_STARTUP AVR32_PM_OSCCTRL1_STARTUP_2048_RCOSC //!< Osc1 startup time: RCOsc periods.
+#define FOSC1 12288000                                     //!< Osc1 frequency: Hz.
+#define OSC1_STARTUP AVR32_PM_OSCCTRL1_STARTUP_2048_RCOSC  //!< Osc1 startup time: RCOsc periods.
 
 //! @}
 /*! \name System Clock Frequencies
@@ -69,12 +69,12 @@
 //! Multiplexed pin used for USB_ID: AVR32_USBB_USB_ID_x_x.
 //! To be selected according to the AVR32_USBB_USB_ID_x_x_PIN and
 //! AVR32_USBB_USB_ID_x_x_FUNCTION definitions from <avr32/uc3axxxx.h>.
-#define USB_ID AVR32_USBB_USB_ID_0_3 // pin 124
+#define USB_ID AVR32_USBB_USB_ID_0_3  // pin 124
 
 //! Multiplexed pin used for USB_VBOF: AVR32_USBB_USB_VBOF_x_x.
 //! To be selected according to the AVR32_USBB_USB_VBOF_x_x_PIN and
 //! AVR32_USBB_USB_VBOF_x_x_FUNCTION definitions from <avr32/uc3axxxx.h>.
-#define USB_VBOF AVR32_USBB_USB_VBOF_0_3 // pin 127
+#define USB_VBOF AVR32_USBB_USB_VBOF_0_3  // pin 127
 
 //! Active level of the USB_VBOF output pin.
 #define USB_VBOF_ACTIVE_LEVEL LOW
@@ -87,18 +87,18 @@
 //! @{
 
 // Use #defines for LED functionality BSB 20110903 Move somewhere else??
-#define LED_STATUS_MOD 0 // LED0 and LED1 are on USB-I2S module, compatibility mode
-#define LED_STATUS_AB 1  // LED0 and LED1 are on the front of AB-1.1, override initial in main()
+#define LED_STATUS_MOD 0  // LED0 and LED1 are on USB-I2S module, compatibility mode
+#define LED_STATUS_AB 1   // LED0 and LED1 are on the front of AB-1.1, override initial in main()
 #define LED_STATUS LED_STATUS_MOD
 
 #if LED_STATUS == LED_STATUS_MOD
-#define LED0_GPIO AVR32_PIN_PX20 // Red on module and other boards
-#define LED1_GPIO AVR32_PIN_PX46 // Green on module and other boards
+#define LED0_GPIO AVR32_PIN_PX20  // Red on module and other boards
+#define LED1_GPIO AVR32_PIN_PX46  // Green on module and other boards
 #endif
 
 #if LED_STATUS == LED_STATUS_AB
-#define LED0_GPIO AVR32_PIN_PX33 // Red on AB-1.1
-#define LED1_GPIO AVR32_PIN_PX29 // Green on AB-1.1
+#define LED0_GPIO AVR32_PIN_PX33  // Red on AB-1.1
+#define LED1_GPIO AVR32_PIN_PX29  // Green on AB-1.1
 #endif
 
 #define LED2_GPIO AVR32_PIN_PX50
@@ -145,22 +145,22 @@
 /*! \name AK5394A 24 bit hi-performance ADC
  */
 //! @{
-#define AK5394_DFS0 AVR32_PIN_PB00   // pulled up sampling speed sense (or control)
-#define AK5394_DFS1 AVR32_PIN_PB01   // pulled up sampling speed sense (or control)
-#define AK5394_RSTN AVR32_PIN_PB03   // pulled up reset sense (or control)
-#define AK5394_HPFE AVR32_PIN_PB04   // pulled up High Pass Filter sense (or control)
-#define AK5394_ZCAL AVR32_PIN_PB05   // Zero Calibration Control to A/D
-#define AK5394_CAL AVR32_PIN_PB06    // Calibration Active from A/D
-#define AK5394_SMODE1 AVR32_PIN_PB07 // pulled up mode sense (or control)
-#define AK5394_SMODE2 AVR32_PIN_PB08 // pulled up mode sense (or control)
+#define AK5394_DFS0 AVR32_PIN_PB00    // pulled up sampling speed sense (or control)
+#define AK5394_DFS1 AVR32_PIN_PB01    // pulled up sampling speed sense (or control)
+#define AK5394_RSTN AVR32_PIN_PB03    // pulled up reset sense (or control)
+#define AK5394_HPFE AVR32_PIN_PB04    // pulled up High Pass Filter sense (or control)
+#define AK5394_ZCAL AVR32_PIN_PB05    // Zero Calibration Control to A/D
+#define AK5394_CAL AVR32_PIN_PB06     // Calibration Active from A/D
+#define AK5394_SMODE1 AVR32_PIN_PB07  // pulled up mode sense (or control)
+#define AK5394_SMODE2 AVR32_PIN_PB08  // pulled up mode sense (or control)
 
 // NOTE:: need to work on these pin assignments
-#define AK5394_FSYNC AVR32_PIN_PX26   // with Jumper 1-2 in J302
-#define AK5394_LRCK AVR32_PIN_PX36    // with Jumper 3-4 in J302
-#define AK5394_LRCK_IN AVR32_PIN_PX26 // with Jumper 2-3 in J302
+#define AK5394_FSYNC AVR32_PIN_PX26    // with Jumper 1-2 in J302
+#define AK5394_LRCK AVR32_PIN_PX36     // with Jumper 3-4 in J302
+#define AK5394_LRCK_IN AVR32_PIN_PX26  // with Jumper 2-3 in J302
 #define AK5394_SDATA AVR32_PIN_PX25
-#define AK5394_SCLK AVR32_PIN_PX28    // trace on board to PX34  ??
-#define AK5394_AD_MCLK AVR32_PIN_PC04 // clock from A/D board
+#define AK5394_SCLK AVR32_PIN_PX28     // trace on board to PX34  ??
+#define AK5394_AD_MCLK AVR32_PIN_PC04  // clock from A/D board
 
 /* Important note on PC04: This is the XIN1 pin of the AVR32. According to Atmel's doc32072.pdf page 12:
  * The oscillators are not mapped to the normal GPIO functions and their muxings are controlled
@@ -173,7 +173,7 @@
 /*! \name 4 bit LCD display connections
  */
 //! @{
-#define LCD_BL_PIN AVR32_PIN_PX14 // PWM1 to gate of FET
+#define LCD_BL_PIN AVR32_PIN_PX14  // PWM1 to gate of FET
 #define LCD_D4 AVR32_PIN_PX38
 #define LCD_D5 AVR32_PIN_PX39
 #define LCD_D6 AVR32_PIN_PX40
@@ -202,12 +202,12 @@
 /*! \name Quadrature encoder w/pushbutton
  */
 //! @{
-#define ENCODER_ROTQ_PIN AVR32_EIC_EXTINT_8_PIN //AVR32_PIN_PA20
+#define ENCODER_ROTQ_PIN AVR32_EIC_EXTINT_8_PIN  //AVR32_PIN_PA20
 #define ENCODER_ROTQ_FUNCTION AVR32_EIC_EXTINT_8_FUNCTION
 //NMI does not require a #define ENCODER_ROTQ_IRQ
 #define ENCODER_ROTQ_INT EXT_NMI
 
-#define ENCODER_ROTI_PIN AVR32_EIC_EXTINT_7_PIN //AVR32_PIN_PA13
+#define ENCODER_ROTI_PIN AVR32_EIC_EXTINT_7_PIN  //AVR32_PIN_PA13
 #define ENCODER_ROTI_FUNCTION AVR32_EIC_EXTINT_7_FUNCTION
 #define ENCODER_ROTI_IRQ AVR32_EIC_IRQ_7
 #define ENCODER_ROTI_INT EXT_INT7
@@ -239,8 +239,8 @@
 #define SSC_RX_CLOCK_FUNCTION AVR32_SSC_RX_CLOCK_0_1_FUNCTION
 #define SSC_TX_DATA AVR32_SSC_TX_DATA_0_1_PIN
 #define SSC_TX_DATA_FUNCTION AVR32_SSC_TX_DATA_0_1_FUNCTION
-#define SSC_TX_FRAME_SYNC AVR32_SSC_TX_FRAME_SYNC_0_1_PIN               // PX27
-#define SSC_TX_FRAME_SYNC_FUNCTION AVR32_SSC_TX_FRAME_SYNC_0_1_FUNCTION //2
+#define SSC_TX_FRAME_SYNC AVR32_SSC_TX_FRAME_SYNC_0_1_PIN                // PX27
+#define SSC_TX_FRAME_SYNC_FUNCTION AVR32_SSC_TX_FRAME_SYNC_0_1_FUNCTION  //2
 #define SSC_TX_CLOCK AVR32_SSC_TX_CLOCK_0_1_PIN
 #define SSC_TX_CLOCK_FUNCTION AVR32_SSC_TX_CLOCK_0_1_FUNCTION
 
@@ -268,7 +268,7 @@
 #define PTT_2 AVR32_PIN_PX42
 #define PTT_3 AVR32_PIN_PX22
 
-#define GPIO_PCM5102_FILTER AVR32_PIN_PX56 // 0=FIR 1=IIR
+#define GPIO_PCM5102_FILTER AVR32_PIN_PX56  // 0=FIR 1=IIR
 //! @}
 
 /*! \name GPIO Connections of the sample freq
@@ -281,4 +281,4 @@
 // Inhale list of required modules
 #include "SDR-Widget.h"
 
-#endif // _SDRwdgt_H_
+#endif  // _SDRwdgt_H_

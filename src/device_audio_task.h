@@ -76,28 +76,28 @@
 
 //_____ D E F I N I T I O N S ______________________________________________
 
-#define FB_NOMINAL_OFFSET 0 //512						// BSB 20131101 Offset used to test provoked feedback system
+#define FB_NOMINAL_OFFSET 0  //512						// BSB 20131101 Offset used to test provoked feedback system
 
 // FB_rate: state machine's feedback rate, communicated to Host over feedback EP
 // FB_rate_initial: The initial setting, including any special Linux settings, NOT offset. Used to re-init state machine
 // FB_rate_nominal: The best setting if Host and DAC are fully synced. Offset by FB_NOMINAL_OFFSET to simulate a stupid or dead Host feedback
 
-extern volatile S32 FB_rate, FB_rate_initial, FB_rate_nominal; // BSB 20131031 FB_rate_initial and FB_rate_nominal added and changed to S32
+extern volatile S32 FB_rate, FB_rate_initial, FB_rate_nominal;  // BSB 20131031 FB_rate_initial and FB_rate_nominal added and changed to S32
 extern volatile Bool mute, spk_mute;
-extern volatile uint8_t usb_spk_mute; // This variable is written to by usb subsystem and heeded in playback
+extern volatile uint8_t usb_spk_mute;  // This variable is written to by usb subsystem and heeded in playback
 
-extern S16 spk_vol_usb_L, spk_vol_usb_R; // BSB 20160320 added stereo volume control
+extern S16 spk_vol_usb_L, spk_vol_usb_R;  // BSB 20160320 added stereo volume control
 extern S32 spk_vol_mult_L, spk_vol_mult_R;
 
-extern volatile uint8_t input_select; // BSB 20150501 global variable for input selector
+extern volatile uint8_t input_select;  // BSB 20150501 global variable for input selector
 
 #ifdef HW_GEN_DIN20
-extern volatile uint8_t usb_ch;      // Front or rear USB channel
-extern volatile uint8_t usb_ch_swap; // Front or rear USB channel
+extern volatile uint8_t usb_ch;       // Front or rear USB channel
+extern volatile uint8_t usb_ch_swap;  // Front or rear USB channel
 #endif
 
 #if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)
-extern volatile xSemaphoreHandle input_select_semphr; // BSB 20150626 audio channel selection semaphore
+extern volatile xSemaphoreHandle input_select_semphr;  // BSB 20150626 audio channel selection semaphore
 extern volatile wm8805_status_t wm8805_status;
 #endif
 
@@ -105,4 +105,4 @@ extern volatile wm8805_status_t wm8805_status;
 
 //_____ D E C L A R A T I O N S ____________________________________________
 
-#endif // _DEVICE_AUDIO_TASK_H_
+#endif  // _DEVICE_AUDIO_TASK_H_

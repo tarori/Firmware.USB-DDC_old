@@ -81,8 +81,7 @@ UnionVPtr pep_fifo[MAX_PEP_NB];
 //!
 Status_bool_t usb_init_device(void)
 {
-    return Is_usb_id_device() && !Is_usb_endpoint_enabled(EP_CONTROL) &&
-           Usb_configure_endpoint(EP_CONTROL, TYPE_CONTROL, DIRECTION_OUT, EP_CONTROL_LENGTH, SINGLE_BANK, 0);
+    return Is_usb_id_device() && !Is_usb_endpoint_enabled(EP_CONTROL) && Usb_configure_endpoint(EP_CONTROL, TYPE_CONTROL, DIRECTION_OUT, EP_CONTROL_LENGTH, SINGLE_BANK, 0);
 }
 
 //! usb_set_ep_txpacket
@@ -108,7 +107,7 @@ U32 usb_set_ep_txpacket(U8 ep, U8 txbyte, U32 data_length)
 {
     // Use aggregated pointers to have several alignments available for a same address
     UnionVPtr ep_fifo_cur;
-#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__ // Auto-generated when GCC's -Os command option is used
+#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__  // Auto-generated when GCC's -Os command option is used
     StructCVPtr ep_fifo_end;
     Union64 txval;
 #else
@@ -116,19 +115,18 @@ U32 usb_set_ep_txpacket(U8 ep, U8 txbyte, U32 data_length)
     union {
         U8 u8[1];
     } txval;
-#endif // !__OPTIMIZE_SIZE__
+#endif  // !__OPTIMIZE_SIZE__
 
     // Initialize pointers for write loops and limit the number of bytes to write
     ep_fifo_cur.u8ptr = pep_fifo[ep].u8ptr;
-    ep_fifo_end.u8ptr = ep_fifo_cur.u8ptr +
-                        min(data_length, Usb_get_endpoint_size(ep) - Usb_byte_count(ep));
-#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__ // Auto-generated when GCC's -Os command option is used
-    ep_fifo_end.u16ptr = (U16 *)Align_down((U32)ep_fifo_end.u8ptr, sizeof(U16));
-    ep_fifo_end.u32ptr = (U32 *)Align_down((U32)ep_fifo_end.u16ptr, sizeof(U32));
-    ep_fifo_end.u64ptr = (U64 *)Align_down((U32)ep_fifo_end.u32ptr, sizeof(U64));
-#endif // !__OPTIMIZE_SIZE__
+    ep_fifo_end.u8ptr = ep_fifo_cur.u8ptr + min(data_length, Usb_get_endpoint_size(ep) - Usb_byte_count(ep));
+#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__  // Auto-generated when GCC's -Os command option is used
+    ep_fifo_end.u16ptr = (U16*)Align_down((U32)ep_fifo_end.u8ptr, sizeof(U16));
+    ep_fifo_end.u32ptr = (U32*)Align_down((U32)ep_fifo_end.u16ptr, sizeof(U32));
+    ep_fifo_end.u64ptr = (U64*)Align_down((U32)ep_fifo_end.u32ptr, sizeof(U64));
+#endif  // !__OPTIMIZE_SIZE__
     txval.u8[0] = txbyte;
-#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__ // Auto-generated when GCC's -Os command option is used
+#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__  // Auto-generated when GCC's -Os command option is used
     txval.u8[1] = txval.u8[0];
     txval.u16[1] = txval.u16[0];
     txval.u32[1] = txval.u32[0];
@@ -184,7 +182,7 @@ U32 usb_set_ep_txpacket(U8 ep, U8 txbyte, U32 data_length)
         *ep_fifo_cur.u8ptr++ = txval.u8[0];
     }
 
-#endif // !__OPTIMIZE_SIZE__
+#endif  // !__OPTIMIZE_SIZE__
 
     // Compute the number of non-written bytes
     data_length -= ep_fifo_cur.u8ptr - pep_fifo[ep].u8ptr;
@@ -216,26 +214,25 @@ U32 usb_set_ep_txpacket(U8 ep, U8 txbyte, U32 data_length)
 //!
 //! @warning Do not mix calls to this function with calls to indexed macros.
 //!
-U32 usb_write_ep_txpacket(U8 ep, const void *txbuf, U32 data_length, const void **ptxbuf)
+U32 usb_write_ep_txpacket(U8 ep, const void* txbuf, U32 data_length, const void** ptxbuf)
 {
     // Use aggregated pointers to have several alignments available for a same address
     UnionVPtr ep_fifo;
     UnionCPtr txbuf_cur;
-#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__ // Auto-generated when GCC's -Os command option is used
+#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__  // Auto-generated when GCC's -Os command option is used
     StructCPtr txbuf_end;
 #else
     UnionCPtr txbuf_end;
-#endif // !__OPTIMIZE_SIZE__
+#endif  // !__OPTIMIZE_SIZE__
 
     // Initialize pointers for copy loops and limit the number of bytes to copy
     ep_fifo.u8ptr = pep_fifo[ep].u8ptr;
     txbuf_cur.u8ptr = txbuf;
-    txbuf_end.u8ptr = txbuf_cur.u8ptr +
-                      min(data_length, Usb_get_endpoint_size(ep) - Usb_byte_count(ep));
-#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__ // Auto-generated when GCC's -Os command option is used
-    txbuf_end.u16ptr = (U16 *)Align_down((U32)txbuf_end.u8ptr, sizeof(U16));
-    txbuf_end.u32ptr = (U32 *)Align_down((U32)txbuf_end.u16ptr, sizeof(U32));
-    txbuf_end.u64ptr = (U64 *)Align_down((U32)txbuf_end.u32ptr, sizeof(U64));
+    txbuf_end.u8ptr = txbuf_cur.u8ptr + min(data_length, Usb_get_endpoint_size(ep) - Usb_byte_count(ep));
+#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__  // Auto-generated when GCC's -Os command option is used
+    txbuf_end.u16ptr = (U16*)Align_down((U32)txbuf_end.u8ptr, sizeof(U16));
+    txbuf_end.u32ptr = (U32*)Align_down((U32)txbuf_end.u16ptr, sizeof(U32));
+    txbuf_end.u64ptr = (U64*)Align_down((U32)txbuf_end.u32ptr, sizeof(U64));
 
     // If all addresses are aligned the same way with respect to 16-bit boundaries
     if (Get_align((U32)txbuf_cur.u8ptr, sizeof(U16)) == Get_align((U32)ep_fifo.u8ptr, sizeof(U16))) {
@@ -288,7 +285,7 @@ U32 usb_write_ep_txpacket(U8 ep, const void *txbuf, U32 data_length, const void 
         }
     }
 
-#endif // !__OPTIMIZE_SIZE__
+#endif  // !__OPTIMIZE_SIZE__
 
     // Copy remaining 8-bit data if some
     while (txbuf_cur.u8ptr < txbuf_end.u8ptr) {
@@ -302,7 +299,7 @@ U32 usb_write_ep_txpacket(U8 ep, const void *txbuf, U32 data_length, const void 
     // Return the updated buffer address and the number of non-copied bytes
     if (ptxbuf)
         *ptxbuf = txbuf_cur.u8ptr;
-    return data_length - (txbuf_cur.u8ptr - (U8 *)txbuf);
+    return data_length - (txbuf_cur.u8ptr - (U8*)txbuf);
 }
 
 //! usb_read_ep_rxpacket
@@ -325,25 +322,25 @@ U32 usb_write_ep_txpacket(U8 ep, const void *txbuf, U32 data_length, const void 
 //!
 //! @warning Do not mix calls to this function with calls to indexed macros.
 //!
-U32 usb_read_ep_rxpacket(U8 ep, void *rxbuf, U32 data_length, void **prxbuf)
+U32 usb_read_ep_rxpacket(U8 ep, void* rxbuf, U32 data_length, void** prxbuf)
 {
     // Use aggregated pointers to have several alignments available for a same address
     UnionCVPtr ep_fifo;
     UnionPtr rxbuf_cur;
-#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__ // Auto-generated when GCC's -Os command option is used
+#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__  // Auto-generated when GCC's -Os command option is used
     StructCPtr rxbuf_end;
 #else
     StructCPtr rxbuf_end;
-#endif // !__OPTIMIZE_SIZE__
+#endif  // !__OPTIMIZE_SIZE__
 
     // Initialize pointers for copy loops and limit the number of bytes to copy
     ep_fifo.u8ptr = pep_fifo[ep].u8ptr;
     rxbuf_cur.u8ptr = rxbuf;
     rxbuf_end.u8ptr = rxbuf_cur.u8ptr + min(data_length, Usb_byte_count(ep));
-#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__ // Auto-generated when GCC's -Os command option is used
-    rxbuf_end.u16ptr = (U16 *)Align_down((U32)rxbuf_end.u8ptr, sizeof(U16));
-    rxbuf_end.u32ptr = (U32 *)Align_down((U32)rxbuf_end.u16ptr, sizeof(U32));
-    rxbuf_end.u64ptr = (U64 *)Align_down((U32)rxbuf_end.u32ptr, sizeof(U64));
+#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__  // Auto-generated when GCC's -Os command option is used
+    rxbuf_end.u16ptr = (U16*)Align_down((U32)rxbuf_end.u8ptr, sizeof(U16));
+    rxbuf_end.u32ptr = (U32*)Align_down((U32)rxbuf_end.u16ptr, sizeof(U32));
+    rxbuf_end.u64ptr = (U64*)Align_down((U32)rxbuf_end.u32ptr, sizeof(U64));
 
     // If all addresses are aligned the same way with respect to 16-bit boundaries
     if (Get_align((U32)rxbuf_cur.u8ptr, sizeof(U16)) == Get_align((U32)ep_fifo.u8ptr, sizeof(U16))) {
@@ -396,7 +393,7 @@ U32 usb_read_ep_rxpacket(U8 ep, void *rxbuf, U32 data_length, void **prxbuf)
         }
     }
 
-#endif // !__OPTIMIZE_SIZE__
+#endif  // !__OPTIMIZE_SIZE__
 
     // Copy remaining 8-bit data if some
     while (rxbuf_cur.u8ptr < rxbuf_end.u8ptr) {
@@ -405,15 +402,15 @@ U32 usb_read_ep_rxpacket(U8 ep, void *rxbuf, U32 data_length, void **prxbuf)
     }
 
     // Save current position in FIFO data register
-    pep_fifo[ep].u8ptr = (volatile U8 *)ep_fifo.u8ptr;
+    pep_fifo[ep].u8ptr = (volatile U8*)ep_fifo.u8ptr;
 
     // Return the updated buffer address and the number of non-copied bytes
     if (prxbuf)
         *prxbuf = rxbuf_cur.u8ptr;
-    return data_length - (rxbuf_cur.u8ptr - (U8 *)rxbuf);
+    return data_length - (rxbuf_cur.u8ptr - (U8*)rxbuf);
 }
 
-#endif // USB_DEVICE_FEATURE == ENABLED
+#endif  // USB_DEVICE_FEATURE == ENABLED
 
 //! ---------------------------------------------------------
 //! ------------------ HOST ---------------------------------
@@ -475,7 +472,7 @@ U32 host_set_p_txpacket(U8 p, U8 txbyte, U32 data_length)
 {
     // Use aggregated pointers to have several alignments available for a same address
     UnionVPtr p_fifo_cur;
-#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__ // Auto-generated when GCC's -Os command option is used
+#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__  // Auto-generated when GCC's -Os command option is used
     StructCVPtr p_fifo_end;
     Union64 txval;
 #else
@@ -483,19 +480,18 @@ U32 host_set_p_txpacket(U8 p, U8 txbyte, U32 data_length)
     union {
         U8 u8[1];
     } txval;
-#endif // !__OPTIMIZE_SIZE__
+#endif  // !__OPTIMIZE_SIZE__
 
     // Initialize pointers for write loops and limit the number of bytes to write
     p_fifo_cur.u8ptr = pep_fifo[p].u8ptr;
-    p_fifo_end.u8ptr = p_fifo_cur.u8ptr +
-                       min(data_length, Host_get_pipe_size(p) - Host_byte_count(p));
-#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__ // Auto-generated when GCC's -Os command option is used
-    p_fifo_end.u16ptr = (U16 *)Align_down((U32)p_fifo_end.u8ptr, sizeof(U16));
-    p_fifo_end.u32ptr = (U32 *)Align_down((U32)p_fifo_end.u16ptr, sizeof(U32));
-    p_fifo_end.u64ptr = (U64 *)Align_down((U32)p_fifo_end.u32ptr, sizeof(U64));
-#endif // !__OPTIMIZE_SIZE__
+    p_fifo_end.u8ptr = p_fifo_cur.u8ptr + min(data_length, Host_get_pipe_size(p) - Host_byte_count(p));
+#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__  // Auto-generated when GCC's -Os command option is used
+    p_fifo_end.u16ptr = (U16*)Align_down((U32)p_fifo_end.u8ptr, sizeof(U16));
+    p_fifo_end.u32ptr = (U32*)Align_down((U32)p_fifo_end.u16ptr, sizeof(U32));
+    p_fifo_end.u64ptr = (U64*)Align_down((U32)p_fifo_end.u32ptr, sizeof(U64));
+#endif  // !__OPTIMIZE_SIZE__
     txval.u8[0] = txbyte;
-#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__ // Auto-generated when GCC's -Os command option is used
+#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__  // Auto-generated when GCC's -Os command option is used
     txval.u8[1] = txval.u8[0];
     txval.u16[1] = txval.u16[0];
     txval.u32[1] = txval.u32[0];
@@ -551,7 +547,7 @@ U32 host_set_p_txpacket(U8 p, U8 txbyte, U32 data_length)
         *p_fifo_cur.u8ptr++ = txval.u8[0];
     }
 
-#endif // !__OPTIMIZE_SIZE__
+#endif  // !__OPTIMIZE_SIZE__
 
     // Compute the number of non-written bytes
     data_length -= p_fifo_cur.u8ptr - pep_fifo[p].u8ptr;
@@ -583,26 +579,25 @@ U32 host_set_p_txpacket(U8 p, U8 txbyte, U32 data_length)
 //!
 //! @warning Do not mix calls to this function with calls to indexed macros.
 //!
-U32 host_write_p_txpacket(U8 p, const void *txbuf, U32 data_length, const void **ptxbuf)
+U32 host_write_p_txpacket(U8 p, const void* txbuf, U32 data_length, const void** ptxbuf)
 {
     // Use aggregated pointers to have several alignments available for a same address
     UnionVPtr p_fifo;
     UnionCPtr txbuf_cur;
-#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__ // Auto-generated when GCC's -Os command option is used
+#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__  // Auto-generated when GCC's -Os command option is used
     StructCPtr txbuf_end;
 #else
     UnionCPtr txbuf_end;
-#endif // !__OPTIMIZE_SIZE__
+#endif  // !__OPTIMIZE_SIZE__
 
     // Initialize pointers for copy loops and limit the number of bytes to copy
     p_fifo.u8ptr = pep_fifo[p].u8ptr;
     txbuf_cur.u8ptr = txbuf;
-    txbuf_end.u8ptr = txbuf_cur.u8ptr +
-                      min(data_length, Host_get_pipe_size(p) - Host_byte_count(p));
-#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__ // Auto-generated when GCC's -Os command option is used
-    txbuf_end.u16ptr = (U16 *)Align_down((U32)txbuf_end.u8ptr, sizeof(U16));
-    txbuf_end.u32ptr = (U32 *)Align_down((U32)txbuf_end.u16ptr, sizeof(U32));
-    txbuf_end.u64ptr = (U64 *)Align_down((U32)txbuf_end.u32ptr, sizeof(U64));
+    txbuf_end.u8ptr = txbuf_cur.u8ptr + min(data_length, Host_get_pipe_size(p) - Host_byte_count(p));
+#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__  // Auto-generated when GCC's -Os command option is used
+    txbuf_end.u16ptr = (U16*)Align_down((U32)txbuf_end.u8ptr, sizeof(U16));
+    txbuf_end.u32ptr = (U32*)Align_down((U32)txbuf_end.u16ptr, sizeof(U32));
+    txbuf_end.u64ptr = (U64*)Align_down((U32)txbuf_end.u32ptr, sizeof(U64));
 
     // If all addresses are aligned the same way with respect to 16-bit boundaries
     if (Get_align((U32)txbuf_cur.u8ptr, sizeof(U16)) == Get_align((U32)p_fifo.u8ptr, sizeof(U16))) {
@@ -655,7 +650,7 @@ U32 host_write_p_txpacket(U8 p, const void *txbuf, U32 data_length, const void *
         }
     }
 
-#endif // !__OPTIMIZE_SIZE__
+#endif  // !__OPTIMIZE_SIZE__
 
     // Copy remaining 8-bit data if some
     while (txbuf_cur.u8ptr < txbuf_end.u8ptr) {
@@ -669,7 +664,7 @@ U32 host_write_p_txpacket(U8 p, const void *txbuf, U32 data_length, const void *
     // Return the updated buffer address and the number of non-copied bytes
     if (ptxbuf)
         *ptxbuf = txbuf_cur.u8ptr;
-    return data_length - (txbuf_cur.u8ptr - (U8 *)txbuf);
+    return data_length - (txbuf_cur.u8ptr - (U8*)txbuf);
 }
 
 //! host_read_p_rxpacket
@@ -692,25 +687,25 @@ U32 host_write_p_txpacket(U8 p, const void *txbuf, U32 data_length, const void *
 //!
 //! @warning Do not mix calls to this function with calls to indexed macros.
 //!
-U32 host_read_p_rxpacket(U8 p, void *rxbuf, U32 data_length, void **prxbuf)
+U32 host_read_p_rxpacket(U8 p, void* rxbuf, U32 data_length, void** prxbuf)
 {
     // Use aggregated pointers to have several alignments available for a same address
     UnionCVPtr p_fifo;
     UnionPtr rxbuf_cur;
-#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__ // Auto-generated when GCC's -Os command option is used
+#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__  // Auto-generated when GCC's -Os command option is used
     StructCPtr rxbuf_end;
 #else
     UnionCPtr rxbuf_end;
-#endif // !__OPTIMIZE_SIZE__
+#endif  // !__OPTIMIZE_SIZE__
 
     // Initialize pointers for copy loops and limit the number of bytes to copy
     p_fifo.u8ptr = pep_fifo[p].u8ptr;
     rxbuf_cur.u8ptr = rxbuf;
     rxbuf_end.u8ptr = rxbuf_cur.u8ptr + min(data_length, Host_byte_count(p));
-#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__ // Auto-generated when GCC's -Os command option is used
-    rxbuf_end.u16ptr = (U16 *)Align_down((U32)rxbuf_end.u8ptr, sizeof(U16));
-    rxbuf_end.u32ptr = (U32 *)Align_down((U32)rxbuf_end.u16ptr, sizeof(U32));
-    rxbuf_end.u64ptr = (U64 *)Align_down((U32)rxbuf_end.u32ptr, sizeof(U64));
+#if (!defined __OPTIMIZE_SIZE__) || !__OPTIMIZE_SIZE__  // Auto-generated when GCC's -Os command option is used
+    rxbuf_end.u16ptr = (U16*)Align_down((U32)rxbuf_end.u8ptr, sizeof(U16));
+    rxbuf_end.u32ptr = (U32*)Align_down((U32)rxbuf_end.u16ptr, sizeof(U32));
+    rxbuf_end.u64ptr = (U64*)Align_down((U32)rxbuf_end.u32ptr, sizeof(U64));
 
     // If all addresses are aligned the same way with respect to 16-bit boundaries
     if (Get_align((U32)rxbuf_cur.u8ptr, sizeof(U16)) == Get_align((U32)p_fifo.u8ptr, sizeof(U16))) {
@@ -763,7 +758,7 @@ U32 host_read_p_rxpacket(U8 p, void *rxbuf, U32 data_length, void **prxbuf)
         }
     }
 
-#endif // !__OPTIMIZE_SIZE__
+#endif  // !__OPTIMIZE_SIZE__
 
     // Copy remaining 8-bit data if some
     while (rxbuf_cur.u8ptr < rxbuf_end.u8ptr) {
@@ -772,12 +767,12 @@ U32 host_read_p_rxpacket(U8 p, void *rxbuf, U32 data_length, void **prxbuf)
     }
 
     // Save current position in FIFO data register
-    pep_fifo[p].u8ptr = (volatile U8 *)p_fifo.u8ptr;
+    pep_fifo[p].u8ptr = (volatile U8*)p_fifo.u8ptr;
 
     // Return the updated buffer address and the number of non-copied bytes
     if (prxbuf)
         *prxbuf = rxbuf_cur.u8ptr;
-    return data_length - (rxbuf_cur.u8ptr - (U8 *)rxbuf);
+    return data_length - (rxbuf_cur.u8ptr - (U8*)rxbuf);
 }
 
-#endif // USB_HOST_FEATURE == ENABLED
+#endif  // USB_HOST_FEATURE == ENABLED

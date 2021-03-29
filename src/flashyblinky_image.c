@@ -22,7 +22,7 @@ static void x_image_task_init(void)
 }
 
 // descriptor accessors
-static uint8_t *x_image_get_dev_desc_pointer(void)
+static uint8_t* x_image_get_dev_desc_pointer(void)
 {
     return 0;
 }
@@ -30,7 +30,7 @@ static uint16_t x_image_get_dev_desc_length(void)
 {
     return 0;
 }
-static uint8_t *x_image_get_conf_desc_pointer(void)
+static uint8_t* x_image_get_conf_desc_pointer(void)
 {
     return 0;
 }
@@ -38,7 +38,7 @@ static uint16_t x_image_get_conf_desc_length(void)
 {
     return 0;
 }
-static uint8_t *x_image_get_conf_desc_fs_pointer(void)
+static uint8_t* x_image_get_conf_desc_fs_pointer(void)
 {
     return 0;
 }
@@ -47,7 +47,7 @@ static uint16_t x_image_get_conf_desc_fs_length(void)
     return 0;
 }
 #if USB_HIGH_SPEED_SUPPORT == ENABLED
-static uint8_t *x_image_get_conf_desc_hs_pointer(void)
+static uint8_t* x_image_get_conf_desc_hs_pointer(void)
 {
     return 0;
 }
@@ -55,7 +55,7 @@ static uint16_t x_image_get_conf_desc_hs_length(void)
 {
     return 0;
 }
-static uint8_t *x_image_get_qualifier_desc_pointer(void)
+static uint8_t* x_image_get_qualifier_desc_pointer(void)
 {
     return 0;
 }

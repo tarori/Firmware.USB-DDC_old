@@ -96,7 +96,7 @@ typedef struct
     //! Length of the TWI data address segment (1-3 bytes).
     int addr_length;
     //! Where to find the data to be written.
-    void *buffer;
+    void* buffer;
     //! How many bytes do we want to write.
     unsigned int length;
 } twi_package_t;
@@ -109,7 +109,7 @@ typedef struct
     //! TWI chip address to communicate with.
     int chip;
     //! Where to find the data .
-    void *buffer;
+    void* buffer;
     //! How many bytes do we want to transfer.
     unsigned int length;
     //! Transfer direction
@@ -123,9 +123,9 @@ typedef struct
  * \param *opt  Options for initializing the twi module
  *              (see \ref twim_options_t)
  */
-extern int twi_master_init(volatile avr32_twim_t *twi, const twi_options_t *opt, const unsigned irq);
+extern int twi_master_init(volatile avr32_twim_t* twi, const twi_options_t* opt, const unsigned irq);
 
-int twi_set_speed(volatile avr32_twim_t *twi, unsigned int speed, unsigned long pba_hz);
+int twi_set_speed(volatile avr32_twim_t* twi, unsigned int speed, unsigned long pba_hz);
 
 /*!
  * \brief Test if a chip answers for a given twi address
@@ -134,7 +134,7 @@ int twi_set_speed(volatile avr32_twim_t *twi, unsigned int speed, unsigned long 
  * \param chip_addr  Address of the chip which is searched for
  * \return TWI_SUCCESS if a chip was found, error code otherwhise
  */
-extern int twi_probe(volatile avr32_twim_t *twi, char chip_addr);
+extern int twi_probe(volatile avr32_twim_t* twi, char chip_addr);
 
 /*!
  * \brief Read multiple bytes from a TWI compatible slave device
@@ -144,7 +144,7 @@ extern int twi_probe(volatile avr32_twim_t *twi, char chip_addr);
  *                (see \ref twi_package_t)
  * \return TWI_SUCCESS if all bytes were read, error code otherwhise
  */
-extern int twim_read_packet(volatile avr32_twim_t *twi, const twi_package_t *package);
+extern int twim_read_packet(volatile avr32_twim_t* twi, const twi_package_t* package);
 
 /*!
  * \brief Write multiple bytes to a TWI compatible slave device
@@ -154,13 +154,13 @@ extern int twim_read_packet(volatile avr32_twim_t *twi, const twi_package_t *pac
  *                  (see \ref twi_package_t)
  * \return TWI_SUCCESS if all bytes were written, error code otherwhise
  */
-extern int twim_write_packet(volatile avr32_twim_t *twi, const twi_package_t *package);
+extern int twim_write_packet(volatile avr32_twim_t* twi, const twi_package_t* package);
 
-extern int twim_read(volatile avr32_twim_t *twi, unsigned char *buffer, int nbytes, int saddr, Bool tenbit);
+extern int twim_read(volatile avr32_twim_t* twi, unsigned char* buffer, int nbytes, int saddr, Bool tenbit);
 
-extern int twim_write(volatile avr32_twim_t *twi, unsigned const char *buffer, int nbytes, int saddr, Bool tenbit);
+extern int twim_write(volatile avr32_twim_t* twi, unsigned const char* buffer, int nbytes, int saddr, Bool tenbit);
 
-extern int twim_chained_transfer(volatile avr32_twim_t *twi, volatile twim_transfer_t *first, volatile twim_transfer_t *second, Bool tenbit);
+extern int twim_chained_transfer(volatile avr32_twim_t* twi, volatile twim_transfer_t* first, volatile twim_transfer_t* second, Bool tenbit);
 
 /*!
  * \brief Read multiple bytes from a TWI compatible slave device
@@ -170,7 +170,7 @@ extern int twim_chained_transfer(volatile avr32_twim_t *twi, volatile twim_trans
  *                (see \ref twi_package_t)
  * \return TWI_SUCCESS if all bytes were read, error code otherwhise
  */
-extern int twi_master_read(volatile avr32_twim_t *twi, const twi_package_t *package);
+extern int twi_master_read(volatile avr32_twim_t* twi, const twi_package_t* package);
 
 /*!
  * \brief Write multiple bytes to a TWI compatible slave device
@@ -180,9 +180,9 @@ extern int twi_master_read(volatile avr32_twim_t *twi, const twi_package_t *pack
  *                  (see \ref twi_package_t)
  * \return TWI_SUCCESS if all bytes were written, error code otherwhise
  */
-static inline int twi_master_write(volatile avr32_twim_t *twi, const twi_package_t *package)
+static inline int twi_master_write(volatile avr32_twim_t* twi, const twi_package_t* package)
 {
     return (twim_write(twi, package->buffer, package->length, package->chip, 0));
 }
 
-#endif // _TWI_H_
+#endif  // _TWI_H_

@@ -7,7 +7,7 @@
 #include "task.h"
 #include "taskEXERCISE.h"
 
-static void vtaskEXERCISE(void *pcParameters)
+static void vtaskEXERCISE(void* pcParameters)
 {
     portTickType xLastWakeTime;
     xLastWakeTime = xTaskGetTickCount();
@@ -21,9 +21,9 @@ static void vtaskEXERCISE(void *pcParameters)
 void vStartTaskEXERCISE(unsigned portBASE_TYPE uxPriority)
 {
     xTaskCreate(vtaskEXERCISE,
-                (signed char *)"taskEXERCISE",
-                configTSK_EXERCISE_STACK_SIZE,
-                NULL,
-                configTSK_EXERCISE_PRIORITY,
-                (xTaskHandle *)NULL);
+        (signed char*)"taskEXERCISE",
+        configTSK_EXERCISE_STACK_SIZE,
+        NULL,
+        configTSK_EXERCISE_PRIORITY,
+        (xTaskHandle*)NULL);
 }

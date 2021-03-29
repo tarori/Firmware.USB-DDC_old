@@ -85,7 +85,7 @@ extern "C" {
  * \page xTaskHandle xTaskHandle
  * \ingroup Tasks
  */
-typedef void *xTaskHandle;
+typedef void* xTaskHandle;
 
 /*
  * Used internally only.
@@ -99,7 +99,7 @@ typedef struct xTIME_OUT {
  * Defines the memory ranges allocated to the task when an MPU is used.
  */
 typedef struct xMEMORY_REGION {
-    void *pvBaseAddress;
+    void* pvBaseAddress;
     unsigned long ulLengthInBytes;
     unsigned long ulParameters;
 } xMemoryRegion;
@@ -109,11 +109,11 @@ typedef struct xMEMORY_REGION {
  */
 typedef struct xTASK_PARAMTERS {
     pdTASK_CODE pvTaskCode;
-    const signed char *const pcName;
+    const signed char* const pcName;
     unsigned short usStackDepth;
-    void *pvParameters;
+    void* pvParameters;
     unsigned portBASE_TYPE uxPriority;
-    portSTACK_TYPE *puxStackBuffer;
+    portSTACK_TYPE* puxStackBuffer;
     xMemoryRegion xRegions[portNUM_CONFIGURABLE_REGIONS];
 } xTaskParameters;
 
@@ -388,7 +388,7 @@ void vATask( void *pvParameters )
  * \defgroup xTaskCreateRestricted xTaskCreateRestricted
  * \ingroup Tasks
  */
-void vTaskAllocateMPURegions(xTaskHandle xTask, const xMemoryRegion *const pxRegions) PRIVILEGED_FUNCTION;
+void vTaskAllocateMPURegions(xTaskHandle xTask, const xMemoryRegion* const pxRegions) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -542,7 +542,7 @@ void vTaskDelay(portTickType xTicksToDelay) PRIVILEGED_FUNCTION;
  * \defgroup vTaskDelayUntil vTaskDelayUntil
  * \ingroup TaskCtrl
  */
-void vTaskDelayUntil(portTickType *const pxPreviousWakeTime, portTickType xTimeIncrement) PRIVILEGED_FUNCTION;
+void vTaskDelayUntil(portTickType* const pxPreviousWakeTime, portTickType xTimeIncrement) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1011,7 +1011,7 @@ unsigned portBASE_TYPE uxTaskGetNumberOfTasks(void) PRIVILEGED_FUNCTION;
  * \page vTaskList vTaskList
  * \ingroup TaskUtils
  */
-void vTaskList(signed char *pcWriteBuffer) PRIVILEGED_FUNCTION;
+void vTaskList(signed char* pcWriteBuffer) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1043,7 +1043,7 @@ void vTaskList(signed char *pcWriteBuffer) PRIVILEGED_FUNCTION;
  * \page vTaskGetRunTimeStats vTaskGetRunTimeStats
  * \ingroup TaskUtils
  */
-void vTaskGetRunTimeStats(signed char *pcWriteBuffer) PRIVILEGED_FUNCTION;
+void vTaskGetRunTimeStats(signed char* pcWriteBuffer) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1064,7 +1064,7 @@ void vTaskGetRunTimeStats(signed char *pcWriteBuffer) PRIVILEGED_FUNCTION;
  * \page vTaskStartTrace vTaskStartTrace
  * \ingroup TaskUtils
  */
-void vTaskStartTrace(signed char *pcBuffer, unsigned long ulBufferSize) PRIVILEGED_FUNCTION;
+void vTaskStartTrace(signed char* pcBuffer, unsigned long ulBufferSize) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1127,7 +1127,7 @@ pdTASK_HOOK_CODE xTaskGetApplicationTaskTag(xTaskHandle xTask) PRIVILEGED_FUNCTI
  * pvParameter is passed to the hook function for the task to interpret as it
  * wants.
  */
-portBASE_TYPE xTaskCallApplicationTaskHook(xTaskHandle xTask, void *pvParameter) PRIVILEGED_FUNCTION;
+portBASE_TYPE xTaskCallApplicationTaskHook(xTaskHandle xTask, void* pvParameter) PRIVILEGED_FUNCTION;
 
 /*-----------------------------------------------------------
  * SCHEDULER INTERNALS AVAILABLE FOR PORTING PURPOSES
@@ -1166,7 +1166,7 @@ void vTaskIncrementTick(void) PRIVILEGED_FUNCTION;
  * portTICK_RATE_MS can be used to convert kernel ticks into a real time
  * period.
  */
-void vTaskPlaceOnEventList(const xList *const pxEventList, portTickType xTicksToWait) PRIVILEGED_FUNCTION;
+void vTaskPlaceOnEventList(const xList* const pxEventList, portTickType xTicksToWait) PRIVILEGED_FUNCTION;
 
 /*
  * THIS FUNCTION MUST NOT BE USED FROM APPLICATION CODE.  IT IS AN
@@ -1183,7 +1183,7 @@ void vTaskPlaceOnEventList(const xList *const pxEventList, portTickType xTicksTo
  * @return pdTRUE if the task being removed has a higher priority than the task
  * making the call, otherwise pdFALSE.
  */
-signed portBASE_TYPE xTaskRemoveFromEventList(const xList *const pxEventList) PRIVILEGED_FUNCTION;
+signed portBASE_TYPE xTaskRemoveFromEventList(const xList* const pxEventList) PRIVILEGED_FUNCTION;
 
 /*
  * THIS FUNCTION MUST NOT BE USED FROM APPLICATION CODE.  IT IS AN
@@ -1216,13 +1216,13 @@ xTaskHandle xTaskGetCurrentTaskHandle(void) PRIVILEGED_FUNCTION;
 /*
  * Capture the current time status for future reference.
  */
-void vTaskSetTimeOutState(xTimeOutType *const pxTimeOut) PRIVILEGED_FUNCTION;
+void vTaskSetTimeOutState(xTimeOutType* const pxTimeOut) PRIVILEGED_FUNCTION;
 
 /*
  * Compare the time status now with that previously captured to see if the
  * timeout has expired.
  */
-portBASE_TYPE xTaskCheckForTimeOut(xTimeOutType *const pxTimeOut, portTickType *const pxTicksToWait) PRIVILEGED_FUNCTION;
+portBASE_TYPE xTaskCheckForTimeOut(xTimeOutType* const pxTimeOut, portTickType* const pxTicksToWait) PRIVILEGED_FUNCTION;
 
 /*
  * Shortcut used by the queue implementation to prevent unnecessary call to
@@ -1240,19 +1240,19 @@ portBASE_TYPE xTaskGetSchedulerState(void) PRIVILEGED_FUNCTION;
  * Raises the priority of the mutex holder to that of the calling task should
  * the mutex holder have a priority less than the calling task.
  */
-void vTaskPriorityInherit(xTaskHandle *const pxMutexHolder) PRIVILEGED_FUNCTION;
+void vTaskPriorityInherit(xTaskHandle* const pxMutexHolder) PRIVILEGED_FUNCTION;
 
 /*
  * Set the priority of a task back to its proper priority in the case that it
  * inherited a higher priority while it was holding a semaphore.
  */
-void vTaskPriorityDisinherit(xTaskHandle *const pxMutexHolder) PRIVILEGED_FUNCTION;
+void vTaskPriorityDisinherit(xTaskHandle* const pxMutexHolder) PRIVILEGED_FUNCTION;
 
 /*
  * Generic version of the task creation function which is in turn called by the
  * xTaskCreate() and xTaskCreateProtected() macros.
  */
-signed portBASE_TYPE xTaskGenericCreate(pdTASK_CODE pvTaskCode, const signed char *const pcName, unsigned short usStackDepth, void *pvParameters, unsigned portBASE_TYPE uxPriority, xTaskHandle *pxCreatedTask, portSTACK_TYPE *puxStackBuffer, const xMemoryRegion *const xRegions) PRIVILEGED_FUNCTION;
+signed portBASE_TYPE xTaskGenericCreate(pdTASK_CODE pvTaskCode, const signed char* const pcName, unsigned short usStackDepth, void* pvParameters, unsigned portBASE_TYPE uxPriority, xTaskHandle* pxCreatedTask, portSTACK_TYPE* puxStackBuffer, const xMemoryRegion* const xRegions) PRIVILEGED_FUNCTION;
 
 #ifdef __cplusplus
 }

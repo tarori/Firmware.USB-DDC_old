@@ -37,8 +37,8 @@ void ___waitForLCD(void)
     //  Wait: new instructions may be given to the LCD screen 50us
     //cpu_delay_us(50, FOSC0);	// A bit crude, as this is time not claimable by RTOS
     //cpu_delay_us(100, FOSC0);
-    vTaskDelay(1); // This is a bit slow...
-                   // ...TF3LJ 2010-06-19
+    vTaskDelay(1);  // This is a bit slow...
+                    // ...TF3LJ 2010-06-19
 }
 
 /**
@@ -198,7 +198,7 @@ void ___lcd_puthex(U8 c)
 }
 
 // **************  TASK DRIVER  ****************
-static void vtaskLCD(void *pcParameters)
+static void vtaskLCD(void* pcParameters)
 {
 
     portBASE_TYPE xStatus;
@@ -231,8 +231,7 @@ static void vtaskLCD(void *pcParameters)
                     vTaskDelay(50);
 
                     //  Function set
-                    ___writeByteToLCD(COMMAND_REGISTER, (1 << LCD_FUNCTION) |
-                                                            (1 << LCD_FUNCTION_2LINES));
+                    ___writeByteToLCD(COMMAND_REGISTER, (1 << LCD_FUNCTION) | (1 << LCD_FUNCTION_2LINES));
                     vTaskDelay(120);
 
                     if (FEATURE_LCD_KS0073) {
@@ -297,11 +296,11 @@ static void vtaskLCD(void *pcParameters)
                     ___writeByteToLCD(DATA_REGISTER, (uint8_t)lcdQUEDATA.data.aChar);
                     break;
 
-                case lcdPUTH: // Display a single hexadecimal value at current cursor position
+                case lcdPUTH:  // Display a single hexadecimal value at current cursor position
                     ___lcd_puthex((U8)lcdQUEDATA.data.aChar);
                     break;
 
-                case lcdPUTS: // Write a null terminated string to LCD at current cursor position
+                case lcdPUTS:  // Write a null terminated string to LCD at current cursor position
                     while (*lcdQUEDATA.data.aString)
                         ___writeByteToLCD(DATA_REGISTER, *lcdQUEDATA.data.aString++);
                     break;
@@ -310,7 +309,7 @@ static void vtaskLCD(void *pcParameters)
                     ___writeByteToLCD(COMMAND_REGISTER, lcdQUEDATA.data.rawBYTE);
                     break;
 
-                case lcdCRLF: // CR received.  Move cursor down to next line
+                case lcdCRLF:  // CR received.  Move cursor down to next line
                     if (position < 20)
                         position = 20;
                     else if (position < 40)
@@ -330,11 +329,11 @@ static void vtaskLCD(void *pcParameters)
                         ___writeByteToLCD(COMMAND_REGISTER, 0x80 | (position % 60 + (FEATURE_LCD_KS0073 ? 0x60 : 0x54)));
                     break;
 
-                case lcdPOSW: // save the present cursor position
+                case lcdPOSW:  // save the present cursor position
                     position_saved = position;
                     break;
 
-                case lcdPOSR: // read back the present cursor position
+                case lcdPOSR:  // read back the present cursor position
                     position = position_saved;
                     if (position < 20)
                         ___writeByteToLCD(COMMAND_REGISTER, 0x80 | position);
@@ -362,11 +361,11 @@ void vStartTaskLCD(void)
     //mutexLCD = xSemaphoreCreateMutex();
 
     xStatus = xTaskCreate(vtaskLCD,
-                          (signed char *)"LCDpanel",
-                          configTSK_LCD_STACK_SIZE,
-                          NULL,
-                          configTSK_LCD_PRIORITY,
-                          (xTaskHandle *)NULL);
+        (signed char*)"LCDpanel",
+        configTSK_LCD_STACK_SIZE,
+        NULL,
+        configTSK_LCD_PRIORITY,
+        (xTaskHandle*)NULL);
 }
 
 // ************* queue entry functions *************
@@ -432,11 +431,11 @@ void lcd_q_puth(uint8_t hex)
     //xSemaphoreGive( mutexLCD );
 }
 
-void lcd_q_print(char *string)
+void lcd_q_print(char* string)
 {
     //xSemaphoreTake( mutexLCD, portMAX_DELAY );
     lcdQUEDATA.CMD = lcdPUTS;
-    lcdQUEDATA.data.aString = (uint8_t *)string;
+    lcdQUEDATA.data.aString = (uint8_t*)string;
     xStatus = xQueueSendToBack(lcdCMDQUE, &lcdQUEDATA, portMAX_DELAY);
     //xSemaphoreGive( mutexLCD );
 }

@@ -70,9 +70,9 @@
 
 extern void hpsdr_device_audio_task_init(U8 ep_in, U8 ep_out, U8 ep_out_fb);
 #ifdef FREERTOS_USED
-extern void hpsdr_device_audio_task(void *pvParameters);
+extern void hpsdr_device_audio_task(void* pvParameters);
 #else
 extern void hpsdr_device_audio_task(void);
 #endif
 
-#endif // _HPSDR_DEVICE_AUDIO_TASK_H_
+#endif  // _HPSDR_DEVICE_AUDIO_TASK_H_

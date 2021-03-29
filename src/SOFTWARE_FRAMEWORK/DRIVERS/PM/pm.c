@@ -130,7 +130,7 @@ typedef union {
  * \param pm Base address of the Power Manager (i.e. &AVR32_PM).
  * \param mode Oscillator 0 mode (i.e. AVR32_PM_OSCCTRL0_MODE_x).
  */
-static void pm_set_osc0_mode(volatile avr32_pm_t *pm, unsigned int mode)
+static void pm_set_osc0_mode(volatile avr32_pm_t* pm, unsigned int mode)
 {
     // Read
     u_avr32_pm_oscctrl0_t u_avr32_pm_oscctrl0 = {pm->oscctrl0};
@@ -140,28 +140,28 @@ static void pm_set_osc0_mode(volatile avr32_pm_t *pm, unsigned int mode)
     pm->oscctrl0 = u_avr32_pm_oscctrl0.oscctrl0;
 }
 
-void pm_enable_osc0_ext_clock(volatile avr32_pm_t *pm)
+void pm_enable_osc0_ext_clock(volatile avr32_pm_t* pm)
 {
     pm_set_osc0_mode(pm, AVR32_PM_OSCCTRL0_MODE_EXT_CLOCK);
 }
 
-void pm_enable_osc0_crystal(volatile avr32_pm_t *pm, unsigned int fosc0)
+void pm_enable_osc0_crystal(volatile avr32_pm_t* pm, unsigned int fosc0)
 {
     pm_set_osc0_mode(pm, (fosc0 < 900000) ? AVR32_PM_OSCCTRL0_MODE_CRYSTAL_G0 : (fosc0 < 3000000) ? AVR32_PM_OSCCTRL0_MODE_CRYSTAL_G1 : (fosc0 < 8000000) ? AVR32_PM_OSCCTRL0_MODE_CRYSTAL_G2 : AVR32_PM_OSCCTRL0_MODE_CRYSTAL_G3);
 }
 
-void pm_enable_clk0(volatile avr32_pm_t *pm, unsigned int startup)
+void pm_enable_clk0(volatile avr32_pm_t* pm, unsigned int startup)
 {
     pm_enable_clk0_no_wait(pm, startup);
     pm_wait_for_clk0_ready(pm);
 }
 
-void pm_disable_clk0(volatile avr32_pm_t *pm)
+void pm_disable_clk0(volatile avr32_pm_t* pm)
 {
     pm->mcctrl &= ~AVR32_PM_MCCTRL_OSC0EN_MASK;
 }
 
-void pm_enable_clk0_no_wait(volatile avr32_pm_t *pm, unsigned int startup)
+void pm_enable_clk0_no_wait(volatile avr32_pm_t* pm, unsigned int startup)
 {
     // Read register
     u_avr32_pm_oscctrl0_t u_avr32_pm_oscctrl0 = {pm->oscctrl0};
@@ -173,7 +173,7 @@ void pm_enable_clk0_no_wait(volatile avr32_pm_t *pm, unsigned int startup)
     pm->mcctrl |= AVR32_PM_MCCTRL_OSC0EN_MASK;
 }
 
-void pm_wait_for_clk0_ready(volatile avr32_pm_t *pm)
+void pm_wait_for_clk0_ready(volatile avr32_pm_t* pm)
 {
     while (!(pm->poscsr & AVR32_PM_POSCSR_OSC0RDY_MASK))
         ;
@@ -184,7 +184,7 @@ void pm_wait_for_clk0_ready(volatile avr32_pm_t *pm)
  * \param pm Base address of the Power Manager (i.e. &AVR32_PM).
  * \param mode Oscillator 1 mode (i.e. AVR32_PM_OSCCTRL1_MODE_x).
  */
-static void pm_set_osc1_mode(volatile avr32_pm_t *pm, unsigned int mode)
+static void pm_set_osc1_mode(volatile avr32_pm_t* pm, unsigned int mode)
 {
     // Read
     u_avr32_pm_oscctrl1_t u_avr32_pm_oscctrl1 = {pm->oscctrl1};
@@ -194,28 +194,28 @@ static void pm_set_osc1_mode(volatile avr32_pm_t *pm, unsigned int mode)
     pm->oscctrl1 = u_avr32_pm_oscctrl1.oscctrl1;
 }
 
-void pm_enable_osc1_ext_clock(volatile avr32_pm_t *pm)
+void pm_enable_osc1_ext_clock(volatile avr32_pm_t* pm)
 {
     pm_set_osc1_mode(pm, AVR32_PM_OSCCTRL1_MODE_EXT_CLOCK);
 }
 
-void pm_enable_osc1_crystal(volatile avr32_pm_t *pm, unsigned int fosc1)
+void pm_enable_osc1_crystal(volatile avr32_pm_t* pm, unsigned int fosc1)
 {
     pm_set_osc1_mode(pm, (fosc1 < 900000) ? AVR32_PM_OSCCTRL1_MODE_CRYSTAL_G0 : (fosc1 < 3000000) ? AVR32_PM_OSCCTRL1_MODE_CRYSTAL_G1 : (fosc1 < 8000000) ? AVR32_PM_OSCCTRL1_MODE_CRYSTAL_G2 : AVR32_PM_OSCCTRL1_MODE_CRYSTAL_G3);
 }
 
-void pm_enable_clk1(volatile avr32_pm_t *pm, unsigned int startup)
+void pm_enable_clk1(volatile avr32_pm_t* pm, unsigned int startup)
 {
     pm_enable_clk1_no_wait(pm, startup);
     pm_wait_for_clk1_ready(pm);
 }
 
-void pm_disable_clk1(volatile avr32_pm_t *pm)
+void pm_disable_clk1(volatile avr32_pm_t* pm)
 {
     pm->mcctrl &= ~AVR32_PM_MCCTRL_OSC1EN_MASK;
 }
 
-void pm_enable_clk1_no_wait(volatile avr32_pm_t *pm, unsigned int startup)
+void pm_enable_clk1_no_wait(volatile avr32_pm_t* pm, unsigned int startup)
 {
     // Read register
     u_avr32_pm_oscctrl1_t u_avr32_pm_oscctrl1 = {pm->oscctrl1};
@@ -227,7 +227,7 @@ void pm_enable_clk1_no_wait(volatile avr32_pm_t *pm, unsigned int startup)
     pm->mcctrl |= AVR32_PM_MCCTRL_OSC1EN_MASK;
 }
 
-void pm_wait_for_clk1_ready(volatile avr32_pm_t *pm)
+void pm_wait_for_clk1_ready(volatile avr32_pm_t* pm)
 {
     while (!(pm->poscsr & AVR32_PM_POSCSR_OSC1RDY_MASK))
         ;
@@ -238,7 +238,7 @@ void pm_wait_for_clk1_ready(volatile avr32_pm_t *pm)
  * \param pm Base address of the Power Manager (i.e. &AVR32_PM).
  * \param mode 32-kHz oscillator mode (i.e. AVR32_PM_OSCCTRL32_MODE_x).
  */
-static void pm_set_osc32_mode(volatile avr32_pm_t *pm, unsigned int mode)
+static void pm_set_osc32_mode(volatile avr32_pm_t* pm, unsigned int mode)
 {
     // Read
     u_avr32_pm_oscctrl32_t u_avr32_pm_oscctrl32 = {pm->oscctrl32};
@@ -248,28 +248,28 @@ static void pm_set_osc32_mode(volatile avr32_pm_t *pm, unsigned int mode)
     pm->oscctrl32 = u_avr32_pm_oscctrl32.oscctrl32;
 }
 
-void pm_enable_osc32_ext_clock(volatile avr32_pm_t *pm)
+void pm_enable_osc32_ext_clock(volatile avr32_pm_t* pm)
 {
     pm_set_osc32_mode(pm, AVR32_PM_OSCCTRL32_MODE_EXT_CLOCK);
 }
 
-void pm_enable_osc32_crystal(volatile avr32_pm_t *pm)
+void pm_enable_osc32_crystal(volatile avr32_pm_t* pm)
 {
     pm_set_osc32_mode(pm, AVR32_PM_OSCCTRL32_MODE_CRYSTAL);
 }
 
-void pm_enable_clk32(volatile avr32_pm_t *pm, unsigned int startup)
+void pm_enable_clk32(volatile avr32_pm_t* pm, unsigned int startup)
 {
     pm_enable_clk32_no_wait(pm, startup);
     pm_wait_for_clk32_ready(pm);
 }
 
-void pm_disable_clk32(volatile avr32_pm_t *pm)
+void pm_disable_clk32(volatile avr32_pm_t* pm)
 {
     pm->oscctrl32 &= ~AVR32_PM_OSCCTRL32_OSC32EN_MASK;
 }
 
-void pm_enable_clk32_no_wait(volatile avr32_pm_t *pm, unsigned int startup)
+void pm_enable_clk32_no_wait(volatile avr32_pm_t* pm, unsigned int startup)
 {
     // Read register
     u_avr32_pm_oscctrl32_t u_avr32_pm_oscctrl32 = {pm->oscctrl32};
@@ -280,19 +280,19 @@ void pm_enable_clk32_no_wait(volatile avr32_pm_t *pm, unsigned int startup)
     pm->oscctrl32 = u_avr32_pm_oscctrl32.oscctrl32;
 }
 
-void pm_wait_for_clk32_ready(volatile avr32_pm_t *pm)
+void pm_wait_for_clk32_ready(volatile avr32_pm_t* pm)
 {
     while (!(pm->poscsr & AVR32_PM_POSCSR_OSC32RDY_MASK))
         ;
 }
 
-void pm_cksel(volatile avr32_pm_t *pm,
-              unsigned int pbadiv,
-              unsigned int pbasel,
-              unsigned int pbbdiv,
-              unsigned int pbbsel,
-              unsigned int hsbdiv,
-              unsigned int hsbsel)
+void pm_cksel(volatile avr32_pm_t* pm,
+    unsigned int pbadiv,
+    unsigned int pbasel,
+    unsigned int pbbdiv,
+    unsigned int pbbsel,
+    unsigned int hsbdiv,
+    unsigned int hsbsel)
 {
     u_avr32_pm_cksel_t u_avr32_pm_cksel = {0};
 
@@ -312,12 +312,12 @@ void pm_cksel(volatile avr32_pm_t *pm,
         ;
 }
 
-void pm_gc_setup(volatile avr32_pm_t *pm,
-                 unsigned int gc,
-                 unsigned int osc_or_pll, // Use Osc (=0) or PLL (=1)
-                 unsigned int pll_osc,    // Sel Osc0/PLL0 or Osc1/PLL1
-                 unsigned int diven,
-                 unsigned int div)
+void pm_gc_setup(volatile avr32_pm_t* pm,
+    unsigned int gc,
+    unsigned int osc_or_pll,  // Use Osc (=0) or PLL (=1)
+    unsigned int pll_osc,     // Sel Osc0/PLL0 or Osc1/PLL1
+    unsigned int diven,
+    unsigned int div)
 {
     u_avr32_pm_gcctrl_t u_avr32_pm_gcctrl = {0};
 
@@ -329,24 +329,24 @@ void pm_gc_setup(volatile avr32_pm_t *pm,
     pm->gcctrl[gc] = u_avr32_pm_gcctrl.gcctrl;
 }
 
-void pm_gc_enable(volatile avr32_pm_t *pm,
-                  unsigned int gc)
+void pm_gc_enable(volatile avr32_pm_t* pm,
+    unsigned int gc)
 {
     pm->gcctrl[gc] |= AVR32_PM_GCCTRL_CEN_MASK;
 }
 
-void pm_gc_disable(volatile avr32_pm_t *pm,
-                   unsigned int gc)
+void pm_gc_disable(volatile avr32_pm_t* pm,
+    unsigned int gc)
 {
     pm->gcctrl[gc] &= ~AVR32_PM_GCCTRL_CEN_MASK;
 }
 
-void pm_pll_setup(volatile avr32_pm_t *pm,
-                  unsigned int pll,
-                  unsigned int mul,
-                  unsigned int div,
-                  unsigned int osc,
-                  unsigned int lockcount)
+void pm_pll_setup(volatile avr32_pm_t* pm,
+    unsigned int pll,
+    unsigned int mul,
+    unsigned int div,
+    unsigned int osc,
+    unsigned int lockcount)
 {
     u_avr32_pm_pll_t u_avr32_pm_pll = {0};
 
@@ -358,48 +358,48 @@ void pm_pll_setup(volatile avr32_pm_t *pm,
     pm->pll[pll] = u_avr32_pm_pll.pll;
 }
 
-void pm_pll_set_option(volatile avr32_pm_t *pm,
-                       unsigned int pll,
-                       unsigned int pll_freq,
-                       unsigned int pll_div2,
-                       unsigned int pll_wbwdisable)
+void pm_pll_set_option(volatile avr32_pm_t* pm,
+    unsigned int pll,
+    unsigned int pll_freq,
+    unsigned int pll_div2,
+    unsigned int pll_wbwdisable)
 {
     u_avr32_pm_pll_t u_avr32_pm_pll = {pm->pll[pll]};
     u_avr32_pm_pll.PLL.pllopt = pll_freq | (pll_div2 << 1) | (pll_wbwdisable << 2);
     pm->pll[pll] = u_avr32_pm_pll.pll;
 }
 
-unsigned int pm_pll_get_option(volatile avr32_pm_t *pm,
-                               unsigned int pll)
+unsigned int pm_pll_get_option(volatile avr32_pm_t* pm,
+    unsigned int pll)
 {
     return (pm->pll[pll] & AVR32_PM_PLLOPT_MASK) >> AVR32_PM_PLLOPT_OFFSET;
 }
 
-void pm_pll_enable(volatile avr32_pm_t *pm,
-                   unsigned int pll)
+void pm_pll_enable(volatile avr32_pm_t* pm,
+    unsigned int pll)
 {
     pm->pll[pll] |= AVR32_PM_PLLEN_MASK;
 }
 
-void pm_pll_disable(volatile avr32_pm_t *pm,
-                    unsigned int pll)
+void pm_pll_disable(volatile avr32_pm_t* pm,
+    unsigned int pll)
 {
     pm->pll[pll] &= ~AVR32_PM_PLLEN_MASK;
 }
 
-void pm_wait_for_pll0_locked(volatile avr32_pm_t *pm)
+void pm_wait_for_pll0_locked(volatile avr32_pm_t* pm)
 {
     while (!(pm->poscsr & AVR32_PM_POSCSR_LOCK0_MASK))
         ;
 }
 
-void pm_wait_for_pll1_locked(volatile avr32_pm_t *pm)
+void pm_wait_for_pll1_locked(volatile avr32_pm_t* pm)
 {
     while (!(pm->poscsr & AVR32_PM_POSCSR_LOCK1_MASK))
         ;
 }
 
-void pm_switch_to_clock(volatile avr32_pm_t *pm, unsigned long clock)
+void pm_switch_to_clock(volatile avr32_pm_t* pm, unsigned long clock)
 {
     // Read
     u_avr32_pm_mcctrl_t u_avr32_pm_mcctrl = {pm->mcctrl};
@@ -409,19 +409,19 @@ void pm_switch_to_clock(volatile avr32_pm_t *pm, unsigned long clock)
     pm->mcctrl = u_avr32_pm_mcctrl.mcctrl;
 }
 
-void pm_switch_to_osc0(volatile avr32_pm_t *pm, unsigned int fosc0, unsigned int startup)
+void pm_switch_to_osc0(volatile avr32_pm_t* pm, unsigned int fosc0, unsigned int startup)
 {
-    pm_enable_osc0_crystal(pm, fosc0);           // Enable the Osc0 in crystal mode
-    pm_enable_clk0(pm, startup);                 // Crystal startup time - This parameter is critical and depends on the characteristics of the crystal
-    pm_switch_to_clock(pm, AVR32_PM_MCSEL_OSC0); // Then switch main clock to Osc0
+    pm_enable_osc0_crystal(pm, fosc0);            // Enable the Osc0 in crystal mode
+    pm_enable_clk0(pm, startup);                  // Crystal startup time - This parameter is critical and depends on the characteristics of the crystal
+    pm_switch_to_clock(pm, AVR32_PM_MCSEL_OSC0);  // Then switch main clock to Osc0
 }
 
-void pm_bod_enable_irq(volatile avr32_pm_t *pm)
+void pm_bod_enable_irq(volatile avr32_pm_t* pm)
 {
     pm->ier = AVR32_PM_IER_BODDET_MASK;
 }
 
-void pm_bod_disable_irq(volatile avr32_pm_t *pm)
+void pm_bod_disable_irq(volatile avr32_pm_t* pm)
 {
     Bool global_interrupt_enabled = Is_global_interrupt_enabled();
 
@@ -433,40 +433,40 @@ void pm_bod_disable_irq(volatile avr32_pm_t *pm)
         Enable_global_interrupt();
 }
 
-void pm_bod_clear_irq(volatile avr32_pm_t *pm)
+void pm_bod_clear_irq(volatile avr32_pm_t* pm)
 {
     pm->icr = AVR32_PM_ICR_BODDET_MASK;
 }
 
-unsigned long pm_bod_get_irq_status(volatile avr32_pm_t *pm)
+unsigned long pm_bod_get_irq_status(volatile avr32_pm_t* pm)
 {
     return ((pm->isr & AVR32_PM_ISR_BODDET_MASK) != 0);
 }
 
-unsigned long pm_bod_get_irq_enable_bit(volatile avr32_pm_t *pm)
+unsigned long pm_bod_get_irq_enable_bit(volatile avr32_pm_t* pm)
 {
     return ((pm->imr & AVR32_PM_IMR_BODDET_MASK) != 0);
 }
 
-unsigned long pm_bod_get_level(volatile avr32_pm_t *pm)
+unsigned long pm_bod_get_level(volatile avr32_pm_t* pm)
 {
     return (pm->bod & AVR32_PM_BOD_LEVEL_MASK) >> AVR32_PM_BOD_LEVEL_OFFSET;
 }
 
-unsigned long pm_read_gplp(volatile avr32_pm_t *pm, unsigned long gplp)
+unsigned long pm_read_gplp(volatile avr32_pm_t* pm, unsigned long gplp)
 {
     return pm->gplp[gplp];
 }
 
-void pm_write_gplp(volatile avr32_pm_t *pm, unsigned long gplp, unsigned long value)
+void pm_write_gplp(volatile avr32_pm_t* pm, unsigned long gplp, unsigned long value)
 {
     pm->gplp[gplp] = value;
 }
 
-long pm_enable_module(volatile avr32_pm_t *pm, unsigned long module)
+long pm_enable_module(volatile avr32_pm_t* pm, unsigned long module)
 {
     unsigned long domain = module >> 5;
-    unsigned long *regptr = (unsigned long *)(&(pm->cpumask) + domain);
+    unsigned long* regptr = (unsigned long*)(&(pm->cpumask) + domain);
 
     // Implementation-specific shortcut: the ckMASK registers are contiguous and
     // memory-mapped in that order: CPUMASK, HSBMASK, PBAMASK, PBBMASK.
@@ -476,10 +476,10 @@ long pm_enable_module(volatile avr32_pm_t *pm, unsigned long module)
     return PASS;
 }
 
-long pm_disable_module(volatile avr32_pm_t *pm, unsigned long module)
+long pm_disable_module(volatile avr32_pm_t* pm, unsigned long module)
 {
     unsigned long domain = module >> 5;
-    unsigned long *regptr = (unsigned long *)(&(pm->cpumask) + domain);
+    unsigned long* regptr = (unsigned long*)(&(pm->cpumask) + domain);
 
     // Implementation-specific shortcut: the ckMASK registers are contiguous and
     // memory-mapped in that order: CPUMASK, HSBMASK, PBAMASK, PBBMASK.

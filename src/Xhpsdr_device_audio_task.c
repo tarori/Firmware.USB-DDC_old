@@ -53,7 +53,7 @@
 
 //_____  I N C L U D E S ___________________________________________________
 
-#include "usart.h" // Shall be included before FreeRTOS header files, since 'inline' is defined to ''; leading to
+#include "usart.h"  // Shall be included before FreeRTOS header files, since 'inline' is defined to ''; leading to
 #include <stdio.h>
 // link errors
 #include "conf_usb.h"
@@ -77,7 +77,7 @@
 #include "usb_specific_request.h"
 #include "usb_standard_request.h"
 
-#if LCD_DISPLAY // Multi-line LCD display
+#if LCD_DISPLAY  // Multi-line LCD display
 #include "taskLCD.h"
 #endif
 
@@ -117,18 +117,18 @@ void hpsdr_device_audio_task_init(U8 ep_in, U8 ep_out, U8 ep_out_fb)
     ep_audio_out_fb = ep_out_fb;
 
     xTaskCreate(hpsdr_device_audio_task,
-                configTSK_USB_DAUDIO_NAME,
-                configTSK_USB_DAUDIO_STACK_SIZE,
-                NULL,
-                configTSK_USB_DAUDIO_PRIORITY,
-                NULL);
+        configTSK_USB_DAUDIO_NAME,
+        configTSK_USB_DAUDIO_STACK_SIZE,
+        NULL,
+        configTSK_USB_DAUDIO_PRIORITY,
+        NULL);
 }
 
 //!
 //! @brief Entry point of the device Audio task management
 //!
 
-void hpsdr_device_audio_task(void *pvParameters)
+void hpsdr_device_audio_task(void* pvParameters)
 {
     static U32 time = 0;
     static Bool startup = TRUE;
@@ -201,7 +201,7 @@ void hpsdr_device_audio_task(void *pvParameters)
                 DAC_buf_DMA_read = 0;
                 index = 0;
 
-                freq_changed = 1; // force a freq change reset
+                freq_changed = 1;  // force a freq change reset
             }
         }
 
@@ -220,7 +220,7 @@ void hpsdr_device_audio_task(void *pvParameters)
 
         //  Fill frames of 512 bytes and send to host
 
-        num_samples = 63; // (512 bytes - 8 bytes (sync+command)) / 8 (6 bytes I/Q + 2 bytes Mic)
+        num_samples = 63;  // (512 bytes - 8 bytes (sync+command)) / 8 (6 bytes I/Q + 2 bytes Mic)
 
         //  wait till there are enough samples in the audio buffer
         // AK data is being filled into ~ADC_buf_DMA_write, ie if ADC_buf_DMA_write is 0
@@ -303,8 +303,8 @@ void hpsdr_device_audio_task(void *pvParameters)
                 Usb_write_endpoint_data(EP_IQ_IN, 8, 0x00);
                 Usb_write_endpoint_data(EP_IQ_IN, 8, 0x00);
             }
-            Usb_ack_in_ready_send(EP_IQ_IN); // send the current bank
-        }                                    // end if in ready
+            Usb_ack_in_ready_send(EP_IQ_IN);  // send the current bank
+        }                                     // end if in ready
 
         // Playback
 
@@ -409,9 +409,9 @@ void hpsdr_device_audio_task(void *pvParameters)
 			*/
 
             Usb_ack_out_received_free(EP_IQ_OUT);
-        } // end if out received
+        }  // end if out received
 
-    } // end while vTask
+    }  // end while vTask
 }
 
-#endif // USB_DEVICE_FEATURE == ENABLED
+#endif  // USB_DEVICE_FEATURE == ENABLED

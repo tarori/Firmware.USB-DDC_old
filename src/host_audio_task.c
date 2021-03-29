@@ -107,19 +107,19 @@ void host_audio_task_init(void)
 
 #ifdef FREERTOS_USED
     xTaskCreate(host_audio_task,
-                configTSK_USB_HAUDIO_NAME,
-                configTSK_USB_HAUDIO_STACK_SIZE,
-                NULL,
-                configTSK_USB_HAUDIO_PRIORITY,
-                NULL);
-#endif // FREERTOS_USED
+        configTSK_USB_HAUDIO_NAME,
+        configTSK_USB_HAUDIO_STACK_SIZE,
+        NULL,
+        configTSK_USB_HAUDIO_PRIORITY,
+        NULL);
+#endif  // FREERTOS_USED
 }
 
 //!
 //! @brief This function manages the host mouse HID task.
 //!
 #ifdef FREERTOS_USED
-void host_audio_task(void *pvParameters)
+void host_audio_task(void* pvParameters)
 #else
 void host_audio_task(void)
 #endif
@@ -135,7 +135,7 @@ void host_audio_task(void)
     while (TRUE) {
         vTaskDelayUntil(&xLastWakeTime, configTSK_USB_HAUDIO_PERIOD);
 
-#endif // FREERTOS_USED                                                    \
+#endif  // FREERTOS_USED                                                    \
     // First, check the host controller is in full operating mode with the \
     // B-device attached and enumerated
         if (Is_host_ready()) {
@@ -161,8 +161,8 @@ void host_audio_task(void)
                                 Host_unfreeze_pipe(pipe_audio_in);
 
                                 // Enable alternate streaming interface
-                                interf_audio_stream = Get_interface_number(i); // store interface number
-                                host_set_interface(interf_audio_stream, 1);    // enable streaming interface with "alternate 1" on Device
+                                interf_audio_stream = Get_interface_number(i);  // store interface number
+                                host_set_interface(interf_audio_stream, 1);     // enable streaming interface with "alternate 1" on Device
                                 break;
                             }
                         }
@@ -185,7 +185,7 @@ void host_audio_task(void)
                             continue;
 
                         if (bmaControls & 0x01) {
-                            host_audio_set_cur_mute(g_cs_feature[i].unit, FALSE); // Unmute channels
+                            host_audio_set_cur_mute(g_cs_feature[i].unit, FALSE);  // Unmute channels
                         }
 
                         if (bmaControls & 0x02) {
@@ -303,4 +303,4 @@ void host_set_sampling_rate(U16 endpoint, U32 sampling_rate)
     host_transfer_control(data_stage);
 }
 
-#endif // USB_HOST_FEATURE == ENABLED
+#endif  // USB_HOST_FEATURE == ENABLED

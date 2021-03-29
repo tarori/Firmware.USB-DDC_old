@@ -53,7 +53,7 @@
 #include <avr32/io.h>
 #include <stdint.h>
 
-#include "Mobo_config.h" // cdata.Resolvable_States cdata.VFO_resolution
+#include "Mobo_config.h"  // cdata.Resolvable_States cdata.VFO_resolution
 #include "rotary_encoder.h"
 
 //--------------------------------------------------------
@@ -78,14 +78,14 @@ volatile int8_t menu_steps_from_enc = 0;
 
 // Flag: New Menu selection from Encoder
 volatile bool MENU_fromenc = FALSE;
-volatile bool prev_MENU_fromenc = FALSE; // Internal to function
+volatile bool prev_MENU_fromenc = FALSE;  // Internal to function
 
 // Add up delta from Rotary Encoder, 100 steps per revolution, for use by Menu function
 volatile int16_t val_steps_from_enc = 0;
 
 // Flag: New Value available from Encoder
 volatile bool VAL_fromenc = FALSE;
-volatile bool prev_VAL_fromenc = FALSE; // Internal to function
+volatile bool prev_VAL_fromenc = FALSE;  // Internal to function
 
 // Used internally, by Rotary Encoder functions
 volatile int16_t steps = 0;
@@ -98,20 +98,20 @@ eic_options_t eic_nmi_options, eic_inth1_options;
  */
 int32_t encoder_dual_speed(int8_t direction)
 {
-    static bool ENC_fast = FALSE; // Encoder FAST mode enabled
-    static bool ENC_dir;          // Encoder Direction Change
+    static bool ENC_fast = FALSE;  // Encoder FAST mode enabled
+    static bool ENC_dir;           // Encoder Direction Change
 
-    uint32_t enc_time;        // Read and use time from Real Time Clock (RTC, 115kHz)
-    static uint32_t enc_last; // Measure the time elapsed since the last encoder pulse
+    uint32_t enc_time;         // Read and use time from Real Time Clock (RTC, 115kHz)
+    static uint32_t enc_last;  // Measure the time elapsed since the last encoder pulse
 
-    static uint32_t fast_counter = 0; // Number of rapid movements in succession
-    static int8_t last_direction;     // Direction of last encoder pulse
+    static uint32_t fast_counter = 0;  // Number of rapid movements in succession
+    static int8_t last_direction;      // Direction of last encoder pulse
 
-    uint32_t enc_fast_sense; // Maximum time threshold (in steps of 1/RTC s) per click
-                             // to enable fast mode (1/115000 s)
-    uint32_t enc_fast_trig;  // Number of fast clicks to enable fast Mode
+    uint32_t enc_fast_sense;  // Maximum time threshold (in steps of 1/RTC s) per click
+                              // to enable fast mode (1/115000 s)
+    uint32_t enc_fast_trig;   // Number of fast clicks to enable fast Mode
 
-    int32_t speed; // Speed Multiplier
+    int32_t speed;  // Speed Multiplier
 
     // Update these parameters if and when necessary by USB Command
 
@@ -146,18 +146,18 @@ int32_t encoder_dual_speed(int8_t direction)
     // If direction has changed, force a drop out of FAST mode
     if (last_direction != direction) {
         if (ENC_dir)
-            ENC_dir = FALSE; // Previous change was just a one shot event, clear flag
+            ENC_dir = FALSE;  // Previous change was just a one shot event, clear flag
         else
-            ENC_dir = TRUE; // This is the first event in a new direction, set flag
-    } else if (ENC_dir)     // Second shot with different direction,
-    {                       // now we take action and drop out of fast mode
+            ENC_dir = TRUE;  // This is the first event in a new direction, set flag
+    } else if (ENC_dir)      // Second shot with different direction,
+    {                        // now we take action and drop out of fast mode
         ENC_fast = FALSE;
         ENC_dir = FALSE;
         fast_counter = 0;
     }
-    last_direction = direction; // Save encoder direction for next time
+    last_direction = direction;  // Save encoder direction for next time
 
-    speed = 1; // When fast mode, multiply speed by the set MULTIPLY factor
+    speed = 1;  // When fast mode, multiply speed by the set MULTIPLY factor
     if (ENC_fast)
         speed = speed * ENC_FAST_MULTIPLY;
 
@@ -185,8 +185,8 @@ eic_nmi_handler(void)
         "pushm   r0-r12, lr\n\t");
     //--------------------------------------------------------
 
-    int8_t increment = 0; // Encoder direction
-    bool rotq, roti;      // Encoder input states
+    int8_t increment = 0;  // Encoder direction
+    bool rotq, roti;       // Encoder input states
 
     // Get current state of Encoder Pins
     rotq = gpio_get_pin_value(ENCODER_ROTQ_PIN);
@@ -211,17 +211,17 @@ eic_nmi_handler(void)
     // check the relative phase of the input channels
     // and update position accordingly
     if (rotq == roti) {
-        increment++; // Increment
+        increment++;  // Increment
     } else {
-        increment--; // Decrement
+        increment--;  // Decrement
     }
 
     // Add or subtract Menu selection, hardcoded 10 and 100 steps per revolution
-    if (prev_MENU_fromenc && !MENU_fromenc) // Values have been read, clear
+    if (prev_MENU_fromenc && !MENU_fromenc)  // Values have been read, clear
     {
         steps = 0;
         prev_MENU_fromenc = FALSE;
-    } else if (prev_VAL_fromenc && !VAL_fromenc) // Values have been read, clear
+    } else if (prev_VAL_fromenc && !VAL_fromenc)  // Values have been read, clear
     {
         steps = 0;
         prev_VAL_fromenc = FALSE;
@@ -231,7 +231,8 @@ eic_nmi_handler(void)
 #else
     steps = steps + increment;
 #endif
-                        menu_steps_from_enc = steps / (ENC_PULSES / 10);
+                        menu_steps_from_enc
+        = steps / (ENC_PULSES / 10);
     val_steps_from_enc = steps / (ENC_PULSES / 100);
     if (menu_steps_from_enc) {
         MENU_fromenc = TRUE;
@@ -252,7 +253,7 @@ eic_nmi_handler(void)
     freq_delta_from_enc += increment * (ENC_RESOLUTION / cdata.Resolvable_States) * cdata.VFO_resolution;
 #endif
 
-    FRQ_fromenc = TRUE; // Frequency was modified
+    FRQ_fromenc = TRUE;  // Frequency was modified
 
     //--------------------------------------------------------
     // 	Restore registers and return from NMI
@@ -274,8 +275,8 @@ __interrupt
 static void
 eic_int_handler1(void)
 {
-    int8_t increment = 0; // Encoder direction
-    bool rotq, roti;      // Encoder input states
+    int8_t increment = 0;  // Encoder direction
+    bool rotq, roti;       // Encoder input states
 
     // Get current state of Encoder Pins
     rotq = gpio_get_pin_value(ENCODER_ROTQ_PIN);
@@ -300,17 +301,17 @@ eic_int_handler1(void)
     // check the relative phase of the input channels
     // and update position accordingly
     if (rotq == roti) {
-        increment--; // Decrement
+        increment--;  // Decrement
     } else {
-        increment++; // Increment
+        increment++;  // Increment
     }
 
     // Add or subtract Menu selection, hardcoded 10 and 100 steps per revolution
-    if (prev_MENU_fromenc && !MENU_fromenc) // Values have been read, clear
+    if (prev_MENU_fromenc && !MENU_fromenc)  // Values have been read, clear
     {
         steps = 0;
         prev_MENU_fromenc = FALSE;
-    } else if (prev_VAL_fromenc && !VAL_fromenc) // Values have been read, clear
+    } else if (prev_VAL_fromenc && !VAL_fromenc)  // Values have been read, clear
     {
         steps = 0;
         prev_VAL_fromenc = FALSE;
@@ -320,7 +321,8 @@ eic_int_handler1(void)
 #else
     steps = steps + increment;
 #endif
-                        menu_steps_from_enc = steps / (ENC_PULSES / 10);
+                        menu_steps_from_enc
+        = steps / (ENC_PULSES / 10);
     val_steps_from_enc = steps / (ENC_PULSES / 100);
     if (menu_steps_from_enc) {
         MENU_fromenc = TRUE;
@@ -342,7 +344,7 @@ eic_int_handler1(void)
     freq_delta_from_enc += increment * (ENC_RESOLUTION / cdata.Resolvable_States) * cdata.VFO_resolution;
 #endif
 
-    FRQ_fromenc = TRUE; // Frequency was modified
+    FRQ_fromenc = TRUE;  // Frequency was modified
 }
 
 /*!

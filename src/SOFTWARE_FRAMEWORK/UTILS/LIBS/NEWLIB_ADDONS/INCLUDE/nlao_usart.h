@@ -191,11 +191,11 @@ struct usart3 {
 
 int usart_init(int baudrate);
 void usart_putc(char c);
-void usart_puts(const char *s);
+void usart_puts(const char* s);
 int usart_getc(void);
 int usart_tstc(void);
 void usart_setbrg(int baudrate, int cpu_clock);
-void set_usart_base(void *usart_base);
+void set_usart_base(void* usart_base);
 
 _END_STD_C
 

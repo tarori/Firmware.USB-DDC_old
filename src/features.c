@@ -28,9 +28,9 @@ const features_t features_default = {FEATURES_DEFAULT};
 // these arrays of names need to be kept in sync
 // with the enumerations defined in features.h
 //
-const char *const feature_value_names[] = {FEATURE_VALUE_NAMES};
+const char* const feature_value_names[] = {FEATURE_VALUE_NAMES};
 
-const char *const feature_index_names[] = {FEATURE_INDEX_NAMES};
+const char* const feature_index_names[] = {FEATURE_INDEX_NAMES};
 
 // factory reset handler for features
 static void feature_factory_reset_handler(void)
@@ -39,7 +39,7 @@ static void feature_factory_reset_handler(void)
     // set the major and minor version numbers to 0 in the nvram
     // this value cannot happen naturally, so the image initialized
     // version will be copied to nvram on the next reset
-    flashc_memset8((void *)&features_nvram, 0, 2, TRUE);
+    flashc_memset8((void*)&features_nvram, 0, 2, TRUE);
 }
 
 //
@@ -57,7 +57,7 @@ void features_init()
     // BUMMER: that's looking in the defaults! Must look in nvram if( (FEATURE_PROD_TEST_ON) || (FEATURE_MAJOR != FEATURE_MAJOR_NVRAM) || (FEATURE_MINOR != FEATURE_MINOR_NVRAM) ) {
     if ((feature_get_nvram(feature_quirk_index) == feature_quirk_ptest) || (FEATURE_MAJOR != FEATURE_MAJOR_NVRAM) || (FEATURE_MINOR != FEATURE_MINOR_NVRAM)) {
         widget_startup_log_line("reset feature nvram");
-        flashc_memcpy((void *)&features_nvram, &features, sizeof(features), TRUE);
+        flashc_memcpy((void*)&features_nvram, &features, sizeof(features), TRUE);
     } else {
         memcpy(&features, &features_nvram, sizeof(features));
     }
@@ -65,7 +65,7 @@ void features_init()
     widget_factory_reset_handler_register(feature_factory_reset_handler);
 }
 
-void features_display(char *title, features_t fp)
+void features_display(char* title, features_t fp)
 {
     int i;
     char buff[32];
@@ -76,7 +76,7 @@ void features_display(char *title, features_t fp)
         strcpy(buff, feature_index_names[i]);
         strcat(buff, " = ");
         if (features[i] < feature_end_values)
-            strcat(buff, (char *)feature_value_names[fp[i]]);
+            strcat(buff, (char*)feature_value_names[fp[i]]);
         else
             strcat(buff, "invalid!");
         widget_startup_log_line(buff);
@@ -108,7 +108,7 @@ uint8_t feature_set_nvram(uint8_t index, uint8_t value)
     //	if ( index > feature_minor_index && index < feature_end_index && value < feature_end_values ) {
     //  BSB 20160316 removed feature_end_values check to allow for generic content
     if (index > feature_minor_index && index < feature_end_index) {
-        flashc_memset8((void *)&features_nvram[index], value, sizeof(uint8_t), TRUE);
+        flashc_memset8((void*)&features_nvram[index], value, sizeof(uint8_t), TRUE);
         return features_nvram[index];
     } else
         return 0xFF;
@@ -140,7 +140,7 @@ static int find_end(int start)
     }
 }
 
-void feature_find_first_and_last_value(uint8_t index, uint8_t *firstp, uint8_t *lastp)
+void feature_find_first_and_last_value(uint8_t index, uint8_t* firstp, uint8_t* lastp)
 {
     uint8_t this_index, first, last;
     if (index <= feature_minor_index || index >= feature_end_index) {

@@ -30,8 +30,8 @@
 //_____  I N C L U D E S ___________________________________________________
 
 //#include <stdio.h>
-#include "usart.h" // Shall be included before FreeRTOS header files, since 'inline' is defined to ''; leading to
-                   // link errors
+#include "usart.h"  // Shall be included before FreeRTOS header files, since 'inline' is defined to ''; leading to
+                    // link errors
 #include "conf_usb.h"
 
 #include <avr32/io.h>
@@ -65,7 +65,7 @@
 //_____ D E F I N I T I O N S ______________________________________________
 //_____ D E C L A R A T I O N S ____________________________________________
 
-void uac2_AK5394A_task(void *);
+void uac2_AK5394A_task(void*);
 
 //!
 //! @brief This function initializes the hardware/software resources
@@ -84,17 +84,17 @@ void uac2_AK5394A_task_init(void)
 #endif
 
     xTaskCreate(uac2_AK5394A_task,
-                configTSK_AK5394A_NAME,
-                configTSK_AK5394A_STACK_SIZE,
-                NULL,
-                UAC2_configTSK_AK5394A_PRIORITY,
-                NULL);
+        configTSK_AK5394A_NAME,
+        configTSK_AK5394A_STACK_SIZE,
+        NULL,
+        UAC2_configTSK_AK5394A_PRIORITY,
+        NULL);
 }
 
 //!
 //! @brief Entry point of the AK5394A task management
 //!
-void uac2_AK5394A_task(void *pvParameters)
+void uac2_AK5394A_task(void* pvParameters)
 {
     portTickType xLastWakeTime;
     xLastWakeTime = xTaskGetTickCount();
@@ -141,5 +141,5 @@ void uac2_AK5394A_task(void *pvParameters)
 		}
 */
 
-    } // end while (TRUE)
+    }  // end while (TRUE)
 }

@@ -90,20 +90,20 @@
 #include "device_mouse_hid_task.h"
 #include "features.h"
 #include "gpio.h"
-#include "pdca.h" // For ADC channel config tests
+#include "pdca.h"  // For ADC channel config tests
 #include "taskAK5394A.h"
 #include "usb_descriptors.h"
 #include "usb_drv.h"
 #include "usb_specific_request.h"
 #include "usb_standard_request.h"
 
-#include "ssc_i2s.h" // For I2S tests
+#include "ssc_i2s.h"  // For I2S tests
 
 #ifdef USB_METALLIC_NOISE_SIM
-#include "device_audio_task.h" // To modify FB_rate_nominal
+#include "device_audio_task.h"  // To modify FB_rate_nominal
 #endif
 
-#if LCD_DISPLAY // Multi-line LCD display
+#if LCD_DISPLAY  // Multi-line LCD display
 #include "taskLCD.h"
 #endif
 //#include "taskEXERCISE.h"
@@ -137,28 +137,28 @@ void device_mouse_hid_task_init(U8 ep_tx)
     // (accessing the USB registers of a non-engaged mode, even with load operations,
     // may corrupt USB FIFO data).
     if (Is_usb_device())
-#endif // USB_HOST_FEATURE == ENABLED
+#endif  // USB_HOST_FEATURE == ENABLED
         Usb_enable_sof_interrupt();
-#endif // FREERTOS_USED
+#endif  // FREERTOS_USED
 
 #ifdef FREERTOS_USED
     xTaskCreate(device_mouse_hid_task,
-                configTSK_USB_DHID_MOUSE_NAME,
-                configTSK_USB_DHID_MOUSE_STACK_SIZE,
-                NULL,
-                configTSK_USB_DHID_MOUSE_PRIORITY,
-                NULL);
-#endif // FREERTOS_USED
+        configTSK_USB_DHID_MOUSE_NAME,
+        configTSK_USB_DHID_MOUSE_STACK_SIZE,
+        NULL,
+        configTSK_USB_DHID_MOUSE_PRIORITY,
+        NULL);
+#endif  // FREERTOS_USED
 
     // Added BSB 20120718
-    print_dbg("\nHID ready\n"); // usart is ready to receive HID commands!
+    print_dbg("\nHID ready\n");  // usart is ready to receive HID commands!
 
     // Added BSB 20120719
 #if LCD_DISPLAY
-#define HID2LCD // Use LCD to debug incoming HID commands from uart
+#define HID2LCD  // Use LCD to debug incoming HID commands from uart
 #endif
 
-#ifdef HID2LCD // Needed here? Including these lines seems to break functionality
+#ifdef HID2LCD  // Needed here? Including these lines seems to break functionality
 //	lcd_q_init();
 //	lcd_q_clear();
 #endif
@@ -168,7 +168,7 @@ void device_mouse_hid_task_init(U8 ep_tx)
 //! @brief Entry point of the device mouse HID task management
 //!
 #ifdef FREERTOS_USED
-void device_mouse_hid_task(void *pvParameters)
+void device_mouse_hid_task(void* pvParameters)
 #else
 void device_mouse_hid_task(void)
 #endif
@@ -178,12 +178,12 @@ void device_mouse_hid_task(void)
     const U8 EP_HID_TX = ep_hid_tx;
 
     // BSB 20120810 HID variables moved up
-    const U8 ReportByte0 = 0x01; // Report ID doesn't change
-    U8 ReportByte1 = 0;          // 1st variable byte of HID report
-    U8 ReportByte2 = 0;          // 2nd variable byte of HID report
-    U8 ReportByte1_prev = 0;     // Previous ReportByte1
-    char a = 0;                  // ASCII character as part of HID protocol over uart
-    char gotcmd = 0;             // Initially, no user command was recorded
+    const U8 ReportByte0 = 0x01;  // Report ID doesn't change
+    U8 ReportByte1 = 0;           // 1st variable byte of HID report
+    U8 ReportByte2 = 0;           // 2nd variable byte of HID report
+    U8 ReportByte1_prev = 0;      // Previous ReportByte1
+    char a = 0;                   // ASCII character as part of HID protocol over uart
+    char gotcmd = 0;              // Initially, no user command was recorded
 
 #ifdef FREERTOS_USED
     portTickType xLastWakeTime;
@@ -197,7 +197,7 @@ void device_mouse_hid_task(void)
 #else
         // First, check the device enumeration state
 //    if (!Is_device_enumerated()) return;
-#endif // FREERTOS_USED
+#endif  // FREERTOS_USED
 
         // BSB 20120711: Debugging HID
         /*
@@ -284,20 +284,20 @@ void device_mouse_hid_task(void)
  *
  */
 
-        gotcmd = 0; // No HID button change recorded yet
+        gotcmd = 0;  // No HID button change recorded yet
 
         while (gotcmd == 0) {
 
             // These are test sequences. Move automated stuff to taskMoboCtrl.c
 
-            if (readkey()) {                                                 // Check for an UART character command
-                a = read_dbg_char(DBG_ECHO, RTOS_WAIT, DBG_CHECKSUM_NORMAL); // UART character arrived, get it
+            if (readkey()) {                                                  // Check for an UART character command
+                a = read_dbg_char(DBG_ECHO, RTOS_WAIT, DBG_CHECKSUM_NORMAL);  // UART character arrived, get it
 
                 // HID debug
-                if (a == 'h') {                                           // Wait until 'h' is entered to indicate HID activity
-                    ReportByte1 = read_dbg_char_hex(DBG_ECHO, RTOS_WAIT); // Get 8 bits of hex encoded by 2 ASCII characters, with echo
-                    ReportByte2 = read_dbg_char_hex(DBG_ECHO, RTOS_WAIT); // Get 8 bits of hex encoded by 2 ASCII characters, with echo
-                    gotcmd = 1;                                           // HID received on UART gets sent regardless
+                if (a == 'h') {                                            // Wait until 'h' is entered to indicate HID activity
+                    ReportByte1 = read_dbg_char_hex(DBG_ECHO, RTOS_WAIT);  // Get 8 bits of hex encoded by 2 ASCII characters, with echo
+                    ReportByte2 = read_dbg_char_hex(DBG_ECHO, RTOS_WAIT);  // Get 8 bits of hex encoded by 2 ASCII characters, with echo
+                    gotcmd = 1;                                            // HID received on UART gets sent regardless
                 }
 
                 // If you need the UART for something other than HID, this is where you interpret it!
@@ -305,47 +305,47 @@ void device_mouse_hid_task(void)
 #ifdef USB_METALLIC_NOISE_SIM
                 else if (a == 'u') {
                     FB_rate_nominal += 64;
-                    FB_rate_nominal |= 1; // Use LSB as mask for FB rate being messed up
+                    FB_rate_nominal |= 1;  // Use LSB as mask for FB rate being messed up
                 } else if (a == 'd') {
                     FB_rate_nominal -= 64;
-                    FB_rate_nominal |= 1; // Use LSB as mask for FB rate being messed up
+                    FB_rate_nominal |= 1;  // Use LSB as mask for FB rate being messed up
                 } else if (a == 'x') {
-                    FB_rate_nominal = FB_rate_initial; // Use LSB as mask for FB rate being messed up
+                    FB_rate_nominal = FB_rate_initial;  // Use LSB as mask for FB rate being messed up
                 }
 #endif
 
 #ifdef HW_GEN_DIN20
-                else if (a == '0') { // Digit 0
+                else if (a == '0') {  // Digit 0
                     usb_ch = USB_CH_NONE;
                     mobo_usb_select(usb_ch);
-                } else if (a == 'A') { // Uppercase A
+                } else if (a == 'A') {  // Uppercase A
                     usb_ch = USB_CH_A;
                     mobo_usb_select(usb_ch);
-                } else if (a == 'B') { // Uppercase B
+                } else if (a == 'B') {  // Uppercase B
                     usb_ch = USB_CH_B;
                     mobo_usb_select(usb_ch);
-                } else if (a == 'D') { // Uppercase D
+                } else if (a == 'D') {  // Uppercase D
                     if (mobo_usb_detect() == USB_CH_A)
                         print_dbg_char('A');
                     else
                         print_dbg_char('B');
                 }
 
-                else if (a == 'Y') { // Uppercase Y
+                else if (a == 'Y') {  // Uppercase Y
                     mobo_i2s_enable(MOBO_I2S_ENABLE);
                 }
 
-                else if (a == 'y') { // Lowercase y
+                else if (a == 'y') {  // Lowercase y
                     mobo_i2s_enable(MOBO_I2S_DISABLE);
                 }
 
-                else if (a == 'R') {                   // Uppercase R
-                    gpio_clr_gpio_pin(AVR32_PIN_PX13); // RESET_N / NSRST = 0
+                else if (a == 'R') {                    // Uppercase R
+                    gpio_clr_gpio_pin(AVR32_PIN_PX13);  // RESET_N / NSRST = 0
                 }
 
-                else if (a == 'P') {                   // Uppercase P
-                    gpio_clr_gpio_pin(AVR32_PIN_PB10); // PROG = 0
-                    gpio_clr_gpio_pin(AVR32_PIN_PX13); // RESET_N / NSRST = 0
+                else if (a == 'P') {                    // Uppercase P
+                    gpio_clr_gpio_pin(AVR32_PIN_PB10);  // PROG = 0
+                    gpio_clr_gpio_pin(AVR32_PIN_PX13);  // RESET_N / NSRST = 0
                 }
 
 #endif
@@ -353,38 +353,38 @@ void device_mouse_hid_task(void)
 #if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)
                 // Start messing with ADC!
 
-                else if (a == 'a') {            // Lowercase a
-                    wm8805_status.buffered = 0; // Use regenerated clock
+                else if (a == 'a') {             // Lowercase a
+                    wm8805_status.buffered = 0;  // Use regenerated clock
                     mobo_xo_select(wm8805_status.frequency, input_select);
                 }
 
                 // Select MCU's outgoing I2S bus
-                else if (a == 'b') {            // Lowercase b
-                    wm8805_status.buffered = 1; // Use precision clock and buffering
+                else if (a == 'b') {             // Lowercase b
+                    wm8805_status.buffered = 1;  // Use precision clock and buffering
                     mobo_xo_select(wm8805_status.frequency, input_select);
                 }
 
                 // Select RXs's outgoing I2S bus
-                else if (a == 'c') {                   // Lowercase b
-                    gpio_set_gpio_pin(AVR32_PIN_PX44); // SEL_USBN_RXP = 1
-                    gpio_clr_gpio_pin(AVR32_PIN_PX58); // 44.1 control
-                    gpio_clr_gpio_pin(AVR32_PIN_PX45); // 48 control
+                else if (a == 'c') {                    // Lowercase b
+                    gpio_set_gpio_pin(AVR32_PIN_PX44);  // SEL_USBN_RXP = 1
+                    gpio_clr_gpio_pin(AVR32_PIN_PX58);  // 44.1 control
+                    gpio_clr_gpio_pin(AVR32_PIN_PX45);  // 48 control
                 }
 
                 // Restart I2S
-                else if (a == 'd') { // Lowercase d
+                else if (a == 'd') {  // Lowercase d
                     pdca_enable(PDCA_CHANNEL_SSC_TX);
                 }
 
                 // Restart I2S
-                else if (a == 'e') { // Lowercase e
+                else if (a == 'e') {  // Lowercase e
                     // Gives random L/R swap
                     // UAC1 defaults, 48ksps
                     ssc_i2s_init(ssc, 48000, 24, 32, SSC_I2S_MODE_STEREO_OUT_STEREO_IN, FPBA_HZ);
                 }
 
                 // Restart I2S
-                else if (a == 'f') { // Lowercase f
+                else if (a == 'f') {  // Lowercase f
                     // No influence on L/R swap
                     // mobo_xo_select(current_freq.frequency, input_select);
 
@@ -393,13 +393,13 @@ void device_mouse_hid_task(void)
                 }
 
                 // Restart I2S
-                else if (a == 'g') { // Lowercase g
+                else if (a == 'g') {  // Lowercase g
                     // No influence on L/R swap
                     mobo_clock_division(current_freq.frequency);
                 }
 
                 // Restart I2S
-                else if (a == 'i') { // Lowercase i
+                else if (a == 'i') {  // Lowercase i
 
                     // Preceding by this gives random L/R swap
                     //mobo_wait_for_low_DA_LRCK();
@@ -407,7 +407,7 @@ void device_mouse_hid_task(void)
                     // Preceding by this gives random L/R swap
                     // mobo_clock_division(current_freq.frequency);
 
-                    gpio_tgl_gpio_pin(AVR32_PIN_PX17); // Pin 83
+                    gpio_tgl_gpio_pin(AVR32_PIN_PX17);  // Pin 83
 
                     taskENTER_CRITICAL();
 
@@ -439,30 +439,30 @@ void device_mouse_hid_task(void)
                         ;
 
                     static const pdca_channel_options_t PDCA_OPTIONS = {
-                        .addr = (void *)audio_buffer_0,          // memory address
-                        .pid = AVR32_PDCA_PID_SSC_RX,            // select peripheral
-                        .size = ADC_BUFFER_SIZE,                 // transfer counter
-                        .r_addr = NULL,                          // next memory address
-                        .r_size = 0,                             // next transfer counter
-                        .transfer_size = PDCA_TRANSFER_SIZE_WORD // select size of the transfer - 32 bits
+                        .addr = (void*)audio_buffer_0,            // memory address
+                        .pid = AVR32_PDCA_PID_SSC_RX,             // select peripheral
+                        .size = ADC_BUFFER_SIZE,                  // transfer counter
+                        .r_addr = NULL,                           // next memory address
+                        .r_size = 0,                              // next transfer counter
+                        .transfer_size = PDCA_TRANSFER_SIZE_WORD  // select size of the transfer - 32 bits
                     };
 
                     static const pdca_channel_options_t SPK_PDCA_OPTIONS = {
-                        .addr = (void *)spk_buffer_0,            // memory address
-                        .pid = AVR32_PDCA_PID_SSC_TX,            // select peripheral
-                        .size = DAC_BUFFER_SIZE,                 // transfer counter
-                        .r_addr = NULL,                          // next memory address
-                        .r_size = 0,                             // next transfer counter
-                        .transfer_size = PDCA_TRANSFER_SIZE_WORD // select size of the transfer - 32 bits
+                        .addr = (void*)spk_buffer_0,              // memory address
+                        .pid = AVR32_PDCA_PID_SSC_TX,             // select peripheral
+                        .size = DAC_BUFFER_SIZE,                  // transfer counter
+                        .r_addr = NULL,                           // next memory address
+                        .r_size = 0,                              // next transfer counter
+                        .transfer_size = PDCA_TRANSFER_SIZE_WORD  // select size of the transfer - 32 bits
                     };
 
                     // More or less pointless since it depends on the outgoing ADC LRCK to sync up properly
-                    pdca_init_channel(PDCA_CHANNEL_SSC_RX, &PDCA_OPTIONS); // init PDCA channel with options.
+                    pdca_init_channel(PDCA_CHANNEL_SSC_RX, &PDCA_OPTIONS);  // init PDCA channel with options.
                     pdca_enable_interrupt_reload_counter_zero(PDCA_CHANNEL_SSC_RX);
                     pdca_enable(PDCA_CHANNEL_SSC_RX);
 
                     // This seems to do the trick with the outgoing channel as tested on UAC1 and UAC2
-                    pdca_init_channel(PDCA_CHANNEL_SSC_TX, &SPK_PDCA_OPTIONS); // init PDCA channel with options.
+                    pdca_init_channel(PDCA_CHANNEL_SSC_TX, &SPK_PDCA_OPTIONS);  // init PDCA channel with options.
                     pdca_enable_interrupt_reload_counter_zero(PDCA_CHANNEL_SSC_TX);
                     pdca_enable(PDCA_CHANNEL_SSC_TX);
 
@@ -472,8 +472,8 @@ void device_mouse_hid_task(void)
                 }
 
                 // Restart I2S
-                else if (a == 'j') { // Lowercase i
-                                     //               	gpio_tgl_gpio_pin(AVR32_PIN_PX17);			// Pin 83
+                else if (a == 'j') {  // Lowercase i
+                                      //               	gpio_tgl_gpio_pin(AVR32_PIN_PX17);			// Pin 83
 
                     //            	pdca_disable(PDCA_CHANNEL_SSC_RX);
 
@@ -502,12 +502,12 @@ void device_mouse_hid_task(void)
                     //            	ssc_i2s_disable_tx(PDCA_CHANNEL_SSC_TX);	// Will this prevent funny pulsing on opposite channel? No. It stops TX permanently
 
                     static const pdca_channel_options_t SPK_PDCA_OPTIONS = {
-                        .addr = (void *)spk_buffer_0,            // memory address
-                        .pid = AVR32_PDCA_PID_SSC_TX,            // select peripheral
-                        .size = DAC_BUFFER_SIZE,                 // transfer counter
-                        .r_addr = NULL,                          // next memory address
-                        .r_size = 0,                             // next transfer counter
-                        .transfer_size = PDCA_TRANSFER_SIZE_WORD // select size of the transfer - 32 bits
+                        .addr = (void*)spk_buffer_0,              // memory address
+                        .pid = AVR32_PDCA_PID_SSC_TX,             // select peripheral
+                        .size = DAC_BUFFER_SIZE,                  // transfer counter
+                        .r_addr = NULL,                           // next memory address
+                        .r_size = 0,                              // next transfer counter
+                        .transfer_size = PDCA_TRANSFER_SIZE_WORD  // select size of the transfer - 32 bits
                     };
 
                     /*				if (FEATURE_IMAGE_UAC1_AUDIO)	            // UAC1 defaults, 48ksps
@@ -530,7 +530,7 @@ void device_mouse_hid_task(void)
                 }
 
                 // LED debug
-                else if (a == 'L') { // Uppercase L
+                else if (a == 'L') {  // Uppercase L
                     // 3 hex characters to LEDs. Punched as 6 digits. 0x00-0x07 are valid.
                     // Left-to-right on device front: fled2, fled1, fled0, NO! it's the other way around?! Why??
                     // RED			1
@@ -564,10 +564,10 @@ void device_mouse_hid_task(void)
                     temp++;
                 }
 
-            } // if (readkey())
+            }  // if (readkey())
 
-            else { // GPIO pin _changes_ are sent to Host
-                   /*
+            else {  // GPIO pin _changes_ are sent to Host
+                    /*
     		if ( (gpio_get_pin_value(PRG_BUTTON) == 0) ) {	// Check if Prog button is pushed down
 				ReportByte1 = 0x04;							// Encode the Play/Pause HID command
 				ReportByte2 = 0x00;							// This command is 0x00 until HID becomes more refined...
@@ -581,7 +581,7 @@ void device_mouse_hid_task(void)
 
                 // Add more pins to poll here!
 
-                if (ReportByte1 != ReportByte1_prev) { // Did we record a button change to send to Host?
+                if (ReportByte1 != ReportByte1_prev) {  // Did we record a button change to send to Host?
                     gotcmd = 1;
                     ReportByte1_prev = ReportByte1;
                 }
@@ -592,11 +592,11 @@ void device_mouse_hid_task(void)
 #endif
 */
 
-            } // else, !readkey
+            }  // else, !readkey
 
-            if (gotcmd == 0)     // Nothing recorded:
-                vTaskDelay(120); // Polling cycle gives 12ms to RTOS. WM8805 needs that, HID doesn't
-        }                        //while (gotcmd == 0)
+            if (gotcmd == 0)      // Nothing recorded:
+                vTaskDelay(120);  // Polling cycle gives 12ms to RTOS. WM8805 needs that, HID doesn't
+        }                         //while (gotcmd == 0)
 
         //  Tested ReportByte1 content with JRiver and VLC on Win7-32
         //  ReportByte1 = 0b00000001; // Encode volup according to usb_hid_report_descriptor[USB_HID_REPORT_DESC] works!
@@ -619,22 +619,22 @@ void device_mouse_hid_task(void)
 #ifdef FEATURE_HID
         if (Is_usb_in_ready(EP_HID_TX)) {
             Usb_reset_endpoint_fifo_access(EP_HID_TX);
-            Usb_write_endpoint_data(EP_HID_TX, 8, ReportByte0); // HID report number, hard-coded to 0x01
+            Usb_write_endpoint_data(EP_HID_TX, 8, ReportByte0);  // HID report number, hard-coded to 0x01
             Usb_write_endpoint_data(EP_HID_TX, 8, ReportByte1);
             Usb_write_endpoint_data(EP_HID_TX, 8, ReportByte2);
             Usb_ack_in_ready_send(EP_HID_TX);
-            print_dbg_char('H');  // Confirm HID command forwarded to HOST
-            print_dbg_char('\n'); // Confirm HID command forwarded to HOST
+            print_dbg_char('H');   // Confirm HID command forwarded to HOST
+            print_dbg_char('\n');  // Confirm HID command forwarded to HOST
 #ifdef HID2LCD
             lcd_q_putc('H');
 #endif
             // usb_state = 'r'; // May we ignore usb_state for HID TX ??
-        } else { // Failure
+        } else {  // Failure
 #else
     if (1) {
 #endif
-            print_dbg_char('-');  // NO HID command forwarded to HOST
-            print_dbg_char('\n'); // NO HID command forwarded to HOST
+            print_dbg_char('-');   // NO HID command forwarded to HOST
+            print_dbg_char('\n');  // NO HID command forwarded to HOST
 #ifdef HID2LCD
             lcd_q_putc('-');
 #endif
@@ -646,4 +646,4 @@ void device_mouse_hid_task(void)
     }
 #endif
 }
-#endif // USB_DEVICE_FEATURE == ENABLED
+#endif  // USB_DEVICE_FEATURE == ENABLED

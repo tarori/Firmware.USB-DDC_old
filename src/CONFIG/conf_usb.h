@@ -174,7 +174,7 @@
 #define Usb_set_configuration_action() print_dbg_char('H');
 //! @}
 
-#endif // USB_DEVICE_FEATURE == ENABLED
+#endif  // USB_DEVICE_FEATURE == ENABLED
 
 //! @}
 
@@ -182,7 +182,7 @@
 #define USB_INT_LEVEL AVR32_INTC_INT0
 
 //! Debug trace macro
-#define LOG_STR(str) //print_dbg(str)
+#define LOG_STR(str)  //print_dbg(str)
 
 //! @defgroup usb_stream_control USB stream control parameters
 //! Defines the way the USB stream control will operate. The USB Stream Control embeds a mechanism
@@ -192,21 +192,21 @@
 
 //! Size of a buffer (in bytes) used in the USB stream FIFO. It shall be equivalent to the pipe/endpoint
 //! from which the stream comes to.
-#define USB_STREAM_BUFFER_SIZE 100 // Size in bytes.
+#define USB_STREAM_BUFFER_SIZE 100  // Size in bytes.
 
 //! Number of buffers used in the USB stream FIFO.
-#define USB_STREAM_BUFFER_NUMBER 8 // Unit is in number of buffers. Must be a 2-power number.
+#define USB_STREAM_BUFFER_NUMBER 8  // Unit is in number of buffers. Must be a 2-power number.
 
 //! Maximum gap (in number of buffers) between the stream reader and the stream writer, in which the FIFO
 //! operates without re-synchronization.
-#define USB_STREAM_IDLE_BUFFER_NUMBER 2 // Unit is in number of buffers.
+#define USB_STREAM_IDLE_BUFFER_NUMBER 2  // Unit is in number of buffers.
 
 //! Max sampling frequencies excursion (given in per-thousandth) that the USB Stream Control FIFO
 //! is supposed to softly correct.
-#define USB_STREAM_MAX_EXCURSION 100 // Unit is in per-thousandth (�/oo)
+#define USB_STREAM_MAX_EXCURSION 100  // Unit is in per-thousandth (�/oo)
 
 //! @}
 
 //! @}
 
-#endif // _CONF_USB_H_
+#endif  // _CONF_USB_H_

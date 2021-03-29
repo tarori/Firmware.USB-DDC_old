@@ -15,7 +15,7 @@
 
 #include "board.h"
 
-#if LCD_DISPLAY // Multi-line LCD display
+#if LCD_DISPLAY  // Multi-line LCD display
 
 #include <math.h>
 #include <stdio.h>
@@ -138,7 +138,7 @@ static int pow_2_ratio(uint32_t denom, uint32_t numer)
  *
  * \retval none
  */
-static void vtaskPowerDisplay(void *pcParameters)
+static void vtaskPowerDisplay(void* pcParameters)
 {
 #if 0
 	// Wait for 9 seconds while the Mobo Stuff catches up
@@ -148,26 +148,26 @@ static void vtaskPowerDisplay(void *pcParameters)
     // and always wait first to give the initialization routines a slot
     // to record the initialization
     do
-        vTaskDelay(configTICK_RATE_HZ / 4); // defer to other tasks
+        vTaskDelay(configTICK_RATE_HZ / 4);  // defer to other tasks
     while (widget_is_initializing());
 
 #endif
 
     // set these up here so the compiler knows they don't change
     const Bool have_si570 = i2c.si570;
-    const uint8_t bufsize = have_si570 ? 200 : 20; // IF RXdb only, then a large ringbuffer, else smaller
+    const uint8_t bufsize = have_si570 ? 200 : 20;  // IF RXdb only, then a large ringbuffer, else smaller
 
-    uint16_t pow_avg[PEP_MAX_PERIOD]; // Power measurement ringbuffer
+    uint16_t pow_avg[PEP_MAX_PERIOD];  // Power measurement ringbuffer
     uint8_t pow_avg_index = 0;
-    int audio_sample_buffer[2][bufsize]; // audio input ringbuffer
+    int audio_sample_buffer[2][bufsize];  // audio input ringbuffer
     uint8_t audio_sample_buffer_index = 0;
-    int spk_sample_buffer[2][bufsize]; // audio output ringbuffer
+    int spk_sample_buffer[2][bufsize];  // audio output ringbuffer
     uint8_t spk_sample_buffer_index = 0;
 
-    Bool clear_pow_avg = FALSE; // Whether the ! TX_state needs to clear pow_avg
+    Bool clear_pow_avg = FALSE;  // Whether the ! TX_state needs to clear pow_avg
 
-    uint8_t tx_print = 0;    // tx information print loop count down
-    uint8_t print_count = 0; // audio information print loop count down
+    uint8_t tx_print = 0;     // tx information print loop count down
+    uint8_t print_count = 0;  // audio information print loop count down
 
     while (1) {
         if (TMP_alarm) {
@@ -200,7 +200,7 @@ static void vtaskPowerDisplay(void *pcParameters)
                 tx_print = 0;
             if (tx_print == 0) {
                 // Prepare Power readout
-                pow_tot = measured_Power(ad7991_adc[AD7991_POWER_OUT]); // Power in cW
+                pow_tot = measured_Power(ad7991_adc[AD7991_POWER_OUT]);  // Power in cW
 
                 // Store value in ringbuffer
                 pow_avg[pow_avg_index] = pow_tot;
@@ -224,8 +224,8 @@ static void vtaskPowerDisplay(void *pcParameters)
                     // progress, maxprogress, len
                     lcdProgressBar(pow_tot / 10, cdata.PWR_fullscale * 10, 12, lcd_bar1);
 
-                    pow = pow_tot / 100;    // Watts
-                    pow_cw = pow_tot % 100; // centiWatts
+                    pow = pow_tot / 100;     // Watts
+                    pow_cw = pow_tot % 100;  // centiWatts
                     sprintf(lcd_prt1, "P%3lu.%02luW", pow, pow_cw);
 
                     xSemaphoreTake(mutexQueLCD, portMAX_DELAY);
@@ -241,15 +241,15 @@ static void vtaskPowerDisplay(void *pcParameters)
 
                     // Prepare SWR readout
                     uint16_t swr, swr_hundredths, swr_tenths;
-                    swr = measured_SWR / 100;            // SWR
-                    swr_hundredths = measured_SWR % 100; // sub decimal point, 1/100 accuracy
-                    swr_tenths = swr_hundredths / 10;    // sub decimal point, 1/10 accuracy
+                    swr = measured_SWR / 100;             // SWR
+                    swr_hundredths = measured_SWR % 100;  // sub decimal point, 1/100 accuracy
+                    swr_tenths = swr_hundredths / 10;     // sub decimal point, 1/10 accuracy
 
                     // progress, maxprogress, len
                     uint16_t swr_bar_value;
                     swr_bar_value = (measured_SWR > (cdata.SWR_fullscale * 100 + 99)) ? cdata.SWR_fullscale * 100 : measured_SWR - 100;
                     lcdProgressBar(swr_bar_value, cdata.SWR_fullscale * 100, 12, lcd_bar2);
-                    sprintf(lcd_prt2, "%2u.", swr); // Print the super decimal portion of the SWR
+                    sprintf(lcd_prt2, "%2u.", swr);  // Print the super decimal portion of the SWR
                     xSemaphoreTake(mutexQueLCD, portMAX_DELAY);
                     lcd_q_goto(3, 0);
                     lcd_q_print(lcd_bar2);
@@ -257,13 +257,13 @@ static void vtaskPowerDisplay(void *pcParameters)
 
                     lcd_q_print(lcd_prt2);
 
-#if SWR_ALARM_FUNC                 // SWR alarm function, activates a secondary PTT \
+#if SWR_ALARM_FUNC                  // SWR alarm function, activates a secondary PTT \
     //------------------------------                                \
     // Display a SWR Alarm situation                                \
     //------------------------------
-                    if (SWR_alarm) // SWR Alarm flag set
+                    if (SWR_alarm)  // SWR Alarm flag set
                     {
-                        if (swr >= 100) // SWR more than 99
+                        if (swr >= 100)  // SWR more than 99
                             sprintf(lcd_prt3, "  --A");
                         else
                             // Print the sub-decimal value of the SWR, single digit precision
@@ -271,8 +271,8 @@ static void vtaskPowerDisplay(void *pcParameters)
 
                         // Todo lcd_command(LCD_DISP_ON_BLINK);	// Blinking block cursor ON
                     } else
-#endif                                                             //SWR_ALARM_FUNC
-                        sprintf(lcd_prt3, "%02u", swr_hundredths); // Print the sub-decimal value of the SWR, double digit precision
+#endif                                                              //SWR_ALARM_FUNC
+                        sprintf(lcd_prt3, "%02u", swr_hundredths);  // Print the sub-decimal value of the SWR, double digit precision
 
                     lcd_q_print(lcd_prt3);
                     xSemaphoreGive(mutexQueLCD);
@@ -336,7 +336,7 @@ static void vtaskPowerDisplay(void *pcParameters)
                         int spk_max_0 = 0, spk_max_1 = 0;
                         uint8_t j;
                         for (j = 0; j < bufsize; j++) {
-                            if (!FEATURE_ADC_NONE) // No need to do this unless we have adc
+                            if (!FEATURE_ADC_NONE)  // No need to do this unless we have adc
                             {
                                 audio_max_0 = max(audio_max_0, audio_sample_buffer[0][j]);
                                 audio_max_1 = max(audio_max_1, audio_sample_buffer[1][j]);
@@ -353,7 +353,7 @@ static void vtaskPowerDisplay(void *pcParameters)
                             audio_max_1_dB = twenty_log10(2 * audio_max_1);
                             sprintf(lcd_prtdb1, "%4ddB  adc  %4ddB", audio_max_0_dB - 144, audio_max_1_dB - 144);
 
-                        } else // No ADC, do db display of dac instead
+                        } else  // No ADC, do db display of dac instead
                         {
                             audio_max_0_dB = twenty_log10(2 * spk_max_0);
                             audio_max_1_dB = twenty_log10(2 * spk_max_1);
@@ -528,7 +528,7 @@ static void vtaskPowerDisplay(void *pcParameters)
                 max_1_dB = 20 * log10f(1 + (max_1_pos - max_1_neg) / 2);
 
                 sprintf(lcd_prtdbhpf, "RXhpf %4.0fdB  %4.0fdB",
-                        max_0_dB - 144.0, max_1_dB - 144.0);
+                    max_0_dB - 144.0, max_1_dB - 144.0);
 
                 if (!MENU_mode) {
                     xSemaphoreTake(mutexQueLCD, portMAX_DELAY);
@@ -587,10 +587,10 @@ static void vtaskPowerDisplay(void *pcParameters)
             }
             m++;
             if (m == 200)
-                m = 0; // Print ENOB to LCD once every second
+                m = 0;  // Print ENOB to LCD once every second
 #endif
         }
-        vTaskDelay(50); // 5ms loop pause
+        vTaskDelay(50);  // 5ms loop pause
     }
 }
 
@@ -600,13 +600,13 @@ static void vtaskPowerDisplay(void *pcParameters)
  */
 void vStartTaskPowerDisplay(void)
 {
-    (void)twenty_log10(2); // initialize the precomputed tables
+    (void)twenty_log10(2);  // initialize the precomputed tables
     xStatus = xTaskCreate(vtaskPowerDisplay,
-                          configTSK_PDISPLAY_NAME,
-                          configTSK_PDISPLAY_STACK_SIZE,
-                          NULL,
-                          configTSK_PDISPLAY_PRIORITY,
-                          (xTaskHandle *)NULL);
+        configTSK_PDISPLAY_NAME,
+        configTSK_PDISPLAY_STACK_SIZE,
+        NULL,
+        configTSK_PDISPLAY_PRIORITY,
+        (xTaskHandle*)NULL);
 }
 
 #endif

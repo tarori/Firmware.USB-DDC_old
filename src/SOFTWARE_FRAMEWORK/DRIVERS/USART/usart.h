@@ -57,14 +57,14 @@
 /*! \name Return Values
  */
 //! @{
-#define USART_SUCCESS 0           //!< Successful completion.
-#define USART_FAILURE -1          //!< Failure because of some unspecified reason.
-#define USART_INVALID_INPUT 1     //!< Input value out of range.
-#define USART_INVALID_ARGUMENT -1 //!< Argument value out of range.
-#define USART_TX_BUSY 2           //!< Transmitter was busy.
-#define USART_RX_EMPTY 3          //!< Nothing was received.
-#define USART_RX_ERROR 4          //!< Transmission error occurred.
-#define USART_MODE_FAULT 5        //!< USART not in the appropriate mode.
+#define USART_SUCCESS 0            //!< Successful completion.
+#define USART_FAILURE -1           //!< Failure because of some unspecified reason.
+#define USART_INVALID_INPUT 1      //!< Input value out of range.
+#define USART_INVALID_ARGUMENT -1  //!< Argument value out of range.
+#define USART_TX_BUSY 2            //!< Transmitter was busy.
+#define USART_RX_EMPTY 3           //!< Nothing was received.
+#define USART_RX_ERROR 4           //!< Transmission error occurred.
+#define USART_MODE_FAULT 5         //!< USART not in the appropriate mode.
 //! @}
 
 //! Default time-out value (number of attempts).
@@ -73,53 +73,49 @@
 /*! \name Parity Settings
  */
 //! @{
-#define USART_EVEN_PARITY AVR32_USART_MR_PAR_EVEN       //!< Use even parity on character transmission.
-#define USART_ODD_PARITY AVR32_USART_MR_PAR_ODD         //!< Use odd parity on character transmission.
-#define USART_SPACE_PARITY AVR32_USART_MR_PAR_SPACE     //!< Use a space as parity bit.
-#define USART_MARK_PARITY AVR32_USART_MR_PAR_MARK       //!< Use a mark as parity bit.
-#define USART_NO_PARITY AVR32_USART_MR_PAR_NONE         //!< Don't use a parity bit.
-#define USART_MULTIDROP_PARITY AVR32_USART_MR_PAR_MULTI //!< Parity bit is used to flag address characters.
+#define USART_EVEN_PARITY AVR32_USART_MR_PAR_EVEN        //!< Use even parity on character transmission.
+#define USART_ODD_PARITY AVR32_USART_MR_PAR_ODD          //!< Use odd parity on character transmission.
+#define USART_SPACE_PARITY AVR32_USART_MR_PAR_SPACE      //!< Use a space as parity bit.
+#define USART_MARK_PARITY AVR32_USART_MR_PAR_MARK        //!< Use a mark as parity bit.
+#define USART_NO_PARITY AVR32_USART_MR_PAR_NONE          //!< Don't use a parity bit.
+#define USART_MULTIDROP_PARITY AVR32_USART_MR_PAR_MULTI  //!< Parity bit is used to flag address characters.
 //! @}
 
 /*! \name Stop Bits Settings
  */
 //! @{
-#define USART_1_STOPBIT AVR32_USART_MR_NBSTOP_1      //!< Use 1 stop bit.
-#define USART_1_5_STOPBITS AVR32_USART_MR_NBSTOP_1_5 //!< Use 1.5 stop bits.
-#define USART_2_STOPBITS AVR32_USART_MR_NBSTOP_2     //!< Use 2 stop bits (for more, just give the number of bits).
+#define USART_1_STOPBIT AVR32_USART_MR_NBSTOP_1       //!< Use 1 stop bit.
+#define USART_1_5_STOPBITS AVR32_USART_MR_NBSTOP_1_5  //!< Use 1.5 stop bits.
+#define USART_2_STOPBITS AVR32_USART_MR_NBSTOP_2      //!< Use 2 stop bits (for more, just give the number of bits).
 //! @}
 
 /*! \name Channel Modes
  */
 //! @{
-#define USART_NORMAL_CHMODE AVR32_USART_MR_CHMODE_NORMAL        //!< Normal communication.
-#define USART_AUTO_ECHO AVR32_USART_MR_CHMODE_ECHO              //!< Echo data.
-#define USART_LOCAL_LOOPBACK AVR32_USART_MR_CHMODE_LOCAL_LOOP   //!< Local loopback.
-#define USART_REMOTE_LOOPBACK AVR32_USART_MR_CHMODE_REMOTE_LOOP //!< Remote loopback.
+#define USART_NORMAL_CHMODE AVR32_USART_MR_CHMODE_NORMAL         //!< Normal communication.
+#define USART_AUTO_ECHO AVR32_USART_MR_CHMODE_ECHO               //!< Echo data.
+#define USART_LOCAL_LOOPBACK AVR32_USART_MR_CHMODE_LOCAL_LOOP    //!< Local loopback.
+#define USART_REMOTE_LOOPBACK AVR32_USART_MR_CHMODE_REMOTE_LOOP  //!< Remote loopback.
 //! @}
 
-#if defined(AVR32_USART_400_H_INCLUDED) || \
-    defined(AVR32_USART_410_H_INCLUDED) || \
-    defined(AVR32_USART_420_H_INCLUDED) || \
-    defined(AVR32_USART_440_H_INCLUDED) || \
-    defined(AVR32_USART_602_H_INCLUDED)
+#if defined(AVR32_USART_400_H_INCLUDED) || defined(AVR32_USART_410_H_INCLUDED) || defined(AVR32_USART_420_H_INCLUDED) || defined(AVR32_USART_440_H_INCLUDED) || defined(AVR32_USART_602_H_INCLUDED)
 
 /*! \name LIN Node Actions
  */
 //! @{
-#define USART_LIN_PUBLISH_ACTION AVR32_USART_LINMR_NACT_PUBLISH     //!< The USART transmits the response.
-#define USART_LIN_SUBSCRIBE_ACTION AVR32_USART_LINMR_NACT_SUBSCRIBE //!< The USART receives the response.
-#define USART_LIN_IGNORE_ACTION AVR32_USART_LINMR_NACT_IGNORE       //!< The USART does not transmit and does not receive the reponse.
+#define USART_LIN_PUBLISH_ACTION AVR32_USART_LINMR_NACT_PUBLISH      //!< The USART transmits the response.
+#define USART_LIN_SUBSCRIBE_ACTION AVR32_USART_LINMR_NACT_SUBSCRIBE  //!< The USART receives the response.
+#define USART_LIN_IGNORE_ACTION AVR32_USART_LINMR_NACT_IGNORE        //!< The USART does not transmit and does not receive the reponse.
 //! @}
 
 /*! \name LIN Checksum Types
  */
 //! @{
-#define USART_LIN_ENHANCED_CHECKSUM 0 //!< LIN 2.0 "enhanced" checksum.
-#define USART_LIN_CLASSIC_CHECKSUM 1  //!< LIN 1.3 "classic" checksum.
+#define USART_LIN_ENHANCED_CHECKSUM 0  //!< LIN 2.0 "enhanced" checksum.
+#define USART_LIN_CLASSIC_CHECKSUM 1   //!< LIN 1.3 "classic" checksum.
 //! @}
 
-#endif // USART rev. >= 4.0.0
+#endif  // USART rev. >= 4.0.0
 
 //! Input parameters when initializing RS232 and similar modes.
 typedef struct
@@ -182,11 +178,7 @@ typedef struct
     int bit_order;
 } usart_iso7816_options_t;
 
-#if defined(AVR32_USART_400_H_INCLUDED) || \
-    defined(AVR32_USART_410_H_INCLUDED) || \
-    defined(AVR32_USART_420_H_INCLUDED) || \
-    defined(AVR32_USART_440_H_INCLUDED) || \
-    defined(AVR32_USART_602_H_INCLUDED)
+#if defined(AVR32_USART_400_H_INCLUDED) || defined(AVR32_USART_410_H_INCLUDED) || defined(AVR32_USART_420_H_INCLUDED) || defined(AVR32_USART_440_H_INCLUDED) || defined(AVR32_USART_602_H_INCLUDED)
 
 //! Input parameters when initializing SPI mode.
 typedef struct
@@ -205,7 +197,7 @@ typedef struct
     unsigned char channelmode;
 } usart_spi_options_t;
 
-#endif // USART rev. >= 4.0.0
+#endif  // USART rev. >= 4.0.0
 
 //------------------------------------------------------------------------------
 /*! \name Initialization Functions
@@ -216,7 +208,7 @@ typedef struct
  *
  * \param usart   Base address of the USART instance.
  */
-extern void usart_reset(volatile avr32_usart_t *usart);
+extern void usart_reset(volatile avr32_usart_t* usart);
 
 /*! \brief Sets up the USART to use the standard RS232 protocol.
  *
@@ -227,7 +219,7 @@ extern void usart_reset(volatile avr32_usart_t *usart);
  * \retval USART_SUCCESS        Mode successfully initialized.
  * \retval USART_INVALID_INPUT  One or more of the arguments is out of valid range.
  */
-extern int usart_init_rs232(volatile avr32_usart_t *usart, const usart_options_t *opt, long pba_hz);
+extern int usart_init_rs232(volatile avr32_usart_t* usart, const usart_options_t* opt, long pba_hz);
 
 /*! \brief Sets up the USART to use the standard RS232 protocol in TX-only mode.
  *
@@ -243,7 +235,7 @@ extern int usart_init_rs232(volatile avr32_usart_t *usart, const usart_options_t
  *
  * \note The \c 1.5 stop bit is not supported in this mode.
  */
-extern int usart_init_rs232_tx_only(volatile avr32_usart_t *usart, const usart_options_t *opt, long pba_hz);
+extern int usart_init_rs232_tx_only(volatile avr32_usart_t* usart, const usart_options_t* opt, long pba_hz);
 
 /*! \brief Sets up the USART to use hardware handshaking.
  *
@@ -256,7 +248,7 @@ extern int usart_init_rs232_tx_only(volatile avr32_usart_t *usart, const usart_o
  *
  * \note \ref usart_init_rs232 does not need to be invoked before this function.
  */
-extern int usart_init_hw_handshaking(volatile avr32_usart_t *usart, const usart_options_t *opt, long pba_hz);
+extern int usart_init_hw_handshaking(volatile avr32_usart_t* usart, const usart_options_t* opt, long pba_hz);
 
 /*! \brief Sets up the USART to use the modem protocol, activating dedicated inputs/outputs.
  *
@@ -267,7 +259,7 @@ extern int usart_init_hw_handshaking(volatile avr32_usart_t *usart, const usart_
  * \retval USART_SUCCESS        Mode successfully initialized.
  * \retval USART_INVALID_INPUT  One or more of the arguments is out of valid range.
  */
-extern int usart_init_modem(volatile avr32_usart_t *usart, const usart_options_t *opt, long pba_hz);
+extern int usart_init_modem(volatile avr32_usart_t* usart, const usart_options_t* opt, long pba_hz);
 
 /*! \brief Sets up the USART to use a synchronous RS232-like protocol in master mode.
  *
@@ -278,7 +270,7 @@ extern int usart_init_modem(volatile avr32_usart_t *usart, const usart_options_t
  * \retval USART_SUCCESS        Mode successfully initialized.
  * \retval USART_INVALID_INPUT  One or more of the arguments is out of valid range.
  */
-extern int usart_init_sync_master(volatile avr32_usart_t *usart, const usart_options_t *opt, long pba_hz);
+extern int usart_init_sync_master(volatile avr32_usart_t* usart, const usart_options_t* opt, long pba_hz);
 
 /*! \brief Sets up the USART to use a synchronous RS232-like protocol in slave mode.
  *
@@ -289,7 +281,7 @@ extern int usart_init_sync_master(volatile avr32_usart_t *usart, const usart_opt
  * \retval USART_SUCCESS        Mode successfully initialized.
  * \retval USART_INVALID_INPUT  One or more of the arguments is out of valid range.
  */
-extern int usart_init_sync_slave(volatile avr32_usart_t *usart, const usart_options_t *opt, long pba_hz);
+extern int usart_init_sync_slave(volatile avr32_usart_t* usart, const usart_options_t* opt, long pba_hz);
 
 /*! \brief Sets up the USART to use the RS485 protocol.
  *
@@ -300,7 +292,7 @@ extern int usart_init_sync_slave(volatile avr32_usart_t *usart, const usart_opti
  * \retval USART_SUCCESS        Mode successfully initialized.
  * \retval USART_INVALID_INPUT  One or more of the arguments is out of valid range.
  */
-extern int usart_init_rs485(volatile avr32_usart_t *usart, const usart_options_t *opt, long pba_hz);
+extern int usart_init_rs485(volatile avr32_usart_t* usart, const usart_options_t* opt, long pba_hz);
 
 /*! \brief Sets up the USART to use the IrDA protocol.
  *
@@ -312,8 +304,8 @@ extern int usart_init_rs485(volatile avr32_usart_t *usart, const usart_options_t
  * \retval USART_SUCCESS        Mode successfully initialized.
  * \retval USART_INVALID_INPUT  One or more of the arguments is out of valid range.
  */
-extern int usart_init_IrDA(volatile avr32_usart_t *usart, const usart_options_t *opt,
-                           long pba_hz, unsigned char irda_filter);
+extern int usart_init_IrDA(volatile avr32_usart_t* usart, const usart_options_t* opt,
+    long pba_hz, unsigned char irda_filter);
 
 /*! \brief Sets up the USART to use the ISO7816 T=0 or T=1 smartcard protocols.
  *
@@ -329,13 +321,9 @@ extern int usart_init_IrDA(volatile avr32_usart_t *usart, const usart_options_t 
  * \retval USART_SUCCESS        Mode successfully initialized.
  * \retval USART_INVALID_INPUT  One or more of the arguments is out of valid range.
  */
-extern int usart_init_iso7816(volatile avr32_usart_t *usart, const usart_iso7816_options_t *opt, int t, long pba_hz);
+extern int usart_init_iso7816(volatile avr32_usart_t* usart, const usart_iso7816_options_t* opt, int t, long pba_hz);
 
-#if defined(AVR32_USART_400_H_INCLUDED) || \
-    defined(AVR32_USART_410_H_INCLUDED) || \
-    defined(AVR32_USART_420_H_INCLUDED) || \
-    defined(AVR32_USART_440_H_INCLUDED) || \
-    defined(AVR32_USART_602_H_INCLUDED)
+#if defined(AVR32_USART_400_H_INCLUDED) || defined(AVR32_USART_410_H_INCLUDED) || defined(AVR32_USART_420_H_INCLUDED) || defined(AVR32_USART_440_H_INCLUDED) || defined(AVR32_USART_602_H_INCLUDED)
 
 /*! \brief Sets up the USART to use the LIN master mode.
  *
@@ -344,7 +332,7 @@ extern int usart_init_iso7816(volatile avr32_usart_t *usart, const usart_iso7816
  * \param pba_hz    USART module input clock frequency (PBA clock, Hz).
  *
  */
-extern int usart_init_lin_master(volatile avr32_usart_t *usart, unsigned long baudrate, long pba_hz);
+extern int usart_init_lin_master(volatile avr32_usart_t* usart, unsigned long baudrate, long pba_hz);
 
 /*! \brief Sets up the USART to use the LIN slave mode.
  *
@@ -353,7 +341,7 @@ extern int usart_init_lin_master(volatile avr32_usart_t *usart, unsigned long ba
  * \param pba_hz    USART module input clock frequency (PBA clock, Hz).
  *
  */
-extern int usart_init_lin_slave(volatile avr32_usart_t *usart, unsigned long baudrate, long pba_hz);
+extern int usart_init_lin_slave(volatile avr32_usart_t* usart, unsigned long baudrate, long pba_hz);
 
 /*! \brief Sets up the USART to use the SPI master mode.
  *
@@ -367,7 +355,7 @@ extern int usart_init_lin_slave(volatile avr32_usart_t *usart, unsigned long bau
  * \retval USART_SUCCESS        Mode successfully initialized.
  * \retval USART_INVALID_INPUT  One or more of the arguments is out of valid range.
  */
-extern int usart_init_spi_master(volatile avr32_usart_t *usart, const usart_spi_options_t *opt, long pba_hz);
+extern int usart_init_spi_master(volatile avr32_usart_t* usart, const usart_spi_options_t* opt, long pba_hz);
 
 /*! \brief Sets up the USART to use the SPI slave mode.
  *
@@ -378,9 +366,9 @@ extern int usart_init_spi_master(volatile avr32_usart_t *usart, const usart_spi_
  * \retval USART_SUCCESS        Mode successfully initialized.
  * \retval USART_INVALID_INPUT  One or more of the arguments is out of valid range.
  */
-extern int usart_init_spi_slave(volatile avr32_usart_t *usart, const usart_spi_options_t *opt, long pba_hz);
+extern int usart_init_spi_slave(volatile avr32_usart_t* usart, const usart_spi_options_t* opt, long pba_hz);
 
-#endif // USART rev. >= 4.0.0
+#endif  // USART rev. >= 4.0.0
 
 //! @}
 
@@ -401,7 +389,7 @@ extern int usart_init_spi_slave(volatile avr32_usart_t *usart, const usart_spi_o
 __attribute__((__always_inline__))
 #endif
 extern __inline__ void
-usart_reset_status(volatile avr32_usart_t *usart)
+usart_reset_status(volatile avr32_usart_t* usart)
 {
     usart->cr = AVR32_USART_CR_RSTSTA_MASK;
 }
@@ -416,7 +404,7 @@ usart_reset_status(volatile avr32_usart_t *usart)
 __attribute__((__always_inline__))
 #endif
 extern __inline__ int
-usart_parity_error(volatile avr32_usart_t *usart)
+usart_parity_error(volatile avr32_usart_t* usart)
 {
     return (usart->csr & AVR32_USART_CSR_PARE_MASK) != 0;
 }
@@ -431,7 +419,7 @@ usart_parity_error(volatile avr32_usart_t *usart)
 __attribute__((__always_inline__))
 #endif
 extern __inline__ int
-usart_framing_error(volatile avr32_usart_t *usart)
+usart_framing_error(volatile avr32_usart_t* usart)
 {
     return (usart->csr & AVR32_USART_CSR_FRAME_MASK) != 0;
 }
@@ -446,16 +434,12 @@ usart_framing_error(volatile avr32_usart_t *usart)
 __attribute__((__always_inline__))
 #endif
 extern __inline__ int
-usart_overrun_error(volatile avr32_usart_t *usart)
+usart_overrun_error(volatile avr32_usart_t* usart)
 {
     return (usart->csr & AVR32_USART_CSR_OVRE_MASK) != 0;
 }
 
-#if defined(AVR32_USART_400_H_INCLUDED) || \
-    defined(AVR32_USART_410_H_INCLUDED) || \
-    defined(AVR32_USART_420_H_INCLUDED) || \
-    defined(AVR32_USART_440_H_INCLUDED) || \
-    defined(AVR32_USART_602_H_INCLUDED)
+#if defined(AVR32_USART_400_H_INCLUDED) || defined(AVR32_USART_410_H_INCLUDED) || defined(AVR32_USART_420_H_INCLUDED) || defined(AVR32_USART_440_H_INCLUDED) || defined(AVR32_USART_602_H_INCLUDED)
 
 /*! \brief Get LIN Error Status
  *
@@ -467,17 +451,12 @@ usart_overrun_error(volatile avr32_usart_t *usart)
 __attribute__((__always_inline__))
 #endif
 extern __inline__ int
-usart_lin_get_error(volatile avr32_usart_t *usart)
+usart_lin_get_error(volatile avr32_usart_t* usart)
 {
-    return (usart->csr & (AVR32_USART_CSR_LINSNRE_MASK |
-                          AVR32_USART_CSR_LINCE_MASK |
-                          AVR32_USART_CSR_LINIPE_MASK |
-                          AVR32_USART_CSR_LINISFE_MASK |
-                          AVR32_USART_CSR_LINBE_MASK)) >>
-           AVR32_USART_CSR_LINBE_OFFSET;
+    return (usart->csr & (AVR32_USART_CSR_LINSNRE_MASK | AVR32_USART_CSR_LINCE_MASK | AVR32_USART_CSR_LINIPE_MASK | AVR32_USART_CSR_LINISFE_MASK | AVR32_USART_CSR_LINBE_MASK)) >> AVR32_USART_CSR_LINBE_OFFSET;
 }
 
-#endif // USART rev. >= 4.0.0
+#endif  // USART rev. >= 4.0.0
 
 //! @}
 
@@ -496,7 +475,7 @@ usart_lin_get_error(volatile avr32_usart_t *usart)
 __attribute__((__always_inline__))
 #endif
 extern __inline__ void
-usart_iso7816_enable_receiver(volatile avr32_usart_t *usart)
+usart_iso7816_enable_receiver(volatile avr32_usart_t* usart)
 {
     usart->cr = AVR32_USART_CR_TXDIS_MASK | AVR32_USART_CR_RXEN_MASK;
 }
@@ -511,7 +490,7 @@ usart_iso7816_enable_receiver(volatile avr32_usart_t *usart)
 __attribute__((__always_inline__))
 #endif
 extern __inline__ void
-usart_iso7816_enable_transmitter(volatile avr32_usart_t *usart)
+usart_iso7816_enable_transmitter(volatile avr32_usart_t* usart)
 {
     usart->cr = AVR32_USART_CR_RXDIS_MASK | AVR32_USART_CR_TXEN_MASK;
 }
@@ -519,11 +498,7 @@ usart_iso7816_enable_transmitter(volatile avr32_usart_t *usart)
 //! @}
 
 //------------------------------------------------------------------------------
-#if defined(AVR32_USART_400_H_INCLUDED) || \
-    defined(AVR32_USART_410_H_INCLUDED) || \
-    defined(AVR32_USART_420_H_INCLUDED) || \
-    defined(AVR32_USART_440_H_INCLUDED) || \
-    defined(AVR32_USART_602_H_INCLUDED)
+#if defined(AVR32_USART_400_H_INCLUDED) || defined(AVR32_USART_410_H_INCLUDED) || defined(AVR32_USART_420_H_INCLUDED) || defined(AVR32_USART_440_H_INCLUDED) || defined(AVR32_USART_602_H_INCLUDED)
 
 /*! \name LIN Control Functions
  */
@@ -540,10 +515,9 @@ usart_iso7816_enable_transmitter(volatile avr32_usart_t *usart)
 __attribute__((__always_inline__))
 #endif
 extern __inline__ void
-usart_lin_set_node_action(volatile avr32_usart_t *usart, unsigned char action)
+usart_lin_set_node_action(volatile avr32_usart_t* usart, unsigned char action)
 {
-    usart->linmr = (usart->linmr & ~AVR32_USART_LINMR_NACT_MASK) |
-                   action << AVR32_USART_LINMR_NACT_OFFSET;
+    usart->linmr = (usart->linmr & ~AVR32_USART_LINMR_NACT_MASK) | action << AVR32_USART_LINMR_NACT_OFFSET;
 }
 
 /*! \brief Enables or disables the Identifier parity.
@@ -555,10 +529,9 @@ usart_lin_set_node_action(volatile avr32_usart_t *usart, unsigned char action)
 __attribute__((__always_inline__))
 #endif
 extern __inline__ void
-usart_lin_enable_parity(volatile avr32_usart_t *usart, unsigned char parity)
+usart_lin_enable_parity(volatile avr32_usart_t* usart, unsigned char parity)
 {
-    usart->linmr = (usart->linmr & ~AVR32_USART_LINMR_PARDIS_MASK) |
-                   !parity << AVR32_USART_LINMR_PARDIS_OFFSET;
+    usart->linmr = (usart->linmr & ~AVR32_USART_LINMR_PARDIS_MASK) | !parity << AVR32_USART_LINMR_PARDIS_OFFSET;
 }
 
 /*! \brief Enables or disables the checksum.
@@ -570,10 +543,9 @@ usart_lin_enable_parity(volatile avr32_usart_t *usart, unsigned char parity)
 __attribute__((__always_inline__))
 #endif
 extern __inline__ void
-usart_lin_enable_checksum(volatile avr32_usart_t *usart, unsigned char checksum)
+usart_lin_enable_checksum(volatile avr32_usart_t* usart, unsigned char checksum)
 {
-    usart->linmr = (usart->linmr & ~AVR32_USART_LINMR_CHKDIS_MASK) |
-                   !checksum << AVR32_USART_LINMR_CHKDIS_OFFSET;
+    usart->linmr = (usart->linmr & ~AVR32_USART_LINMR_CHKDIS_MASK) | !checksum << AVR32_USART_LINMR_CHKDIS_OFFSET;
 }
 
 /*! \brief Sets the checksum type.
@@ -586,10 +558,9 @@ usart_lin_enable_checksum(volatile avr32_usart_t *usart, unsigned char checksum)
 __attribute__((__always_inline__))
 #endif
 extern __inline__ void
-usart_lin_set_checksum(volatile avr32_usart_t *usart, unsigned char chktyp)
+usart_lin_set_checksum(volatile avr32_usart_t* usart, unsigned char chktyp)
 {
-    usart->linmr = (usart->linmr & ~AVR32_USART_LINMR_CHKTYP_MASK) |
-                   chktyp << AVR32_USART_LINMR_CHKTYP_OFFSET;
+    usart->linmr = (usart->linmr & ~AVR32_USART_LINMR_CHKTYP_MASK) | chktyp << AVR32_USART_LINMR_CHKTYP_OFFSET;
 }
 
 /*! \brief Gets the response data length.
@@ -602,7 +573,7 @@ usart_lin_set_checksum(volatile avr32_usart_t *usart, unsigned char chktyp)
 __attribute__((__always_inline__))
 #endif
 extern __inline__ unsigned char
-usart_lin_get_data_length(volatile avr32_usart_t *usart)
+usart_lin_get_data_length(volatile avr32_usart_t* usart)
 {
     if (usart->linmr & AVR32_USART_LINMR_DLM_MASK) {
         unsigned char data_length = 1 << ((usart->linir >> (AVR32_USART_LINIR_IDCHR_OFFSET + 4)) & 0x03);
@@ -621,7 +592,7 @@ usart_lin_get_data_length(volatile avr32_usart_t *usart)
 __attribute__((__always_inline__))
 #endif
 extern __inline__ void
-usart_lin_set_data_length_lin1x(volatile avr32_usart_t *usart)
+usart_lin_set_data_length_lin1x(volatile avr32_usart_t* usart)
 {
     usart->linmr |= AVR32_USART_LINMR_DLM_MASK;
 }
@@ -635,11 +606,9 @@ usart_lin_set_data_length_lin1x(volatile avr32_usart_t *usart)
 __attribute__((__always_inline__))
 #endif
 extern __inline__ void
-usart_lin_set_data_length_lin2x(volatile avr32_usart_t *usart, unsigned char data_length)
+usart_lin_set_data_length_lin2x(volatile avr32_usart_t* usart, unsigned char data_length)
 {
-    usart->linmr = (usart->linmr & ~(AVR32_USART_LINMR_DLC_MASK |
-                                     AVR32_USART_LINMR_DLM_MASK)) |
-                   (data_length - 1) << AVR32_USART_LINMR_DLC_OFFSET;
+    usart->linmr = (usart->linmr & ~(AVR32_USART_LINMR_DLC_MASK | AVR32_USART_LINMR_DLM_MASK)) | (data_length - 1) << AVR32_USART_LINMR_DLC_OFFSET;
 }
 
 /*! \brief Enables or disables the frame slot mode.
@@ -652,10 +621,9 @@ usart_lin_set_data_length_lin2x(volatile avr32_usart_t *usart, unsigned char dat
 __attribute__((__always_inline__))
 #endif
 extern __inline__ void
-usart_lin_enable_frameslot(volatile avr32_usart_t *usart, unsigned char frameslot)
+usart_lin_enable_frameslot(volatile avr32_usart_t* usart, unsigned char frameslot)
 {
-    usart->linmr = (usart->linmr & ~AVR32_USART_LINMR_FSDIS_MASK) |
-                   !frameslot << AVR32_USART_LINMR_FSDIS_OFFSET;
+    usart->linmr = (usart->linmr & ~AVR32_USART_LINMR_FSDIS_MASK) | !frameslot << AVR32_USART_LINMR_FSDIS_OFFSET;
 }
 
 /*! \brief Gets the Identifier character.
@@ -668,7 +636,7 @@ usart_lin_enable_frameslot(volatile avr32_usart_t *usart, unsigned char frameslo
 __attribute__((__always_inline__))
 #endif
 extern __inline__ unsigned char
-usart_lin_get_id_char(volatile avr32_usart_t *usart)
+usart_lin_get_id_char(volatile avr32_usart_t* usart)
 {
     return (usart->linir & AVR32_USART_LINIR_IDCHR_MASK) >> AVR32_USART_LINIR_IDCHR_OFFSET;
 }
@@ -682,22 +650,17 @@ usart_lin_get_id_char(volatile avr32_usart_t *usart)
 __attribute__((__always_inline__))
 #endif
 extern __inline__ void
-usart_lin_set_id_char(volatile avr32_usart_t *usart, unsigned char id_char)
+usart_lin_set_id_char(volatile avr32_usart_t* usart, unsigned char id_char)
 {
-    usart->linir = (usart->linir & ~AVR32_USART_LINIR_IDCHR_MASK) |
-                   id_char << AVR32_USART_LINIR_IDCHR_OFFSET;
+    usart->linir = (usart->linir & ~AVR32_USART_LINIR_IDCHR_MASK) | id_char << AVR32_USART_LINIR_IDCHR_OFFSET;
 }
 
 //! @}
 
-#endif // USART rev. >= 4.0.0
+#endif  // USART rev. >= 4.0.0
 
 //------------------------------------------------------------------------------
-#if defined(AVR32_USART_400_H_INCLUDED) || \
-    defined(AVR32_USART_410_H_INCLUDED) || \
-    defined(AVR32_USART_420_H_INCLUDED) || \
-    defined(AVR32_USART_440_H_INCLUDED) || \
-    defined(AVR32_USART_602_H_INCLUDED)
+#if defined(AVR32_USART_400_H_INCLUDED) || defined(AVR32_USART_410_H_INCLUDED) || defined(AVR32_USART_420_H_INCLUDED) || defined(AVR32_USART_440_H_INCLUDED) || defined(AVR32_USART_602_H_INCLUDED)
 
 /*! \name SPI Control Functions
  */
@@ -709,7 +672,7 @@ usart_lin_set_id_char(volatile avr32_usart_t *usart, unsigned char id_char)
  *
  * \retval USART_SUCCESS        Success.
  */
-extern int usart_spi_selectChip(volatile avr32_usart_t *usart);
+extern int usart_spi_selectChip(volatile avr32_usart_t* usart);
 
 /*! \brief Unselects SPI slave chip.
  *
@@ -718,11 +681,11 @@ extern int usart_spi_selectChip(volatile avr32_usart_t *usart);
  * \retval USART_SUCCESS        Success.
  * \retval USART_FAILURE        Time-out.
  */
-extern int usart_spi_unselectChip(volatile avr32_usart_t *usart);
+extern int usart_spi_unselectChip(volatile avr32_usart_t* usart);
 
 //! @}
 
-#endif // USART rev. >= 4.0.0
+#endif  // USART rev. >= 4.0.0
 
 //------------------------------------------------------------------------------
 /*! \name Transmit/Receive Functions
@@ -742,7 +705,7 @@ extern int usart_spi_unselectChip(volatile avr32_usart_t *usart);
  * \retval USART_SUCCESS    Address successfully sent (if current mode is RS485).
  * \retval USART_MODE_FAULT Wrong operating mode.
  */
-extern int usart_send_address(volatile avr32_usart_t *usart, int address);
+extern int usart_send_address(volatile avr32_usart_t* usart, int address);
 
 /*! \brief Tests if the USART is ready to transmit a character.
  *
@@ -754,7 +717,7 @@ extern int usart_send_address(volatile avr32_usart_t *usart, int address);
 __attribute__((__always_inline__))
 #endif
 extern __inline__ int
-usart_tx_ready(volatile avr32_usart_t *usart)
+usart_tx_ready(volatile avr32_usart_t* usart)
 {
     return (usart->csr & AVR32_USART_CSR_TXRDY_MASK) != 0;
 }
@@ -767,7 +730,7 @@ usart_tx_ready(volatile avr32_usart_t *usart)
  * \retval USART_SUCCESS  The transmitter was ready.
  * \retval USART_TX_BUSY  The transmitter was busy.
  */
-extern int usart_write_char(volatile avr32_usart_t *usart, int c);
+extern int usart_write_char(volatile avr32_usart_t* usart, int c);
 
 /*! \brief An active wait writing a character to the USART.
  *
@@ -778,7 +741,7 @@ extern int usart_write_char(volatile avr32_usart_t *usart, int c);
 __attribute__((__always_inline__))
 #endif
 extern __inline__ void
-usart_bw_write_char(volatile avr32_usart_t *usart, int c)
+usart_bw_write_char(volatile avr32_usart_t* usart, int c)
 {
     while (usart_write_char(usart, c) != USART_SUCCESS)
         ;
@@ -792,7 +755,7 @@ usart_bw_write_char(volatile avr32_usart_t *usart, int c)
  * \retval USART_SUCCESS  The character was written.
  * \retval USART_FAILURE  The function timed out before the USART transmitter became ready to send.
  */
-extern int usart_putchar(volatile avr32_usart_t *usart, int c);
+extern int usart_putchar(volatile avr32_usart_t* usart, int c);
 
 /*! \brief Tests if all requested USART transmissions are over.
  *
@@ -805,7 +768,7 @@ extern int usart_putchar(volatile avr32_usart_t *usart, int c);
 __attribute__((__always_inline__))
 #endif
 extern __inline__ int
-usart_tx_empty(volatile avr32_usart_t *usart)
+usart_tx_empty(volatile avr32_usart_t* usart)
 {
     return (usart->csr & AVR32_USART_CSR_TXEMPTY_MASK) != 0;
 }
@@ -820,7 +783,7 @@ usart_tx_empty(volatile avr32_usart_t *usart)
 __attribute__((__always_inline__))
 #endif
 extern __inline__ int
-usart_test_hit(volatile avr32_usart_t *usart)
+usart_test_hit(volatile avr32_usart_t* usart)
 {
     return (usart->csr & AVR32_USART_CSR_RXRDY_MASK) != 0;
 }
@@ -836,7 +799,7 @@ usart_test_hit(volatile avr32_usart_t *usart)
  * \retval USART_RX_EMPTY The RX buffer was empty.
  * \retval USART_RX_ERROR An error was deteceted.
  */
-extern int usart_read_char(volatile avr32_usart_t *usart, int *c);
+extern int usart_read_char(volatile avr32_usart_t* usart, int* c);
 
 /*! \brief Waits until a character is received, and returns it.
  *
@@ -844,14 +807,14 @@ extern int usart_read_char(volatile avr32_usart_t *usart, int *c);
  *
  * \return The received character, or \ref USART_FAILURE upon error.
  */
-extern int usart_getchar(volatile avr32_usart_t *usart);
+extern int usart_getchar(volatile avr32_usart_t* usart);
 
 /*! \brief Writes one character string to the USART.
  *
  * \param usart   Base address of the USART instance.
  * \param string  String to be written.
  */
-extern void usart_write_line(volatile avr32_usart_t *usart, const char *string);
+extern void usart_write_line(volatile avr32_usart_t* usart, const char* string);
 
 /*! \brief Gets and echoes characters until end of line.
  *
@@ -860,13 +823,9 @@ extern void usart_write_line(volatile avr32_usart_t *usart, const char *string);
  * \retval USART_SUCCESS  Success.
  * \retval USART_FAILURE  Low-level error detected or ETX character received.
  */
-extern int usart_get_echo_line(volatile avr32_usart_t *usart);
+extern int usart_get_echo_line(volatile avr32_usart_t* usart);
 
-#if defined(AVR32_USART_400_H_INCLUDED) || \
-    defined(AVR32_USART_410_H_INCLUDED) || \
-    defined(AVR32_USART_420_H_INCLUDED) || \
-    defined(AVR32_USART_440_H_INCLUDED) || \
-    defined(AVR32_USART_602_H_INCLUDED)
+#if defined(AVR32_USART_400_H_INCLUDED) || defined(AVR32_USART_410_H_INCLUDED) || defined(AVR32_USART_420_H_INCLUDED) || defined(AVR32_USART_440_H_INCLUDED) || defined(AVR32_USART_602_H_INCLUDED)
 
 /*! \brief Abort LIN transmission.
  *
@@ -876,7 +835,7 @@ extern int usart_get_echo_line(volatile avr32_usart_t *usart);
 __attribute__((__always_inline__))
 #endif
 extern __inline__ void
-usart_lin_abort(volatile avr32_usart_t *usart)
+usart_lin_abort(volatile avr32_usart_t* usart)
 {
     usart->cr = AVR32_USART_LINABT_MASK;
 }
@@ -891,13 +850,13 @@ usart_lin_abort(volatile avr32_usart_t *usart)
 __attribute__((__always_inline__))
 #endif
 extern __inline__ int
-usart_lin_transfer_completed(volatile avr32_usart_t *usart)
+usart_lin_transfer_completed(volatile avr32_usart_t* usart)
 {
     return (usart->csr & AVR32_USART_CSR_LINTC_MASK) != 0;
 }
 
-#endif // USART rev. >= 4.0.0
+#endif  // USART rev. >= 4.0.0
 
 //! @}
 
-#endif // _USART_H_
+#endif  // _USART_H_

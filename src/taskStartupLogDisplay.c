@@ -26,9 +26,9 @@
  *
  * \retval none
  */
-static void vtaskStartupLogDisplay(void *pcParameters)
+static void vtaskStartupLogDisplay(void* pcParameters)
 {
-    MENU_mode = TRUE; // Grab LCD from Mobo tasks
+    MENU_mode = TRUE;  // Grab LCD from Mobo tasks
 
     widget_initialization_start();
     if (!FEATURE_LOG_NONE) {
@@ -49,7 +49,7 @@ static void vtaskStartupLogDisplay(void *pcParameters)
         vTaskDelay(startup_log_delay);
 
         while (1) {
-            char **buffer_lines;
+            char** buffer_lines;
             int lines;
 
             current_line += 1;
@@ -66,8 +66,8 @@ static void vtaskStartupLogDisplay(void *pcParameters)
             } else if (current_line < lines + 2) {
                 ;
             } else {
-                TX_state = TRUE;   // Force Mobo LCD housekeeping
-                MENU_mode = FALSE; // return LCD to Mobo tasks
+                TX_state = TRUE;    // Force Mobo LCD housekeeping
+                MENU_mode = FALSE;  // return LCD to Mobo tasks
                 break;
             }
 
@@ -94,9 +94,9 @@ static void vtaskStartupLogDisplay(void *pcParameters)
 void vStartTaskStartupLogDisplay(void)
 {
     xTaskCreate(vtaskStartupLogDisplay,
-                configTSK_LOGDISPLAY_NAME,
-                configTSK_LOGDISPLAY_STACK_SIZE,
-                NULL,
-                configTSK_LOGDISPLAY_PRIORITY,
-                (xTaskHandle *)NULL);
+        configTSK_LOGDISPLAY_NAME,
+        configTSK_LOGDISPLAY_STACK_SIZE,
+        NULL,
+        configTSK_LOGDISPLAY_PRIORITY,
+        (xTaskHandle*)NULL);
 }

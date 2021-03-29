@@ -77,23 +77,22 @@ typedef const struct
 {
     struct
     {
-        U32 PORT;     //!< LED GPIO port.
-        U32 PIN_MASK; //!< Bit-mask of LED pin in GPIO port.
-    } GPIO;           //!< LED GPIO descriptor.
+        U32 PORT;      //!< LED GPIO port.
+        U32 PIN_MASK;  //!< Bit-mask of LED pin in GPIO port.
+    } GPIO;            //!< LED GPIO descriptor.
     struct
     {
-        S32 CHANNEL;  //!< LED PWM channel (< 0 if N/A).
-        S32 FUNCTION; //!< LED pin PWM function (< 0 if N/A).
-    } PWM;            //!< LED PWM descriptor.
+        S32 CHANNEL;   //!< LED PWM channel (< 0 if N/A).
+        S32 FUNCTION;  //!< LED pin PWM function (< 0 if N/A).
+    } PWM;             //!< LED PWM descriptor.
 } tLED_DESCRIPTOR;
 
 //! Hardware descriptors of all LEDs.
-static tLED_DESCRIPTOR LED_DESCRIPTOR[LED_COUNT] =
-    {
+static tLED_DESCRIPTOR LED_DESCRIPTOR[LED_COUNT] = {
 #define INSERT_LED_DESCRIPTOR(LED_NO, unused) \
     {                                         \
         {LED##LED_NO##_GPIO / 32, 1 << (LED##LED_NO##_GPIO % 32)}},
-        MREPEAT(LED_COUNT, INSERT_LED_DESCRIPTOR, ~)
+    MREPEAT(LED_COUNT, INSERT_LED_DESCRIPTOR, ~)
 #undef INSERT_LED_DESCRIPTOR
 };
 
@@ -108,8 +107,8 @@ U32 LED_Read_Display(void)
 void LED_Display(U32 leds)
 {
     // Use the LED descriptors to get the connections of a given LED to the MCU.
-    tLED_DESCRIPTOR *led_descriptor;
-    volatile avr32_gpio_port_t *led_gpio_port;
+    tLED_DESCRIPTOR* led_descriptor;
+    volatile avr32_gpio_port_t* led_gpio_port;
 
     // Make sure only existing LEDs are specified.
     leds &= (1 << LED_COUNT) - 1;
@@ -142,8 +141,8 @@ U32 LED_Read_Display_Mask(U32 mask)
 void LED_Display_Mask(U32 mask, U32 leds)
 {
     // Use the LED descriptors to get the connections of a given LED to the MCU.
-    tLED_DESCRIPTOR *led_descriptor = &LED_DESCRIPTOR[0] - 1;
-    volatile avr32_gpio_port_t *led_gpio_port;
+    tLED_DESCRIPTOR* led_descriptor = &LED_DESCRIPTOR[0] - 1;
+    volatile avr32_gpio_port_t* led_gpio_port;
     U8 led_shift;
 
     // Make sure only existing LEDs are specified.
@@ -180,8 +179,8 @@ Bool LED_Test(U32 leds)
 void LED_Off_GPIO(U32 leds)
 {
     // Use the LED descriptors to get the connections of a given LED to the MCU.
-    tLED_DESCRIPTOR *led_descriptor = &LED_DESCRIPTOR[0] - 1;
-    volatile avr32_gpio_port_t *led_gpio_port;
+    tLED_DESCRIPTOR* led_descriptor = &LED_DESCRIPTOR[0] - 1;
+    volatile avr32_gpio_port_t* led_gpio_port;
     U8 led_shift;
 
     // Make sure only existing LEDs are specified.
@@ -207,8 +206,8 @@ void LED_Off_GPIO(U32 leds)
 void LED_On_GPIO(U32 leds)
 {
     // Use the LED descriptors to get the connections of a given LED to the MCU.
-    tLED_DESCRIPTOR *led_descriptor = &LED_DESCRIPTOR[0] - 1;
-    volatile avr32_gpio_port_t *led_gpio_port;
+    tLED_DESCRIPTOR* led_descriptor = &LED_DESCRIPTOR[0] - 1;
+    volatile avr32_gpio_port_t* led_gpio_port;
     U8 led_shift;
 
     // Make sure only existing LEDs are specified.
@@ -233,34 +232,34 @@ void LED_On_GPIO(U32 leds)
 //Function called by other code
 void LED_Off(U32 leds)
 {
-    gpio_enable_pin_pull_up(AVR32_PIN_PA04); // Floating: Active high. GND: Active low
+    gpio_enable_pin_pull_up(AVR32_PIN_PA04);  // Floating: Active high. GND: Active low
 
-    if (gpio_get_pin_value(AVR32_PIN_PA04) == 1) // Active high
+    if (gpio_get_pin_value(AVR32_PIN_PA04) == 1)  // Active high
         LED_Off_GPIO(leds);
-    else // Active low
+    else  // Active low
         LED_On_GPIO(leds);
 
-    gpio_disable_pin_pull_up(AVR32_PIN_PA04); // Floating: Active high. GND: Active low
+    gpio_disable_pin_pull_up(AVR32_PIN_PA04);  // Floating: Active high. GND: Active low
 }
 
 //Function called by other code
 void LED_On(U32 leds)
 {
-    gpio_enable_pin_pull_up(AVR32_PIN_PA04); // Floating: Active high. GND: Active low
+    gpio_enable_pin_pull_up(AVR32_PIN_PA04);  // Floating: Active high. GND: Active low
 
-    if (gpio_get_pin_value(AVR32_PIN_PA04) == 1) // Active high
+    if (gpio_get_pin_value(AVR32_PIN_PA04) == 1)  // Active high
         LED_On_GPIO(leds);
-    else // Active low
+    else  // Active low
         LED_Off_GPIO(leds);
 
-    gpio_disable_pin_pull_up(AVR32_PIN_PA04); // Floating: Active high. GND: Active low
+    gpio_disable_pin_pull_up(AVR32_PIN_PA04);  // Floating: Active high. GND: Active low
 }
 
 void LED_Toggle(U32 leds)
 {
     // Use the LED descriptors to get the connections of a given LED to the MCU.
-    tLED_DESCRIPTOR *led_descriptor = &LED_DESCRIPTOR[0] - 1;
-    volatile avr32_gpio_port_t *led_gpio_port;
+    tLED_DESCRIPTOR* led_descriptor = &LED_DESCRIPTOR[0] - 1;
+    volatile avr32_gpio_port_t* led_gpio_port;
     U8 led_shift;
 
     // Make sure only existing LEDs are specified.

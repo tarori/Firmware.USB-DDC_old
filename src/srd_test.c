@@ -16,13 +16,13 @@ int32_t BSBmult(int32_t A, int32_t V)
     int32_t X;
 
     asm volatile(
-        "muls.d		r10, %2, %1		\n\t"         // Double multiply, r9 holds 63:31, r8 holds 32:0
-        "lsr     	r10, 28			\n\t"         // r9:r8 right-shifted arithmetically by 28 so that V=0x10000000 is unity gain
-        "or			%0, r10, r11 << 4	\n\t" // Merging stuff back together into X. (Try compiling "return A >> 28;" with S64 A !)
+        "muls.d		r10, %2, %1		\n\t"          // Double multiply, r9 holds 63:31, r8 holds 32:0
+        "lsr     	r10, 28			\n\t"          // r9:r8 right-shifted arithmetically by 28 so that V=0x10000000 is unity gain
+        "or			%0, r10, r11 << 4	\n\t"  // Merging stuff back together into X. (Try compiling "return A >> 28;" with S64 A !)
 
-        : "=r"(X)        // One output register X=%0
-        : "r"(A), "r"(V) // No input registers  A=%1, V=%2
-        : "r10"          // Clobber registers, r10 is the the return of the muls.d, r11 follows. Declare it as clobber??
+        : "=r"(X)         // One output register X=%0
+        : "r"(A), "r"(V)  // No input registers  A=%1, V=%2
+        : "r10"           // Clobber registers, r10 is the the return of the muls.d, r11 follows. Declare it as clobber??
     );
 
     return X;
@@ -75,7 +75,7 @@ int foo(void)
 
     // Code to determine GPIO constants, rewrite this (2 positions!) first, compile this section, then modify asm
     // GEN_DIN20 / SP_DAC02 moved to PX09
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[AVR32_PIN_PX09 >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[AVR32_PIN_PX09 >> 5];
     while ((timeout != 0) && (((gpio_port->pvr >> (AVR32_PIN_PX09 & 0x1F)) & 1) == 0)) {
         timeout--;
     }

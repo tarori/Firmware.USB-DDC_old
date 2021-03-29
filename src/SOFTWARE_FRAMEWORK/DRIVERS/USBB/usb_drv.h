@@ -194,15 +194,15 @@
 //! These macros manage the USBB controller
 //! @{
 //! Configure time-out of specified OTG timer
-#define Usb_configure_timeout(timer, timeout) (Set_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_UNLOCK_MASK),               \
-                                               Wr_bitfield(AVR32_USBB_usbcon, AVR32_USBB_USBCON_TIMPAGE_MASK, timer),    \
-                                               Wr_bitfield(AVR32_USBB_usbcon, AVR32_USBB_USBCON_TIMVALUE_MASK, timeout), \
-                                               Clr_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_UNLOCK_MASK))
+#define Usb_configure_timeout(timer, timeout) (Set_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_UNLOCK_MASK), \
+    Wr_bitfield(AVR32_USBB_usbcon, AVR32_USBB_USBCON_TIMPAGE_MASK, timer),                                 \
+    Wr_bitfield(AVR32_USBB_usbcon, AVR32_USBB_USBCON_TIMVALUE_MASK, timeout),                              \
+    Clr_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_UNLOCK_MASK))
 //! Get configured time-out of specified OTG timer
-#define Usb_get_timeout(timer) (Set_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_UNLOCK_MASK),            \
-                                Wr_bitfield(AVR32_USBB_usbcon, AVR32_USBB_USBCON_TIMPAGE_MASK, timer), \
-                                Clr_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_UNLOCK_MASK),            \
-                                Rd_bitfield(AVR32_USBB_usbcon, AVR32_USBB_USBCON_TIMVALUE_MASK))
+#define Usb_get_timeout(timer) (Set_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_UNLOCK_MASK), \
+    Wr_bitfield(AVR32_USBB_usbcon, AVR32_USBB_USBCON_TIMPAGE_MASK, timer),                  \
+    Clr_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_UNLOCK_MASK),                             \
+    Rd_bitfield(AVR32_USBB_usbcon, AVR32_USBB_USBCON_TIMVALUE_MASK))
 
 #if USB_DEVICE_FEATURE == ENABLED && USB_HOST_FEATURE == ENABLED
 //! Check that multiplexed pin used for USB_ID is defined
@@ -221,11 +221,9 @@
         AVR32_GPIO.port[USB_ID_PIN >> 5].puers = 1 << (USB_ID_PIN & 0x1F);                                                                                                             \
     }
 //! Test if USB_ID is input from its pin
-#define Is_usb_id_pin_input()                                                                                   \
-    (!Tst_bits(AVR32_GPIO.port[USB_ID_PIN >> 5].gper, 1 << (USB_ID_PIN & 0x1F)) &&                              \
-     Tst_bits(AVR32_GPIO.port[USB_ID_PIN >> 5].pmr0, 1 << (USB_ID_PIN & 0x1F)) == Tst_bits(USB_ID_PIN, 0x01) && \
-     Tst_bits(AVR32_GPIO.port[USB_ID_PIN >> 5].pmr1, 1 << (USB_ID_PIN & 0x1F)) == Tst_bits(USB_ID_PIN, 0x02))
-#endif // USB_DEVICE_FEATURE == ENABLED && USB_HOST_FEATURE == ENABLED \
+#define Is_usb_id_pin_input() \
+    (!Tst_bits(AVR32_GPIO.port[USB_ID_PIN >> 5].gper, 1 << (USB_ID_PIN & 0x1F)) && Tst_bits(AVR32_GPIO.port[USB_ID_PIN >> 5].pmr0, 1 << (USB_ID_PIN & 0x1F)) == Tst_bits(USB_ID_PIN, 0x01) && Tst_bits(AVR32_GPIO.port[USB_ID_PIN >> 5].pmr1, 1 << (USB_ID_PIN & 0x1F)) == Tst_bits(USB_ID_PIN, 0x02))
+#endif  // USB_DEVICE_FEATURE == ENABLED && USB_HOST_FEATURE == ENABLED \
        //! Enable external USB_ID pin (listened to by USB)
 #define Usb_enable_id_pin() (Set_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_UIDE_MASK))
 //! Disable external USB_ID pin (ignored by USB)
@@ -259,11 +257,9 @@
         AVR32_GPIO.port[USB_VBOF_PIN >> 5].puerc = 1 << (USB_VBOF_PIN & 0x1F);                                                                                                                   \
     }
 //! Test if USB_VBOF is output onto its pin
-#define Is_usb_vbof_pin_output()                                                                                           \
-    (!Tst_bits(AVR32_GPIO.port[USB_VBOF_PIN >> 5].gper, 1 << (USB_VBOF_PIN & 0x1F)) &&                                     \
-     Tst_bits(AVR32_GPIO.port[USB_VBOF_PIN >> 5].pmr0, 1 << (USB_VBOF_PIN & 0x1F)) == Tst_bits(USB_VBOF_FUNCTION, 0x01) && \
-     Tst_bits(AVR32_GPIO.port[USB_VBOF_PIN >> 5].pmr1, 1 << (USB_VBOF_PIN & 0x1F)) == Tst_bits(USB_VBOF_FUNCTION, 0x02))
-#endif // USB_HOST_FEATURE == ENABLED \
+#define Is_usb_vbof_pin_output() \
+    (!Tst_bits(AVR32_GPIO.port[USB_VBOF_PIN >> 5].gper, 1 << (USB_VBOF_PIN & 0x1F)) && Tst_bits(AVR32_GPIO.port[USB_VBOF_PIN >> 5].pmr0, 1 << (USB_VBOF_PIN & 0x1F)) == Tst_bits(USB_VBOF_FUNCTION, 0x01) && Tst_bits(AVR32_GPIO.port[USB_VBOF_PIN >> 5].pmr1, 1 << (USB_VBOF_PIN & 0x1F)) == Tst_bits(USB_VBOF_FUNCTION, 0x02))
+#endif  // USB_HOST_FEATURE == ENABLED \
        //! Set USB_VBOF output pin polarity
 #define Usb_set_vbof_active_high() (Clr_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_VBUSPO_MASK))
 #define Usb_set_vbof_active_low() (Set_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_VBUSPO_MASK))
@@ -546,7 +542,7 @@
 //! @{
 //! resets the selected endpoint
 #define Usb_reset_endpoint(ep) (Set_bits(AVR32_USBB_uerst, AVR32_USBB_UERST_EPRST0_MASK << (ep)), \
-                                Clr_bits(AVR32_USBB_uerst, AVR32_USBB_UERST_EPRST0_MASK << (ep)))
+    Clr_bits(AVR32_USBB_uerst, AVR32_USBB_UERST_EPRST0_MASK << (ep)))
 //! tests if the selected endpoint is being reset
 #define Is_usb_resetting_endpoint(ep) (Tst_bits(AVR32_USBB_uerst, AVR32_USBB_UERST_EPRST0_MASK << (ep)))
 
@@ -580,9 +576,7 @@
 //! tests if the selected endpoint interrupt is enabled
 #define Is_usb_endpoint_interrupt_enabled(ep) (Tst_bits(AVR32_USBB_udinte, AVR32_USBB_UDINTE_EP0INTE_MASK << (ep)))
 //! returns the lowest endpoint number generating an endpoint interrupt or MAX_PEP_NB if none
-#define Usb_get_interrupt_endpoint_number() (ctz(((AVR32_USBB_udint >> AVR32_USBB_UDINT_EP0INT_OFFSET) &     \
-                                                  (AVR32_USBB_udinte >> AVR32_USBB_UDINTE_EP0INTE_OFFSET)) | \
-                                                 (1 << MAX_PEP_NB)))
+#define Usb_get_interrupt_endpoint_number() (ctz(((AVR32_USBB_udint >> AVR32_USBB_UDINT_EP0INT_OFFSET) & (AVR32_USBB_udinte >> AVR32_USBB_UDINTE_EP0INTE_OFFSET)) | (1 << MAX_PEP_NB)))
 
 //! configures the selected endpoint type
 #define Usb_configure_endpoint_type(ep, type) (Wr_bitfield(AVR32_USBB_uecfgx(ep), AVR32_USBB_UECFGX_EPTYPE_MASK, type))
@@ -617,16 +611,12 @@
 
 //! configures selected endpoint in one step
 //! Modified by Alex Lee 26 aug 2010 for high bandwidth EP
-#define Usb_configure_endpoint(ep, type, dir, size, bank, nbtrans)                                                                                                                                  \
-    (                                                                                                                                                                                               \
-        Usb_enable_endpoint(ep),                                                                                                                                                                    \
-        Wr_bits(AVR32_USBB_uecfgx(ep), AVR32_USBB_UECFGX_EPTYPE_MASK | AVR32_USBB_UECFGX_EPDIR_MASK | AVR32_USBB_UECFGX_EPSIZE_MASK | AVR32_USBB_UECFGX_EPBK_MASK | AVR32_USBB_UECFGX_NBTRANS_MASK, \
-                (((U32)(type) << AVR32_USBB_UECFGX_EPTYPE_OFFSET) & AVR32_USBB_UECFGX_EPTYPE_MASK) |                                                                                                \
-                    (((U32)(dir) << AVR32_USBB_UECFGX_EPDIR_OFFSET) & AVR32_USBB_UECFGX_EPDIR_MASK) |                                                                                               \
-                    ((U32)Usb_format_endpoint_size(size) << AVR32_USBB_UECFGX_EPSIZE_OFFSET) |                                                                                                      \
-                    (((U32)(bank) << AVR32_USBB_UECFGX_EPBK_OFFSET) & AVR32_USBB_UECFGX_EPBK_MASK) |                                                                                                \
-                    (((U32)(nbtrans) << AVR32_USBB_UECFGX_NBTRANS_OFFSET) & AVR32_USBB_UECFGX_NBTRANS_MASK)),                                                                                       \
-        Usb_allocate_memory(ep),                                                                                                                                                                    \
+#define Usb_configure_endpoint(ep, type, dir, size, bank, nbtrans)                                                                                                                                                                                                                                                                                                                                                                       \
+    (                                                                                                                                                                                                                                                                                                                                                                                                                                    \
+        Usb_enable_endpoint(ep),                                                                                                                                                                                                                                                                                                                                                                                                         \
+        Wr_bits(AVR32_USBB_uecfgx(ep), AVR32_USBB_UECFGX_EPTYPE_MASK | AVR32_USBB_UECFGX_EPDIR_MASK | AVR32_USBB_UECFGX_EPSIZE_MASK | AVR32_USBB_UECFGX_EPBK_MASK | AVR32_USBB_UECFGX_NBTRANS_MASK,                                                                                                                                                                                                                                      \
+            (((U32)(type) << AVR32_USBB_UECFGX_EPTYPE_OFFSET) & AVR32_USBB_UECFGX_EPTYPE_MASK) | (((U32)(dir) << AVR32_USBB_UECFGX_EPDIR_OFFSET) & AVR32_USBB_UECFGX_EPDIR_MASK) | ((U32)Usb_format_endpoint_size(size) << AVR32_USBB_UECFGX_EPSIZE_OFFSET) | (((U32)(bank) << AVR32_USBB_UECFGX_EPBK_OFFSET) & AVR32_USBB_UECFGX_EPBK_MASK) | (((U32)(nbtrans) << AVR32_USBB_UECFGX_NBTRANS_OFFSET) & AVR32_USBB_UECFGX_NBTRANS_MASK)), \
+        Usb_allocate_memory(ep),                                                                                                                                                                                                                                                                                                                                                                                                         \
         Is_usb_endpoint_configured(ep))
 
 //! acks endpoint overflow interrupt
@@ -863,7 +853,7 @@
 //! @warning Do not mix calls to this macro with calls to indexed macros below.
 #define Usb_read_endpoint_data(ep, scale)   \
     (*pep_fifo[(ep)].TPASTE3(u, scale, ptr) \
-          TPASTE3(Pep_fifo_access_, scale, _post_inc)())
+            TPASTE3(Pep_fifo_access_, scale, _post_inc)())
 
 //! Write 64-, 32-, 16- or 8-bit data to FIFO data register of selected endpoint.
 //! @param ep     Endpoint of which to access FIFO data register
@@ -878,9 +868,10 @@
 //! @warning Always call Usb_reset_endpoint_fifo_access before this macro when
 //! at FIFO beginning.
 //! @warning Do not mix calls to this macro with calls to indexed macros below.
-#define Usb_write_endpoint_data(ep, scale, data) \
-    (*pep_fifo[(ep)].TPASTE3(u, scale, ptr)      \
-          TPASTE3(Pep_fifo_access_, scale, _post_inc)() = (data))
+#define Usb_write_endpoint_data(ep, scale, data)          \
+    (*pep_fifo[(ep)].TPASTE3(u, scale, ptr)               \
+            TPASTE3(Pep_fifo_access_, scale, _post_inc)() \
+        = (data))
 
 //! Read 64-, 32-, 16- or 8-bit indexed data from FIFO data register of selected endpoint.
 //! @param ep     Endpoint of which to access FIFO data register
@@ -935,7 +926,7 @@
 //! @todo Implement macros for endpoint DMA registers and descriptors
 #if 0
 #define Usb_set_endpoint_dma_nxt_desc_addr(epdma, nxt_desc_addr) (AVR32_USBB_UDDMAX_NEXTDESC(epdma).nxt_desc_addr = (U32)(nxt_desc_addr))
-#define Usb_get_endpoint_dma_nxt_desc_addr(epdma) ((avr32_usbb_uxdmax_t *)AVR32_USBB_UDDMAX_NEXTDESC(epdma).nxt_desc_addr)
+#define Usb_get_endpoint_dma_nxt_desc_addr(epdma) ((avr32_usbb_uxdmax_t*)AVR32_USBB_UDDMAX_NEXTDESC(epdma).nxt_desc_addr)
 #define(epdma)(AVR32_USBB_UDDMAX_addr(epdma))
 #define(epdma)(AVR32_USBB_UDDMAX_CONTROL(epdma).ch_byte_length)
 #define(epdma)(AVR32_USBB_UDDMAX_CONTROL(epdma).burst_lock_en)
@@ -1090,9 +1081,7 @@
 //! tests if the selected pipe interrupt is enabled
 #define Is_host_pipe_interrupt_enabled(p) (Tst_bits(AVR32_USBB_uhinte, AVR32_USBB_UHINTE_P0INTE_MASK << (p)))
 //! returns the lowest pipe number generating a pipe interrupt or MAX_PEP_NB if none
-#define Host_get_interrupt_pipe_number() (ctz(((AVR32_USBB_uhint >> AVR32_USBB_UHINT_P0INT_OFFSET) &     \
-                                               (AVR32_USBB_uhinte >> AVR32_USBB_UHINTE_P0INTE_OFFSET)) | \
-                                              (1 << MAX_PEP_NB)))
+#define Host_get_interrupt_pipe_number() (ctz(((AVR32_USBB_uhint >> AVR32_USBB_UHINT_P0INT_OFFSET) & (AVR32_USBB_uhinte >> AVR32_USBB_UHINTE_P0INTE_OFFSET)) | (1 << MAX_PEP_NB)))
 
 //! configures the interrupt pipe request frequency (period in ms) for the selected pipe
 #define Host_configure_pipe_int_req_freq(p, freq) (Wr_bitfield(AVR32_USBB_upcfgx(p), AVR32_USBB_UPCFGX_INTFRQ_MASK, freq))
@@ -1134,23 +1123,18 @@
 #define Is_host_memory_allocated(p) (Tst_bits(AVR32_USBB_upcfgx(p), AVR32_USBB_UPCFGX_ALLOC_MASK))
 
 //! configures selected pipe in one step
-#define Host_configure_pipe(p, freq, ep_num, type, token, size, bank)                                                                                                                                                           \
-    (                                                                                                                                                                                                                           \
-        Host_enable_pipe(p),                                                                                                                                                                                                    \
-        Wr_bits(AVR32_USBB_upcfgx(p), AVR32_USBB_UPCFGX_INTFRQ_MASK | AVR32_USBB_UPCFGX_PEPNUM_MASK | AVR32_USBB_UPCFGX_PTYPE_MASK | AVR32_USBB_UPCFGX_PTOKEN_MASK | AVR32_USBB_UPCFGX_PSIZE_MASK | AVR32_USBB_UPCFGX_PBK_MASK, \
-                (((U32)(freq) << AVR32_USBB_UPCFGX_INTFRQ_OFFSET) & AVR32_USBB_UPCFGX_INTFRQ_MASK) |                                                                                                                            \
-                    (((U32)(ep_num) << AVR32_USBB_UPCFGX_PEPNUM_OFFSET) & AVR32_USBB_UPCFGX_PEPNUM_MASK) |                                                                                                                      \
-                    (((U32)(type) << AVR32_USBB_UPCFGX_PTYPE_OFFSET) & AVR32_USBB_UPCFGX_PTYPE_MASK) |                                                                                                                          \
-                    (((U32)(token) << AVR32_USBB_UPCFGX_PTOKEN_OFFSET) & AVR32_USBB_UPCFGX_PTOKEN_MASK) |                                                                                                                       \
-                    ((U32)Host_format_pipe_size(size) << AVR32_USBB_UPCFGX_PSIZE_OFFSET) |                                                                                                                                      \
-                    (((U32)(bank) << AVR32_USBB_UPCFGX_PBK_OFFSET) & AVR32_USBB_UPCFGX_PBK_MASK)),                                                                                                                              \
-        Host_allocate_memory(p),                                                                                                                                                                                                \
-                                                                                                                                                                                                                                \
+#define Host_configure_pipe(p, freq, ep_num, type, token, size, bank)                                                                                                                                                                                                                                                                                                                                                                                                                                                  \
+    (                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  \
+        Host_enable_pipe(p),                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           \
+        Wr_bits(AVR32_USBB_upcfgx(p), AVR32_USBB_UPCFGX_INTFRQ_MASK | AVR32_USBB_UPCFGX_PEPNUM_MASK | AVR32_USBB_UPCFGX_PTYPE_MASK | AVR32_USBB_UPCFGX_PTOKEN_MASK | AVR32_USBB_UPCFGX_PSIZE_MASK | AVR32_USBB_UPCFGX_PBK_MASK,                                                                                                                                                                                                                                                                                        \
+            (((U32)(freq) << AVR32_USBB_UPCFGX_INTFRQ_OFFSET) & AVR32_USBB_UPCFGX_INTFRQ_MASK) | (((U32)(ep_num) << AVR32_USBB_UPCFGX_PEPNUM_OFFSET) & AVR32_USBB_UPCFGX_PEPNUM_MASK) | (((U32)(type) << AVR32_USBB_UPCFGX_PTYPE_OFFSET) & AVR32_USBB_UPCFGX_PTYPE_MASK) | (((U32)(token) << AVR32_USBB_UPCFGX_PTOKEN_OFFSET) & AVR32_USBB_UPCFGX_PTOKEN_MASK) | ((U32)Host_format_pipe_size(size) << AVR32_USBB_UPCFGX_PSIZE_OFFSET) | (((U32)(bank) << AVR32_USBB_UPCFGX_PBK_OFFSET) & AVR32_USBB_UPCFGX_PBK_MASK)), \
+        Host_allocate_memory(p),                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       \
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       \
         Is_host_pipe_configured(p))
 
 //! resets the selected pipe
 #define Host_reset_pipe(p) (Set_bits(AVR32_USBB_uprst, AVR32_USBB_UPRST_PRST0_MASK << (p)), \
-                            Clr_bits(AVR32_USBB_uprst, AVR32_USBB_UPRST_PRST0_MASK << (p)))
+    Clr_bits(AVR32_USBB_uprst, AVR32_USBB_UPRST_PRST0_MASK << (p)))
 //! tests if the selected pipe is being reset
 #define Is_host_resetting_pipe(p) (Tst_bits(AVR32_USBB_uprst, AVR32_USBB_UPRST_PRST0_MASK << (p)))
 
@@ -1311,19 +1295,10 @@
 #define Host_get_in_request_number(p) (Rd_bitfield(AVR32_USBB_upinrqx(p), AVR32_USBB_UPINRQX_INRQ_MASK) + 1)
 
 //! acks all pipe error
-#define Host_ack_all_errors(p) (Clr_bits(AVR32_USBB_uperrx(p), AVR32_USBB_UPERRX_DATATGL_MASK |     \
-                                                                   AVR32_USBB_UPERRX_DATAPID_MASK | \
-                                                                   AVR32_USBB_UPERRX_PID_MASK |     \
-                                                                   AVR32_USBB_UPERRX_TIMEOUT_MASK | \
-                                                                   AVR32_USBB_UPERRX_CRC16_MASK |   \
-                                                                   AVR32_USBB_UPERRX_COUNTER_MASK))
+#define Host_ack_all_errors(p) (Clr_bits(AVR32_USBB_uperrx(p), AVR32_USBB_UPERRX_DATATGL_MASK | AVR32_USBB_UPERRX_DATAPID_MASK | AVR32_USBB_UPERRX_PID_MASK | AVR32_USBB_UPERRX_TIMEOUT_MASK | AVR32_USBB_UPERRX_CRC16_MASK | AVR32_USBB_UPERRX_COUNTER_MASK))
 
 //! tests if error occurs on pipe
-#define Host_error_status(p) (Rd_bits(AVR32_USBB_uperrx(p), AVR32_USBB_UPERRX_DATATGL_MASK |     \
-                                                                AVR32_USBB_UPERRX_DATAPID_MASK | \
-                                                                AVR32_USBB_UPERRX_PID_MASK |     \
-                                                                AVR32_USBB_UPERRX_TIMEOUT_MASK | \
-                                                                AVR32_USBB_UPERRX_CRC16_MASK))
+#define Host_error_status(p) (Rd_bits(AVR32_USBB_uperrx(p), AVR32_USBB_UPERRX_DATATGL_MASK | AVR32_USBB_UPERRX_DATAPID_MASK | AVR32_USBB_UPERRX_PID_MASK | AVR32_USBB_UPERRX_TIMEOUT_MASK | AVR32_USBB_UPERRX_CRC16_MASK))
 
 //! acks bad data toggle
 #define Host_ack_bad_data_toggle(p) (Clr_bits(AVR32_USBB_uperrx(p), AVR32_USBB_UPERRX_DATATGL_MASK))
@@ -1472,7 +1447,7 @@
 //! @warning Do not mix calls to this macro with calls to indexed macros below.
 #define Host_read_pipe_data(p, scale)      \
     (*pep_fifo[(p)].TPASTE3(u, scale, ptr) \
-          TPASTE3(Pep_fifo_access_, scale, _post_inc)())
+            TPASTE3(Pep_fifo_access_, scale, _post_inc)())
 
 //! Write 64-, 32-, 16- or 8-bit data to FIFO data register of selected pipe.
 //! @param p      Pipe of which to access FIFO data register
@@ -1487,9 +1462,10 @@
 //! @warning Always call Host_reset_pipe_fifo_access before this macro when
 //! at FIFO beginning.
 //! @warning Do not mix calls to this macro with calls to indexed macros below.
-#define Host_write_pipe_data(p, scale, data) \
-    (*pep_fifo[(p)].TPASTE3(u, scale, ptr)   \
-          TPASTE3(Pep_fifo_access_, scale, _post_inc)() = (data))
+#define Host_write_pipe_data(p, scale, data)              \
+    (*pep_fifo[(p)].TPASTE3(u, scale, ptr)                \
+            TPASTE3(Pep_fifo_access_, scale, _post_inc)() \
+        = (data))
 
 //! Read 64-, 32-, 16- or 8-bit indexed data from FIFO data register of selected pipe.
 //! @param p      Pipe of which to access FIFO data register
@@ -1553,15 +1529,15 @@ extern UnionVPtr pep_fifo[MAX_PEP_NB];
 #if USB_DEVICE_FEATURE == ENABLED
 extern Status_bool_t usb_init_device(void);
 extern U32 usb_set_ep_txpacket(U8, U8, U32);
-extern U32 usb_write_ep_txpacket(U8, const void *, U32, const void **);
-extern U32 usb_read_ep_rxpacket(U8, void *, U32, void **);
+extern U32 usb_write_ep_txpacket(U8, const void*, U32, const void**);
+extern U32 usb_read_ep_rxpacket(U8, void*, U32, void**);
 #endif
 
 #if USB_HOST_FEATURE == ENABLED
 extern void host_disable_all_pipes(void);
 extern U32 host_set_p_txpacket(U8, U8, U32);
-extern U32 host_write_p_txpacket(U8, const void *, U32, const void **);
-extern U32 host_read_p_rxpacket(U8, void *, U32, void **);
+extern U32 host_write_p_txpacket(U8, const void*, U32, const void**);
+extern U32 host_read_p_rxpacket(U8, void*, U32, void**);
 #endif
 
-#endif // _USB_DRV_H_
+#endif  // _USB_DRV_H_

@@ -53,7 +53,7 @@
 
 //_____  I N C L U D E S ___________________________________________________
 
-#include "usart.h" // Shall be included before FreeRTOS header files, since 'inline' is defined to ''; leading to
+#include "usart.h"  // Shall be included before FreeRTOS header files, since 'inline' is defined to ''; leading to
 #include <stdio.h>
 // link errors
 #include "conf_usb.h"
@@ -77,7 +77,7 @@
 #include "usb_specific_request.h"
 #include "usb_standard_request.h"
 
-#if LCD_DISPLAY // Multi-line LCD display
+#if LCD_DISPLAY  // Multi-line LCD display
 #include "taskLCD.h"
 #endif
 
@@ -92,7 +92,7 @@
 //_____ D E F I N I T I O N S ______________________________________________
 
 // #define FB_RATE_DELTA (1<<12)
-#define FB_RATE_DELTA 64 // BSB 20130603 stability??
+#define FB_RATE_DELTA 64  // BSB 20130603 stability??
 #define FB_RATE_DELTA_NUM 2
 
 //_____ D E C L A R A T I O N S ____________________________________________
@@ -113,7 +113,7 @@ void uac1_device_audio_task_init(U8 ep_in, U8 ep_out, U8 ep_out_fb)
     ADC_buf_USB_IN = 0;
     spk_index = 0;
     DAC_buf_USB_OUT = 0;
-    mute = FALSE; // Applies to ADC OUT endpoint
+    mute = FALSE;  // Applies to ADC OUT endpoint
     spk_mute = FALSE;
 
     // With working volume flash
@@ -128,42 +128,42 @@ void uac1_device_audio_task_init(U8 ep_in, U8 ep_out, U8 ep_out_fb)
     ep_audio_out_fb = ep_out_fb;
 
     xTaskCreate(uac1_device_audio_task,
-                configTSK_USB_DAUDIO_NAME,
-                configTSK_USB_DAUDIO_STACK_SIZE,
-                NULL,
-                configTSK_USB_DAUDIO_PRIORITY,
-                NULL);
+        configTSK_USB_DAUDIO_NAME,
+        configTSK_USB_DAUDIO_STACK_SIZE,
+        NULL,
+        configTSK_USB_DAUDIO_PRIORITY,
+        NULL);
 }
 
 //!
 //! @brief Entry point of the device Audio task management
 //!
 
-void uac1_device_audio_task(void *pvParameters)
+void uac1_device_audio_task(void* pvParameters)
 {
-    Bool playerStarted = FALSE; // BSB 20150516: changed into global variable
+    Bool playerStarted = FALSE;  // BSB 20150516: changed into global variable
     int i;
     U16 num_samples, num_remaining, gap = 0;
-    S16 time_to_calculate_gap = 0; // BSB 20131101 New variables for skip/insert
+    S16 time_to_calculate_gap = 0;  // BSB 20131101 New variables for skip/insert
     U16 packets_since_feedback = 0;
     U8 skip_enable = 0;
-    U8 skip_indicate = 0;            // Should we show skipping on module LEDs?
-    U16 samples_to_transfer_OUT = 1; // Default value 1. Skip:0. Insert:2
-    S32 FB_error_acc = 0;            // BSB 20131102 Accumulated error for skip/insert
+    U8 skip_indicate = 0;             // Should we show skipping on module LEDs?
+    U16 samples_to_transfer_OUT = 1;  // Default value 1. Skip:0. Insert:2
+    S32 FB_error_acc = 0;             // BSB 20131102 Accumulated error for skip/insert
     U8 sample_HSB;
     U8 sample_MSB;
     U8 sample_SB;
     U8 sample_LSB;
     S32 sample_L = 0;
-    S32 sample_R = 0; // BSB 20131102 Expanded for skip/insert, 20160322 changed to S32!
+    S32 sample_R = 0;  // BSB 20131102 Expanded for skip/insert, 20160322 changed to S32!
     const U8 EP_AUDIO_IN = ep_audio_in;
     const U8 EP_AUDIO_OUT = ep_audio_out;
     const U8 EP_AUDIO_OUT_FB = ep_audio_out_fb;
-    uint32_t silence_USB = SILENCE_USB_LIMIT; // BSB 20150621: detect silence in USB channel, initially assume silence
+    uint32_t silence_USB = SILENCE_USB_LIMIT;  // BSB 20150621: detect silence in USB channel, initially assume silence
     uint32_t silence_det_L = 0;
     uint32_t silence_det_R = 0;
     uint8_t silence_det = 0;
-    U8 DAC_buf_DMA_read_local = 0; // Local copy read in atomic operations
+    U8 DAC_buf_DMA_read_local = 0;  // Local copy read in atomic operations
 
 #if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)
     Bool ledSet = FALSE;
@@ -203,18 +203,16 @@ void uac1_device_audio_task(void *pvParameters)
 
 // Process digital input
 #if ((defined HW_GEN_DIN10) || (defined HW_GEN_DIN20))
-        mobo_handle_spdif(24); // UAC1 uses 24-bit data
+        mobo_handle_spdif(24);  // UAC1 uses 24-bit data
 
         static uint8_t prev_input_select = MOBO_SRC_NONE;
 
         // Did SPDIF system just give up I2S control? If get onto the sample rate of the USB system ASAP
         if (input_select == MOBO_SRC_NONE) {
-            if ((prev_input_select == MOBO_SRC_SPDIF) ||
-                (prev_input_select == MOBO_SRC_TOS1) ||
-                (prev_input_select == MOBO_SRC_TOS2)) {
+            if ((prev_input_select == MOBO_SRC_SPDIF) || (prev_input_select == MOBO_SRC_TOS1) || (prev_input_select == MOBO_SRC_TOS2)) {
 
-                mobo_xo_select(current_freq.frequency, input_select); // Give USB the I2S control with proper MCLK
-                mobo_clock_division(current_freq.frequency);          // Re-configure correct USB sample rate
+                mobo_xo_select(current_freq.frequency, input_select);  // Give USB the I2S control with proper MCLK
+                mobo_clock_division(current_freq.frequency);           // Re-configure correct USB sample rate
             }
         }
         prev_input_select = input_select;
@@ -225,8 +223,8 @@ void uac1_device_audio_task(void *pvParameters)
         num_samples = 48;
         if (usb_alternate_setting == 1) {
 
-            if (Is_usb_in_ready(EP_AUDIO_IN)) { // Endpoint buffer free ?
-                Usb_ack_in_ready(EP_AUDIO_IN);  // acknowledge in ready
+            if (Is_usb_in_ready(EP_AUDIO_IN)) {  // Endpoint buffer free ?
+                Usb_ack_in_ready(EP_AUDIO_IN);   // acknowledge in ready
 
                 // Sync AK data stream with USB data stream
                 // AK data is being filled into ~ADC_buf_DMA_write, ie if ADC_buf_DMA_write is 0
@@ -306,23 +304,23 @@ void uac1_device_audio_task(void *pvParameters)
                         Usb_write_endpoint_data(EP_AUDIO_IN, 8, 0x00);
                     }
                 }
-                Usb_send_in(EP_AUDIO_IN); // send the current bank
+                Usb_send_in(EP_AUDIO_IN);  // send the current bank
             }
-        } // end alt setting == 1
-          // Should we remove old ADC code to here?
+        }  // end alt setting == 1
+           // Should we remove old ADC code to here?
 
 #ifdef HW_GEN_DIN20
-        if ((usb_alternate_setting_out >= 1) && (usb_ch_swap == USB_CH_NOSWAP)) { // bBitResolution
+        if ((usb_alternate_setting_out >= 1) && (usb_ch_swap == USB_CH_NOSWAP)) {  // bBitResolution
 //			if ( (usb_alternate_setting_out == 1) && (usb_ch_swap == USB_CH_NOSWAP) ) {
 #else
-        if (usb_alternate_setting_out >= 1) {                         // bBitResolution
-                                                                      //				if (usb_alternate_setting_out == 1) {
+        if (usb_alternate_setting_out >= 1) {                          // bBitResolution
+                                                                       //				if (usb_alternate_setting_out == 1) {
 #endif
             // BSB 20131031 actual gap calculation moved to after OUT data processing
 
             /* SPDIF reduced OK */
-            if (Is_usb_in_ready(EP_AUDIO_OUT_FB)) { // Endpoint buffer free ?
-                Usb_ack_in_ready(EP_AUDIO_OUT_FB);  // acknowledge in ready
+            if (Is_usb_in_ready(EP_AUDIO_OUT_FB)) {  // Endpoint buffer free ?
+                Usb_ack_in_ready(EP_AUDIO_OUT_FB);   // acknowledge in ready
                 Usb_reset_endpoint_fifo_access(EP_AUDIO_OUT_FB);
 
                 /* BSB 20131101
@@ -338,15 +336,15 @@ void uac1_device_audio_task(void *pvParameters)
 
                 if (Is_usb_full_speed_mode()) {
                     // FB rate is 3 bytes in 10.14 format
-#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)                                                     // With WM8805 input, USB subsystem will be running off a completely wacko MCLK!
-                    if ((input_select != MOBO_SRC_UAC1) || (FEATURE_HSTUPID_ON) || (FEATURE_HDEAD_ON)) { // BSB 20131101
+#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)                                                      // With WM8805 input, USB subsystem will be running off a completely wacko MCLK!
+                    if ((input_select != MOBO_SRC_UAC1) || (FEATURE_HSTUPID_ON) || (FEATURE_HDEAD_ON)) {  // BSB 20131101
 #else
-                    if ((FEATURE_HSTUPID_ON) || (FEATURE_HDEAD_ON)) { // BSB 20131101
+                    if ((FEATURE_HSTUPID_ON) || (FEATURE_HDEAD_ON)) {  // BSB 20131101
 #endif
-                        sample_LSB = FB_rate_nominal;     // but not consider it. Emulate this by sending the nominal
-                        sample_SB = FB_rate_nominal >> 8; // FB rate and not the one generated by the firmware's feedback
+                        sample_LSB = FB_rate_nominal;      // but not consider it. Emulate this by sending the nominal
+                        sample_SB = FB_rate_nominal >> 8;  // FB rate and not the one generated by the firmware's feedback
                         sample_MSB = FB_rate_nominal >> 16;
-                    } else { // Send firmware's feedback
+                    } else {  // Send firmware's feedback
                         sample_LSB = FB_rate;
                         sample_SB = FB_rate >> 8;
                         sample_MSB = FB_rate >> 16;
@@ -357,10 +355,10 @@ void uac1_device_audio_task(void *pvParameters)
                 } else {
                     // HS mode - Not likely to ever be used in UAC1 - UNTESTED code!
                     // FB rate is 4 bytes in 12.14 format
-#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)                                                     // With WM8805 input, USB subsystem will be running off a completely wacko MCLK!
-                    if ((input_select != MOBO_SRC_UAC1) || (FEATURE_HSTUPID_ON) || (FEATURE_HDEAD_ON)) { // BSB 20131101
+#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)                                                      // With WM8805 input, USB subsystem will be running off a completely wacko MCLK!
+                    if ((input_select != MOBO_SRC_UAC1) || (FEATURE_HSTUPID_ON) || (FEATURE_HDEAD_ON)) {  // BSB 20131101
 #else
-                    if ((FEATURE_HSTUPID_ON) || (FEATURE_HDEAD_ON)) { // BSB 20131101
+                    if ((FEATURE_HSTUPID_ON) || (FEATURE_HDEAD_ON)) {  // BSB 20131101
 #endif
                         sample_LSB = FB_rate_nominal;
                         sample_SB = FB_rate_nominal >> 8;
@@ -379,10 +377,10 @@ void uac1_device_audio_task(void *pvParameters)
                 }
 
                 Usb_send_in(EP_AUDIO_OUT_FB);
-            } // end if (Is_usb_in_ready(EP_AUDIO_OUT_FB)) // Endpoint buffer free ?
+            }  // end if (Is_usb_in_ready(EP_AUDIO_OUT_FB)) // Endpoint buffer free ?
 
             /* SPDIF reduced */
-#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20) // With WM8805 input, USB subsystem will be running off a completely wacko MCLK!
+#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)  // With WM8805 input, USB subsystem will be running off a completely wacko MCLK!
             if ((input_select == MOBO_SRC_SPDIF) || (input_select == MOBO_SRC_TOS1) || (input_select == MOBO_SRC_TOS2)) {
 
                 // Do minimal USB action to make Host believe Device is actually receiving
@@ -410,29 +408,29 @@ void uac1_device_audio_task(void *pvParameters)
                     gpio_tgl_gpio_pin(AVR32_PIN_PX31);
 #endif
 
-                    spk_usb_heart_beat++; // indicates EP_AUDIO_OUT receiving data from host
+                    spk_usb_heart_beat++;  // indicates EP_AUDIO_OUT receiving data from host
 
                     Usb_reset_endpoint_fifo_access(EP_AUDIO_OUT);
                     num_samples = Usb_byte_count(EP_AUDIO_OUT);
 
                     // bBitResolution
-                    if (usb_alternate_setting_out == ALT1_AS_INTERFACE_INDEX) // Alternate 1 24 bits/sample, 6 bytes per stereo sample
+                    if (usb_alternate_setting_out == ALT1_AS_INTERFACE_INDEX)  // Alternate 1 24 bits/sample, 6 bytes per stereo sample
                         num_samples = num_samples / 6;
-                    else if (usb_alternate_setting_out == ALT2_AS_INTERFACE_INDEX) // Alternate 2 16 bits/sample, 4 bytes per stereo sample
+                    else if (usb_alternate_setting_out == ALT2_AS_INTERFACE_INDEX)  // Alternate 2 16 bits/sample, 4 bytes per stereo sample
                         num_samples = num_samples / 4;
                     else
-                        num_samples = 0; // Should never get here...
+                        num_samples = 0;  // Should never get here...
 
-                    if ((!playerStarted) || (audio_OUT_must_sync)) { // BSB 20140917 attempting to help uacX_device_audio_task.c synchronize to DMA
-                        time_to_calculate_gap = 0;                   // BSB 20131031 moved gap calculation for DAC use
-                        packets_since_feedback = 0;                  // BSB 20131031 assuming feedback system may soon kick in
-                        FB_error_acc = 0;                            // BSB 20131102 reset feedback error
-                        FB_rate = FB_rate_initial;                   // BSB 20131113 reset feedback rate
-                        old_gap = DAC_BUFFER_SIZE;                   // BSB 20131115 moved here
-                        skip_enable = 0;                             // BSB 20131115 Not skipping yet...
+                    if ((!playerStarted) || (audio_OUT_must_sync)) {  // BSB 20140917 attempting to help uacX_device_audio_task.c synchronize to DMA
+                        time_to_calculate_gap = 0;                    // BSB 20131031 moved gap calculation for DAC use
+                        packets_since_feedback = 0;                   // BSB 20131031 assuming feedback system may soon kick in
+                        FB_error_acc = 0;                             // BSB 20131102 reset feedback error
+                        FB_rate = FB_rate_initial;                    // BSB 20131113 reset feedback rate
+                        old_gap = DAC_BUFFER_SIZE;                    // BSB 20131115 moved here
+                        skip_enable = 0;                              // BSB 20131115 Not skipping yet...
                         skip_indicate = 0;
-                        usb_buffer_toggle = 0;      // BSB 20131201 Attempting improved playerstarted detection
-                        dac_must_clear = DAC_READY; // Prepare to send actual data to DAC interface
+                        usb_buffer_toggle = 0;       // BSB 20131201 Attempting improved playerstarted detection
+                        dac_must_clear = DAC_READY;  // Prepare to send actual data to DAC interface
 
                         // Align buffers at arrival of USB OUT audio packets as well. But only when we're not playing SPDIF
                         audio_OUT_must_sync = 0;
@@ -445,23 +443,23 @@ void uac1_device_audio_task(void *pvParameters)
                             num_remaining = spk_pdca_channel->tcr;
                         }
                         DAC_buf_USB_OUT = DAC_buf_DMA_read_local;
-                        LED_Off(LED0); // The LEDs on the PCB near the MCU
+                        LED_Off(LED0);  // The LEDs on the PCB near the MCU
                         LED_Off(LED1);
 
 #ifdef USB_STATE_MACHINE_GPIO
                         if (DAC_buf_USB_OUT == 1)
-                            gpio_set_gpio_pin(AVR32_PIN_PX30); // BSB 20140820 debug on GPIO_06/TP71 (was PX55 / GPIO_03)
+                            gpio_set_gpio_pin(AVR32_PIN_PX30);  // BSB 20140820 debug on GPIO_06/TP71 (was PX55 / GPIO_03)
                         else
-                            gpio_clr_gpio_pin(AVR32_PIN_PX30); // BSB 20140820 debug on GPIO_06/TP71 (was PX55 / GPIO_03)
+                            gpio_clr_gpio_pin(AVR32_PIN_PX30);  // BSB 20140820 debug on GPIO_06/TP71 (was PX55 / GPIO_03)
 #endif
                         spk_index = DAC_BUFFER_SIZE - num_remaining;
-                        spk_index = spk_index & ~((U32)1); // Clear LSB in order to start with L sample
+                        spk_index = spk_index & ~((U32)1);  // Clear LSB in order to start with L sample
 
-                        playerStarted = TRUE; // Moved here from mutex take code
-                    }                         // end if (!playerStarted) || (audio_OUT_must_sync)
+                        playerStarted = TRUE;  // Moved here from mutex take code
+                    }                          // end if (!playerStarted) || (audio_OUT_must_sync)
 
                     // BSB 20140917 attempting to help uacX_device_audio_task.c synchronize to DMA
-                    audio_OUT_alive = 1; // Indicate samples arriving on audio OUT endpoint. Do this after syncing
+                    audio_OUT_alive = 1;  // Indicate samples arriving on audio OUT endpoint. Do this after syncing
 
                     // Received samples in 10.14 or 12.14 format is num_samples * 1<<14
                     // Error increases when Host (in average) sends too much data compared to FB_rate
@@ -484,27 +482,27 @@ void uac1_device_audio_task(void *pvParameters)
                     // num_samples is stereo samples per ms. FB_rate is sample rate in kHz << 14. So num_samples<<14 should match FB_rate
 
                     samples_to_transfer_OUT = 1;
-                    if (skip_enable == 0) { // Respond to all skip enablers
+                    if (skip_enable == 0) {  // Respond to all skip enablers
                         FB_error_acc = 0;
                     } else {
                         FB_error_acc = FB_error_acc + ((S32)num_samples * 1 << 14) - FB_rate;
-                        if (FB_error_acc > SPK1_SKIP_LIMIT_14) {     // Must skip
-                            samples_to_transfer_OUT = 0;             // Do some skippin'
-                            FB_error_acc = FB_error_acc - (1 << 14); // FIX: Why not 2 for stereo sample??
-                            time_to_calculate_gap = -1;              // Immediate gap re-calculation
+                        if (FB_error_acc > SPK1_SKIP_LIMIT_14) {      // Must skip
+                            samples_to_transfer_OUT = 0;              // Do some skippin'
+                            FB_error_acc = FB_error_acc - (1 << 14);  // FIX: Why not 2 for stereo sample??
+                            time_to_calculate_gap = -1;               // Immediate gap re-calculation
                             skip_indicate = 1;
-                            LED_On(LED0); // Indicate skipping on module LED
+                            LED_On(LED0);  // Indicate skipping on module LED
 
 #ifdef USB_STATE_MACHINE_DEBUG
                             //								print_dbg_char('s');
 #endif
 
-                        } else if (FB_error_acc < -SPK1_SKIP_LIMIT_14) { // Must insert
-                            samples_to_transfer_OUT = 2;                 // Do some insertin'
+                        } else if (FB_error_acc < -SPK1_SKIP_LIMIT_14) {  // Must insert
+                            samples_to_transfer_OUT = 2;                  // Do some insertin'
                             FB_error_acc = FB_error_acc + (1 << 14);
-                            time_to_calculate_gap = -1; // Immediate gap re-calculation
+                            time_to_calculate_gap = -1;  // Immediate gap re-calculation
                             skip_indicate = 1;
-                            LED_On(LED1); // Indicate skipping on module LED
+                            LED_On(LED1);  // Indicate skipping on module LED
 
 #ifdef USB_STATE_MACHINE_DEBUG
                             //								print_dbg_char('i');
@@ -525,11 +523,11 @@ void uac1_device_audio_task(void *pvParameters)
                     // ON this particular AB-1.2, the Left channel is more accurate at this particular measurement. We'll wait with further
                     // calibration. FB_rate_initial is verified. Value of 1<<16 = 21mV
 
-                    silence_det_L = 0; // We're looking for non-zero or non-static audio data..
-                    silence_det_R = 0; // We're looking for non-zero or non-static audio data..
+                    silence_det_L = 0;  // We're looking for non-zero or non-static audio data..
+                    silence_det_R = 0;  // We're looking for non-zero or non-static audio data..
                     for (i = 0; i < num_samples; i++) {
 
-                        if (usb_alternate_setting_out == ALT1_AS_INTERFACE_INDEX) { // Alternate 1 24 bits/sample, 8 bytes per stereo sample
+                        if (usb_alternate_setting_out == ALT1_AS_INTERFACE_INDEX) {  // Alternate 1 24 bits/sample, 8 bytes per stereo sample
                             // 24-bit code
                             sample_LSB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
                             sample_SB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
@@ -542,7 +540,7 @@ void uac1_device_audio_task(void *pvParameters)
                             sample_MSB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
                             sample_R = (((U32)sample_MSB) << 16) + (((U32)sample_SB) << 8) + sample_LSB;
                             silence_det_R |= sample_R;
-                        } else if (usb_alternate_setting_out == ALT2_AS_INTERFACE_INDEX) { // Alternate 2 16 bits/sample, 4 bytes per stereo sample
+                        } else if (usb_alternate_setting_out == ALT2_AS_INTERFACE_INDEX) {  // Alternate 2 16 bits/sample, 4 bytes per stereo sample
                             // 16-bit code
                             sample_LSB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
                             sample_MSB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
@@ -561,27 +559,27 @@ void uac1_device_audio_task(void *pvParameters)
                             silence_det = 0;
 
                         // New site for setting playerStarted and aligning buffers
-                        if ((silence_det == 0) && (input_select == MOBO_SRC_NONE)) { // There is actual USB audio.
-#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)                                 // With WM8805 subsystem, handle semaphore
+                        if ((silence_det == 0) && (input_select == MOBO_SRC_NONE)) {  // There is actual USB audio.
+#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)                                  // With WM8805 subsystem, handle semaphore
 #ifdef USB_STATE_MACHINE_DEBUG
-                            print_dbg_char('t');                                    // Debug semaphore, lowercase letters in USB tasks
-                            if (xSemaphoreTake(input_select_semphr, 0) == pdTRUE) { // Re-take of taken semaphore returns false
+                            print_dbg_char('t');                                     // Debug semaphore, lowercase letters in USB tasks
+                            if (xSemaphoreTake(input_select_semphr, 0) == pdTRUE) {  // Re-take of taken semaphore returns false
                                 print_dbg_char('[');
                                 input_select = MOBO_SRC_UAC1;
 #ifdef HW_GEN_DIN20
-                                mobo_i2s_enable(MOBO_I2S_ENABLE); // Hard-unmute of I2S pin
+                                mobo_i2s_enable(MOBO_I2S_ENABLE);  // Hard-unmute of I2S pin
 #endif
-                            } // Hopefully, this code won't be called repeatedly. Would there be time??
+                            }  // Hopefully, this code won't be called repeatedly. Would there be time??
                             else
                                 print_dbg_char(']');
-#else // not debug
+#else  // not debug
                             if (xSemaphoreTake(input_select_semphr, 0) == pdTRUE)
                                 input_select = MOBO_SRC_UAC1;
 #ifdef HW_GEN_DIN20
-                            mobo_i2s_enable(MOBO_I2S_ENABLE); // Hard-unmute of I2S pin
+                            mobo_i2s_enable(MOBO_I2S_ENABLE);  // Hard-unmute of I2S pin
 #endif
 #endif
-#else // not HW_GEN_DIN10/20											// No WM8805, take control
+#else  // not HW_GEN_DIN10/20											// No WM8805, take control
                             input_select = MOBO_SRC_UAC1;
 #endif
                         }
@@ -595,23 +593,23 @@ void uac1_device_audio_task(void *pvParameters)
 
 #ifdef FEATURE_VOLUME_CTRL
 
-                        if (usb_spk_mute != 0) { // usb_spk_mute is heeded as part of volume control subsystem
+                        if (usb_spk_mute != 0) {  // usb_spk_mute is heeded as part of volume control subsystem
                             sample_L = 0;
                             sample_R = 0;
                         } else {
-                            if (spk_vol_mult_L != VOL_MULT_UNITY) { // Only touch gain-controlled samples
+                            if (spk_vol_mult_L != VOL_MULT_UNITY) {  // Only touch gain-controlled samples
                                 // 24-bit data words. First shift up to 32 bit. Do math and shift down
                                 sample_L <<= 8;
                                 sample_L = (S32)((int64_t)((int64_t)(sample_L) * (int64_t)spk_vol_mult_L) >> VOL_MULT_SHIFT);
-                                sample_L += rand8(); // dither in bits 7:0, will this be optimized away due to next line?
+                                sample_L += rand8();  // dither in bits 7:0, will this be optimized away due to next line?
                                 sample_L >>= 8;
                             }
 
-                            if (spk_vol_mult_R != VOL_MULT_UNITY) { // Only touch gain-controlled samples
+                            if (spk_vol_mult_R != VOL_MULT_UNITY) {  // Only touch gain-controlled samples
                                 // 24-bit data words. First shift up to 32 bit. Do math and shift down
                                 sample_R <<= 8;
                                 sample_R = (S32)((int64_t)((int64_t)(sample_R) * (int64_t)spk_vol_mult_R) >> VOL_MULT_SHIFT);
-                                sample_R += rand8(); // dither in bits 7:0, will this be optimized away due to next line?
+                                sample_R += rand8();  // dither in bits 7:0, will this be optimized away due to next line?
                                 sample_R >>= 8;
                             }
                         }
@@ -619,7 +617,7 @@ void uac1_device_audio_task(void *pvParameters)
 
                         // Only write to spk_buffer_? when allowed
                         if ((input_select == MOBO_SRC_UAC1) || (input_select == MOBO_SRC_NONE)) {
-                            while (samples_to_transfer_OUT-- > 0) { // Default:1 Skip:0 Insert:2 Apply to 1st stereo sample in packet
+                            while (samples_to_transfer_OUT-- > 0) {  // Default:1 Skip:0 Insert:2 Apply to 1st stereo sample in packet
                                 if (dac_must_clear == DAC_READY) {
                                     if (DAC_buf_USB_OUT == 0) {
                                         spk_buffer_0[spk_index + OUT_LEFT] = sample_L;
@@ -637,34 +635,34 @@ void uac1_device_audio_task(void *pvParameters)
 
 #ifdef USB_STATE_MACHINE_GPIO
                                     if (DAC_buf_USB_OUT == 1)
-                                        gpio_set_gpio_pin(AVR32_PIN_PX30); // BSB 20140820 debug on GPIO_06/TP71 (was PX55 / GPIO_03)
+                                        gpio_set_gpio_pin(AVR32_PIN_PX30);  // BSB 20140820 debug on GPIO_06/TP71 (was PX55 / GPIO_03)
                                     else
-                                        gpio_clr_gpio_pin(AVR32_PIN_PX30); // BSB 20140820 debug on GPIO_06/TP71 (was PX55 / GPIO_03)
+                                        gpio_clr_gpio_pin(AVR32_PIN_PX30);  // BSB 20140820 debug on GPIO_06/TP71 (was PX55 / GPIO_03)
 #endif
                                     // BSB 20131201 attempting improved playerstarted detection
-                                    usb_buffer_toggle--; // Counter is increased by DMA, decreased by seq. code
+                                    usb_buffer_toggle--;  // Counter is increased by DMA, decreased by seq. code
                                 }
                             }
-                            samples_to_transfer_OUT = 1; // Revert to default:1. I.e. only one skip or insert per USB package
+                            samples_to_transfer_OUT = 1;  // Revert to default:1. I.e. only one skip or insert per USB package
                         }
-                    } // end for num_samples
+                    }  // end for num_samples
 
                     // Detect USB silence. We're counting USB packets. UAC2: 250us, UAC1: 1ms
                     if (silence_det == 1) {
                         if (!USB_IS_SILENT())
                             silence_USB += 4;
-                    } else                              // stereo sample is non-zero
-                        silence_USB = SILENCE_USB_INIT; // USB interface is not silent!
+                    } else                               // stereo sample is non-zero
+                        silence_USB = SILENCE_USB_INIT;  // USB interface is not silent!
 
                     Usb_ack_out_received_free(EP_AUDIO_OUT);
 
                     //					if ( (USB_IS_SILENT()) && (input_select == MOBO_SRC_UAC1) ) { // Oops, we just went silent, probably from pause
                     // mobodebug untested fix
-                    if ((USB_IS_SILENT()) && (input_select == MOBO_SRC_UAC1) && (playerStarted != FALSE)) { // Oops, we just went silent, probably from pause
+                    if ((USB_IS_SILENT()) && (input_select == MOBO_SRC_UAC1) && (playerStarted != FALSE)) {  // Oops, we just went silent, probably from pause
                         playerStarted = FALSE;
 
-#ifdef HW_GEN_DIN20                                        // Dedicated mute pin
-                        mobo_i2s_enable(MOBO_I2S_DISABLE); // Hard-mute of I2S pin
+#ifdef HW_GEN_DIN20                                         // Dedicated mute pin
+                        mobo_i2s_enable(MOBO_I2S_DISABLE);  // Hard-mute of I2S pin
 #endif
 
 // Clear buffers for good measure! That may offload uac1_AK5394A_task() ?? and present a good mute to WM8805
@@ -674,18 +672,18 @@ void uac1_device_audio_task(void *pvParameters)
                         mobo_clear_dac_channel();
                         // mobodebug possible cycle thief ???
 
-#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20) // With WM8805 present, handle semaphores
+#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)  // With WM8805 present, handle semaphores
                         ledSet = FALSE;
 #ifdef USB_STATE_MACHINE_DEBUG
-                        print_dbg_char('g'); // Debug semaphore, lowercase letters for USB tasks
+                        print_dbg_char('g');  // Debug semaphore, lowercase letters for USB tasks
                         if (xSemaphoreGive(input_select_semphr) == pdTRUE) {
-                            input_select = MOBO_SRC_NONE; // Indicate WM may take over control
-                            print_dbg_char(60);           // '<'
+                            input_select = MOBO_SRC_NONE;  // Indicate WM may take over control
+                            print_dbg_char(60);            // '<'
                         } else
-                            print_dbg_char(62); // '>'
+                            print_dbg_char(62);  // '>'
 #else
                         if (xSemaphoreGive(input_select_semphr) == pdTRUE)
-                            input_select = MOBO_SRC_NONE; // Indicate WM may take over control
+                            input_select = MOBO_SRC_NONE;  // Indicate WM may take over control
 #endif
                             //			    			mobo_led(FLED_DARK, FLED_YELLOW, FLED_DARK);	// Indicate silence detected by USB subsystem
 #endif
@@ -697,12 +695,12 @@ void uac1_device_audio_task(void *pvParameters)
                     if (time_to_calculate_gap > 0)
                         time_to_calculate_gap--;
                     else {
-                        if (time_to_calculate_gap == -1) // Immediately after a skip/insert and then again shortly
+                        if (time_to_calculate_gap == -1)  // Immediately after a skip/insert and then again shortly
                             time_to_calculate_gap = SPK_PACKETS_PER_GAP_SKIP - 1;
-                        else // Initially and a while after any skip/insert
+                        else  // Initially and a while after any skip/insert
                             time_to_calculate_gap = SPK_PACKETS_PER_GAP_CALCULATION - 1;
-                        if (usb_alternate_setting_out >= 1) { // bBitResolution // Used with explicit feedback and not ADC data
-                                                              //							if (usb_alternate_setting_out == 1) {	// Used with explicit feedback and not ADC data
+                        if (usb_alternate_setting_out >= 1) {  // bBitResolution // Used with explicit feedback and not ADC data
+                                                               //							if (usb_alternate_setting_out == 1) {	// Used with explicit feedback and not ADC data
 
                             DAC_buf_DMA_read_local = DAC_buf_DMA_read;
                             num_remaining = spk_pdca_channel->tcr;
@@ -715,89 +713,89 @@ void uac1_device_audio_task(void *pvParameters)
 
                             // Which buffer is in use, and does it truly correspond to the num_remaining value?
                             // Read DAC_buf_DMA_read before and after num_remaining in order to determine validity
-                            if (DAC_buf_USB_OUT != DAC_buf_DMA_read_local) { // CS4344 and USB using same buffer
+                            if (DAC_buf_USB_OUT != DAC_buf_DMA_read_local) {  // CS4344 and USB using same buffer
                                 if (spk_index < (DAC_BUFFER_SIZE - num_remaining))
                                     gap = DAC_BUFFER_SIZE - num_remaining - spk_index;
                                 else
                                     gap = DAC_BUFFER_SIZE - spk_index + DAC_BUFFER_SIZE - num_remaining + DAC_BUFFER_SIZE;
-                            } else // usb and pdca working on different buffers
+                            } else  // usb and pdca working on different buffers
                                 gap = (DAC_BUFFER_SIZE - spk_index) + (DAC_BUFFER_SIZE - num_remaining);
 
                             if (playerStarted) {
 
-                                if (FEATURE_NOSKIP_OFF) { // If skip/insert isn't disabled...
+                                if (FEATURE_NOSKIP_OFF) {  // If skip/insert isn't disabled...
                                     if (gap < SPK_GAP_LSKIP) {
-                                        skip_enable |= SPK_SKIP_EN_GAP; // Enable skip/insert due to excessive buffer gap
+                                        skip_enable |= SPK_SKIP_EN_GAP;  // Enable skip/insert due to excessive buffer gap
                                     } else if (gap > SPK_GAP_USKIP) {
-                                        skip_enable |= SPK_SKIP_EN_GAP; // Enable skip/insert due to excessive buffer gap
+                                        skip_enable |= SPK_SKIP_EN_GAP;  // Enable skip/insert due to excessive buffer gap
                                     } else {
-                                        skip_enable &= ~SPK_SKIP_EN_GAP; // Remove skip enable due to excessive buffer gap
+                                        skip_enable &= ~SPK_SKIP_EN_GAP;  // Remove skip enable due to excessive buffer gap
                                     }
                                 }
 
                                 if (gap < old_gap) {
-                                    if (gap < SPK_GAP_L2) { // gap < outer lower bound => 2*FB_RATE_DELTA
+                                    if (gap < SPK_GAP_L2) {  // gap < outer lower bound => 2*FB_RATE_DELTA
                                         FB_rate -= 2 * FB_RATE_DELTA;
                                         old_gap = gap;
-                                        skip_indicate = 0; // Feedback system is running again!
+                                        skip_indicate = 0;  // Feedback system is running again!
                                         LED_On(LED0);
 #ifdef USB_STATE_MACHINE_DEBUG
                                         print_dbg_char('/');
 #endif
-                                    } else if (gap < SPK_GAP_L1) { // gap < inner lower bound => 1*FB_RATE_DELTA
+                                    } else if (gap < SPK_GAP_L1) {  // gap < inner lower bound => 1*FB_RATE_DELTA
                                         FB_rate -= FB_RATE_DELTA;
                                         old_gap = gap;
-                                        skip_indicate = 0; // Feedback system is running again!
+                                        skip_indicate = 0;  // Feedback system is running again!
                                         LED_On(LED0);
 #ifdef USB_STATE_MACHINE_DEBUG
                                         print_dbg_char('-');
 #endif
-                                    } else if (skip_indicate == 0) { // Go back to indicating feedback system on module LEDs
+                                    } else if (skip_indicate == 0) {  // Go back to indicating feedback system on module LEDs
                                         LED_Off(LED0);
                                         LED_Off(LED1);
                                     }
                                 } else if (gap > old_gap) {
-                                    if (gap > SPK_GAP_U2) { // gap > outer upper bound => 2*FB_RATE_DELTA
+                                    if (gap > SPK_GAP_U2) {  // gap > outer upper bound => 2*FB_RATE_DELTA
                                         FB_rate += 2 * FB_RATE_DELTA;
                                         old_gap = gap;
-                                        skip_indicate = 0; // Feedback system is running again!
+                                        skip_indicate = 0;  // Feedback system is running again!
                                         LED_On(LED1);
 #ifdef USB_STATE_MACHINE_DEBUG
                                         print_dbg_char('*');
 #endif
-                                    } else if (gap > SPK_GAP_U1) { // gap > inner upper bound => 1*FB_RATE_DELTA
+                                    } else if (gap > SPK_GAP_U1) {  // gap > inner upper bound => 1*FB_RATE_DELTA
                                         FB_rate += FB_RATE_DELTA;
                                         old_gap = gap;
-                                        skip_indicate = 0; // Feedback system is running again!
+                                        skip_indicate = 0;  // Feedback system is running again!
                                         LED_On(LED1);
 #ifdef USB_STATE_MACHINE_DEBUG
                                         print_dbg_char('+');
 #endif
-                                    } else if (skip_indicate == 0) { // Go back to indicating feedback system on module LEDs
+                                    } else if (skip_indicate == 0) {  // Go back to indicating feedback system on module LEDs
                                         LED_Off(LED0);
                                         LED_Off(LED1);
                                     }
-                                } else if (skip_indicate == 0) { // Go back to indicating feedback system on module LEDs
+                                } else if (skip_indicate == 0) {  // Go back to indicating feedback system on module LEDs
                                     LED_Off(LED0);
                                     LED_Off(LED1);
                                 }
-                            } // end if(playerStarted)
-                        }     // end if (usb_alternate_setting_out >= 1)
+                            }  // end if(playerStarted)
+                        }      // end if (usb_alternate_setting_out >= 1)
 
-                    } // end if time_to_calculate_gap == 0
+                    }  // end if time_to_calculate_gap == 0
 
                     /* BSB 20131031 End of new location for gap calculation code */
 
-                } // end usb_out_received
+                }  // end usb_out_received
 
-            } // end if(1) / input_select on RX chip
+            }  // end if(1) / input_select on RX chip
 
-        } // end usb_alternate_setting_out >= 1
+        }  // end usb_alternate_setting_out >= 1
 
-        else { // opposite of ( (usb_alternate_setting_out >= 1) && (usb_ch_swap == USB_CH_NOSWAP) )
+        else {  // opposite of ( (usb_alternate_setting_out >= 1) && (usb_ch_swap == USB_CH_NOSWAP) )
 
             /* SPDIF reduced */
-#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20) // With WM8805 input, USB subsystem will be running off a completely wacko MCLK!
+#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)  // With WM8805 input, USB subsystem will be running off a completely wacko MCLK!
             if ((input_select == MOBO_SRC_SPDIF) || (input_select == MOBO_SRC_TOS1) || (input_select == MOBO_SRC_TOS2)) {
                 // Do nothing at this stage
             } else {
@@ -805,38 +803,38 @@ void uac1_device_audio_task(void *pvParameters)
             if (1) {
 #endif
                 //					playerStarted = FALSE;  // mobodebug, commented out here and included below
-                silence_USB = SILENCE_USB_LIMIT; // Indicate USB silence
+                silence_USB = SILENCE_USB_LIMIT;  // Indicate USB silence
 
-#ifdef HW_GEN_DIN20 // Dedicated mute pin
+#ifdef HW_GEN_DIN20  // Dedicated mute pin
                 if (usb_ch_swap == USB_CH_SWAPDET)
-                    usb_ch_swap = USB_CH_SWAPACK; // Acknowledge a USB channel swap, that takes this task into startup
+                    usb_ch_swap = USB_CH_SWAPACK;  // Acknowledge a USB channel swap, that takes this task into startup
 #endif
 
                 //				if (input_select == MOBO_SRC_UAC1) {			// Set from playing nonzero USB
                 // mobodebug untested fix
-                if ((input_select == MOBO_SRC_UAC1) && (playerStarted != FALSE)) { // Set from playing nonzero USB
-                    playerStarted = FALSE;                                         // Inserted here in mobodebug untested fix, removed above
+                if ((input_select == MOBO_SRC_UAC1) && (playerStarted != FALSE)) {  // Set from playing nonzero USB
+                    playerStarted = FALSE;                                          // Inserted here in mobodebug untested fix, removed above
 
-#ifdef HW_GEN_DIN20                                    // Dedicated mute pin
-                    mobo_i2s_enable(MOBO_I2S_DISABLE); // Hard-mute of I2S pin
+#ifdef HW_GEN_DIN20                                     // Dedicated mute pin
+                    mobo_i2s_enable(MOBO_I2S_DISABLE);  // Hard-mute of I2S pin
 #endif
 
 // Clear buffers before give
 #ifdef USB_STATE_MACHINE_DEBUG
                     print_dbg_char_char('9');
 #endif
-                    mobo_clear_dac_channel(); // Silencing incoming (OUT endpoint) audio buffer for good measure.
-                                              // mobodebug is this another scheduler thief?
+                    mobo_clear_dac_channel();  // Silencing incoming (OUT endpoint) audio buffer for good measure.
+                                               // mobodebug is this another scheduler thief?
 
-#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20) // With WM8805 present, handle semaphores
+#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)  // With WM8805 present, handle semaphores
                     ledSet = FALSE;
 #ifdef USB_STATE_MACHINE_DEBUG
-                    print_dbg_char('h'); // Debug semaphore, lowercase letters for USB tasks
+                    print_dbg_char('h');  // Debug semaphore, lowercase letters for USB tasks
                     if (xSemaphoreGive(input_select_semphr) == pdTRUE) {
                         input_select = MOBO_SRC_NONE;
-                        print_dbg_char(60); // '<'
+                        print_dbg_char(60);  // '<'
                     } else
-                        print_dbg_char(62); // '>'
+                        print_dbg_char(62);  // '>'
 #else
                     if (xSemaphoreGive(input_select_semphr) == pdTRUE)
                         input_select = MOBO_SRC_NONE;
@@ -845,19 +843,19 @@ void uac1_device_audio_task(void *pvParameters)
 #endif
                 }
             }
-        } // end opposite of usb_alternate_setting_out >= 1
+        }  // end opposite of usb_alternate_setting_out >= 1
 
         // BSB 20131201 attempting improved playerstarted detection
         /* SPDIF reduced */
-#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20) // With WM8805 input, USB subsystem will be running off a completely wacko MCLK!
+#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)  // With WM8805 input, USB subsystem will be running off a completely wacko MCLK!
         if ((input_select == MOBO_SRC_SPDIF) || (input_select == MOBO_SRC_TOS1) || (input_select == MOBO_SRC_TOS2)) {
             // Do nothing at this stage
         } else {
 #else
         if (1) {
 #endif
-            if (usb_buffer_toggle == USB_BUFFER_TOGGLE_LIM) { // Counter is increased by DMA, decreased by seq. code
-                usb_buffer_toggle = USB_BUFFER_TOGGLE_PARK;   // When it reaches limit, stop counting and park this mechanism
+            if (usb_buffer_toggle == USB_BUFFER_TOGGLE_LIM) {  // Counter is increased by DMA, decreased by seq. code
+                usb_buffer_toggle = USB_BUFFER_TOGGLE_PARK;    // When it reaches limit, stop counting and park this mechanism
                 playerStarted = FALSE;
 
 #ifdef USB_STATE_MACHINE_DEBUG
@@ -866,7 +864,7 @@ void uac1_device_audio_task(void *pvParameters)
             }
         }
 
-    } // end while vTask
+    }  // end while vTask
 }
 
-#endif // USB_DEVICE_FEATURE == ENABLED
+#endif  // USB_DEVICE_FEATURE == ENABLED

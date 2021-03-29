@@ -57,27 +57,27 @@
 /*! \name Base Boards
  */
 //! @{
-#define EVK1100 1        //!< AT32UC3A EVK1100 board.
-#define EVK1101 2        //!< AT32UC3B EVK1101 board.
-#define UC3C_EK 3        //!< AT32UC3C UC3C_EK board.
-#define EVK1104 4        //!< AT32UC3A3 EVK1104 board.
-#define EVK1105 5        //!< AT32UC3A EVK1105 board.
-#define STK1000 6        //!< AT32AP7000 STK1000 board.
-#define NGW100 7         //!< AT32AP7000 NGW100 board.
-#define STK600_RCUC3L0 8 //!< STK600 RCUC3L0 board.
-#define UC3L_EK 9        //!< AT32UC3L-EK board.
-#define USER_BOARD 99    //!< User-reserved board (if any).
-#define SDRwdgtLite 98   //!< User-reserved board (if any).
-#define SDRwdgt 99       //!< User-reserved board (if any).
+#define EVK1100 1         //!< AT32UC3A EVK1100 board.
+#define EVK1101 2         //!< AT32UC3B EVK1101 board.
+#define UC3C_EK 3         //!< AT32UC3C UC3C_EK board.
+#define EVK1104 4         //!< AT32UC3A3 EVK1104 board.
+#define EVK1105 5         //!< AT32UC3A EVK1105 board.
+#define STK1000 6         //!< AT32AP7000 STK1000 board.
+#define NGW100 7          //!< AT32AP7000 NGW100 board.
+#define STK600_RCUC3L0 8  //!< STK600 RCUC3L0 board.
+#define UC3L_EK 9         //!< AT32UC3L-EK board.
+#define USER_BOARD 99     //!< User-reserved board (if any).
+#define SDRwdgtLite 98    //!< User-reserved board (if any).
+#define SDRwdgt 99        //!< User-reserved board (if any).
 //! @}
 
 /*! \name Extension Boards
  */
 //! @{
-#define EXT1102 1            //!< AT32UC3B EXT1102 board.
-#define MC300 2              //!< AT32UC3 MC300 board.
-#define USER_BOARD 99        //!< User-reserved board (if any).
-#define SDRwdgt_EXT_BOARD 99 //!< User-reserved extension board (if any).
+#define EXT1102 1             //!< AT32UC3B EXT1102 board.
+#define MC300 2               //!< AT32UC3 MC300 board.
+#define USER_BOARD 99         //!< User-reserved board (if any).
+#define SDRwdgt_EXT_BOARD 99  //!< User-reserved extension board (if any).
 //! @}
 
 #if BOARD == EVK1100
@@ -118,7 +118,7 @@
 #endif
 
 #ifndef FRCOSC
-#define FRCOSC AVR32_PM_RCOSC_FREQUENCY //!< Default RCOsc frequency.
+#define FRCOSC AVR32_PM_RCOSC_FREQUENCY  //!< Default RCOsc frequency.
 #endif
 
-#endif // _BOARD_H_
+#endif  // _BOARD_H_

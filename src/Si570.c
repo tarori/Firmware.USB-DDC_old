@@ -18,14 +18,14 @@
 #include "taskLCD.h"
 #endif
 
-uint8_t si570reg[6]; // Globally accessible var, Si570 registers
+uint8_t si570reg[6];  // Globally accessible var, Si570 registers
 
 // I2C routines need this...
 volatile uint8_t si570cmd[2];
 volatile uint8_t si570payload[7];
 volatile uint8_t newfreq[2];
 
-static double rfreq, delta_rfreq, old_rfreq; // Used by Si570 freq calc functions below
+static double rfreq, delta_rfreq, old_rfreq;  // Used by Si570 freq calc functions below
 
 /*! \brief Si570 Calculate the Registers, HSDIV and N1 dividers
  *
@@ -33,21 +33,21 @@ static double rfreq, delta_rfreq, old_rfreq; // Used by Si570 freq calc function
  */
 uint8_t set_Regs_and_Dividers(double f)
 {
-    uint8_t validDividers = TWI_INVALID_ARGUMENT; // Flag indicating if frequency is resolvable
+    uint8_t validDividers = TWI_INVALID_ARGUMENT;  // Flag indicating if frequency is resolvable
     double rfreq_fraction;
     uint32_t rfreq_integer_part;
     uint32_t rfreq_fraction_part;
 
     // Registers finding the lowest DCO frequenty - code from Fred
-    unsigned char xHS_DIV; // HSDIV divider can be 4,5,6,7,9,11
-    unsigned int xN1;      // N1 divider can be 1,2,4,6,8...128
+    unsigned char xHS_DIV;  // HSDIV divider can be 4,5,6,7,9,11
+    unsigned int xN1;       // N1 divider can be 1,2,4,6,8...128
     unsigned int xN;
 
     // Registers to save the found dividers
     unsigned char sHS_DIV = 0;
     unsigned char sN1 = 0;
-    unsigned int sN = 0; // Total division
-    unsigned int N0;     // Total divider needed (N1 * HS_DIV)
+    unsigned int sN = 0;  // Total division
+    unsigned int N0;      // Total divider needed (N1 * HS_DIV)
 
     // Find the total division needed.
     // It is always one too low (not in the case reminder is zero, reminder not used here).
@@ -77,13 +77,13 @@ uint8_t set_Regs_and_Dividers(double f)
         }
     }
 
-    if (sHS_DIV == 0) // no valid dividers found
+    if (sHS_DIV == 0)  // no valid dividers found
     {
         return validDividers;
     }
 
-    rfreq = f * (double)sN;      // DCO freq
-    if (rfreq > (double)DCO_MAX) // calculated DCO freq > max
+    rfreq = f * (double)sN;       // DCO freq
+    if (rfreq > (double)DCO_MAX)  // calculated DCO freq > max
     {
         return validDividers;
     }
@@ -93,7 +93,7 @@ uint8_t set_Regs_and_Dividers(double f)
     // rfreq is a 38 bit number, MSB 10 bits integer portion, and LSB 28 fraction
     // in the Si570 registers, tempBuf[1] has 6 bits, and tempBuf[2] has 4 bits of the integer portion
 
-    rfreq = rfreq / ((double)cdata.FreqXtal / _2(24)); // DCO divided by fcryst
+    rfreq = rfreq / ((double)cdata.FreqXtal / _2(24));  // DCO divided by fcryst
     rfreq_integer_part = rfreq;
     rfreq_fraction = rfreq - rfreq_integer_part;
     rfreq_fraction_part = rfreq_fraction * (1L << 28);
@@ -114,7 +114,7 @@ uint8_t set_Regs_and_Dividers(double f)
  *
  * \retval none.
  */
-double Freq_From_Register(double fcryst) // side effects: rfreq and delta_rfreq are set
+double Freq_From_Register(double fcryst)  // side effects: rfreq and delta_rfreq are set
 {
     double freq_double;
     uint8_t n1;
@@ -129,8 +129,7 @@ double Freq_From_Register(double fcryst) // side effects: rfreq and delta_rfreq 
     //	else if((n1 & 1) !=0) n1 += 1;
     n1 += 1;
 
-    rfreq_integer_portion = ((uint32_t)(si570reg[1] & 0x3f)) << 4 |
-                            ((uint32_t)(si570reg[2] & 0xf0)) >> 4;
+    rfreq_integer_portion = ((uint32_t)(si570reg[1] & 0x3f)) << 4 | ((uint32_t)(si570reg[2] & 0xf0)) >> 4;
 
     rfreq_fraction_portion = ((uint32_t)(si570reg[2] & 0x0f)) << 24;
     rfreq_fraction_portion += ((uint32_t)(si570reg[3])) << 16;
@@ -183,7 +182,7 @@ uint8_t SetFrequency(double f)
         }
         // Inside smoothtune range, just update the registers
         else
-            status = WriteRegToSi570(cdata.Si570_I2C_addr); // Write only the updated rFreq (smoothtune)
+            status = WriteRegToSi570(cdata.Si570_I2C_addr);  // Write only the updated rFreq (smoothtune)
     }
 
 #if I2C_LCD_PRINT
@@ -200,7 +199,7 @@ uint8_t SetFrequency(double f)
         lcd_q_puth(si570reg[x]);
 #endif
 
-    return status; // Return TWI_SUCCESS / TWI errors / or TWI_INVALID_ARGUMENT if no valid dividers
+    return status;  // Return TWI_SUCCESS / TWI errors / or TWI_INVALID_ARGUMENT if no valid dividers
 }
 
 //-----------------------------------------------------------------------------------------------------
@@ -219,7 +218,7 @@ uint8_t Si570Init(uint8_t i2c_address)
 
 uint8_t Si570NewFreq(uint8_t i2c_address)
 {
-    uint8_t status; //, newfreq[2];
+    uint8_t status;  //, newfreq[2];
 
     status = WriteCmdToSi570(i2c_address, 135, 0x40);
     return status;
@@ -259,8 +258,8 @@ uint8_t WriteRegToSi570(uint8_t i2c_address)
     uint8_t status, i;
     uint8_t reg_write[7];
 
-    reg_write[0] = 7;       // Set to Register 7
-    for (i = 0; i < 6; i++) // Copy the registers into write buffer
+    reg_write[0] = 7;        // Set to Register 7
+    for (i = 0; i < 6; i++)  // Copy the registers into write buffer
     {
         reg_write[i + 1] = si570reg[i];
     }

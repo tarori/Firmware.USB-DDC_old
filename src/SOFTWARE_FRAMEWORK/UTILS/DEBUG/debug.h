@@ -58,12 +58,12 @@
  * is signaled by the "0xdeadbeef" pattern.
  */
 #define Uc3_trace_init(debug_addr) \
-    *(U32 *)(debug_addr) = debug_addr + 4
+    *(U32*)(debug_addr) = debug_addr + 4
 
-#define Uc3_trace(debug_addr, x)                     \
-    *(U32 *)(*(U32 *)(debug_addr)) = (U32)(x);       \
-    *(U32 *)(*(U32 *)(debug_addr) + 4) = 0xdeadbeef; \
-    *(U32 *)(debug_addr) = *(U32 *)(debug_addr) + 4
+#define Uc3_trace(debug_addr, x)                   \
+    *(U32*)(*(U32*)(debug_addr)) = (U32)(x);       \
+    *(U32*)(*(U32*)(debug_addr) + 4) = 0xdeadbeef; \
+    *(U32*)(debug_addr) = *(U32*)(debug_addr) + 4
 
 /*! \brief This macro is used to insert labels into assembly output.
  *
@@ -102,7 +102,7 @@ extern U32 get_heap_free_size(void);
  * \param buf   Base address of the buffer used for the trace.
  * \param size  Size of the round buffer. Must be a power of 2.
  */
-void uc3_round_trace_init(void *buf, U32 size);
+void uc3_round_trace_init(void* buf, U32 size);
 
 /*! \brief Trace a data in the round buffer.
  *
@@ -113,4 +113,4 @@ void uc3_round_trace(U32 val);
 
 //! @}
 
-#endif // _DEBUG_H_
+#endif  // _DEBUG_H_

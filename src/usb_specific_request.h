@@ -93,48 +93,48 @@ extern volatile U8 usb_alternate_setting, usb_alternate_setting_out;
 extern volatile Bool usb_alternate_setting_changed, usb_alternate_setting_out_changed;
 
 // Redefined BSB 20160320, USB volume limits
-#define VOL_DEFAULT (S16)0x0000            // Because there is no way to change volume on PC/UAC2 (S16)0xF400	// -12dB // F400
-#define VOL_MIN (S16)0xC400                // -60dB
-#define VOL_INVALID (S16) VOL_MIN - 0x0100 // Just below VOL_MIN
-#define VOL_MAX (S16)0x0000                // 0dB
-#define VOL_RES (S16)0x0080                // 0.5dB steps. Don't expect Windows to heed this.
-#define VOL_MULT_UNITY 0x10000000          // Encoding unity volume
-#define VOL_MULT_SHIFT 28                  // The number of right shifts needed after multiplication by unity
-#define CH_LEFT 0x01                       // Master:0 Left:1 Right:1
+#define VOL_DEFAULT (S16)0x0000             // Because there is no way to change volume on PC/UAC2 (S16)0xF400	// -12dB // F400
+#define VOL_MIN (S16)0xC400                 // -60dB
+#define VOL_INVALID (S16) VOL_MIN - 0x0100  // Just below VOL_MIN
+#define VOL_MAX (S16)0x0000                 // 0dB
+#define VOL_RES (S16)0x0080                 // 0.5dB steps. Don't expect Windows to heed this.
+#define VOL_MULT_UNITY 0x10000000           // Encoding unity volume
+#define VOL_MULT_SHIFT 28                   // The number of right shifts needed after multiplication by unity
+#define CH_LEFT 0x01                        // Master:0 Left:1 Right:1
 #define CH_RIGHT 0x02
 #define VOL_READ 0x01
 #define VOL_WRITE 0x02
 
 // USB skip/insert limits
-#define SPK_GAP_USKIP DAC_BUFFER_SIZE * 7 / 4 // Almost a full buffer up in distance => enable skip/insert
-#define SPK_GAP_LSKIP DAC_BUFFER_SIZE * 1 / 4 // Almost a full buffer down in distance => enable skip/insert
-#define SPK_GAP_U2 DAC_BUFFER_SIZE * 6 / 4    // A half buffer up in distance	=> Speed up host a lot
-#define SPK_GAP_U1 DAC_BUFFER_SIZE * 5 / 4    // A quarter buffer up in distance => Speed up host a bit
-#define SPK_GAP_NOM DAC_BUFFER_SIZE * 4 / 4   // Ideal distance is half the size of linear buffer
-#define SPK_GAP_L1 DAC_BUFFER_SIZE * 3 / 4    // A quarter buffer down in distance => Slow down host a bit
-#define SPK_GAP_L2 DAC_BUFFER_SIZE * 2 / 4    // A half buffer down in distance => Slow down host a lot
+#define SPK_GAP_USKIP DAC_BUFFER_SIZE * 7 / 4  // Almost a full buffer up in distance => enable skip/insert
+#define SPK_GAP_LSKIP DAC_BUFFER_SIZE * 1 / 4  // Almost a full buffer down in distance => enable skip/insert
+#define SPK_GAP_U2 DAC_BUFFER_SIZE * 6 / 4     // A half buffer up in distance	=> Speed up host a lot
+#define SPK_GAP_U1 DAC_BUFFER_SIZE * 5 / 4     // A quarter buffer up in distance => Speed up host a bit
+#define SPK_GAP_NOM DAC_BUFFER_SIZE * 4 / 4    // Ideal distance is half the size of linear buffer
+#define SPK_GAP_L1 DAC_BUFFER_SIZE * 3 / 4     // A quarter buffer down in distance => Slow down host a bit
+#define SPK_GAP_L2 DAC_BUFFER_SIZE * 2 / 4     // A half buffer down in distance => Slow down host a lot
 
 // SPDIF buffer skip/insert limits
-#define SPK_GAP_L3 DAC_BUFFER_SIZE * 2.0 / 4 // Lower limit for safe operation, starting point for skip/insert
-#define SPK_GAP_LD DAC_BUFFER_SIZE * 2.1 / 4 // Mega skip/insert landing position
-#define SPK_GAP_LM DAC_BUFFER_SIZE * 2.4 / 4 // Narrowest starting point for mega skip/insert
-#define SPK_GAP_LX DAC_BUFFER_SIZE * 1.8 / 4 // Starting point for oscillator toggle
+#define SPK_GAP_L3 DAC_BUFFER_SIZE * 2.0 / 4  // Lower limit for safe operation, starting point for skip/insert
+#define SPK_GAP_LD DAC_BUFFER_SIZE * 2.1 / 4  // Mega skip/insert landing position
+#define SPK_GAP_LM DAC_BUFFER_SIZE * 2.4 / 4  // Narrowest starting point for mega skip/insert
+#define SPK_GAP_LX DAC_BUFFER_SIZE * 1.8 / 4  // Starting point for oscillator toggle
 
-#define SPK_GAP_U3 DAC_BUFFER_SIZE * 6.0 / 4 // Upper limit for safe operation, starting point for skip/insert
-#define SPK_GAP_UD DAC_BUFFER_SIZE * 5.9 / 4 // Mega skip/insert landing position
-#define SPK_GAP_UM DAC_BUFFER_SIZE * 5.6 / 4 // Narrowest starting point for mega skip/insert
-#define SPK_GAP_UX DAC_BUFFER_SIZE * 6.2 / 4 // Starting point for oscillator toggle
+#define SPK_GAP_U3 DAC_BUFFER_SIZE * 6.0 / 4  // Upper limit for safe operation, starting point for skip/insert
+#define SPK_GAP_UD DAC_BUFFER_SIZE * 5.9 / 4  // Mega skip/insert landing position
+#define SPK_GAP_UM DAC_BUFFER_SIZE * 5.6 / 4  // Narrowest starting point for mega skip/insert
+#define SPK_GAP_UX DAC_BUFFER_SIZE * 6.2 / 4  // Starting point for oscillator toggle
 
 // Various other defines
-#define SPK_PACKETS_PER_GAP_CALCULATION 8 // This is UAC1 which counts in ms. Gap calculation every 8ms, EP reporting every 32
-#define SPK_PACKETS_PER_GAP_SKIP 1        // After a skip/insert, recalculate gap immediately, then again after 1ms
-#define SPK_HOST_FB_DEAD_AFTER 200        // How many audio packets may arrive without host polling feedback, before we declare FB dead?
-#define SPK_SKIP_EN_GAP 1                 // Enable skip/insert due to low gap
-#define SPK_SKIP_EN_DEAD 2                // Enable skip/insert due to dead host feedback system
+#define SPK_PACKETS_PER_GAP_CALCULATION 8  // This is UAC1 which counts in ms. Gap calculation every 8ms, EP reporting every 32
+#define SPK_PACKETS_PER_GAP_SKIP 1         // After a skip/insert, recalculate gap immediately, then again after 1ms
+#define SPK_HOST_FB_DEAD_AFTER 200         // How many audio packets may arrive without host polling feedback, before we declare FB dead?
+#define SPK_SKIP_EN_GAP 1                  // Enable skip/insert due to low gap
+#define SPK_SKIP_EN_DEAD 2                 // Enable skip/insert due to dead host feedback system
 
-#define SPK1_SKIP_LIMIT_14 2 << 14 // 10.14 and 12.14 format. |accumulated error| must be > 2 samples.
-#define SPK2_SKIP_LIMIT_14 2 << 14 // 10.14 and 12.14 format. |accumulated error| must be > 2 samples.
-#define SPK2_SKIP_LIMIT_16 2 << 14 // 16.16 format for samples/250uS |accumulated error| must be > 2 samples.
+#define SPK1_SKIP_LIMIT_14 2 << 14  // 10.14 and 12.14 format. |accumulated error| must be > 2 samples.
+#define SPK2_SKIP_LIMIT_14 2 << 14  // 10.14 and 12.14 format. |accumulated error| must be > 2 samples.
+#define SPK2_SKIP_LIMIT_16 2 << 14  // 16.16 format for samples/250uS |accumulated error| must be > 2 samples.
 
 // For lack of a better place to put it, here is the volume control format message.
 // Input: 16-bit volume control word from USB, 256*dB
@@ -186,7 +186,7 @@ extern void usb_user_set_interface(U8 wIndex, U8 wValue);
 //!
 extern Bool usb_user_read_request(U8, U8);
 extern Bool usb_user_get_descriptor(U8, U8);
-extern Bool usb_user_DG8SAQ(U8, U8); // for processing DG8SAQ type of commands
+extern Bool usb_user_DG8SAQ(U8, U8);  // for processing DG8SAQ type of commands
 
 // dg8saq EP0 hooks for the Mobo firmware
 // extern void dg8saqFunctionWrite(U8, U16, U16, U8 *, U8 );
@@ -232,4 +232,4 @@ typedef struct
 
 //! @}
 
-#endif // _USB_SPECIFIC_REQUEST_H_
+#endif  // _USB_SPECIFIC_REQUEST_H_

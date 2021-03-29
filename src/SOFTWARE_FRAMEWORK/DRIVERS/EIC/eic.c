@@ -52,7 +52,7 @@
 #include "preprocessor.h"
 #include <avr32/io.h>
 
-void eic_init(volatile avr32_eic_t *eic, const eic_options_t *opt, unsigned int nb_lines)
+void eic_init(volatile avr32_eic_t* eic, const eic_options_t* opt, unsigned int nb_lines)
 {
     int i;
     for (i = 0; i < nb_lines; i++) {
@@ -69,45 +69,45 @@ void eic_init(volatile avr32_eic_t *eic, const eic_options_t *opt, unsigned int 
     }
 }
 
-void eic_enable_lines(volatile avr32_eic_t *eic, unsigned int mask_lines)
+void eic_enable_lines(volatile avr32_eic_t* eic, unsigned int mask_lines)
 {
     eic->en = mask_lines;
 }
 
-void eic_enable_line(volatile avr32_eic_t *eic, unsigned int line_number)
+void eic_enable_line(volatile avr32_eic_t* eic, unsigned int line_number)
 {
     // Enable line line_number
     eic->en = 1 << line_number;
 }
 
-void eic_disable_lines(volatile avr32_eic_t *eic, unsigned int mask_lines)
+void eic_disable_lines(volatile avr32_eic_t* eic, unsigned int mask_lines)
 {
     eic->dis = mask_lines;
 }
 
-void eic_disable_line(volatile avr32_eic_t *eic, unsigned int line_number)
+void eic_disable_line(volatile avr32_eic_t* eic, unsigned int line_number)
 {
     // Disable line line_number
     eic->dis = 1 << line_number;
 }
 
-Bool eic_is_line_enabled(volatile avr32_eic_t *eic, unsigned int line_number)
+Bool eic_is_line_enabled(volatile avr32_eic_t* eic, unsigned int line_number)
 {
     return (eic->ctrl & (1 << line_number)) != 0;
 }
 
-void eic_enable_interrupt_lines(volatile avr32_eic_t *eic, unsigned int mask_lines)
+void eic_enable_interrupt_lines(volatile avr32_eic_t* eic, unsigned int mask_lines)
 {
     eic->ier = mask_lines;
 }
 
-void eic_enable_interrupt_line(volatile avr32_eic_t *eic, unsigned int line_number)
+void eic_enable_interrupt_line(volatile avr32_eic_t* eic, unsigned int line_number)
 {
     // Enable line line_number
     eic->ier = 1 << line_number;
 }
 
-void eic_disable_interrupt_lines(volatile avr32_eic_t *eic, unsigned int mask_lines)
+void eic_disable_interrupt_lines(volatile avr32_eic_t* eic, unsigned int mask_lines)
 {
     Bool global_interrupt_enabled = Is_global_interrupt_enabled();
 
@@ -119,7 +119,7 @@ void eic_disable_interrupt_lines(volatile avr32_eic_t *eic, unsigned int mask_li
         Enable_global_interrupt();
 }
 
-void eic_disable_interrupt_line(volatile avr32_eic_t *eic, unsigned int line_number)
+void eic_disable_interrupt_line(volatile avr32_eic_t* eic, unsigned int line_number)
 {
     Bool global_interrupt_enabled = Is_global_interrupt_enabled();
 
@@ -132,12 +132,12 @@ void eic_disable_interrupt_line(volatile avr32_eic_t *eic, unsigned int line_num
         Enable_global_interrupt();
 }
 
-Bool eic_is_interrupt_line_enabled(volatile avr32_eic_t *eic, unsigned int line_number)
+Bool eic_is_interrupt_line_enabled(volatile avr32_eic_t* eic, unsigned int line_number)
 {
     return (eic->imr & (1 << line_number)) != 0;
 }
 
-void eic_clear_interrupt_lines(volatile avr32_eic_t *eic, unsigned int mask_lines)
+void eic_clear_interrupt_lines(volatile avr32_eic_t* eic, unsigned int mask_lines)
 {
     Bool global_interrupt_enabled = Is_global_interrupt_enabled();
 
@@ -149,7 +149,7 @@ void eic_clear_interrupt_lines(volatile avr32_eic_t *eic, unsigned int mask_line
         Enable_global_interrupt();
 }
 
-void eic_clear_interrupt_line(volatile avr32_eic_t *eic, unsigned int line_number)
+void eic_clear_interrupt_line(volatile avr32_eic_t* eic, unsigned int line_number)
 {
     Bool global_interrupt_enabled = Is_global_interrupt_enabled();
 
@@ -162,25 +162,25 @@ void eic_clear_interrupt_line(volatile avr32_eic_t *eic, unsigned int line_numbe
         Enable_global_interrupt();
 }
 
-Bool eic_is_interrupt_line_pending(volatile avr32_eic_t *eic, unsigned int line_number)
+Bool eic_is_interrupt_line_pending(volatile avr32_eic_t* eic, unsigned int line_number)
 {
     return (eic->isr & (1 << line_number)) != 0;
 }
 
 #if !defined(AVR32_EIC_301_H_INCLUDED)
-void eic_enable_interrupt_scan(volatile avr32_eic_t *eic, unsigned int presc)
+void eic_enable_interrupt_scan(volatile avr32_eic_t* eic, unsigned int presc)
 {
     // Enable SCAN function with PRESC value
     eic->scan |= (presc << AVR32_EIC_SCAN_PRESC_OFFSET) | (1 << AVR32_EIC_SCAN_EN_OFFSET);
 }
 
-void eic_disable_interrupt_scan(volatile avr32_eic_t *eic)
+void eic_disable_interrupt_scan(volatile avr32_eic_t* eic)
 {
     // Disable SCAN function
     eic->scan = 0 << AVR32_EIC_SCAN_EN_OFFSET;
 }
 
-unsigned long eic_get_interrupt_pad_scan(volatile avr32_eic_t *eic)
+unsigned long eic_get_interrupt_pad_scan(volatile avr32_eic_t* eic)
 {
     // Return pad number that causes interrupt
     return (eic->scan >> AVR32_EIC_SCAN_PIN_OFFSET);

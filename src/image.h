@@ -26,15 +26,15 @@ typedef struct {
     void (*init)(void);
     void (*task_init)(void);
     // descriptor access
-    uint8_t *(*get_dev_desc_pointer)(void);
+    uint8_t* (*get_dev_desc_pointer)(void);
     uint16_t (*get_dev_desc_length)(void);
-    uint8_t *(*get_conf_desc_pointer)(void);
+    uint8_t* (*get_conf_desc_pointer)(void);
     uint16_t (*get_conf_desc_length)(void);
-    uint8_t *(*get_conf_desc_fs_pointer)(void);
+    uint8_t* (*get_conf_desc_fs_pointer)(void);
     uint16_t (*get_conf_desc_fs_length)(void);
-    uint8_t *(*get_conf_desc_hs_pointer)(void);
+    uint8_t* (*get_conf_desc_hs_pointer)(void);
     uint16_t (*get_conf_desc_hs_length)(void);
-    uint8_t *(*get_qualifier_desc_pointer)(void);
+    uint8_t* (*get_qualifier_desc_pointer)(void);
     uint16_t (*get_qualifier_desc_length)(void);
     // usb specific request handling
     void (*user_endpoint_init)(uint8_t conf_nb);
@@ -52,15 +52,15 @@ extern void image_boot(void);
 extern void image_init(void);
 extern void image_task_init(void);
 // descriptor access
-extern uint8_t *image_get_dev_desc_pointer(void);
+extern uint8_t* image_get_dev_desc_pointer(void);
 extern uint16_t image_get_dev_desc_length(void);
-extern uint8_t *image_get_conf_desc_pointer(void);
+extern uint8_t* image_get_conf_desc_pointer(void);
 extern uint16_t image_get_conf_desc_length(void);
-extern uint8_t *image_get_conf_desc_fs_pointer(void);
+extern uint8_t* image_get_conf_desc_fs_pointer(void);
 extern uint16_t image_get_conf_desc_fs_length(void);
-extern uint8_t *image_get_conf_desc_hs_pointer(void);
+extern uint8_t* image_get_conf_desc_hs_pointer(void);
 extern uint16_t image_get_conf_desc_hs_length(void);
-extern uint8_t *image_get_qualifier_desc_pointer(void);
+extern uint8_t* image_get_qualifier_desc_pointer(void);
 extern uint16_t image_get_qualifier_desc_length(void);
 // usb specific request handling
 extern void image_user_endpoint_init(uint8_t conf_nb);

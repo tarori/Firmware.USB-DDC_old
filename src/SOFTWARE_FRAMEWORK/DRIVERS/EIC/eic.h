@@ -56,25 +56,25 @@
  */
 //! @{
 #if (UC3A || UC3B)
-#define EXT_INT0 AVR32_EIC_INT0 //!< Line 0
-#define EXT_INT1 AVR32_EIC_INT1 //!< Line 1
-#define EXT_INT2 AVR32_EIC_INT2 //!< Line 2
-#define EXT_INT3 AVR32_EIC_INT3 //!< Line 3
-#define EXT_INT4 AVR32_EIC_INT4 //!< Line 4
-#define EXT_INT5 AVR32_EIC_INT5 //!< Line 5
-#define EXT_INT6 AVR32_EIC_INT6 //!< Line 6
-#define EXT_INT7 AVR32_EIC_INT7 //!< Line 7
-#define EXT_NMI AVR32_EIC_NMI   //!< Line 8
+#define EXT_INT0 AVR32_EIC_INT0  //!< Line 0
+#define EXT_INT1 AVR32_EIC_INT1  //!< Line 1
+#define EXT_INT2 AVR32_EIC_INT2  //!< Line 2
+#define EXT_INT3 AVR32_EIC_INT3  //!< Line 3
+#define EXT_INT4 AVR32_EIC_INT4  //!< Line 4
+#define EXT_INT5 AVR32_EIC_INT5  //!< Line 5
+#define EXT_INT6 AVR32_EIC_INT6  //!< Line 6
+#define EXT_INT7 AVR32_EIC_INT7  //!< Line 7
+#define EXT_NMI AVR32_EIC_NMI    //!< Line 8
 #else
-#define EXT_INT0 AVR32_EIC_INT1 //!< Line 0
-#define EXT_INT1 AVR32_EIC_INT2 //!< Line 1
-#define EXT_INT2 AVR32_EIC_INT3 //!< Line 2
-#define EXT_INT3 AVR32_EIC_INT4 //!< Line 3
-#define EXT_INT4 AVR32_EIC_INT5 //!< Line 4
-#define EXT_INT5 AVR32_EIC_INT6 //!< Line 5
-#define EXT_INT6 AVR32_EIC_INT7 //!< Line 6
-#define EXT_INT7 AVR32_EIC_INT8 //!< Line 7
-#define EXT_NMI AVR32_EIC_NMI   //!< Line 8
+#define EXT_INT0 AVR32_EIC_INT1  //!< Line 0
+#define EXT_INT1 AVR32_EIC_INT2  //!< Line 1
+#define EXT_INT2 AVR32_EIC_INT3  //!< Line 2
+#define EXT_INT3 AVR32_EIC_INT4  //!< Line 3
+#define EXT_INT4 AVR32_EIC_INT5  //!< Line 4
+#define EXT_INT5 AVR32_EIC_INT6  //!< Line 5
+#define EXT_INT6 AVR32_EIC_INT7  //!< Line 6
+#define EXT_INT7 AVR32_EIC_INT8  //!< Line 7
+#define EXT_NMI AVR32_EIC_NMI    //!< Line 8
 
 #endif
 
@@ -83,36 +83,36 @@
 /*! \name Mode Trigger Options
  */
 //! @{
-#define EIC_MODE_EDGE_TRIGGERED AVR32_EIC_EDGE_IRQ   //!<
-#define EIC_MODE_LEVEL_TRIGGERED AVR32_EIC_LEVEL_IRQ //!<
+#define EIC_MODE_EDGE_TRIGGERED AVR32_EIC_EDGE_IRQ    //!<
+#define EIC_MODE_LEVEL_TRIGGERED AVR32_EIC_LEVEL_IRQ  //!<
 //! @}
 
 /*! \name Edge level Options
  */
 //! @{
-#define EIC_EDGE_FALLING_EDGE AVR32_EIC_FALLING_EDGE //!<
-#define EIC_EDGE_RISING_EDGE AVR32_EIC_RISING_EDGE   //!<
+#define EIC_EDGE_FALLING_EDGE AVR32_EIC_FALLING_EDGE  //!<
+#define EIC_EDGE_RISING_EDGE AVR32_EIC_RISING_EDGE    //!<
 //! @}
 
 /*! \name Level Options
  */
 //! @{
-#define EIC_LEVEL_LOW_LEVEL AVR32_EIC_LOW_LEVEL   //!<
-#define EIC_LEVEL_HIGH_LEVEL AVR32_EIC_HIGH_LEVEL //!<
+#define EIC_LEVEL_LOW_LEVEL AVR32_EIC_LOW_LEVEL    //!<
+#define EIC_LEVEL_HIGH_LEVEL AVR32_EIC_HIGH_LEVEL  //!<
 //! @}
 
 /*! \name Filter Options
  */
 //! @{
-#define EIC_FILTER_ENABLED AVR32_EIC_FILTER_ON   //!<
-#define EIC_FILTER_DISABLED AVR32_EIC_FILTER_OFF //!<
+#define EIC_FILTER_ENABLED AVR32_EIC_FILTER_ON    //!<
+#define EIC_FILTER_DISABLED AVR32_EIC_FILTER_OFF  //!<
 //! @}
 
 /*! \name Synch Mode Options
  */
 //! @{
-#define EIC_SYNCH_MODE AVR32_EIC_SYNC       //!<
-#define EIC_ASYNCH_MODE AVR32_EIC_USE_ASYNC //!<
+#define EIC_SYNCH_MODE AVR32_EIC_SYNC        //!<
+#define EIC_ASYNCH_MODE AVR32_EIC_USE_ASYNC  //!<
 //! @}
 
 //! Configuration parameters of the EIC module.
@@ -144,35 +144,35 @@ typedef struct
  * \param opt Configuration parameters of the EIC module (see \ref eic_options_t)
  * \param nb_lines Number of lines to consider, equal to size of opt buffer
  */
-extern void eic_init(volatile avr32_eic_t *eic, const eic_options_t *opt, unsigned int nb_lines);
+extern void eic_init(volatile avr32_eic_t* eic, const eic_options_t* opt, unsigned int nb_lines);
 
 /*! \brief Enable the EIC driver.
  *
  * \param eic Base address of the EIC module
  * \param mask_lines Mask for current selected lines
  */
-extern void eic_enable_lines(volatile avr32_eic_t *eic, unsigned int mask_lines);
+extern void eic_enable_lines(volatile avr32_eic_t* eic, unsigned int mask_lines);
 
 /*! \brief Enable the EIC driver.
  *
  * \param eic Base address of the EIC module
  * \param line_number Line number to enable
  */
-extern void eic_enable_line(volatile avr32_eic_t *eic, unsigned int line_number);
+extern void eic_enable_line(volatile avr32_eic_t* eic, unsigned int line_number);
 
 /*! \brief Disable the EIC driver.
  *
  * \param eic Base address of the EIC module
  * \param mask_lines Mask for current selected lines
  */
-extern void eic_disable_lines(volatile avr32_eic_t *eic, unsigned int mask_lines);
+extern void eic_disable_lines(volatile avr32_eic_t* eic, unsigned int mask_lines);
 
 /*! \brief Disable the EIC driver.
  *
  * \param eic Base address of the EIC module
  * \param line_number Line number to disable
  */
-extern void eic_disable_line(volatile avr32_eic_t *eic, unsigned int line_number);
+extern void eic_disable_line(volatile avr32_eic_t* eic, unsigned int line_number);
 
 /*! \brief Tells whether an EIC line is enabled.
  *
@@ -181,7 +181,7 @@ extern void eic_disable_line(volatile avr32_eic_t *eic, unsigned int line_number
  *
  * \return Whether an EIC line is enabled.
  */
-extern Bool eic_is_line_enabled(volatile avr32_eic_t *eic, unsigned int line_number);
+extern Bool eic_is_line_enabled(volatile avr32_eic_t* eic, unsigned int line_number);
 
 /*! \name Interrupt Control Functions
  */
@@ -192,28 +192,28 @@ extern Bool eic_is_line_enabled(volatile avr32_eic_t *eic, unsigned int line_num
  * \param eic Base address of the EIC (i.e. &AVR32_EIC).
  * \param mask_lines Mask for current selected lines
  */
-extern void eic_enable_interrupt_lines(volatile avr32_eic_t *eic, unsigned int mask_lines);
+extern void eic_enable_interrupt_lines(volatile avr32_eic_t* eic, unsigned int mask_lines);
 
 /*! \brief Enable the interrupt feature of the EIC.
  *
  * \param eic Base address of the EIC (i.e. &AVR32_EIC).
  * \param line_number Line number to enable
  */
-extern void eic_enable_interrupt_line(volatile avr32_eic_t *eic, unsigned int line_number);
+extern void eic_enable_interrupt_line(volatile avr32_eic_t* eic, unsigned int line_number);
 
 /*! \brief Disable the interrupt feature of the EIC.
  *
  * \param eic Base address of the EIC (i.e. &AVR32_EIC).
  * \param mask_lines Mask for current selected lines
  */
-extern void eic_disable_interrupt_lines(volatile avr32_eic_t *eic, unsigned int mask_lines);
+extern void eic_disable_interrupt_lines(volatile avr32_eic_t* eic, unsigned int mask_lines);
 
 /*! \brief Disable the interrupt feature of the EIC.
  *
  * \param eic Base address of the EIC (i.e. &AVR32_EIC).
  * \param line_number Line number to disable
  */
-extern void eic_disable_interrupt_line(volatile avr32_eic_t *eic, unsigned int line_number);
+extern void eic_disable_interrupt_line(volatile avr32_eic_t* eic, unsigned int line_number);
 
 /*! \brief Tells whether an EIC interrupt line is enabled.
  *
@@ -222,7 +222,7 @@ extern void eic_disable_interrupt_line(volatile avr32_eic_t *eic, unsigned int l
  *
  * \return Whether an EIC interrupt line is enabled.
  */
-extern Bool eic_is_interrupt_line_enabled(volatile avr32_eic_t *eic, unsigned int line_number);
+extern Bool eic_is_interrupt_line_enabled(volatile avr32_eic_t* eic, unsigned int line_number);
 
 /*! \brief Clear the interrupt flag.
  *         Call this function once you've handled the interrupt.
@@ -230,7 +230,7 @@ extern Bool eic_is_interrupt_line_enabled(volatile avr32_eic_t *eic, unsigned in
  * \param eic Base address of the EIC (i.e. &AVR32_EIC).
  * \param mask_lines Mask for current selected lines
  */
-extern void eic_clear_interrupt_lines(volatile avr32_eic_t *eic, unsigned int mask_lines);
+extern void eic_clear_interrupt_lines(volatile avr32_eic_t* eic, unsigned int mask_lines);
 
 /*! \brief Clear the interrupt flag.
  *         Call this function once you've handled the interrupt.
@@ -238,7 +238,7 @@ extern void eic_clear_interrupt_lines(volatile avr32_eic_t *eic, unsigned int ma
  * \param eic Base address of the EIC (i.e. &AVR32_EIC).
  * \param line_number Line number to clear
  */
-extern void eic_clear_interrupt_line(volatile avr32_eic_t *eic, unsigned int line_number);
+extern void eic_clear_interrupt_line(volatile avr32_eic_t* eic, unsigned int line_number);
 
 /*! \brief Tells whether an EIC interrupt line is pending.
  *
@@ -247,27 +247,27 @@ extern void eic_clear_interrupt_line(volatile avr32_eic_t *eic, unsigned int lin
  *
  * \return Whether an EIC interrupt line is pending.
  */
-extern Bool eic_is_interrupt_line_pending(volatile avr32_eic_t *eic, unsigned int line_number);
+extern Bool eic_is_interrupt_line_pending(volatile avr32_eic_t* eic, unsigned int line_number);
 
 /*! \brief Enable the interrupt scan feature of the EIC.
  *
  * \param eic Base address of the EIC (i.e. &AVR32_EIC).
  * \param presc Prescale select for the keypad scan rate in the range [0,31].
  */
-extern void eic_enable_interrupt_scan(volatile avr32_eic_t *eic, unsigned int presc);
+extern void eic_enable_interrupt_scan(volatile avr32_eic_t* eic, unsigned int presc);
 
 /*! \brief Disable the interrupt scan feature of the EIC.
  *
  * \param eic Base address of the EIC (i.e. &AVR32_EIC).
  */
-extern void eic_disable_interrupt_scan(volatile avr32_eic_t *eic);
+extern void eic_disable_interrupt_scan(volatile avr32_eic_t* eic);
 
 /*! \brief Return scan pad number that causes interrupt.
  *
  * \param eic Base address of the EIC (i.e. &AVR32_EIC).
  */
-extern unsigned long eic_get_interrupt_pad_scan(volatile avr32_eic_t *eic);
+extern unsigned long eic_get_interrupt_pad_scan(volatile avr32_eic_t* eic);
 
 //! @}
 
-#endif // _EIC_H_
+#endif  // _EIC_H_

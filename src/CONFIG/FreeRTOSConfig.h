@@ -135,12 +135,12 @@ to exclude the API function. */
 #define configDBG_USART_BAUDRATE 57600
 
 /* USB task definitions. */
-#define configTSK_USB_NAME ((const signed portCHAR *)"USB")
+#define configTSK_USB_NAME ((const signed portCHAR*)"USB")
 #define configTSK_USB_STACK_SIZE 256
 #define configTSK_USB_PRIORITY (tskIDLE_PRIORITY + 4)
 
 /* USB device task definitions. */
-#define configTSK_USB_DEV_NAME ((const signed portCHAR *)"USB Device")
+#define configTSK_USB_DEV_NAME ((const signed portCHAR*)"USB Device")
 #define configTSK_USB_DEV_STACK_SIZE 256
 #define configTSK_USB_DEV_PRIORITY (tskIDLE_PRIORITY + 3)
 #define UAC1_configTSK_USB_DEV_PERIOD 10
@@ -148,13 +148,13 @@ to exclude the API function. */
 #define HPSDR_configTSK_USB_DEV_PERIOD 2
 
 /* USB host task definitions. */
-#define configTSK_USB_HST_NAME ((const signed portCHAR *)"USB Host")
+#define configTSK_USB_HST_NAME ((const signed portCHAR*)"USB Host")
 #define configTSK_USB_HST_STACK_SIZE 256
 #define configTSK_USB_HST_PRIORITY (tskIDLE_PRIORITY + 2)
 #define configTSK_USB_HST_PERIOD 200
 
 /* USB device CDC task definitions. */
-#define configTSK_USB_DCDC_NAME ((const signed portCHAR *)"USB Device CDC")
+#define configTSK_USB_DCDC_NAME ((const signed portCHAR*)"USB Device CDC")
 #define configTSK_USB_DCDC_STACK_SIZE 256
 #define configTSK_USB_DCDC_PRIORITY (tskIDLE_PRIORITY + 1)
 #define UAC1_configTSK_USB_DCDC_PERIOD 200
@@ -162,13 +162,13 @@ to exclude the API function. */
 #define HPSDR_configTSK_USB_DCDC_PERIOD 80
 
 /* USB device HID task definitions. */
-#define configTSK_USB_DHID_MOUSE_NAME ((const signed portCHAR *)"USB Device Mouse HID")
+#define configTSK_USB_DHID_MOUSE_NAME ((const signed portCHAR*)"USB Device Mouse HID")
 #define configTSK_USB_DHID_MOUSE_STACK_SIZE 256
 #define configTSK_USB_DHID_MOUSE_PRIORITY (tskIDLE_PRIORITY + 1)
 #define configTSK_USB_DHID_MOUSE_PERIOD 200
 
 /* USB device Audio task definitions. */
-#define configTSK_USB_DAUDIO_NAME ((const signed portCHAR *)"USB Device Audio")
+#define configTSK_USB_DAUDIO_NAME ((const signed portCHAR*)"USB Device Audio")
 #define configTSK_USB_DAUDIO_STACK_SIZE 256
 #define configTSK_USB_DAUDIO_PRIORITY (tskIDLE_PRIORITY + 2)
 #define UAC1_configTSK_USB_DAUDIO_PERIOD 2
@@ -176,53 +176,53 @@ to exclude the API function. */
 #define HPSDR_configTSK_USB_DAUDIO_PERIOD 2
 
 /* AK5394A task definitions. */
-#define configTSK_AK5394A_NAME ((const signed portCHAR *)"AK5394A")
+#define configTSK_AK5394A_NAME ((const signed portCHAR*)"AK5394A")
 #define configTSK_AK5394A_STACK_SIZE 256
-#define UAC1_configTSK_AK5394A_PRIORITY (tskIDLE_PRIORITY + 2) // Was 1
-#define UAC2_configTSK_AK5394A_PRIORITY (tskIDLE_PRIORITY + 3) // Was +1, then +2
+#define UAC1_configTSK_AK5394A_PRIORITY (tskIDLE_PRIORITY + 2)  // Was 1
+#define UAC2_configTSK_AK5394A_PRIORITY (tskIDLE_PRIORITY + 3)  // Was +1, then +2
 #define HPSDR_configTSK_AK5394A_PRIORITY (tskIDLE_PRIORITY + 2)
 #define UAC1_configTSK_AK5394A_PERIOD 50
 #define UAC2_configTSK_AK5394A_PERIOD 50
 #define HPSDR_configTSK_AK5394A_PERIOD 100
 
 /* USB host Audio HID task definitions. */
-#define configTSK_USB_HAUDIO_NAME ((const signed portCHAR *)"USB Host Audio")
+#define configTSK_USB_HAUDIO_NAME ((const signed portCHAR*)"USB Host Audio")
 #define configTSK_USB_HAUDIO_STACK_SIZE 256
-#define configTSK_USB_HAUDIO_PRIORITY (tskIDLE_PRIORITY + 2) // Was 1
+#define configTSK_USB_HAUDIO_PRIORITY (tskIDLE_PRIORITY + 2)  // Was 1
 #define configTSK_USB_HAUDIO_PERIOD 10
 
 /* taskMoboCtrl definitions. */
-#define configTSK_MoboCtrl_NAME ((const signed portCHAR *)"taskMoboCtrl")
+#define configTSK_MoboCtrl_NAME ((const signed portCHAR*)"taskMoboCtrl")
 #define configTSK_MoboCtrl_STACK_SIZE 1024
-#define configTSK_MoboCtrl_PRIORITY (tskIDLE_PRIORITY + 1) // mobodebug: +2 works, but we prefer imrpoved UAC2 code // Was 0 // (tskIDLE_PRIORITY + 1) // Was 0
+#define configTSK_MoboCtrl_PRIORITY (tskIDLE_PRIORITY + 1)  // mobodebug: +2 works, but we prefer imrpoved UAC2 code // Was 0 // (tskIDLE_PRIORITY + 1) // Was 0
 #define configTSK_MoboCtrl_PERIOD 120
 
 /* taskPowerDisplay definitions. */
-#define configTSK_PDISPLAY_NAME ((const signed portCHAR *)"taskPowerDisplay")
+#define configTSK_PDISPLAY_NAME ((const signed portCHAR*)"taskPowerDisplay")
 #define configTSK_PDISPLAY_STACK_SIZE 1024
 #define configTSK_PDISPLAY_PRIORITY (tskIDLE_PRIORITY)
 // Not used... Lowest priority task, but is in a fast loop with a fixed wait of only 5ms at the end
 //#define configTSK_PDISPLAY_PERIOD			  50
 
 /* taskPushButtonMenu definitions. */
-#define configTSK_PBTNMENU_NAME ((const signed portCHAR *)"taskPushButtonMenu")
+#define configTSK_PBTNMENU_NAME ((const signed portCHAR*)"taskPushButtonMenu")
 #define configTSK_PBTNMENU_STACK_SIZE 1024
 #define configTSK_PBTNMENU_PRIORITY (tskIDLE_PRIORITY)
-#define configTSK_PBTNMENU_PERIOD 100 // 10ms
+#define configTSK_PBTNMENU_PERIOD 100  // 10ms
 
 /* taskLCD definitions */
 // Priority has to be same or greater than that of client tasks such as MoboControl and PowerDisplay
-#define configTSK_LCD_PRIORITY (tskIDLE_PRIORITY + 1) // Was 0.
+#define configTSK_LCD_PRIORITY (tskIDLE_PRIORITY + 1)  // Was 0.
 #define configTSK_LCD_STACK_SIZE 1024
 
 /* taskStartupLogDisplay definitions */
-#define configTSK_LOGDISPLAY_NAME ((const signed portCHAR *)"taskStartupLogDisplay")
+#define configTSK_LOGDISPLAY_NAME ((const signed portCHAR*)"taskStartupLogDisplay")
 #define configTSK_LOGDISPLAY_PRIORITY configTSK_LCD_PRIORITY
 #define configTSK_LOGDISPLAY_STACK_SIZE 1024
 
 /* taskExercise definitions */
 #define configTSK_EXERCISE_STACK_SIZE 256
 #define configTSK_EXERCISE_PRIORITY (tskIDLE_PRIORITY + 1)
-#define configTSK_EXERCISE_PERIOD 100 // 10ms
+#define configTSK_EXERCISE_PERIOD 100  // 10ms
 
 #endif /* FREERTOS_CONFIG_H */

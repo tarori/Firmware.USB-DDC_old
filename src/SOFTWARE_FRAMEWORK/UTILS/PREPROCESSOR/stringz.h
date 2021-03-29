@@ -70,4 +70,4 @@
  */
 #define ASTRINGZ(x) STRINGZ(x)
 
-#endif // _STRINGZ_H_
+#endif  // _STRINGZ_H_

@@ -92,25 +92,25 @@ typedef enum {
 
 //! Possible Main Clock Sources
 typedef enum {
-    PCL_MC_RCSYS,     // Default main clock source, supported by all (aka Slow Clock)
-    PCL_MC_OSC0,      // Supported by all
-    PCL_MC_OSC1,      // Supported by UC3C only
-    PCL_MC_OSC0_PLL0, // Supported by UC3A, UC3B, UC3A3, UC3C (the main clock source is PLL0 with OSC0 as reference)
-    PCL_MC_OSC1_PLL0, // Supported by UC3A, UC3B, UC3A3, UC3C (the main clock source is PLL0 with OSC1 as reference)
-    PCL_MC_OSC0_PLL1, // Supported by UC3C  (the main clock source is PLL1 with OSC0 as reference)
-    PCL_MC_OSC1_PLL1, // Supported by UC3C  (the main clock source is PLL1 with OSC1 as reference)
-    PCL_MC_DFLL0,     // Supported by UC3L
-    PCL_MC_DFLL1,     // Not supported yet
-    PCL_MC_RC120M,    // Supported by UC3L, UC3C
-    PCL_MC_RC8M,      // Supported by UC3C
-    PCL_MC_CRIPOSC    // Supported by UC3C
+    PCL_MC_RCSYS,      // Default main clock source, supported by all (aka Slow Clock)
+    PCL_MC_OSC0,       // Supported by all
+    PCL_MC_OSC1,       // Supported by UC3C only
+    PCL_MC_OSC0_PLL0,  // Supported by UC3A, UC3B, UC3A3, UC3C (the main clock source is PLL0 with OSC0 as reference)
+    PCL_MC_OSC1_PLL0,  // Supported by UC3A, UC3B, UC3A3, UC3C (the main clock source is PLL0 with OSC1 as reference)
+    PCL_MC_OSC0_PLL1,  // Supported by UC3C  (the main clock source is PLL1 with OSC0 as reference)
+    PCL_MC_OSC1_PLL1,  // Supported by UC3C  (the main clock source is PLL1 with OSC1 as reference)
+    PCL_MC_DFLL0,      // Supported by UC3L
+    PCL_MC_DFLL1,      // Not supported yet
+    PCL_MC_RC120M,     // Supported by UC3L, UC3C
+    PCL_MC_RC8M,       // Supported by UC3C
+    PCL_MC_CRIPOSC     // Supported by UC3C
 } pcl_mainclk_t;
 
 //! Input and output parameters to configure clocks with pcl_configure_clocks().
 // NOTE: regarding the frequency settings, always abide by the datasheet rules and min & max supported frequencies.
 #ifndef AVR32_PM_VERSION_RESETVALUE
 // Support for UC3A, UC3A3, UC3B parts.
-#define pcl_freq_param_t pm_freq_param_t // See pm.h
+#define pcl_freq_param_t pm_freq_param_t  // See pm.h
 #else
 // Support for UC3C, UC3L parts.
 typedef struct
@@ -142,7 +142,7 @@ typedef struct
     //! Other parameters that might be necessary depending on the device (implementation-dependent).
     // For the UC3L DFLL setup, this parameter should be pointing to a structure of
     // type (scif_gclk_opt_t *).
-    void *pextra_params;
+    void* pextra_params;
 } pcl_freq_param_t;
 #endif
 
@@ -171,7 +171,7 @@ typedef struct
  * \retval 0   Success.
  * \retval <0  The configuration cannot be performed.
  */
-extern long int pcl_configure_clocks(pcl_freq_param_t *param);
+extern long int pcl_configure_clocks(pcl_freq_param_t* param);
 
 /*! \brief Automatically configure the CPU, PBA, PBB, and HSB clocks using the RCSYS osc as main source clock.
  *
@@ -197,7 +197,7 @@ extern long int pcl_configure_clocks(pcl_freq_param_t *param);
  * \retval 0   Success.
  * \retval <0  The configuration cannot be performed.
  */
-extern long int pcl_configure_clocks_rcsys(pcl_freq_param_t *param);
+extern long int pcl_configure_clocks_rcsys(pcl_freq_param_t* param);
 
 /*! \brief Automatically configure the CPU, PBA, PBB, and HSB clocks using the RC120M osc as main source clock.
  *
@@ -223,7 +223,7 @@ extern long int pcl_configure_clocks_rcsys(pcl_freq_param_t *param);
  * \retval 0   Success.
  * \retval <0  The configuration cannot be performed.
  */
-extern long int pcl_configure_clocks_rc120m(pcl_freq_param_t *param);
+extern long int pcl_configure_clocks_rc120m(pcl_freq_param_t* param);
 
 /*! \brief Automatically configure the CPU, PBA, PBB, and HSB clocks using the OSC0 osc as main source clock
  *
@@ -252,7 +252,7 @@ extern long int pcl_configure_clocks_rc120m(pcl_freq_param_t *param);
  * \retval 0   Success.
  * \retval <0  The configuration cannot be performed.
  */
-extern long int pcl_configure_clocks_osc0(pcl_freq_param_t *param);
+extern long int pcl_configure_clocks_osc0(pcl_freq_param_t* param);
 
 /*! \brief Automatically configure the CPU, PBA, PBB, and HSB clocks using the DFLL0 as main source clock
  *
@@ -285,7 +285,7 @@ extern long int pcl_configure_clocks_osc0(pcl_freq_param_t *param);
  * \retval 0   Success.
  * \retval <0  The configuration cannot be performed.
  */
-extern long int pcl_configure_clocks_dfll0(pcl_freq_param_t *param);
+extern long int pcl_configure_clocks_dfll0(pcl_freq_param_t* param);
 
 /*! \brief Switch the main clock source to Osc0 configured in crystal mode
  *
@@ -372,4 +372,4 @@ extern void pcl_write_gplp(unsigned long gplp, unsigned long value);
 }
 #endif
 
-#endif // _POWER_CLOCKS_LIB_H_
+#endif  // _POWER_CLOCKS_LIB_H_

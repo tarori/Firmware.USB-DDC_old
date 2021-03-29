@@ -55,15 +55,15 @@
 #include "twim_patched.h"
 
 //! Pointer to the instance 1 of the TWIM registers for IT.
-static volatile avr32_twim_t *twim_inst;
+static volatile avr32_twim_t* twim_inst;
 
 //! Add NACK boolean.
 static volatile Bool twim_nack = FALSE;
 
 //! Pointer to the applicative TWI transmit buffer.
-static const unsigned char *volatile twim_tx_data = NULL;
+static const unsigned char* volatile twim_tx_data = NULL;
 //! Pointer to the applicative TWI receive buffer.
-static volatile unsigned char *volatile twim_rx_data = NULL;
+static volatile unsigned char* volatile twim_rx_data = NULL;
 
 //! Remaining number of bytes to transmit.
 static volatile int twim_tx_nb_bytes = 0;
@@ -132,8 +132,8 @@ nack:
  * \param pba_hz The current running PBA clock frequency
  * \return TWI_SUCCESS
  */
-int twi_set_speed(volatile avr32_twim_t *twi, unsigned int speed,
-                  unsigned long pba_hz)
+int twi_set_speed(volatile avr32_twim_t* twi, unsigned int speed,
+    unsigned long pba_hz)
 {
     unsigned int cldiv;
     unsigned int ckdiv = 0;
@@ -154,7 +154,7 @@ int twi_set_speed(volatile avr32_twim_t *twi, unsigned int speed,
     return TWI_SUCCESS;
 }
 
-int twi_master_init(volatile avr32_twim_t *twi, const twi_options_t *opt, const unsigned irq)
+int twi_master_init(volatile avr32_twim_t* twi, const twi_options_t* opt, const unsigned irq)
 {
 
     Bool global_interrupt_enabled = Is_global_interrupt_enabled();
@@ -201,7 +201,7 @@ int twi_master_init(volatile avr32_twim_t *twi, const twi_options_t *opt, const 
     return status;
 }
 
-void twim_disable_interrupt(volatile avr32_twim_t *twi)
+void twim_disable_interrupt(volatile avr32_twim_t* twi)
 {
     Bool global_interrupt_enabled = Is_global_interrupt_enabled();
 
@@ -211,7 +211,7 @@ void twim_disable_interrupt(volatile avr32_twim_t *twi)
     twi->scr = ~0UL;
 }
 
-int twi_probe(volatile avr32_twim_t *twi, char chip_addr)
+int twi_probe(volatile avr32_twim_t* twi, char chip_addr)
 {
     twi_package_t package;
     char data[1] = {0};
@@ -230,7 +230,7 @@ int twi_probe(volatile avr32_twim_t *twi, char chip_addr)
     return (twim_write_packet(twi, &package));
 }
 
-int twim_read_packet(volatile avr32_twim_t *twi, const twi_package_t *package)
+int twim_read_packet(volatile avr32_twim_t* twi, const twi_package_t* package)
 {
 
     twim_disable_interrupt(twi);
@@ -244,7 +244,7 @@ int twim_read_packet(volatile avr32_twim_t *twi, const twi_package_t *package)
     twim_rx_nb_bytes = package->length;
 
     if (package->addr_length) {
-        twim_tx_data = (unsigned char *)(&(package->addr));
+        twim_tx_data = (unsigned char*)(&(package->addr));
         // selection of first valid byte of the address
         twim_tx_data += (4 - package->addr_length);
 
@@ -288,8 +288,8 @@ int twim_read_packet(volatile avr32_twim_t *twi, const twi_package_t *package)
     return TWI_SUCCESS;
 }
 
-int twim_read(volatile avr32_twim_t *twi, unsigned char *buffer, int nbytes,
-              int saddr, Bool tenbit)
+int twim_read(volatile avr32_twim_t* twi, unsigned char* buffer, int nbytes,
+    int saddr, Bool tenbit)
 {
 
     twim_disable_interrupt(twi);
@@ -339,9 +339,9 @@ int twim_read(volatile avr32_twim_t *twi, unsigned char *buffer, int nbytes,
     return TWI_SUCCESS;
 }
 
-int twi_master_read(volatile avr32_twim_t *twi, const twi_package_t *package)
+int twi_master_read(volatile avr32_twim_t* twi, const twi_package_t* package)
 {
-    unsigned char twi_register[4]; // the most address length will not longer than 4 bytes
+    unsigned char twi_register[4];  // the most address length will not longer than 4 bytes
 
     // Set Register address if needed
     if (package->addr_length) {
@@ -359,11 +359,11 @@ int twi_master_read(volatile avr32_twim_t *twi, const twi_package_t *package)
     return twim_read(twi, package->buffer, package->length, package->chip, 0);
 }
 
-int twim_write_packet(volatile avr32_twim_t *twi, const twi_package_t *package)
+int twim_write_packet(volatile avr32_twim_t* twi, const twi_package_t* package)
 {
 
     if (package->addr_length) {
-        twim_tx_data = (unsigned char *)(&(package->addr));
+        twim_tx_data = (unsigned char*)(&(package->addr));
         // selection of first valid byte of the address
         twim_tx_data += (4 - package->addr_length);
 
@@ -403,8 +403,8 @@ int twim_write_packet(volatile avr32_twim_t *twi, const twi_package_t *package)
     return TWI_SUCCESS;
 }
 
-int twim_write(volatile avr32_twim_t *twi, unsigned const char *buffer,
-               int nbytes, int saddr, Bool tenbit)
+int twim_write(volatile avr32_twim_t* twi, unsigned const char* buffer,
+    int nbytes, int saddr, Bool tenbit)
 {
 
     twim_disable_interrupt(twi);
@@ -475,14 +475,14 @@ int twim_write(volatile avr32_twim_t *twi, unsigned const char *buffer,
     // // TWI, resulting in junk being left in the THR and all
     // // subsequent TWI writes being screwed up, containing garbage.
     // // The below is a brute force hack to prevent this condition
-    twi->cr = AVR32_TWIM_CR_SWRST; // Do a TWI Soft Reset
+    twi->cr = AVR32_TWIM_CR_SWRST;  // Do a TWI Soft Reset
 
     return TWI_SUCCESS;
 }
 
-int twim_chained_transfer(volatile avr32_twim_t *twi,
-                          volatile twim_transfer_t *first, volatile twim_transfer_t *second,
-                          Bool tenbit)
+int twim_chained_transfer(volatile avr32_twim_t* twi,
+    volatile twim_transfer_t* first, volatile twim_transfer_t* second,
+    Bool tenbit)
 {
 
     twi->scr = AVR32_TWIM_SR_CCOMP_MASK;

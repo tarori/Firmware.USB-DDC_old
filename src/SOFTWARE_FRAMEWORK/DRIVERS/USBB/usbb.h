@@ -1050,7 +1050,7 @@ typedef avr32_usbb_uperr0_t avr32_usbb_uperrx_t;
 //! Access points to the USBB device DMA memory map with arrayed registers
 //! @{
 #define AVR32_USBB_UDDMAX(x) \
-    (((volatile avr32_usbb_uxdmax_t *)&AVR32_USBB.uddma1_nextdesc)[(x)-1])
+    (((volatile avr32_usbb_uxdmax_t*)&AVR32_USBB.uddma1_nextdesc)[(x)-1])
 
 #ifdef AVR32_USBB_UDDMAX_NEXTDESC
 #undef AVR32_USBB_UDDMAX_NEXTDESC
@@ -1196,7 +1196,7 @@ typedef avr32_usbb_uperr0_t avr32_usbb_uperrx_t;
 //! Access points to the USBB host DMA memory map with arrayed registers
 //! @{
 #define AVR32_USBB_UHDMAX(x) \
-    (((volatile avr32_usbb_uxdmax_t *)&AVR32_USBB.uhdma1_nextdesc)[(x)-1])
+    (((volatile avr32_usbb_uxdmax_t*)&AVR32_USBB.uhdma1_nextdesc)[(x)-1])
 
 #ifdef AVR32_USBB_UHDMAX_NEXTDESC
 #undef AVR32_USBB_UHDMAX_NEXTDESC
@@ -1228,4 +1228,4 @@ typedef avr32_usbb_uperr0_t avr32_usbb_uperrx_t;
     (((volatile TPASTE2(U, scale)(*)[0x10000 / ((scale) / 8)]) AVR32_USBB_SLAVE)[(x)])
 //! @}
 
-#endif // _USBB_H_
+#endif  // _USBB_H_

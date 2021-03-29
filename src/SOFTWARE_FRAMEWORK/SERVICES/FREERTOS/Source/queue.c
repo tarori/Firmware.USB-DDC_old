@@ -98,11 +98,11 @@ zero. */
  * Items are queued by copy, not reference.
  */
 typedef struct QueueDefinition {
-    signed char *pcHead; /*< Points to the beginning of the queue storage area. */
-    signed char *pcTail; /*< Points to the byte at the end of the queue storage area.  Once more byte is allocated than necessary to store the queue items, this is used as a marker. */
+    signed char* pcHead; /*< Points to the beginning of the queue storage area. */
+    signed char* pcTail; /*< Points to the byte at the end of the queue storage area.  Once more byte is allocated than necessary to store the queue items, this is used as a marker. */
 
-    signed char *pcWriteTo;  /*< Points to the free next place in the storage area. */
-    signed char *pcReadFrom; /*< Points to the last place that a queued item was read from. */
+    signed char* pcWriteTo;  /*< Points to the free next place in the storage area. */
+    signed char* pcReadFrom; /*< Points to the last place that a queued item was read from. */
 
     xList xTasksWaitingToSend;    /*< List of tasks that are blocked waiting to post onto this queue.  Stored in priority order. */
     xList xTasksWaitingToReceive; /*< List of tasks that are blocked waiting to read from this queue.  Stored in priority order. */
@@ -122,7 +122,7 @@ typedef struct QueueDefinition {
  * To keep the definition private the API header file defines it as a
  * pointer to void.
  */
-typedef xQUEUE *xQueueHandle;
+typedef xQUEUE* xQueueHandle;
 
 /*
  * Prototypes for public functions are included here so we don't have to
@@ -130,18 +130,18 @@ typedef xQUEUE *xQueueHandle;
  * functions are documented in the API header file.
  */
 xQueueHandle xQueueCreate(unsigned portBASE_TYPE uxQueueLength, unsigned portBASE_TYPE uxItemSize) PRIVILEGED_FUNCTION;
-signed portBASE_TYPE xQueueGenericSend(xQueueHandle xQueue, const void *const pvItemToQueue, portTickType xTicksToWait, portBASE_TYPE xCopyPosition) PRIVILEGED_FUNCTION;
+signed portBASE_TYPE xQueueGenericSend(xQueueHandle xQueue, const void* const pvItemToQueue, portTickType xTicksToWait, portBASE_TYPE xCopyPosition) PRIVILEGED_FUNCTION;
 unsigned portBASE_TYPE uxQueueMessagesWaiting(const xQueueHandle pxQueue) PRIVILEGED_FUNCTION;
 void vQueueDelete(xQueueHandle xQueue) PRIVILEGED_FUNCTION;
-signed portBASE_TYPE xQueueGenericSendFromISR(xQueueHandle pxQueue, const void *const pvItemToQueue, signed portBASE_TYPE *pxHigherPriorityTaskWoken, portBASE_TYPE xCopyPosition) PRIVILEGED_FUNCTION;
-signed portBASE_TYPE xQueueGenericReceive(xQueueHandle pxQueue, void *const pvBuffer, portTickType xTicksToWait, portBASE_TYPE xJustPeeking) PRIVILEGED_FUNCTION;
-signed portBASE_TYPE xQueueReceiveFromISR(xQueueHandle pxQueue, void *const pvBuffer, signed portBASE_TYPE *pxTaskWoken) PRIVILEGED_FUNCTION;
+signed portBASE_TYPE xQueueGenericSendFromISR(xQueueHandle pxQueue, const void* const pvItemToQueue, signed portBASE_TYPE* pxHigherPriorityTaskWoken, portBASE_TYPE xCopyPosition) PRIVILEGED_FUNCTION;
+signed portBASE_TYPE xQueueGenericReceive(xQueueHandle pxQueue, void* const pvBuffer, portTickType xTicksToWait, portBASE_TYPE xJustPeeking) PRIVILEGED_FUNCTION;
+signed portBASE_TYPE xQueueReceiveFromISR(xQueueHandle pxQueue, void* const pvBuffer, signed portBASE_TYPE* pxTaskWoken) PRIVILEGED_FUNCTION;
 xQueueHandle xQueueCreateMutex(void) PRIVILEGED_FUNCTION;
 xQueueHandle xQueueCreateCountingSemaphore(unsigned portBASE_TYPE uxCountValue, unsigned portBASE_TYPE uxInitialCount) PRIVILEGED_FUNCTION;
 portBASE_TYPE xQueueTakeMutexRecursive(xQueueHandle xMutex, portTickType xBlockTime) PRIVILEGED_FUNCTION;
 portBASE_TYPE xQueueGiveMutexRecursive(xQueueHandle xMutex) PRIVILEGED_FUNCTION;
-signed portBASE_TYPE xQueueAltGenericSend(xQueueHandle pxQueue, const void *const pvItemToQueue, portTickType xTicksToWait, portBASE_TYPE xCopyPosition) PRIVILEGED_FUNCTION;
-signed portBASE_TYPE xQueueAltGenericReceive(xQueueHandle pxQueue, void *const pvBuffer, portTickType xTicksToWait, portBASE_TYPE xJustPeeking) PRIVILEGED_FUNCTION;
+signed portBASE_TYPE xQueueAltGenericSend(xQueueHandle pxQueue, const void* const pvItemToQueue, portTickType xTicksToWait, portBASE_TYPE xCopyPosition) PRIVILEGED_FUNCTION;
+signed portBASE_TYPE xQueueAltGenericReceive(xQueueHandle pxQueue, void* const pvBuffer, portTickType xTicksToWait, portBASE_TYPE xJustPeeking) PRIVILEGED_FUNCTION;
 signed portBASE_TYPE xQueueIsQueueEmptyFromISR(const xQueueHandle pxQueue) PRIVILEGED_FUNCTION;
 signed portBASE_TYPE xQueueIsQueueFullFromISR(const xQueueHandle pxQueue) PRIVILEGED_FUNCTION;
 unsigned portBASE_TYPE uxQueueMessagesWaitingFromISR(const xQueueHandle pxQueue) PRIVILEGED_FUNCTION;
@@ -151,10 +151,10 @@ unsigned portBASE_TYPE uxQueueMessagesWaitingFromISR(const xQueueHandle pxQueue)
  * an optional component.
  */
 #if configUSE_CO_ROUTINES == 1
-signed portBASE_TYPE xQueueCRSendFromISR(xQueueHandle pxQueue, const void *pvItemToQueue, signed portBASE_TYPE xCoRoutinePreviouslyWoken) PRIVILEGED_FUNCTION;
-signed portBASE_TYPE xQueueCRReceiveFromISR(xQueueHandle pxQueue, void *pvBuffer, signed portBASE_TYPE *pxTaskWoken) PRIVILEGED_FUNCTION;
-signed portBASE_TYPE xQueueCRSend(xQueueHandle pxQueue, const void *pvItemToQueue, portTickType xTicksToWait) PRIVILEGED_FUNCTION;
-signed portBASE_TYPE xQueueCRReceive(xQueueHandle pxQueue, void *pvBuffer, portTickType xTicksToWait) PRIVILEGED_FUNCTION;
+signed portBASE_TYPE xQueueCRSendFromISR(xQueueHandle pxQueue, const void* pvItemToQueue, signed portBASE_TYPE xCoRoutinePreviouslyWoken) PRIVILEGED_FUNCTION;
+signed portBASE_TYPE xQueueCRReceiveFromISR(xQueueHandle pxQueue, void* pvBuffer, signed portBASE_TYPE* pxTaskWoken) PRIVILEGED_FUNCTION;
+signed portBASE_TYPE xQueueCRSend(xQueueHandle pxQueue, const void* pvItemToQueue, portTickType xTicksToWait) PRIVILEGED_FUNCTION;
+signed portBASE_TYPE xQueueCRReceive(xQueueHandle pxQueue, void* pvBuffer, portTickType xTicksToWait) PRIVILEGED_FUNCTION;
 #endif
 
 /*
@@ -167,7 +167,7 @@ signed portBASE_TYPE xQueueCRReceive(xQueueHandle pxQueue, void *pvBuffer, portT
 	to be assigned to each queue making kernel aware debugging a little
 	more user friendly. */
 typedef struct QUEUE_REGISTRY_ITEM {
-    signed char *pcQueueName;
+    signed char* pcQueueName;
     xQueueHandle xHandle;
 } xQueueRegistryItem;
 
@@ -179,7 +179,7 @@ xQueueRegistryItem xQueueRegistry[configQUEUE_REGISTRY_SIZE];
 /* Removes a queue from the registry by simply setting the pcQueueName
 	member to NULL. */
 static void vQueueUnregisterQueue(xQueueHandle xQueue) PRIVILEGED_FUNCTION;
-void vQueueAddToRegistry(xQueueHandle xQueue, signed char *pcQueueName) PRIVILEGED_FUNCTION;
+void vQueueAddToRegistry(xQueueHandle xQueue, signed char* pcQueueName) PRIVILEGED_FUNCTION;
 #endif
 
 /*
@@ -210,12 +210,12 @@ static signed portBASE_TYPE prvIsQueueFull(const xQueueHandle pxQueue) PRIVILEGE
  * Copies an item into the queue, either at the front of the queue or the
  * back of the queue.
  */
-static void prvCopyDataToQueue(xQUEUE *pxQueue, const void *pvItemToQueue, portBASE_TYPE xPosition) PRIVILEGED_FUNCTION;
+static void prvCopyDataToQueue(xQUEUE* pxQueue, const void* pvItemToQueue, portBASE_TYPE xPosition) PRIVILEGED_FUNCTION;
 
 /*
  * Copies an item out of a queue.
  */
-static void prvCopyDataFromQueue(xQUEUE *const pxQueue, const void *pvBuffer) PRIVILEGED_FUNCTION;
+static void prvCopyDataFromQueue(xQUEUE* const pxQueue, const void* pvBuffer) PRIVILEGED_FUNCTION;
 /*-----------------------------------------------------------*/
 
 /*
@@ -243,18 +243,18 @@ static void prvCopyDataFromQueue(xQUEUE *const pxQueue, const void *pvBuffer) PR
 
 xQueueHandle xQueueCreate(unsigned portBASE_TYPE uxQueueLength, unsigned portBASE_TYPE uxItemSize)
 {
-    xQUEUE *pxNewQueue;
+    xQUEUE* pxNewQueue;
     size_t xQueueSizeInBytes;
 
     /* Allocate the new queue structure. */
     if (uxQueueLength > (unsigned portBASE_TYPE)0) {
-        pxNewQueue = (xQUEUE *)pvPortMalloc(sizeof(xQUEUE));
+        pxNewQueue = (xQUEUE*)pvPortMalloc(sizeof(xQUEUE));
         if (pxNewQueue != NULL) {
             /* Create the list of pointers to queue items.  The queue is one byte
 			longer than asked for to make wrap checking easier/faster. */
             xQueueSizeInBytes = (size_t)(uxQueueLength * uxItemSize) + (size_t)1;
 
-            pxNewQueue->pcHead = (signed char *)pvPortMalloc(xQueueSizeInBytes);
+            pxNewQueue->pcHead = (signed char*)pvPortMalloc(xQueueSizeInBytes);
             if (pxNewQueue->pcHead != NULL) {
                 /* Initialise the queue members as described above where the
 				queue type is defined. */
@@ -290,10 +290,10 @@ xQueueHandle xQueueCreate(unsigned portBASE_TYPE uxQueueLength, unsigned portBAS
 
 xQueueHandle xQueueCreateMutex(void)
 {
-    xQUEUE *pxNewQueue;
+    xQUEUE* pxNewQueue;
 
     /* Allocate the new queue structure. */
-    pxNewQueue = (xQUEUE *)pvPortMalloc(sizeof(xQUEUE));
+    pxNewQueue = (xQUEUE*)pvPortMalloc(sizeof(xQUEUE));
     if (pxNewQueue != NULL) {
         /* Information required for priority inheritance. */
         pxNewQueue->pxMutexHolder = NULL;
@@ -426,7 +426,7 @@ xQueueHandle xQueueCreateCountingSemaphore(unsigned portBASE_TYPE uxCountValue, 
 #endif /* configUSE_COUNTING_SEMAPHORES */
 /*-----------------------------------------------------------*/
 
-signed portBASE_TYPE xQueueGenericSend(xQueueHandle pxQueue, const void *const pvItemToQueue, portTickType xTicksToWait, portBASE_TYPE xCopyPosition)
+signed portBASE_TYPE xQueueGenericSend(xQueueHandle pxQueue, const void* const pvItemToQueue, portTickType xTicksToWait, portBASE_TYPE xCopyPosition)
 {
     signed portBASE_TYPE xEntryTimeSet = pdFALSE;
     xTimeOutType xTimeOut;
@@ -528,7 +528,7 @@ signed portBASE_TYPE xQueueGenericSend(xQueueHandle pxQueue, const void *const p
 
 #if configUSE_ALTERNATIVE_API == 1
 
-signed portBASE_TYPE xQueueAltGenericSend(xQueueHandle pxQueue, const void *const pvItemToQueue, portTickType xTicksToWait, portBASE_TYPE xCopyPosition)
+signed portBASE_TYPE xQueueAltGenericSend(xQueueHandle pxQueue, const void* const pvItemToQueue, portTickType xTicksToWait, portBASE_TYPE xCopyPosition)
 {
     signed portBASE_TYPE xEntryTimeSet = pdFALSE;
     xTimeOutType xTimeOut;
@@ -589,11 +589,11 @@ signed portBASE_TYPE xQueueAltGenericSend(xQueueHandle pxQueue, const void *cons
 
 #if configUSE_ALTERNATIVE_API == 1
 
-signed portBASE_TYPE xQueueAltGenericReceive(xQueueHandle pxQueue, void *const pvBuffer, portTickType xTicksToWait, portBASE_TYPE xJustPeeking)
+signed portBASE_TYPE xQueueAltGenericReceive(xQueueHandle pxQueue, void* const pvBuffer, portTickType xTicksToWait, portBASE_TYPE xJustPeeking)
 {
     signed portBASE_TYPE xEntryTimeSet = pdFALSE;
     xTimeOutType xTimeOut;
-    signed char *pcOriginalReadPosition;
+    signed char* pcOriginalReadPosition;
 
     for (;;) {
         taskENTER_CRITICAL();
@@ -669,7 +669,7 @@ signed portBASE_TYPE xQueueAltGenericReceive(xQueueHandle pxQueue, void *const p
                     {
                         if (pxQueue->uxQueueType == queueQUEUE_IS_MUTEX) {
                             portENTER_CRITICAL();
-                            vTaskPriorityInherit((void *)pxQueue->pxMutexHolder);
+                            vTaskPriorityInherit((void*)pxQueue->pxMutexHolder);
                             portEXIT_CRITICAL();
                         }
                     }
@@ -691,7 +691,7 @@ signed portBASE_TYPE xQueueAltGenericReceive(xQueueHandle pxQueue, void *const p
 #endif /* configUSE_ALTERNATIVE_API */
 /*-----------------------------------------------------------*/
 
-signed portBASE_TYPE xQueueGenericSendFromISR(xQueueHandle pxQueue, const void *const pvItemToQueue, signed portBASE_TYPE *pxHigherPriorityTaskWoken, portBASE_TYPE xCopyPosition)
+signed portBASE_TYPE xQueueGenericSendFromISR(xQueueHandle pxQueue, const void* const pvItemToQueue, signed portBASE_TYPE* pxHigherPriorityTaskWoken, portBASE_TYPE xCopyPosition)
 {
     signed portBASE_TYPE xReturn;
     unsigned portBASE_TYPE uxSavedInterruptStatus;
@@ -736,11 +736,11 @@ signed portBASE_TYPE xQueueGenericSendFromISR(xQueueHandle pxQueue, const void *
 }
 /*-----------------------------------------------------------*/
 
-signed portBASE_TYPE xQueueGenericReceive(xQueueHandle pxQueue, void *const pvBuffer, portTickType xTicksToWait, portBASE_TYPE xJustPeeking)
+signed portBASE_TYPE xQueueGenericReceive(xQueueHandle pxQueue, void* const pvBuffer, portTickType xTicksToWait, portBASE_TYPE xJustPeeking)
 {
     signed portBASE_TYPE xEntryTimeSet = pdFALSE;
     xTimeOutType xTimeOut;
-    signed char *pcOriginalReadPosition;
+    signed char* pcOriginalReadPosition;
 
     /* This function relaxes the coding standard somewhat to allow return
 	statements within the function itself.  This is done in the interest
@@ -832,7 +832,7 @@ signed portBASE_TYPE xQueueGenericReceive(xQueueHandle pxQueue, void *const pvBu
                     if (pxQueue->uxQueueType == queueQUEUE_IS_MUTEX) {
                         portENTER_CRITICAL();
                         {
-                            vTaskPriorityInherit((void *)pxQueue->pxMutexHolder);
+                            vTaskPriorityInherit((void*)pxQueue->pxMutexHolder);
                         }
                         portEXIT_CRITICAL();
                     }
@@ -859,7 +859,7 @@ signed portBASE_TYPE xQueueGenericReceive(xQueueHandle pxQueue, void *const pvBu
 }
 /*-----------------------------------------------------------*/
 
-signed portBASE_TYPE xQueueReceiveFromISR(xQueueHandle pxQueue, void *const pvBuffer, signed portBASE_TYPE *pxTaskWoken)
+signed portBASE_TYPE xQueueReceiveFromISR(xQueueHandle pxQueue, void* const pvBuffer, signed portBASE_TYPE* pxTaskWoken)
 {
     signed portBASE_TYPE xReturn;
     unsigned portBASE_TYPE uxSavedInterruptStatus;
@@ -933,26 +933,26 @@ void vQueueDelete(xQueueHandle pxQueue)
 }
 /*-----------------------------------------------------------*/
 
-static void prvCopyDataToQueue(xQUEUE *pxQueue, const void *pvItemToQueue, portBASE_TYPE xPosition)
+static void prvCopyDataToQueue(xQUEUE* pxQueue, const void* pvItemToQueue, portBASE_TYPE xPosition)
 {
     if (pxQueue->uxItemSize == (unsigned portBASE_TYPE)0) {
 #if (configUSE_MUTEXES == 1)
         {
             if (pxQueue->uxQueueType == queueQUEUE_IS_MUTEX) {
                 /* The mutex is no longer being held. */
-                vTaskPriorityDisinherit((void *)pxQueue->pxMutexHolder);
+                vTaskPriorityDisinherit((void*)pxQueue->pxMutexHolder);
                 pxQueue->pxMutexHolder = NULL;
             }
         }
 #endif
     } else if (xPosition == queueSEND_TO_BACK) {
-        memcpy((void *)pxQueue->pcWriteTo, pvItemToQueue, (unsigned)pxQueue->uxItemSize);
+        memcpy((void*)pxQueue->pcWriteTo, pvItemToQueue, (unsigned)pxQueue->uxItemSize);
         pxQueue->pcWriteTo += pxQueue->uxItemSize;
         if (pxQueue->pcWriteTo >= pxQueue->pcTail) {
             pxQueue->pcWriteTo = pxQueue->pcHead;
         }
     } else {
-        memcpy((void *)pxQueue->pcReadFrom, pvItemToQueue, (unsigned)pxQueue->uxItemSize);
+        memcpy((void*)pxQueue->pcReadFrom, pvItemToQueue, (unsigned)pxQueue->uxItemSize);
         pxQueue->pcReadFrom -= pxQueue->uxItemSize;
         if (pxQueue->pcReadFrom < pxQueue->pcHead) {
             pxQueue->pcReadFrom = (pxQueue->pcTail - pxQueue->uxItemSize);
@@ -963,14 +963,14 @@ static void prvCopyDataToQueue(xQUEUE *pxQueue, const void *pvItemToQueue, portB
 }
 /*-----------------------------------------------------------*/
 
-static void prvCopyDataFromQueue(xQUEUE *const pxQueue, const void *pvBuffer)
+static void prvCopyDataFromQueue(xQUEUE* const pxQueue, const void* pvBuffer)
 {
     if (pxQueue->uxQueueType != queueQUEUE_IS_MUTEX) {
         pxQueue->pcReadFrom += pxQueue->uxItemSize;
         if (pxQueue->pcReadFrom >= pxQueue->pcTail) {
             pxQueue->pcReadFrom = pxQueue->pcHead;
         }
-        memcpy((void *)pvBuffer, (void *)pxQueue->pcReadFrom, (unsigned)pxQueue->uxItemSize);
+        memcpy((void*)pvBuffer, (void*)pxQueue->pcReadFrom, (unsigned)pxQueue->uxItemSize);
     }
 }
 /*-----------------------------------------------------------*/
@@ -1074,7 +1074,7 @@ signed portBASE_TYPE xQueueIsQueueFullFromISR(const xQueueHandle pxQueue)
 /*-----------------------------------------------------------*/
 
 #if configUSE_CO_ROUTINES == 1
-signed portBASE_TYPE xQueueCRSend(xQueueHandle pxQueue, const void *pvItemToQueue, portTickType xTicksToWait)
+signed portBASE_TYPE xQueueCRSend(xQueueHandle pxQueue, const void* pvItemToQueue, portTickType xTicksToWait)
 {
     signed portBASE_TYPE xReturn;
 
@@ -1133,7 +1133,7 @@ signed portBASE_TYPE xQueueCRSend(xQueueHandle pxQueue, const void *pvItemToQueu
 /*-----------------------------------------------------------*/
 
 #if configUSE_CO_ROUTINES == 1
-signed portBASE_TYPE xQueueCRReceive(xQueueHandle pxQueue, void *pvBuffer, portTickType xTicksToWait)
+signed portBASE_TYPE xQueueCRReceive(xQueueHandle pxQueue, void* pvBuffer, portTickType xTicksToWait)
 {
     signed portBASE_TYPE xReturn;
 
@@ -1170,7 +1170,7 @@ signed portBASE_TYPE xQueueCRReceive(xQueueHandle pxQueue, void *pvBuffer, portT
                 pxQueue->pcReadFrom = pxQueue->pcHead;
             }
             --(pxQueue->uxMessagesWaiting);
-            memcpy((void *)pvBuffer, (void *)pxQueue->pcReadFrom, (unsigned)pxQueue->uxItemSize);
+            memcpy((void*)pvBuffer, (void*)pxQueue->pcReadFrom, (unsigned)pxQueue->uxItemSize);
 
             xReturn = pdPASS;
 
@@ -1196,7 +1196,7 @@ signed portBASE_TYPE xQueueCRReceive(xQueueHandle pxQueue, void *pvBuffer, portT
 /*-----------------------------------------------------------*/
 
 #if configUSE_CO_ROUTINES == 1
-signed portBASE_TYPE xQueueCRSendFromISR(xQueueHandle pxQueue, const void *pvItemToQueue, signed portBASE_TYPE xCoRoutinePreviouslyWoken)
+signed portBASE_TYPE xQueueCRSendFromISR(xQueueHandle pxQueue, const void* pvItemToQueue, signed portBASE_TYPE xCoRoutinePreviouslyWoken)
 {
     /* Cannot block within an ISR so if there is no space on the queue then
 	exit without doing anything. */
@@ -1220,7 +1220,7 @@ signed portBASE_TYPE xQueueCRSendFromISR(xQueueHandle pxQueue, const void *pvIte
 /*-----------------------------------------------------------*/
 
 #if configUSE_CO_ROUTINES == 1
-signed portBASE_TYPE xQueueCRReceiveFromISR(xQueueHandle pxQueue, void *pvBuffer, signed portBASE_TYPE *pxCoRoutineWoken)
+signed portBASE_TYPE xQueueCRReceiveFromISR(xQueueHandle pxQueue, void* pvBuffer, signed portBASE_TYPE* pxCoRoutineWoken)
 {
     signed portBASE_TYPE xReturn;
 
@@ -1233,7 +1233,7 @@ signed portBASE_TYPE xQueueCRReceiveFromISR(xQueueHandle pxQueue, void *pvBuffer
             pxQueue->pcReadFrom = pxQueue->pcHead;
         }
         --(pxQueue->uxMessagesWaiting);
-        memcpy((void *)pvBuffer, (void *)pxQueue->pcReadFrom, (unsigned)pxQueue->uxItemSize);
+        memcpy((void*)pvBuffer, (void*)pxQueue->pcReadFrom, (unsigned)pxQueue->uxItemSize);
 
         if (!(*pxCoRoutineWoken)) {
             if (!listLIST_IS_EMPTY(&(pxQueue->xTasksWaitingToSend))) {
@@ -1255,7 +1255,7 @@ signed portBASE_TYPE xQueueCRReceiveFromISR(xQueueHandle pxQueue, void *pvBuffer
 
 #if configQUEUE_REGISTRY_SIZE > 0
 
-void vQueueAddToRegistry(xQueueHandle xQueue, signed char *pcQueueName)
+void vQueueAddToRegistry(xQueueHandle xQueue, signed char* pcQueueName)
 {
     unsigned portBASE_TYPE ux;
 

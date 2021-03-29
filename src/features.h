@@ -25,23 +25,23 @@
 //
 
 typedef enum {
-    feature_major_index = 0, // major version number = feature_end_index
-    feature_minor_index,     // minor version number = feature_end_values
-    feature_board_index,     // board identifier
-    feature_image_index,     // image to boot
-    feature_in_index,        // keep or swap left/right channels on input
-    feature_out_index,       // keep or swap left/right channels on output
-    feature_adc_index,       // adc identifier
-    feature_dac_index,       // dac identifier
-    feature_lcd_index,       // lcd display type
-    feature_log_index,       // startup log display timing
-    feature_filter_index,    // setting of filter
-    feature_quirk_index,     // setting of various quirks
-    feature_msb_vol_L,       // left volume control, msb of usb value
-    feature_lsb_vol_L,       // left volume control, lsb
-    feature_msb_vol_R,       // right volume control, msb
-    feature_lsb_vol_R,       // right volume control, lsb
-    feature_end_index        // end marker, used to size arrays
+    feature_major_index = 0,  // major version number = feature_end_index
+    feature_minor_index,      // minor version number = feature_end_values
+    feature_board_index,      // board identifier
+    feature_image_index,      // image to boot
+    feature_in_index,         // keep or swap left/right channels on input
+    feature_out_index,        // keep or swap left/right channels on output
+    feature_adc_index,        // adc identifier
+    feature_dac_index,        // dac identifier
+    feature_lcd_index,        // lcd display type
+    feature_log_index,        // startup log display timing
+    feature_filter_index,     // setting of filter
+    feature_quirk_index,      // setting of various quirks
+    feature_msb_vol_L,        // left volume control, msb of usb value
+    feature_lsb_vol_L,        // left volume control, lsb
+    feature_msb_vol_R,        // right volume control, msb
+    feature_lsb_vol_R,        // right volume control, lsb
+    feature_end_index         // end marker, used to size arrays
 } feature_index_t;
 
 #define FEATURE_INDEX_NAMES "major",     \
@@ -80,7 +80,7 @@ typedef enum {
 // 2) #define FEATURE_IMAGE_ALEX_TEST
 //
 typedef enum {
-    feature_board_none = 0, // board selection
+    feature_board_none = 0,  // board selection
     feature_board_widget,
     feature_board_usbi2s,
     feature_board_usbdac,
@@ -92,16 +92,16 @@ typedef enum {
     //	feature_image_hpsdr,
     //	feature_image_test,
     feature_end_image,
-    feature_in_normal, // input channel
+    feature_in_normal,  // input channel
     feature_in_swapped,
     feature_end_in,
-    feature_out_normal, // output channel
+    feature_out_normal,  // output channel
     feature_out_swapped,
     feature_end_out,
-    feature_adc_none, // adc
+    feature_adc_none,  // adc
     feature_adc_ak5394a,
     feature_end_adc,
-    feature_dac_none, // dac
+    feature_dac_none,  // dac
     feature_dac_cs4344,
     feature_dac_generic,
     feature_end_dac,
@@ -109,22 +109,22 @@ typedef enum {
     feature_lcd_hd44780, /* normal hd44780 lcd controller */
     feature_lcd_ks0073,  /* ks0073 almost hd44780 compatible */
     feature_end_lcd,
-    feature_log_none, // log
+    feature_log_none,  // log
     feature_log_500ms,
     feature_log_1sec,
     feature_log_2sec,
     feature_end_log,
-    feature_filter_fir, // filter select
+    feature_filter_fir,  // filter select
     feature_filter_iir,
     feature_end_filter,
-    feature_quirk_linux,      // Linux_quirk select
-    feature_quirk_ptest,      // Production test quirk
-    feature_quirk_none,       // No quirks, normal operation
-    feature_quirk_fb_Hstupid, // BSB 20131101 emaulate stupid feedback system at Host
-    feature_quirk_fb_Hdead,   // BSB 20131101 emaulate stupid feedback system at Host
-    feature_quirk_fb_noskip,  // BSB 20131101 disable (future) skip/insert system
-    feature_end_quirk,        // BSB 20131101 renamed "lquirk" to "quirk"
-    feature_end_values        // end
+    feature_quirk_linux,       // Linux_quirk select
+    feature_quirk_ptest,       // Production test quirk
+    feature_quirk_none,        // No quirks, normal operation
+    feature_quirk_fb_Hstupid,  // BSB 20131101 emaulate stupid feedback system at Host
+    feature_quirk_fb_Hdead,    // BSB 20131101 emaulate stupid feedback system at Host
+    feature_quirk_fb_noskip,   // BSB 20131101 disable (future) skip/insert system
+    feature_end_quirk,         // BSB 20131101 renamed "lquirk" to "quirk"
+    feature_end_values         // end
 } feature_values_t;
 
 #define FEATURE_VALUE_NAMES \
@@ -291,10 +291,10 @@ extern const features_t features_default;
                          FEATURE_FILTER_DEFAULT, \
                          FEATURE_QUIRK_DEFAULT
 
-extern const char *const feature_value_names[];
-extern const char *const feature_index_names[];
+extern const char* const feature_value_names[];
+extern const char* const feature_index_names[];
 extern void features_init();
-extern void features_display(char *title, features_t fp);
+extern void features_display(char* title, features_t fp);
 extern void features_display_all();
 extern uint8_t feature_set(uint8_t index, uint8_t value);
 extern uint8_t feature_get(uint8_t index);
@@ -302,7 +302,7 @@ extern uint8_t feature_set_nvram(uint8_t index, uint8_t value);
 extern uint8_t feature_get_nvram(uint8_t index);
 extern uint8_t feature_get_default(uint8_t index);
 extern void feature_factory_reset(void);
-extern void feature_find_first_and_last_value(uint8_t index, uint8_t *first, uint8_t *last);
+extern void feature_find_first_and_last_value(uint8_t index, uint8_t* first, uint8_t* last);
 
 #define FEATURE_DG8SAQ_COMMAND 0x71
 #define FEATURE_DG8SAQ_SET_NVRAM 3

@@ -65,9 +65,9 @@
 //extern void device_mouse_hid_task_init(U8 ep_hid_rx, U8 ep_hid_tx);
 extern void device_mouse_hid_task_init(U8 ep_hid_tx);
 #ifdef FREERTOS_USED
-extern void device_mouse_hid_task(void *pvParameters);
+extern void device_mouse_hid_task(void* pvParameters);
 #else
 extern void device_mouse_hid_task(void);
 #endif
 
-#endif // _DEVICE_MOUSE_HID_TASK_H_
+#endif  // _DEVICE_MOUSE_HID_TASK_H_

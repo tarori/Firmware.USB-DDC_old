@@ -32,21 +32,21 @@
 #define WM8805_RESET_START 1
 #define WM8805_RESET_END 0
 #define WM8805_RESET_PIN AVR32_PIN_PX10
-#define WM8805_CSB_PIN AVR32_PIN_PX37 // Only applies in HW_GEN_DIN20. FIX: Rather use ext. pull-down for pin 9?
+#define WM8805_CSB_PIN AVR32_PIN_PX37  // Only applies in HW_GEN_DIN20. FIX: Rather use ext. pull-down for pin 9?
 #define WM8805_INT_N_PIN AVR32_PIN_PX54
 #define WM8805_ZERO_PIN AVR32_PIN_PX15
-#define WM8805_DEV_ADR 0x3A // 0x3A with pin 9 patched to GND with 10k 00111010
+#define WM8805_DEV_ADR 0x3A  // 0x3A with pin 9 patched to GND with 10k 00111010
 #define WM8805_PLL_NONE 0
-#define WM8805_PLL_NORMAL 1   // PLL mode is normal 32-96 and 176.4ksps
-#define WM8805_PLL_192 2      // PLL mode is for 192ksps
-#define WM8805_PLL_EXP 2      // Experimental PLL mode
-#define WM8805_UNLOCK_LIM 2   // Number of poll cycles to determine that an unlock has taken place, in order to start searching
-#define WM8805_HICKUP_LIM 6   // 6				// Number of poll cycles to permit hickups in selected audio channel before searching
-#define WM8805_PAUSE_LIM 350  // 400 // 200	// Poll cycles to determine that a currently  playing input is silent. NB: Signed 16-bit number!
-#define WM8805_SILENCE_LIM 20 //40			// Poll cycles to wait for a mute input to produce audio
-#define WM8805_LOCK_LIM 3     // Poll cycles to verify lock
+#define WM8805_PLL_NORMAL 1    // PLL mode is normal 32-96 and 176.4ksps
+#define WM8805_PLL_192 2       // PLL mode is for 192ksps
+#define WM8805_PLL_EXP 2       // Experimental PLL mode
+#define WM8805_UNLOCK_LIM 2    // Number of poll cycles to determine that an unlock has taken place, in order to start searching
+#define WM8805_HICKUP_LIM 6    // 6				// Number of poll cycles to permit hickups in selected audio channel before searching
+#define WM8805_PAUSE_LIM 350   // 400 // 200	// Poll cycles to determine that a currently  playing input is silent. NB: Signed 16-bit number!
+#define WM8805_SILENCE_LIM 20  //40			// Poll cycles to wait for a mute input to produce audio
+#define WM8805_LOCK_LIM 3      // Poll cycles to verify lock
 
-typedef struct wm8805_status { // Definition of global variable
+typedef struct wm8805_status {  // Definition of global variable
     uint8_t powered;
     uint8_t muted;
     uint8_t silent;
@@ -92,6 +92,6 @@ uint8_t wm8805_read_byte(uint8_t int_adr);
 // Sample rate detection test
 uint32_t wm8805_srd(void);
 uint32_t wm8805_srd_asm(void);
-uint32_t wm8805_srd_asm2(void); // For test and evaluation
+uint32_t wm8805_srd_asm2(void);  // For test and evaluation
 
 #endif /* WM8805_H_ */

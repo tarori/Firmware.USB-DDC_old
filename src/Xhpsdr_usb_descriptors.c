@@ -55,13 +55,13 @@ const S_usb_device_descriptor hpsdr_usb_dev_desc = {
 // usb_user_configuration_descriptor FS
 const S_usb_user_configuration_descriptor hpsdr_usb_conf_desc_fs = {
     {sizeof(S_usb_configuration_descriptor),
-     CONFIGURATION_DESCRIPTOR,
-     Usb_format_mcu_to_usb_data(16, sizeof(S_usb_user_configuration_descriptor)),
-     NB_INTERFACE,
-     CONF_NB,
-     CONF_INDEX,
-     CONF_ATTRIBUTES,
-     MAX_POWER}
+        CONFIGURATION_DESCRIPTOR,
+        Usb_format_mcu_to_usb_data(16, sizeof(S_usb_user_configuration_descriptor)),
+        NB_INTERFACE,
+        CONF_NB,
+        CONF_INDEX,
+        CONF_ATTRIBUTES,
+        MAX_POWER}
 
     /*
 	,
@@ -82,9 +82,9 @@ const S_usb_user_configuration_descriptor hpsdr_usb_conf_desc_fs = {
 
     {sizeof(S_usb_endpoint_descriptor), ENDPOINT_DESCRIPTOR, ENDPOINT_NB_1, EP_ATTRIBUTES_1, Usb_format_mcu_to_usb_data(16, EP_SIZE_1_FS), EP_INTERVAL_1_FS},
 
-    {sizeof(S_usb_endpoint_audio_descriptor_2) // ? ep2 is declared as a S_usb_endpoint_descriptor, not this ?
-     ,
-     ENDPOINT_DESCRIPTOR, ENDPOINT_NB_2, EP_ATTRIBUTES_2, Usb_format_mcu_to_usb_data(16, EP_SIZE_2_FS), EP_INTERVAL_2_FS}
+    {sizeof(S_usb_endpoint_audio_descriptor_2)  // ? ep2 is declared as a S_usb_endpoint_descriptor, not this ?
+        ,
+        ENDPOINT_DESCRIPTOR, ENDPOINT_NB_2, EP_ATTRIBUTES_2, Usb_format_mcu_to_usb_data(16, EP_SIZE_2_FS), EP_INTERVAL_2_FS}
 
     ,
     {sizeof(S_usb_endpoint_descriptor), ENDPOINT_DESCRIPTOR, ENDPOINT_NB_3, EP_ATTRIBUTES_3, Usb_format_mcu_to_usb_data(16, EP_SIZE_3_FS), EP_INTERVAL_3_FS}};
@@ -94,13 +94,13 @@ const S_usb_user_configuration_descriptor hpsdr_usb_conf_desc_fs = {
 // usb_user_configuration_descriptor HS
 const S_usb_user_configuration_descriptor hpsdr_usb_conf_desc_hs = {
     {sizeof(S_usb_configuration_descriptor),
-     CONFIGURATION_DESCRIPTOR,
-     Usb_format_mcu_to_usb_data(16, sizeof(S_usb_user_configuration_descriptor)),
-     NB_INTERFACE,
-     CONF_NB,
-     CONF_INDEX,
-     CONF_ATTRIBUTES,
-     MAX_POWER}
+        CONFIGURATION_DESCRIPTOR,
+        Usb_format_mcu_to_usb_data(16, sizeof(S_usb_user_configuration_descriptor)),
+        NB_INTERFACE,
+        CONF_NB,
+        CONF_INDEX,
+        CONF_ATTRIBUTES,
+        MAX_POWER}
     /*
 	,
 	{
@@ -139,4 +139,4 @@ const S_usb_product_string_descriptor hpsdr_usb_user_product_string_descriptor =
     STRING_DESCRIPTOR,
     HPSDR_USB_PRODUCT_NAME};
 
-#endif // USB_DEVICE_FEATURE == ENABLED
+#endif  // USB_DEVICE_FEATURE == ENABLED

@@ -72,7 +72,7 @@
 
 /* Defines the prototype to which the application task hook function must
 conform. */
-typedef portBASE_TYPE (*pdTASK_HOOK_CODE)(void *);
+typedef portBASE_TYPE (*pdTASK_HOOK_CODE)(void*);
 
 /*
  * Check all the required application specific macros have been defined.

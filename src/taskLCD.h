@@ -29,25 +29,25 @@
 #define lcd_rs_low() gpio_clr_gpio_pin(LCD_RS)
 
 enum cmdLCD { lcdINIT = 1,
-              lcdHOME,
-              lcdCLEAR,
-              lcdWRITE,
-              lcdGOTO,
-              lcdPUTC,
-              lcdCRLF,
-              lcdPUTH,
-              lcdPUTS,
-              lcdSET,
-              lcdPOSW,
-              lcdPOSR };
+    lcdHOME,
+    lcdCLEAR,
+    lcdWRITE,
+    lcdGOTO,
+    lcdPUTC,
+    lcdCRLF,
+    lcdPUTH,
+    lcdPUTS,
+    lcdSET,
+    lcdPOSW,
+    lcdPOSR };
 
 struct dataLCD {
-    uint8_t CMD;             // Commmand to be processed by task
-    xQueueHandle replyQUEUE; // optional: Queue for returning info.
+    uint8_t CMD;              // Commmand to be processed by task
+    xQueueHandle replyQUEUE;  // optional: Queue for returning info.
     union u_tag {
         uint8_t aChar;
         uint8_t rawBYTE;
-        uint8_t *aString; // Null terminated string
+        uint8_t* aString;  // Null terminated string
         struct {
             uint8_t row;
             uint8_t col;
@@ -72,7 +72,7 @@ extern void lcd_q_goto(uint8_t row, uint8_t col);
 extern void lcd_q_write(char ch);
 extern void lcd_q_putc(char ch);
 extern void lcd_q_puth(uint8_t hex);
-extern void lcd_q_print(char *string);
+extern void lcd_q_print(char* string);
 extern void lcd_q_set(uint8_t cmd);
 
 #define DATA_REGISTER 0

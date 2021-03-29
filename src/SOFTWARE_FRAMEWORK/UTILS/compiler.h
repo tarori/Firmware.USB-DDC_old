@@ -62,7 +62,7 @@
 
 //_____ D E C L A R A T I O N S ____________________________________________
 
-#ifdef __AVR32_ABI_COMPILER__ // Automatically defined when compiling for AVR32, not when assembling.
+#ifdef __AVR32_ABI_COMPILER__  // Automatically defined when compiling for AVR32, not when assembling.
 
 #include <stddef.h>
 #include <stdlib.h>
@@ -84,29 +84,29 @@
 /*! \name Usual Types
  */
 //! @{
-typedef unsigned char Bool; //!< Boolean.
+typedef unsigned char Bool;  //!< Boolean.
 #ifndef __cplusplus
 #if !defined(__bool_true_false_are_defined)
-typedef unsigned char bool; //!< Boolean.
+typedef unsigned char bool;  //!< Boolean.
 #endif
 #endif
-typedef signed char S8;             //!< 8-bit signed integer.
-typedef unsigned char U8;           //!< 8-bit unsigned integer.
-typedef signed short int S16;       //!< 16-bit signed integer.
-typedef unsigned short int U16;     //!< 16-bit unsigned integer.
-typedef signed long int S32;        //!< 32-bit signed integer.
-typedef unsigned long int U32;      //!< 32-bit unsigned integer.
-typedef signed long long int S64;   //!< 64-bit signed integer.
-typedef unsigned long long int U64; //!< 64-bit unsigned integer.
-typedef float F32;                  //!< 32-bit floating-point number.
-typedef double F64;                 //!< 64-bit floating-point number.
+typedef signed char S8;              //!< 8-bit signed integer.
+typedef unsigned char U8;            //!< 8-bit unsigned integer.
+typedef signed short int S16;        //!< 16-bit signed integer.
+typedef unsigned short int U16;      //!< 16-bit unsigned integer.
+typedef signed long int S32;         //!< 32-bit signed integer.
+typedef unsigned long int U32;       //!< 32-bit unsigned integer.
+typedef signed long long int S64;    //!< 64-bit signed integer.
+typedef unsigned long long int U64;  //!< 64-bit unsigned integer.
+typedef float F32;                   //!< 32-bit floating-point number.
+typedef double F64;                  //!< 64-bit floating-point number.
 //! @}
 
 /*! \name Status Types
  */
 //! @{
-typedef Bool Status_bool_t; //!< Boolean status.
-typedef U8 Status_t;        //!< 8-bit-coded status.
+typedef Bool Status_bool_t;  //!< Boolean status.
+typedef U8 Status_t;         //!< 8-bit-coded status.
 //! @}
 
 /*! \name Aliasing Aggregate Types
@@ -145,107 +145,107 @@ typedef union {
 
 //! Union of pointers to 64-, 32-, 16- and 8-bit unsigned integers.
 typedef union {
-    S64 *s64ptr;
-    U64 *u64ptr;
-    S32 *s32ptr;
-    U32 *u32ptr;
-    S16 *s16ptr;
-    U16 *u16ptr;
-    S8 *s8ptr;
-    U8 *u8ptr;
+    S64* s64ptr;
+    U64* u64ptr;
+    S32* s32ptr;
+    U32* u32ptr;
+    S16* s16ptr;
+    U16* u16ptr;
+    S8* s8ptr;
+    U8* u8ptr;
 } UnionPtr;
 
 //! Union of pointers to volatile 64-, 32-, 16- and 8-bit unsigned integers.
 typedef union {
-    volatile S64 *s64ptr;
-    volatile U64 *u64ptr;
-    volatile S32 *s32ptr;
-    volatile U32 *u32ptr;
-    volatile S16 *s16ptr;
-    volatile U16 *u16ptr;
-    volatile S8 *s8ptr;
-    volatile U8 *u8ptr;
+    volatile S64* s64ptr;
+    volatile U64* u64ptr;
+    volatile S32* s32ptr;
+    volatile U32* u32ptr;
+    volatile S16* s16ptr;
+    volatile U16* u16ptr;
+    volatile S8* s8ptr;
+    volatile U8* u8ptr;
 } UnionVPtr;
 
 //! Union of pointers to constant 64-, 32-, 16- and 8-bit unsigned integers.
 typedef union {
-    const S64 *s64ptr;
-    const U64 *u64ptr;
-    const S32 *s32ptr;
-    const U32 *u32ptr;
-    const S16 *s16ptr;
-    const U16 *u16ptr;
-    const S8 *s8ptr;
-    const U8 *u8ptr;
+    const S64* s64ptr;
+    const U64* u64ptr;
+    const S32* s32ptr;
+    const U32* u32ptr;
+    const S16* s16ptr;
+    const U16* u16ptr;
+    const S8* s8ptr;
+    const U8* u8ptr;
 } UnionCPtr;
 
 //! Union of pointers to constant volatile 64-, 32-, 16- and 8-bit unsigned integers.
 typedef union {
-    const volatile S64 *s64ptr;
-    const volatile U64 *u64ptr;
-    const volatile S32 *s32ptr;
-    const volatile U32 *u32ptr;
-    const volatile S16 *s16ptr;
-    const volatile U16 *u16ptr;
-    const volatile S8 *s8ptr;
-    const volatile U8 *u8ptr;
+    const volatile S64* s64ptr;
+    const volatile U64* u64ptr;
+    const volatile S32* s32ptr;
+    const volatile U32* u32ptr;
+    const volatile S16* s16ptr;
+    const volatile U16* u16ptr;
+    const volatile S8* s8ptr;
+    const volatile U8* u8ptr;
 } UnionCVPtr;
 
 //! Structure of pointers to 64-, 32-, 16- and 8-bit unsigned integers.
 typedef struct
 {
-    S64 *s64ptr;
-    U64 *u64ptr;
-    S32 *s32ptr;
-    U32 *u32ptr;
-    S16 *s16ptr;
-    U16 *u16ptr;
-    S8 *s8ptr;
-    U8 *u8ptr;
+    S64* s64ptr;
+    U64* u64ptr;
+    S32* s32ptr;
+    U32* u32ptr;
+    S16* s16ptr;
+    U16* u16ptr;
+    S8* s8ptr;
+    U8* u8ptr;
 } StructPtr;
 
 //! Structure of pointers to volatile 64-, 32-, 16- and 8-bit unsigned integers.
 typedef struct
 {
-    volatile S64 *s64ptr;
-    volatile U64 *u64ptr;
-    volatile S32 *s32ptr;
-    volatile U32 *u32ptr;
-    volatile S16 *s16ptr;
-    volatile U16 *u16ptr;
-    volatile S8 *s8ptr;
-    volatile U8 *u8ptr;
+    volatile S64* s64ptr;
+    volatile U64* u64ptr;
+    volatile S32* s32ptr;
+    volatile U32* u32ptr;
+    volatile S16* s16ptr;
+    volatile U16* u16ptr;
+    volatile S8* s8ptr;
+    volatile U8* u8ptr;
 } StructVPtr;
 
 //! Structure of pointers to constant 64-, 32-, 16- and 8-bit unsigned integers.
 typedef struct
 {
-    const S64 *s64ptr;
-    const U64 *u64ptr;
-    const S32 *s32ptr;
-    const U32 *u32ptr;
-    const S16 *s16ptr;
-    const U16 *u16ptr;
-    const S8 *s8ptr;
-    const U8 *u8ptr;
+    const S64* s64ptr;
+    const U64* u64ptr;
+    const S32* s32ptr;
+    const U32* u32ptr;
+    const S16* s16ptr;
+    const U16* u16ptr;
+    const S8* s8ptr;
+    const U8* u8ptr;
 } StructCPtr;
 
 //! Structure of pointers to constant volatile 64-, 32-, 16- and 8-bit unsigned integers.
 typedef struct
 {
-    const volatile S64 *s64ptr;
-    const volatile U64 *u64ptr;
-    const volatile S32 *s32ptr;
-    const volatile U32 *u32ptr;
-    const volatile S16 *s16ptr;
-    const volatile U16 *u16ptr;
-    const volatile S8 *s8ptr;
-    const volatile U8 *u8ptr;
+    const volatile S64* s64ptr;
+    const volatile U64* u64ptr;
+    const volatile S32* s32ptr;
+    const volatile U32* u32ptr;
+    const volatile S16* s16ptr;
+    const volatile U16* u16ptr;
+    const volatile S8* s8ptr;
+    const volatile U8* u8ptr;
 } StructCVPtr;
 
 //! @}
 
-#endif // __AVR32_ABI_COMPILER__
+#endif  // __AVR32_ABI_COMPILER__
 
 //_____ M A C R O S ________________________________________________________
 
@@ -276,7 +276,7 @@ typedef struct
 #define SET 1
 //! @}
 
-#ifdef __AVR32_ABI_COMPILER__ // Automatically defined when compiling for AVR32, not when assembling.
+#ifdef __AVR32_ABI_COMPILER__  // Automatically defined when compiling for AVR32, not when assembling.
 
 /*! \name Bit-Field Handling
  */
@@ -299,8 +299,7 @@ typedef struct
  *
  * \return Resulting value with written bits.
  */
-#define Wr_bits(lvalue, mask, bits) ((lvalue) = ((lvalue) & ~(mask)) | \
-                                                ((bits) & (mask)))
+#define Wr_bits(lvalue, mask, bits) ((lvalue) = ((lvalue) & ~(mask)) | ((bits) & (mask)))
 
 /*! \brief Tests the bits of a value specified by a given bit-mask.
  *
@@ -464,8 +463,7 @@ typedef struct
  *
  * \return Value resulting from \a u64 with reversed bits.
  */
-#define bit_reverse64(u64) ((U64)(((U64)bit_reverse32((U64)(u64) >> 32)) | \
-                                  ((U64)bit_reverse32((U64)(u64)) << 32)))
+#define bit_reverse64(u64) ((U64)(((U64)bit_reverse32((U64)(u64) >> 32)) | ((U64)bit_reverse32((U64)(u64)) << 32)))
 
 //! @}
 
@@ -655,54 +653,54 @@ typedef struct
  * \warning It shall not be called from the CPU application mode.
  */
 #if (defined __GNUC__)
-#define Reset_CPU()                                                                                             \
-    (                                                                                                           \
-        {                                                                                                       \
-            __asm__ __volatile__(                                                                               \
-                "lddpc   r9, 3f\n\t"                                                                            \
-                "mfsr    r8, %[SR]\n\t"                                                                         \
-                "bfextu  r8, r8, %[SR_M_OFFSET], %[SR_M_SIZE]\n\t"                                              \
-                "cp.w    r8, 0b001\n\t"                                                                         \
-                "breq    0f\n\t"                                                                                \
-                "sub     r8, pc, $ - 1f\n\t"                                                                    \
-                "pushm   r8-r9\n\t"                                                                             \
-                "rete\n"                                                                                        \
-                "0:\n\t"                                                                                        \
-                "mtsr    %[SR], r9\n"                                                                           \
-                "1:\n\t"                                                                                        \
-                "mov     r0, 0\n\t"                                                                             \
-                "mov     r1, 0\n\t"                                                                             \
-                "mov     r2, 0\n\t"                                                                             \
-                "mov     r3, 0\n\t"                                                                             \
-                "mov     r4, 0\n\t"                                                                             \
-                "mov     r5, 0\n\t"                                                                             \
-                "mov     r6, 0\n\t"                                                                             \
-                "mov     r7, 0\n\t"                                                                             \
-                "mov     r8, 0\n\t"                                                                             \
-                "mov     r9, 0\n\t"                                                                             \
-                "mov     r10, 0\n\t"                                                                            \
-                "mov     r11, 0\n\t"                                                                            \
-                "mov     r12, 0\n\t"                                                                            \
-                "mov     sp, 0\n\t"                                                                             \
-                "stdsp   sp[0], sp\n\t"                                                                         \
-                "ldmts   sp, sp\n\t"                                                                            \
-                "mov     lr, 0\n\t"                                                                             \
-                "lddpc   pc, 2f\n\t"                                                                            \
-                ".balign 4\n"                                                                                   \
-                "2:\n\t"                                                                                        \
-                ".word   _start\n"                                                                              \
-                "3:\n\t"                                                                                        \
-                ".word   %[RESET_SR]"                                                                           \
-                :                                                                                               \
-                : [SR] "i"(AVR32_SR),                                                                           \
-                  [SR_M_OFFSET] "i"(AVR32_SR_M_OFFSET),                                                         \
-                  [SR_M_SIZE] "i"(AVR32_SR_M_SIZE),                                                             \
-                  [RESET_SR] "i"(AVR32_SR_GM_MASK | AVR32_SR_EM_MASK | (AVR32_SR_M_SUP << AVR32_SR_M_OFFSET))); \
+#define Reset_CPU()                                                                                           \
+    (                                                                                                         \
+        {                                                                                                     \
+            __asm__ __volatile__(                                                                             \
+                "lddpc   r9, 3f\n\t"                                                                          \
+                "mfsr    r8, %[SR]\n\t"                                                                       \
+                "bfextu  r8, r8, %[SR_M_OFFSET], %[SR_M_SIZE]\n\t"                                            \
+                "cp.w    r8, 0b001\n\t"                                                                       \
+                "breq    0f\n\t"                                                                              \
+                "sub     r8, pc, $ - 1f\n\t"                                                                  \
+                "pushm   r8-r9\n\t"                                                                           \
+                "rete\n"                                                                                      \
+                "0:\n\t"                                                                                      \
+                "mtsr    %[SR], r9\n"                                                                         \
+                "1:\n\t"                                                                                      \
+                "mov     r0, 0\n\t"                                                                           \
+                "mov     r1, 0\n\t"                                                                           \
+                "mov     r2, 0\n\t"                                                                           \
+                "mov     r3, 0\n\t"                                                                           \
+                "mov     r4, 0\n\t"                                                                           \
+                "mov     r5, 0\n\t"                                                                           \
+                "mov     r6, 0\n\t"                                                                           \
+                "mov     r7, 0\n\t"                                                                           \
+                "mov     r8, 0\n\t"                                                                           \
+                "mov     r9, 0\n\t"                                                                           \
+                "mov     r10, 0\n\t"                                                                          \
+                "mov     r11, 0\n\t"                                                                          \
+                "mov     r12, 0\n\t"                                                                          \
+                "mov     sp, 0\n\t"                                                                           \
+                "stdsp   sp[0], sp\n\t"                                                                       \
+                "ldmts   sp, sp\n\t"                                                                          \
+                "mov     lr, 0\n\t"                                                                           \
+                "lddpc   pc, 2f\n\t"                                                                          \
+                ".balign 4\n"                                                                                 \
+                "2:\n\t"                                                                                      \
+                ".word   _start\n"                                                                            \
+                "3:\n\t"                                                                                      \
+                ".word   %[RESET_SR]"                                                                         \
+                :                                                                                             \
+                : [SR] "i"(AVR32_SR),                                                                         \
+                [SR_M_OFFSET] "i"(AVR32_SR_M_OFFSET),                                                         \
+                [SR_M_SIZE] "i"(AVR32_SR_M_SIZE),                                                             \
+                [RESET_SR] "i"(AVR32_SR_GM_MASK | AVR32_SR_EM_MASK | (AVR32_SR_M_SUP << AVR32_SR_M_OFFSET))); \
         })
 #elif (defined __ICCAVR32__)
 #define Reset_CPU()                                                                                                                                                                                                                                                                                                                                                                                   \
     {                                                                                                                                                                                                                                                                                                                                                                                                 \
-        extern void *volatile __program_start;                                                                                                                                                                                                                                                                                                                                                        \
+        extern void* volatile __program_start;                                                                                                                                                                                                                                                                                                                                                        \
         __asm__ __volatile__(                                                                                                                                                                                                                                                                                                                                                                         \
             "mov     r7, LWRD(__program_start)\n\t"                                                                                                                                                                                                                                                                                                                                                   \
             "orh     r7, HWRD(__program_start)\n\t"                                                                                                                                                                                                                                                                                                                                                   \
@@ -861,7 +859,7 @@ typedef struct
 #define AVR32_ENTER_CRITICAL_REGION()                                  \
     {                                                                  \
         Bool global_interrupt_enabled = Is_global_interrupt_enabled(); \
-        Disable_global_interrupt(); // Disable the appropriate interrupts.
+        Disable_global_interrupt();  // Disable the appropriate interrupts.
 
 /*! \brief This macro must always be used in conjunction with AVR32_ENTER_CRITICAL_REGION
  *         so that interrupts are enabled again.
@@ -902,7 +900,7 @@ typedef struct
 
 //! @}
 
-#endif // __AVR32_ABI_COMPILER__
+#endif  // __AVR32_ABI_COMPILER__
 
 //! Boolean evaluating MCU little endianism.
 #if ((defined __GNUC__) && (defined __AVR32__)) || ((defined __ICCAVR32__) || (defined __AAVR32__))
@@ -920,45 +918,45 @@ typedef struct
 //! Boolean evaluating MCU big endianism.
 #define BIG_ENDIAN_MCU (!LITTLE_ENDIAN_MCU)
 
-#ifdef __AVR32_ABI_COMPILER__ // Automatically defined when compiling for AVR32, not when assembling.
+#ifdef __AVR32_ABI_COMPILER__  // Automatically defined when compiling for AVR32, not when assembling.
 
 /*! \name MCU Endianism Handling
  */
 //! @{
 
 #if (LITTLE_ENDIAN_MCU == TRUE)
-#define LSB(u16) (((U8 *)&(u16))[0]) //!< Least significant byte of \a u16.
-#define MSB(u16) (((U8 *)&(u16))[1]) //!< Most significant byte of \a u16.
+#define LSB(u16) (((U8*)&(u16))[0])  //!< Least significant byte of \a u16.
+#define MSB(u16) (((U8*)&(u16))[1])  //!< Most significant byte of \a u16.
 
-#define LSH(u32) (((U16 *)&(u32))[0])  //!< Least significant half-word of \a u32.
-#define MSH(u32) (((U16 *)&(u32))[1])  //!< Most significant half-word of \a u32.
-#define LSB0W(u32) (((U8 *)&(u32))[0]) //!< Least significant byte of 1st rank of \a u32.
-#define LSB1W(u32) (((U8 *)&(u32))[1]) //!< Least significant byte of 2nd rank of \a u32.
-#define LSB2W(u32) (((U8 *)&(u32))[2]) //!< Least significant byte of 3rd rank of \a u32.
-#define LSB3W(u32) (((U8 *)&(u32))[3]) //!< Least significant byte of 4th rank of \a u32.
+#define LSH(u32) (((U16*)&(u32))[0])   //!< Least significant half-word of \a u32.
+#define MSH(u32) (((U16*)&(u32))[1])   //!< Most significant half-word of \a u32.
+#define LSB0W(u32) (((U8*)&(u32))[0])  //!< Least significant byte of 1st rank of \a u32.
+#define LSB1W(u32) (((U8*)&(u32))[1])  //!< Least significant byte of 2nd rank of \a u32.
+#define LSB2W(u32) (((U8*)&(u32))[2])  //!< Least significant byte of 3rd rank of \a u32.
+#define LSB3W(u32) (((U8*)&(u32))[3])  //!< Least significant byte of 4th rank of \a u32.
 #define MSB3W(u32) LSB0W(u32)          //!< Most significant byte of 4th rank of \a u32.
 #define MSB2W(u32) LSB1W(u32)          //!< Most significant byte of 3rd rank of \a u32.
 #define MSB1W(u32) LSB2W(u32)          //!< Most significant byte of 2nd rank of \a u32.
 #define MSB0W(u32) LSB3W(u32)          //!< Most significant byte of 1st rank of \a u32.
 
-#define LSW(u64) (((U32 *)&(u64))[0])  //!< Least significant word of \a u64.
-#define MSW(u64) (((U32 *)&(u64))[1])  //!< Most significant word of \a u64.
-#define LSH0(u64) (((U16 *)&(u64))[0]) //!< Least significant half-word of 1st rank of \a u64.
-#define LSH1(u64) (((U16 *)&(u64))[1]) //!< Least significant half-word of 2nd rank of \a u64.
-#define LSH2(u64) (((U16 *)&(u64))[2]) //!< Least significant half-word of 3rd rank of \a u64.
-#define LSH3(u64) (((U16 *)&(u64))[3]) //!< Least significant half-word of 4th rank of \a u64.
+#define LSW(u64) (((U32*)&(u64))[0])   //!< Least significant word of \a u64.
+#define MSW(u64) (((U32*)&(u64))[1])   //!< Most significant word of \a u64.
+#define LSH0(u64) (((U16*)&(u64))[0])  //!< Least significant half-word of 1st rank of \a u64.
+#define LSH1(u64) (((U16*)&(u64))[1])  //!< Least significant half-word of 2nd rank of \a u64.
+#define LSH2(u64) (((U16*)&(u64))[2])  //!< Least significant half-word of 3rd rank of \a u64.
+#define LSH3(u64) (((U16*)&(u64))[3])  //!< Least significant half-word of 4th rank of \a u64.
 #define MSH3(u64) LSH0(u64)            //!< Most significant half-word of 4th rank of \a u64.
 #define MSH2(u64) LSH1(u64)            //!< Most significant half-word of 3rd rank of \a u64.
 #define MSH1(u64) LSH2(u64)            //!< Most significant half-word of 2nd rank of \a u64.
 #define MSH0(u64) LSH3(u64)            //!< Most significant half-word of 1st rank of \a u64.
-#define LSB0D(u64) (((U8 *)&(u64))[0]) //!< Least significant byte of 1st rank of \a u64.
-#define LSB1D(u64) (((U8 *)&(u64))[1]) //!< Least significant byte of 2nd rank of \a u64.
-#define LSB2D(u64) (((U8 *)&(u64))[2]) //!< Least significant byte of 3rd rank of \a u64.
-#define LSB3D(u64) (((U8 *)&(u64))[3]) //!< Least significant byte of 4th rank of \a u64.
-#define LSB4D(u64) (((U8 *)&(u64))[4]) //!< Least significant byte of 5th rank of \a u64.
-#define LSB5D(u64) (((U8 *)&(u64))[5]) //!< Least significant byte of 6th rank of \a u64.
-#define LSB6D(u64) (((U8 *)&(u64))[6]) //!< Least significant byte of 7th rank of \a u64.
-#define LSB7D(u64) (((U8 *)&(u64))[7]) //!< Least significant byte of 8th rank of \a u64.
+#define LSB0D(u64) (((U8*)&(u64))[0])  //!< Least significant byte of 1st rank of \a u64.
+#define LSB1D(u64) (((U8*)&(u64))[1])  //!< Least significant byte of 2nd rank of \a u64.
+#define LSB2D(u64) (((U8*)&(u64))[2])  //!< Least significant byte of 3rd rank of \a u64.
+#define LSB3D(u64) (((U8*)&(u64))[3])  //!< Least significant byte of 4th rank of \a u64.
+#define LSB4D(u64) (((U8*)&(u64))[4])  //!< Least significant byte of 5th rank of \a u64.
+#define LSB5D(u64) (((U8*)&(u64))[5])  //!< Least significant byte of 6th rank of \a u64.
+#define LSB6D(u64) (((U8*)&(u64))[6])  //!< Least significant byte of 7th rank of \a u64.
+#define LSB7D(u64) (((U8*)&(u64))[7])  //!< Least significant byte of 8th rank of \a u64.
 #define MSB7D(u64) LSB0D(u64)          //!< Most significant byte of 8th rank of \a u64.
 #define MSB6D(u64) LSB1D(u64)          //!< Most significant byte of 7th rank of \a u64.
 #define MSB5D(u64) LSB2D(u64)          //!< Most significant byte of 6th rank of \a u64.
@@ -969,38 +967,38 @@ typedef struct
 #define MSB0D(u64) LSB7D(u64)          //!< Most significant byte of 1st rank of \a u64.
 
 #elif (BIG_ENDIAN_MCU == TRUE)
-#define MSB(u16) (((U8 *)&(u16))[0]) //!< Most significant byte of \a u16.
-#define LSB(u16) (((U8 *)&(u16))[1]) //!< Least significant byte of \a u16.
+#define MSB(u16) (((U8*)&(u16))[0])  //!< Most significant byte of \a u16.
+#define LSB(u16) (((U8*)&(u16))[1])  //!< Least significant byte of \a u16.
 
-#define MSH(u32) (((U16 *)&(u32))[0])  //!< Most significant half-word of \a u32.
-#define LSH(u32) (((U16 *)&(u32))[1])  //!< Least significant half-word of \a u32.
-#define MSB0W(u32) (((U8 *)&(u32))[0]) //!< Most significant byte of 1st rank of \a u32.
-#define MSB1W(u32) (((U8 *)&(u32))[1]) //!< Most significant byte of 2nd rank of \a u32.
-#define MSB2W(u32) (((U8 *)&(u32))[2]) //!< Most significant byte of 3rd rank of \a u32.
-#define MSB3W(u32) (((U8 *)&(u32))[3]) //!< Most significant byte of 4th rank of \a u32.
+#define MSH(u32) (((U16*)&(u32))[0])   //!< Most significant half-word of \a u32.
+#define LSH(u32) (((U16*)&(u32))[1])   //!< Least significant half-word of \a u32.
+#define MSB0W(u32) (((U8*)&(u32))[0])  //!< Most significant byte of 1st rank of \a u32.
+#define MSB1W(u32) (((U8*)&(u32))[1])  //!< Most significant byte of 2nd rank of \a u32.
+#define MSB2W(u32) (((U8*)&(u32))[2])  //!< Most significant byte of 3rd rank of \a u32.
+#define MSB3W(u32) (((U8*)&(u32))[3])  //!< Most significant byte of 4th rank of \a u32.
 #define LSB3W(u32) MSB0W(u32)          //!< Least significant byte of 4th rank of \a u32.
 #define LSB2W(u32) MSB1W(u32)          //!< Least significant byte of 3rd rank of \a u32.
 #define LSB1W(u32) MSB2W(u32)          //!< Least significant byte of 2nd rank of \a u32.
 #define LSB0W(u32) MSB3W(u32)          //!< Least significant byte of 1st rank of \a u32.
 
-#define MSW(u64) (((U32 *)&(u64))[0])  //!< Most significant word of \a u64.
-#define LSW(u64) (((U32 *)&(u64))[1])  //!< Least significant word of \a u64.
-#define MSH0(u64) (((U16 *)&(u64))[0]) //!< Most significant half-word of 1st rank of \a u64.
-#define MSH1(u64) (((U16 *)&(u64))[1]) //!< Most significant half-word of 2nd rank of \a u64.
-#define MSH2(u64) (((U16 *)&(u64))[2]) //!< Most significant half-word of 3rd rank of \a u64.
-#define MSH3(u64) (((U16 *)&(u64))[3]) //!< Most significant half-word of 4th rank of \a u64.
+#define MSW(u64) (((U32*)&(u64))[0])   //!< Most significant word of \a u64.
+#define LSW(u64) (((U32*)&(u64))[1])   //!< Least significant word of \a u64.
+#define MSH0(u64) (((U16*)&(u64))[0])  //!< Most significant half-word of 1st rank of \a u64.
+#define MSH1(u64) (((U16*)&(u64))[1])  //!< Most significant half-word of 2nd rank of \a u64.
+#define MSH2(u64) (((U16*)&(u64))[2])  //!< Most significant half-word of 3rd rank of \a u64.
+#define MSH3(u64) (((U16*)&(u64))[3])  //!< Most significant half-word of 4th rank of \a u64.
 #define LSH3(u64) MSH0(u64)            //!< Least significant half-word of 4th rank of \a u64.
 #define LSH2(u64) MSH1(u64)            //!< Least significant half-word of 3rd rank of \a u64.
 #define LSH1(u64) MSH2(u64)            //!< Least significant half-word of 2nd rank of \a u64.
 #define LSH0(u64) MSH3(u64)            //!< Least significant half-word of 1st rank of \a u64.
-#define MSB0D(u64) (((U8 *)&(u64))[0]) //!< Most significant byte of 1st rank of \a u64.
-#define MSB1D(u64) (((U8 *)&(u64))[1]) //!< Most significant byte of 2nd rank of \a u64.
-#define MSB2D(u64) (((U8 *)&(u64))[2]) //!< Most significant byte of 3rd rank of \a u64.
-#define MSB3D(u64) (((U8 *)&(u64))[3]) //!< Most significant byte of 4th rank of \a u64.
-#define MSB4D(u64) (((U8 *)&(u64))[4]) //!< Most significant byte of 5th rank of \a u64.
-#define MSB5D(u64) (((U8 *)&(u64))[5]) //!< Most significant byte of 6th rank of \a u64.
-#define MSB6D(u64) (((U8 *)&(u64))[6]) //!< Most significant byte of 7th rank of \a u64.
-#define MSB7D(u64) (((U8 *)&(u64))[7]) //!< Most significant byte of 8th rank of \a u64.
+#define MSB0D(u64) (((U8*)&(u64))[0])  //!< Most significant byte of 1st rank of \a u64.
+#define MSB1D(u64) (((U8*)&(u64))[1])  //!< Most significant byte of 2nd rank of \a u64.
+#define MSB2D(u64) (((U8*)&(u64))[2])  //!< Most significant byte of 3rd rank of \a u64.
+#define MSB3D(u64) (((U8*)&(u64))[3])  //!< Most significant byte of 4th rank of \a u64.
+#define MSB4D(u64) (((U8*)&(u64))[4])  //!< Most significant byte of 5th rank of \a u64.
+#define MSB5D(u64) (((U8*)&(u64))[5])  //!< Most significant byte of 6th rank of \a u64.
+#define MSB6D(u64) (((U8*)&(u64))[6])  //!< Most significant byte of 7th rank of \a u64.
+#define MSB7D(u64) (((U8*)&(u64))[7])  //!< Most significant byte of 8th rank of \a u64.
 #define LSB7D(u64) MSB0D(u64)          //!< Least significant byte of 8th rank of \a u64.
 #define LSB6D(u64) MSB1D(u64)          //!< Least significant byte of 7th rank of \a u64.
 #define LSB5D(u64) MSB2D(u64)          //!< Least significant byte of 6th rank of \a u64.
@@ -1036,8 +1034,7 @@ typedef struct
  *
  * \note More optimized if only used with values known at compile time.
  */
-#define Swap16(u16) ((U16)(((U16)(u16) >> 8) | \
-                           ((U16)(u16) << 8)))
+#define Swap16(u16) ((U16)(((U16)(u16) >> 8) | ((U16)(u16) << 8)))
 
 /*! \brief Toggles the endianism of \a u32 (by swapping its bytes).
  *
@@ -1047,8 +1044,7 @@ typedef struct
  *
  * \note More optimized if only used with values known at compile time.
  */
-#define Swap32(u32) ((U32)(((U32)Swap16((U32)(u32) >> 16)) | \
-                           ((U32)Swap16((U32)(u32)) << 16)))
+#define Swap32(u32) ((U32)(((U32)Swap16((U32)(u32) >> 16)) | ((U32)Swap16((U32)(u32)) << 16)))
 
 /*! \brief Toggles the endianism of \a u64 (by swapping its bytes).
  *
@@ -1058,8 +1054,7 @@ typedef struct
  *
  * \note More optimized if only used with values known at compile time.
  */
-#define Swap64(u64) ((U64)(((U64)Swap32((U64)(u64) >> 32)) | \
-                           ((U64)Swap32((U64)(u64)) << 32)))
+#define Swap64(u64) ((U64)(((U64)Swap32((U64)(u64) >> 32)) | ((U64)Swap32((U64)(u64)) << 32)))
 
 /*! \brief Toggles the endianism of \a u16 (by swapping its bytes).
  *
@@ -1097,8 +1092,7 @@ typedef struct
  *
  * \note More optimized if only used with values unknown at compile time.
  */
-#define swap64(u64) ((U64)(((U64)swap32((U64)(u64) >> 32)) | \
-                           ((U64)swap32((U64)(u64)) << 32)))
+#define swap64(u64) ((U64)(((U64)swap32((U64)(u64) >> 32)) | ((U64)swap32((U64)(u64)) << 32)))
 
 //! @}
 
@@ -1106,30 +1100,30 @@ typedef struct
  */
 //! @{
 
-#define _GLOBEXT_ extern   //!< extern storage-class specifier.
-#define _CONST_TYPE_ const //!< const type qualifier.
-#define _MEM_TYPE_SLOW_    //!< Slow memory type.
-#define _MEM_TYPE_MEDFAST_ //!< Fairly fast memory type.
-#define _MEM_TYPE_FAST_    //!< Fast memory type.
+#define _GLOBEXT_ extern    //!< extern storage-class specifier.
+#define _CONST_TYPE_ const  //!< const type qualifier.
+#define _MEM_TYPE_SLOW_     //!< Slow memory type.
+#define _MEM_TYPE_MEDFAST_  //!< Fairly fast memory type.
+#define _MEM_TYPE_FAST_     //!< Fast memory type.
 
-typedef U8 Byte; //!< 8-bit unsigned integer.
+typedef U8 Byte;  //!< 8-bit unsigned integer.
 
-#define memcmp_ram2ram memcmp  //!< Target-specific memcmp of RAM to RAM.
-#define memcmp_code2ram memcmp //!< Target-specific memcmp of RAM to NVRAM.
-#define memcpy_ram2ram memcpy  //!< Target-specific memcpy from RAM to RAM.
-#define memcpy_code2ram memcpy //!< Target-specific memcpy from NVRAM to RAM.
+#define memcmp_ram2ram memcmp   //!< Target-specific memcmp of RAM to RAM.
+#define memcmp_code2ram memcmp  //!< Target-specific memcmp of RAM to NVRAM.
+#define memcpy_ram2ram memcpy   //!< Target-specific memcpy from RAM to RAM.
+#define memcpy_code2ram memcpy  //!< Target-specific memcpy from NVRAM to RAM.
 
-#define LSB0(u32) LSB0W(u32) //!< Least significant byte of 1st rank of \a u32.
-#define LSB1(u32) LSB1W(u32) //!< Least significant byte of 2nd rank of \a u32.
-#define LSB2(u32) LSB2W(u32) //!< Least significant byte of 3rd rank of \a u32.
-#define LSB3(u32) LSB3W(u32) //!< Least significant byte of 4th rank of \a u32.
-#define MSB3(u32) MSB3W(u32) //!< Most significant byte of 4th rank of \a u32.
-#define MSB2(u32) MSB2W(u32) //!< Most significant byte of 3rd rank of \a u32.
-#define MSB1(u32) MSB1W(u32) //!< Most significant byte of 2nd rank of \a u32.
-#define MSB0(u32) MSB0W(u32) //!< Most significant byte of 1st rank of \a u32.
+#define LSB0(u32) LSB0W(u32)  //!< Least significant byte of 1st rank of \a u32.
+#define LSB1(u32) LSB1W(u32)  //!< Least significant byte of 2nd rank of \a u32.
+#define LSB2(u32) LSB2W(u32)  //!< Least significant byte of 3rd rank of \a u32.
+#define LSB3(u32) LSB3W(u32)  //!< Least significant byte of 4th rank of \a u32.
+#define MSB3(u32) MSB3W(u32)  //!< Most significant byte of 4th rank of \a u32.
+#define MSB2(u32) MSB2W(u32)  //!< Most significant byte of 3rd rank of \a u32.
+#define MSB1(u32) MSB1W(u32)  //!< Most significant byte of 2nd rank of \a u32.
+#define MSB0(u32) MSB0W(u32)  //!< Most significant byte of 1st rank of \a u32.
 
 //! @}
 
-#endif // __AVR32_ABI_COMPILER__
+#endif  // __AVR32_ABI_COMPILER__
 
-#endif // _COMPILER_H_
+#endif  // _COMPILER_H_

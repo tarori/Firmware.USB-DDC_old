@@ -64,12 +64,12 @@
 
 #ifdef OPEN_WATCOM_INDUSTRIAL_PC_PORT
 #include "..\..\Source\portable\owatcom\16bitdos\pc\portmacro.h"
-typedef void(__interrupt __far *pxISR)();
+typedef void(__interrupt __far* pxISR)();
 #endif
 
 #ifdef OPEN_WATCOM_FLASH_LITE_186_PORT
 #include "..\..\Source\portable\owatcom\16bitdos\flsh186\portmacro.h"
-typedef void(__interrupt __far *pxISR)();
+typedef void(__interrupt __far* pxISR)();
 #endif
 
 #ifdef GCC_MEGA_AVR
@@ -237,7 +237,7 @@ typedef void(__interrupt __far *pxISR)();
 	FreeRTOSConfig.h when using the Borland compiler. */
 #include "..\portable\BCC\16BitDOS\PC\prtmacro.h"
 #include "frconfig.h"
-typedef void(__interrupt __far *pxISR)();
+typedef void(__interrupt __far* pxISR)();
 #endif
 
 #ifdef BCC_FLASH_LITE_186_PORT
@@ -245,7 +245,7 @@ typedef void(__interrupt __far *pxISR)();
 	FreeRTOSConfig.h when using the Borland compiler. */
 #include "..\portable\BCC\16BitDOS\flsh186\prtmacro.h"
 #include "frconfig.h"
-typedef void(__interrupt __far *pxISR)();
+typedef void(__interrupt __far* pxISR)();
 #endif
 
 #ifdef __GNUC__
@@ -345,16 +345,16 @@ extern "C" {
  *
  */
 #if (portUSING_MPU_WRAPPERS == 1)
-portSTACK_TYPE *pxPortInitialiseStack(portSTACK_TYPE *pxTopOfStack, pdTASK_CODE pxCode, void *pvParameters, portBASE_TYPE xRunPrivileged) PRIVILEGED_FUNCTION;
+portSTACK_TYPE* pxPortInitialiseStack(portSTACK_TYPE* pxTopOfStack, pdTASK_CODE pxCode, void* pvParameters, portBASE_TYPE xRunPrivileged) PRIVILEGED_FUNCTION;
 #else
-portSTACK_TYPE *pxPortInitialiseStack(portSTACK_TYPE *pxTopOfStack, pdTASK_CODE pxCode, void *pvParameters);
+portSTACK_TYPE* pxPortInitialiseStack(portSTACK_TYPE* pxTopOfStack, pdTASK_CODE pxCode, void* pvParameters);
 #endif
 
 /*
  * Map to the memory management routines required for the port.
  */
-void *pvPortMalloc(size_t xSize) PRIVILEGED_FUNCTION;
-void vPortFree(void *pv) PRIVILEGED_FUNCTION;
+void* pvPortMalloc(size_t xSize) PRIVILEGED_FUNCTION;
+void vPortFree(void* pv) PRIVILEGED_FUNCTION;
 void vPortInitialiseBlocks(void) PRIVILEGED_FUNCTION;
 size_t xPortGetFreeHeapSize(void) PRIVILEGED_FUNCTION;
 
@@ -380,7 +380,7 @@ void vPortEndScheduler(void) PRIVILEGED_FUNCTION;
  */
 #if (portUSING_MPU_WRAPPERS == 1)
 struct xMEMORY_REGION;
-void vPortStoreTaskMPUSettings(xMPU_SETTINGS *xMPUSettings, const struct xMEMORY_REGION *const xRegions, portSTACK_TYPE *pxBottomOfStack, unsigned short usStackDepth) PRIVILEGED_FUNCTION;
+void vPortStoreTaskMPUSettings(xMPU_SETTINGS* xMPUSettings, const struct xMEMORY_REGION* const xRegions, portSTACK_TYPE* pxBottomOfStack, unsigned short usStackDepth) PRIVILEGED_FUNCTION;
 #endif
 
 #ifdef __cplusplus

@@ -55,8 +55,7 @@
 #include <stddef.h>
 
 //! Number of flash regions defined by the FLASHC.
-#define AVR32_FLASHC_REGIONS (AVR32_FLASHC_FLASH_SIZE / \
-                              (AVR32_FLASHC_PAGES_PR_REGION * AVR32_FLASHC_PAGE_SIZE))
+#define AVR32_FLASHC_REGIONS (AVR32_FLASHC_FLASH_SIZE / (AVR32_FLASHC_PAGES_PR_REGION * AVR32_FLASHC_PAGE_SIZE))
 
 /*! \name Flash Properties
  */
@@ -826,7 +825,7 @@ extern void flashc_write_user_page(void);
  * \note The FLASHC error status returned by \ref flashc_is_lock_error and
  *       \ref flashc_is_programming_error is updated.
  */
-extern volatile void *flashc_memset8(volatile void *dst, U8 src, size_t nbytes, Bool erase);
+extern volatile void* flashc_memset8(volatile void* dst, U8 src, size_t nbytes, Bool erase);
 
 /*! \brief Copies \a nbytes bytes to the flash destination pointed to by \a dst
  *         from the repeated \a src big-endian source half-word.
@@ -855,7 +854,7 @@ extern volatile void *flashc_memset8(volatile void *dst, U8 src, size_t nbytes, 
  * \note The FLASHC error status returned by \ref flashc_is_lock_error and
  *       \ref flashc_is_programming_error is updated.
  */
-extern volatile void *flashc_memset16(volatile void *dst, U16 src, size_t nbytes, Bool erase);
+extern volatile void* flashc_memset16(volatile void* dst, U16 src, size_t nbytes, Bool erase);
 
 /*! \brief Copies \a nbytes bytes to the flash destination pointed to by \a dst
  *         from the repeated \a src big-endian source word.
@@ -884,7 +883,7 @@ extern volatile void *flashc_memset16(volatile void *dst, U16 src, size_t nbytes
  * \note The FLASHC error status returned by \ref flashc_is_lock_error and
  *       \ref flashc_is_programming_error is updated.
  */
-extern volatile void *flashc_memset32(volatile void *dst, U32 src, size_t nbytes, Bool erase);
+extern volatile void* flashc_memset32(volatile void* dst, U32 src, size_t nbytes, Bool erase);
 
 /*! \brief Copies \a nbytes bytes to the flash destination pointed to by \a dst
  *         from the repeated \a src big-endian source double-word.
@@ -913,7 +912,7 @@ extern volatile void *flashc_memset32(volatile void *dst, U32 src, size_t nbytes
  * \note The FLASHC error status returned by \ref flashc_is_lock_error and
  *       \ref flashc_is_programming_error is updated.
  */
-extern volatile void *flashc_memset64(volatile void *dst, U64 src, size_t nbytes, Bool erase);
+extern volatile void* flashc_memset64(volatile void* dst, U64 src, size_t nbytes, Bool erase);
 
 /*! \brief Copies \a nbytes bytes to the flash destination pointed to by \a dst
  *         from the repeated \a src big-endian source pattern.
@@ -977,7 +976,7 @@ extern volatile void *flashc_memset64(volatile void *dst, U64 src, size_t nbytes
  * \note The FLASHC error status returned by \ref flashc_is_lock_error and
  *       \ref flashc_is_programming_error is updated.
  */
-extern volatile void *flashc_memcpy(volatile void *dst, const void *src, size_t nbytes, Bool erase);
+extern volatile void* flashc_memcpy(volatile void* dst, const void* src, size_t nbytes, Bool erase);
 
 #if UC3C
 
@@ -987,8 +986,8 @@ extern volatile void *flashc_memcpy(volatile void *dst, const void *src, size_t 
  * \param cpu_f_hz The CPU frequency
  */
 void flashc_set_flash_waitstate_and_readmode(unsigned long cpu_f_hz);
-#endif // UC3C device-specific implementation
+#endif  // UC3C device-specific implementation
 
 //! @}
 
-#endif // _FLASHC_H_
+#endif  // _FLASHC_H_

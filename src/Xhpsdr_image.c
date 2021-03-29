@@ -45,7 +45,7 @@
 #include "taskPushButtonMenu.h"
 #include "wdt.h"
 
-#if LCD_DISPLAY // Multi-line LCD display
+#if LCD_DISPLAY  // Multi-line LCD display
 #include "taskLCD.h"
 #include "taskStartupLogDisplay.h"
 #endif
@@ -76,9 +76,9 @@ static void x_image_task_init(void)
 
 #if USB_DEVICE_FEATURE == ENABLED
 
-    mutexEP_IN = xSemaphoreCreateMutex(); // for co-ordinating multiple tasks using EP IN
+    mutexEP_IN = xSemaphoreCreateMutex();  // for co-ordinating multiple tasks using EP IN
 
-#if LCD_DISPLAY // Multi-line LCD display
+#if LCD_DISPLAY  // Multi-line LCD display
     vStartTaskLCD();
     vStartTaskPowerDisplay();
     vStartTaskPushButtonMenu();
@@ -88,48 +88,48 @@ static void x_image_task_init(void)
     hpsdr_AK5394A_task_init();
     hpsdr_device_audio_task_init(HPSDR_EP_IQ_IN, HPSDR_EP_IQ_OUT, 0);
 #endif
-#if LCD_DISPLAY // Multi-line LCD display
+#if LCD_DISPLAY  // Multi-line LCD display
     vStartTaskStartupLogDisplay();
 #endif
 }
 
 // descriptor accessors
-static uint8_t *x_image_get_dev_desc_pointer(void)
+static uint8_t* x_image_get_dev_desc_pointer(void)
 {
-    return (uint8_t *)&hpsdr_usb_dev_desc;
+    return (uint8_t*)&hpsdr_usb_dev_desc;
 }
 static uint16_t x_image_get_dev_desc_length(void)
 {
     return (uint16_t)sizeof(hpsdr_usb_dev_desc);
 }
-static uint8_t *x_image_get_conf_desc_pointer(void)
+static uint8_t* x_image_get_conf_desc_pointer(void)
 {
-    return (uint8_t *)&hpsdr_usb_conf_desc_fs;
+    return (uint8_t*)&hpsdr_usb_conf_desc_fs;
 }
 static uint16_t x_image_get_conf_desc_length(void)
 {
     return sizeof(hpsdr_usb_conf_desc_fs);
 }
-static uint8_t *x_image_get_conf_desc_fs_pointer(void)
+static uint8_t* x_image_get_conf_desc_fs_pointer(void)
 {
-    return (uint8_t *)&hpsdr_usb_conf_desc_fs;
+    return (uint8_t*)&hpsdr_usb_conf_desc_fs;
 }
 static uint16_t x_image_get_conf_desc_fs_length(void)
 {
     return sizeof(hpsdr_usb_conf_desc_fs);
 }
 #if USB_HIGH_SPEED_SUPPORT == ENABLED
-static uint8_t *x_image_get_conf_desc_hs_pointer(void)
+static uint8_t* x_image_get_conf_desc_hs_pointer(void)
 {
-    return (uint8_t *)&hpsdr_usb_conf_desc_hs;
+    return (uint8_t*)&hpsdr_usb_conf_desc_hs;
 }
 static uint16_t x_image_get_conf_desc_hs_length(void)
 {
     return sizeof(hpsdr_usb_conf_desc_hs);
 }
-static uint8_t *x_image_get_qualifier_desc_pointer(void)
+static uint8_t* x_image_get_qualifier_desc_pointer(void)
 {
-    return (uint8_t *)&hpsdr_usb_qualifier_desc;
+    return (uint8_t*)&hpsdr_usb_qualifier_desc;
 }
 static uint16_t x_image_get_qualifier_desc_length(void)
 {

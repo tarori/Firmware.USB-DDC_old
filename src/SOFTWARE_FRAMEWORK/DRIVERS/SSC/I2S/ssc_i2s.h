@@ -107,25 +107,25 @@ enum {
  *
  *  \param ssc pointer to the correct volatile avr32_ssc_t struct
  */
-void ssc_i2s_disable_tx(volatile avr32_ssc_t *ssc);
+void ssc_i2s_disable_tx(volatile avr32_ssc_t* ssc);
 
 /*! \brief Disable the RX part of SSC module. Not functional!
  *
  *  \param ssc pointer to the correct volatile avr32_ssc_t struct
  */
-void ssc_i2s_disable_rx(volatile avr32_ssc_t *ssc);
+void ssc_i2s_disable_rx(volatile avr32_ssc_t* ssc);
 
 /*! \brief Enable RX and TX part of SSC module. Untested
  *
  *  \param ssc pointer to the correct volatile avr32_ssc_t struct
  */
-void ssc_i2s_enable_rx_tx(volatile avr32_ssc_t *ssc);
+void ssc_i2s_enable_rx_tx(volatile avr32_ssc_t* ssc);
 
 /*! \brief Resets the SSC module
  *
  *  \param ssc pointer to the correct volatile avr32_ssc_t struct
  */
-extern void ssc_i2s_reset(volatile avr32_ssc_t *ssc);
+extern void ssc_i2s_reset(volatile avr32_ssc_t* ssc);
 
 /*! \brief Sets up registers and intializes SSC for use as I2S.
  *
@@ -148,12 +148,12 @@ extern void ssc_i2s_reset(volatile avr32_ssc_t *ssc);
  *    \retval SSC_I2S_OK when no error occured.
  *    \retval SSC_I2S_ERROR_ARGUMENT when invalid arguments are passed
  */
-extern int ssc_i2s_init(volatile avr32_ssc_t *ssc,
-                        unsigned int sample_frequency,
-                        unsigned int data_bit_res,
-                        unsigned int frame_bit_res,
-                        unsigned char mode,
-                        unsigned int pba_hz);
+extern int ssc_i2s_init(volatile avr32_ssc_t* ssc,
+    unsigned int sample_frequency,
+    unsigned int data_bit_res,
+    unsigned int frame_bit_res,
+    unsigned char mode,
+    unsigned int pba_hz);
 
 /*! \brief Transfers a single message of data
  *
@@ -164,21 +164,21 @@ extern int ssc_i2s_init(volatile avr32_ssc_t *ssc,
  *    \retval SSC_I2S_OK when no error occured.
  *    \retval SSC_I2S_TIMEOUT when a timeout occured while trying to transfer
  */
-extern int ssc_i2s_transfer(volatile avr32_ssc_t *ssc, unsigned int data);
+extern int ssc_i2s_transfer(volatile avr32_ssc_t* ssc, unsigned int data);
 
 /*! \brief Disables the specified SSC interrupts.
  *
  * \param ssc Base address of the SSC instance.
  * \param int_mask Bit-mask of SSC interrupts (\c AVR32_SSC_IDR_x_MASK).
  */
-extern void ssc_i2s_disable_interrupts(volatile avr32_ssc_t *ssc, unsigned long int_mask);
+extern void ssc_i2s_disable_interrupts(volatile avr32_ssc_t* ssc, unsigned long int_mask);
 
 /*! \brief Enables the specified SSC interrupts.
  *
  * \param ssc Base address of the SSC instance.
  * \param int_mask Bit-mask of SSC interrupts (\c AVR32_SSC_IER_x_MASK).
  */
-extern void ssc_i2s_enable_interrupts(volatile avr32_ssc_t *ssc, unsigned long int_mask);
+extern void ssc_i2s_enable_interrupts(volatile avr32_ssc_t* ssc, unsigned long int_mask);
 
 /*! \brief Returns the SSC status.
  *
@@ -186,6 +186,6 @@ extern void ssc_i2s_enable_interrupts(volatile avr32_ssc_t *ssc, unsigned long i
  *
  * \return The SSC Status Register.
  */
-extern unsigned long ssc_i2s_get_status(volatile avr32_ssc_t *ssc);
+extern unsigned long ssc_i2s_get_status(volatile avr32_ssc_t* ssc);
 
-#endif // _SSC_I2S_H_
+#endif  // _SSC_I2S_H_

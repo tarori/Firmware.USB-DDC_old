@@ -49,19 +49,19 @@
 //_____ U S B    D E F I N E S _____________________________________________
 
 // CONFIGURATION
-#define NB_INTERFACE 1 //!  Number of Interface
-#define CONF_NB 1      //! Number of this configuration
+#define NB_INTERFACE 1  //!  Number of Interface
+#define CONF_NB 1       //! Number of this configuration
 #define CONF_INDEX 0
 #define CONF_ATTRIBUTES USB_CONFIG_SELFPOWERED
-#define MAX_POWER 5 // 250    // 500 mA
+#define MAX_POWER 5  // 250    // 500 mA
 
 // USB Interface descriptor for Ozy
 #define INTERFACE_NB0 0
-#define ALTERNATE_NB0 0                  //! The alt setting nb of this interface
-#define NB_ENDPOINT0 3                   //! The number of endpoints this interface has
-#define INTERFACE_CLASS0 NO_CLASS        //! No Class
-#define INTERFACE_SUB_CLASS0 NO_SUBCLASS //! No Subclass
-#define INTERFACE_PROTOCOL0 NO_PROTOCOL  //! No Protocol
+#define ALTERNATE_NB0 0                   //! The alt setting nb of this interface
+#define NB_ENDPOINT0 3                    //! The number of endpoints this interface has
+#define INTERFACE_CLASS0 NO_CLASS         //! No Class
+#define INTERFACE_SUB_CLASS0 NO_SUBCLASS  //! No Subclass
+#define INTERFACE_PROTOCOL0 NO_PROTOCOL   //! No Protocol
 #define INTERFACE_INDEX0 0
 
 #define DSC_INTERFACE_OZY INTERFACE_NB0
@@ -73,8 +73,8 @@
 #define EP_IN_LENGTH_1_HS 512
 #define EP_SIZE_1_FS EP_IN_LENGTH_1_FS
 #define EP_SIZE_1_HS EP_IN_LENGTH_1_HS
-#define EP_INTERVAL_1_FS 0x01 // one packet per frame, each uF 1ms, so only 48khz
-#define EP_INTERVAL_1_HS 0x04 // One packet per 4 uframe, each uF 125us, so 192khz
+#define EP_INTERVAL_1_FS 0x01  // one packet per frame, each uF 1ms, so only 48khz
+#define EP_INTERVAL_1_HS 0x04  // One packet per 4 uframe, each uF 125us, so 192khz
 
 // USB Endpoint 2 descriptor
 #define ENDPOINT_NB_2 (HPSDR_EP_IQ_IN | MSK_EP_DIR)
@@ -124,4 +124,4 @@ extern const S_usb_device_qualifier_descriptor hpsdr_usb_qualifier_desc;
 #endif
 extern const S_usb_product_string_descriptor hpsdr_usb_user_product_string_descriptor;
 
-#endif // _HPSDR_USB_DESCRIPTORS_H_
+#endif  // _HPSDR_USB_DESCRIPTORS_H_

@@ -89,31 +89,31 @@
  *        desired.
  * \return 1 if the initialisation succeds otherwize it will return 0.
  */
-extern int rtc_init(volatile avr32_rtc_t *rtc, unsigned char osc_type, unsigned char psel);
+extern int rtc_init(volatile avr32_rtc_t* rtc, unsigned char osc_type, unsigned char psel);
 
 /*!
  * \brief Enable the RTC.
  * \param rtc Base address of the RTC (i.e. &AVR32_RTC).
  */
-extern void rtc_enable(volatile avr32_rtc_t *rtc);
+extern void rtc_enable(volatile avr32_rtc_t* rtc);
 
 /*!
  * \brief Disable the RTC.
  * \param rtc Base address of the RTC (i.e. &AVR32_RTC).
  */
-extern void rtc_disable(volatile avr32_rtc_t *rtc);
+extern void rtc_disable(volatile avr32_rtc_t* rtc);
 
 /*!
  * \brief Enable the wake up feature of the RTC.
  * \param rtc Base address of the RTC (i.e. &AVR32_RTC).
  */
-extern void rtc_enable_wake_up(volatile avr32_rtc_t *rtc);
+extern void rtc_enable_wake_up(volatile avr32_rtc_t* rtc);
 
 /*!
  * \brief Disable the wake up feature of the RTC.
  * \param rtc Base address of the RTC (i.e. &AVR32_RTC).
  */
-extern void rtc_disable_wake_up(volatile avr32_rtc_t *rtc);
+extern void rtc_disable_wake_up(volatile avr32_rtc_t* rtc);
 
 /*!
  * \brief Enable the interrupt feature of the RTC.
@@ -121,68 +121,68 @@ extern void rtc_disable_wake_up(volatile avr32_rtc_t *rtc);
  *        is equal to its top value.
  * \param rtc Base address of the RTC (i.e. &AVR32_RTC).
  */
-extern void rtc_enable_interrupt(volatile avr32_rtc_t *rtc);
+extern void rtc_enable_interrupt(volatile avr32_rtc_t* rtc);
 
 /*!
  * \brief Disable the interrupt feature of the RTC.
  * \param rtc Base address of the RTC (i.e. &AVR32_RTC).
  */
-extern void rtc_disable_interrupt(volatile avr32_rtc_t *rtc);
+extern void rtc_disable_interrupt(volatile avr32_rtc_t* rtc);
 
 /*!
  * \brief Clear the interrupt flag.
  *        Call this function once you handled the interrupt.
  * \param rtc Base address of the RTC (i.e. &AVR32_RTC).
  */
-extern void rtc_clear_interrupt(volatile avr32_rtc_t *rtc);
+extern void rtc_clear_interrupt(volatile avr32_rtc_t* rtc);
 
 /*!
  * \brief Get the status of interrupts.
  * \param rtc Base address of the RTC (i.e. &AVR32_RTC).
  * \return 1 if the interrupts are enabled otherwize it returns 0.
  */
-extern int rtc_interrupt_enabled(volatile avr32_rtc_t *rtc);
+extern int rtc_interrupt_enabled(volatile avr32_rtc_t* rtc);
 
 /*!
  * \brief Check if an interrupt is raised.
  * \param rtc Base address of the RTC (i.e. &AVR32_RTC).
  * \return 1 if an interrupt is currently raised otherwize it returns 0.
  */
-extern int rtc_is_interrupt(volatile avr32_rtc_t *rtc);
+extern int rtc_is_interrupt(volatile avr32_rtc_t* rtc);
 
 /*!
  * \brief This function sets the RTC current top value.
  * \param rtc Base address of the RTC (i.e. &AVR32_RTC).
  * \param top The top value you want to store.
  */
-extern void rtc_set_top_value(volatile avr32_rtc_t *rtc, unsigned long top);
+extern void rtc_set_top_value(volatile avr32_rtc_t* rtc, unsigned long top);
 
 /*!
  * \brief This function returns the RTC current top value.
  * \param rtc Base address of the RTC (i.e. &AVR32_RTC).
  * \return The RTC current top value.
  */
-extern unsigned long rtc_get_top_value(volatile avr32_rtc_t *rtc);
+extern unsigned long rtc_get_top_value(volatile avr32_rtc_t* rtc);
 
 /*!
  * \brief This function checks if the RTC is busy or not.
  * \param rtc Base address of the RTC (i.e. &AVR32_RTC).
  * \return 1 if the RTC is busy otherwize it will return 0.
  */
-extern int rtc_is_busy(volatile avr32_rtc_t *rtc);
+extern int rtc_is_busy(volatile avr32_rtc_t* rtc);
 
 /*!
  * \brief This function sets the RTC current value.
  * \param rtc Base address of the RTC (i.e. &AVR32_RTC).
  * \param val The value you want to store.
  */
-extern void rtc_set_value(volatile avr32_rtc_t *rtc, unsigned long val);
+extern void rtc_set_value(volatile avr32_rtc_t* rtc, unsigned long val);
 
 /*!
  * \brief This function returns the RTC current value.
  * \param rtc Base address of the RTC (i.e. &AVR32_RTC).
  * \return The RTC current value.
  */
-extern unsigned long rtc_get_value(volatile avr32_rtc_t *rtc);
+extern unsigned long rtc_get_value(volatile avr32_rtc_t* rtc);
 
-#endif // _RTC_H_
+#endif  // _RTC_H_

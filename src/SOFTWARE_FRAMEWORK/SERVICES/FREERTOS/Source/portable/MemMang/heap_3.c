@@ -78,9 +78,9 @@ task.h is included from an application file. */
 
 /*-----------------------------------------------------------*/
 
-void *pvPortMalloc(size_t xWantedSize)
+void* pvPortMalloc(size_t xWantedSize)
 {
-    void *pvReturn;
+    void* pvReturn;
 
     vTaskSuspendAll();
     {
@@ -101,7 +101,7 @@ void *pvPortMalloc(size_t xWantedSize)
 }
 /*-----------------------------------------------------------*/
 
-void vPortFree(void *pv)
+void vPortFree(void* pv)
 {
     if (pv) {
         vTaskSuspendAll();

@@ -151,7 +151,7 @@ cpu_cy_2_us(unsigned long cy, unsigned long fcpu_hz)
 __attribute__((__always_inline__))
 #endif
 extern __inline__ void
-cpu_set_timeout(unsigned long delay, t_cpu_time *cpu_time)
+cpu_set_timeout(unsigned long delay, t_cpu_time* cpu_time)
 {
     cpu_time->delay_start_cycle = Get_system_register(AVR32_COUNT);
     cpu_time->delay_end_cycle = cpu_time->delay_start_cycle + delay;
@@ -178,7 +178,7 @@ cpu_set_timeout(unsigned long delay, t_cpu_time *cpu_time)
 __attribute__((__always_inline__))
 #endif
 extern __inline__ unsigned long
-cpu_is_timeout(t_cpu_time *cpu_time)
+cpu_is_timeout(t_cpu_time* cpu_time)
 {
     unsigned long current_cycle_count = Get_system_register(AVR32_COUNT);
 
@@ -220,7 +220,7 @@ cpu_is_timeout(t_cpu_time *cpu_time)
 __attribute__((__always_inline__))
 #endif
 extern __inline__ void
-cpu_stop_timeout(t_cpu_time *cpu_time)
+cpu_stop_timeout(t_cpu_time* cpu_time)
 {
     cpu_time->timer_state = CPU_TIMER_STATE_STOPPED;
 }
@@ -236,7 +236,7 @@ cpu_stop_timeout(t_cpu_time *cpu_time)
 __attribute__((__always_inline__))
 #endif
 extern __inline__ unsigned long
-cpu_is_timer_stopped(t_cpu_time *cpu_time)
+cpu_is_timer_stopped(t_cpu_time* cpu_time)
 {
 
     if (cpu_time->timer_state == CPU_TIMER_STATE_STOPPED)
@@ -303,4 +303,4 @@ cpu_delay_cy(unsigned long delay)
 #define Get_sys_compare() (Get_system_register(AVR32_COMPARE))
 #define Set_sys_compare(x) (Set_system_register(AVR32_COMPARE, (x)))
 
-#endif // _CYCLE_COUNTER_H_
+#endif  // _CYCLE_COUNTER_H_

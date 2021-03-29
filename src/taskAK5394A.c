@@ -26,8 +26,8 @@
 //_____  I N C L U D E S ___________________________________________________
 
 //#include <stdio.h>
-#include "usart.h" // Shall be included before FreeRTOS header files, since 'inline' is defined to ''; leading to
-                   // link errors
+#include "usart.h"  // Shall be included before FreeRTOS header files, since 'inline' is defined to ''; leading to
+                    // link errors
 #include "conf_usb.h"
 
 #include <avr32/io.h>
@@ -70,37 +70,37 @@ static const gpio_map_t SSC_GPIO_MAP = {
     {SSC_TX_FRAME_SYNC, SSC_TX_FRAME_SYNC_FUNCTION}};
 
 static const pdca_channel_options_t PDCA_OPTIONS = {
-    .addr = (void *)audio_buffer_0,          // memory address
-    .pid = AVR32_PDCA_PID_SSC_RX,            // select peripheral
-    .size = ADC_BUFFER_SIZE,                 // transfer counter
-    .r_addr = NULL,                          // next memory address // Is this safe?? What about using audio_buffer_1 here?
-    .r_size = 0,                             // next transfer counter // Is this to force an immediate interrupt?
-    .transfer_size = PDCA_TRANSFER_SIZE_WORD // select size of the transfer - 32 bits
+    .addr = (void*)audio_buffer_0,            // memory address
+    .pid = AVR32_PDCA_PID_SSC_RX,             // select peripheral
+    .size = ADC_BUFFER_SIZE,                  // transfer counter
+    .r_addr = NULL,                           // next memory address // Is this safe?? What about using audio_buffer_1 here?
+    .r_size = 0,                              // next transfer counter // Is this to force an immediate interrupt?
+    .transfer_size = PDCA_TRANSFER_SIZE_WORD  // select size of the transfer - 32 bits
 };
 
 static const pdca_channel_options_t SPK_PDCA_OPTIONS = {
-    .addr = (void *)spk_buffer_0,            // memory address
-    .pid = AVR32_PDCA_PID_SSC_TX,            // select peripheral
-    .size = DAC_BUFFER_SIZE,                 // transfer counter
-    .r_addr = NULL,                          // next memory address
-    .r_size = 0,                             // next transfer counter
-    .transfer_size = PDCA_TRANSFER_SIZE_WORD // select size of the transfer - 32 bits
+    .addr = (void*)spk_buffer_0,              // memory address
+    .pid = AVR32_PDCA_PID_SSC_TX,             // select peripheral
+    .size = DAC_BUFFER_SIZE,                  // transfer counter
+    .r_addr = NULL,                           // next memory address
+    .r_size = 0,                              // next transfer counter
+    .transfer_size = PDCA_TRANSFER_SIZE_WORD  // select size of the transfer - 32 bits
 };
 
-volatile S32 audio_buffer_0[ADC_BUFFER_SIZE]; // BSB 20170324 changed to signed
+volatile S32 audio_buffer_0[ADC_BUFFER_SIZE];  // BSB 20170324 changed to signed
 volatile S32 audio_buffer_1[ADC_BUFFER_SIZE];
 volatile S32 spk_buffer_0[DAC_BUFFER_SIZE];
 volatile S32 spk_buffer_1[DAC_BUFFER_SIZE];
 
-volatile avr32_ssc_t *ssc = &AVR32_SSC;
+volatile avr32_ssc_t* ssc = &AVR32_SSC;
 
-volatile int ADC_buf_DMA_write = 0;              // Written by interrupt handler, initiated by sequential code
-volatile int DAC_buf_DMA_read = 0;               // Written by interrupt handler, initiated by sequential code
-volatile int ADC_buf_USB_IN;                     // Written by sequential code
-volatile int DAC_buf_USB_OUT;                    // Written by sequential code
-volatile avr32_pdca_channel_t *pdca_channel;     // Initiated below
-volatile avr32_pdca_channel_t *spk_pdca_channel; // Initiated below
-volatile int dac_must_clear;                     // uacX_device_audio_task.c must clear the content of outgoing DAC buffers
+volatile int ADC_buf_DMA_write = 0;               // Written by interrupt handler, initiated by sequential code
+volatile int DAC_buf_DMA_read = 0;                // Written by interrupt handler, initiated by sequential code
+volatile int ADC_buf_USB_IN;                      // Written by sequential code
+volatile int DAC_buf_USB_OUT;                     // Written by sequential code
+volatile avr32_pdca_channel_t* pdca_channel;      // Initiated below
+volatile avr32_pdca_channel_t* spk_pdca_channel;  // Initiated below
+volatile int dac_must_clear;                      // uacX_device_audio_task.c must clear the content of outgoing DAC buffers
 
 // BSB 20131201 attempting improved playerstarted detection
 volatile S32 usb_buffer_toggle;
@@ -124,16 +124,16 @@ __attribute__((__interrupt__)) static void pdca_int_handler(void)
         // Register names are different from those used in AVR32108. BUT: it seems pdca_reload_channel() sets the
         // -next- pointer, the one to be selected automatically after the current one is done. That may be why
         // we choose the same buffer number here as in the seq. code
-        pdca_reload_channel(PDCA_CHANNEL_SSC_RX, (void *)audio_buffer_1, ADC_BUFFER_SIZE);
+        pdca_reload_channel(PDCA_CHANNEL_SSC_RX, (void*)audio_buffer_1, ADC_BUFFER_SIZE);
         ADC_buf_DMA_write = 1;
 #ifdef USB_STATE_MACHINE_GPIO
-        gpio_set_gpio_pin(AVR32_PIN_PX17); // Pin 83
+        gpio_set_gpio_pin(AVR32_PIN_PX17);  // Pin 83
 #endif
     } else if (ADC_buf_DMA_write == 1) {
-        pdca_reload_channel(PDCA_CHANNEL_SSC_RX, (void *)audio_buffer_0, ADC_BUFFER_SIZE);
+        pdca_reload_channel(PDCA_CHANNEL_SSC_RX, (void*)audio_buffer_0, ADC_BUFFER_SIZE);
         ADC_buf_DMA_write = 0;
 #ifdef USB_STATE_MACHINE_GPIO
-        gpio_clr_gpio_pin(AVR32_PIN_PX17); // Pin 83
+        gpio_clr_gpio_pin(AVR32_PIN_PX17);  // Pin 83
 #endif
     }
 }
@@ -147,25 +147,25 @@ __attribute__((__interrupt__)) static void spk_pdca_int_handler(void)
 {
     if (DAC_buf_DMA_read == 0) {
         // Set PDCA channel reload values with address where data to load are stored, and size of the data block to load.
-        pdca_reload_channel(PDCA_CHANNEL_SSC_TX, (void *)spk_buffer_1, DAC_BUFFER_SIZE);
+        pdca_reload_channel(PDCA_CHANNEL_SSC_TX, (void*)spk_buffer_1, DAC_BUFFER_SIZE);
         DAC_buf_DMA_read = 1;
 
 #ifdef USB_STATE_MACHINE_GPIO
 #ifdef PRODUCT_FEATURE_AMB
-        gpio_set_gpio_pin(AVR32_PIN_PX56); // For AMB use PX56/GPIO_04
+        gpio_set_gpio_pin(AVR32_PIN_PX56);  // For AMB use PX56/GPIO_04
 #else
-        gpio_set_gpio_pin(AVR32_PIN_PX25); // BSB 20140820 debug on GPIO_09/TP70 (was PX56 / GPIO_04)
+        gpio_set_gpio_pin(AVR32_PIN_PX25);  // BSB 20140820 debug on GPIO_09/TP70 (was PX56 / GPIO_04)
 #endif
 #endif
     } else if (DAC_buf_DMA_read == 1) {
-        pdca_reload_channel(PDCA_CHANNEL_SSC_TX, (void *)spk_buffer_0, DAC_BUFFER_SIZE);
+        pdca_reload_channel(PDCA_CHANNEL_SSC_TX, (void*)spk_buffer_0, DAC_BUFFER_SIZE);
         DAC_buf_DMA_read = 0;
 
 #ifdef USB_STATE_MACHINE_GPIO
 #ifdef PRODUCT_FEATURE_AMB
-        gpio_clr_gpio_pin(AVR32_PIN_PX56); // For AMB use PX56/GPIO_04
+        gpio_clr_gpio_pin(AVR32_PIN_PX56);  // For AMB use PX56/GPIO_04
 #else
-        gpio_clr_gpio_pin(AVR32_PIN_PX25); // BSB 20140820 debug on GPIO_09/TP70 (was PX56 / GPIO_04)
+        gpio_clr_gpio_pin(AVR32_PIN_PX25);  // BSB 20140820 debug on GPIO_09/TP70 (was PX56 / GPIO_04)
 #endif
 #endif
     }
@@ -175,9 +175,9 @@ __attribute__((__interrupt__)) static void spk_pdca_int_handler(void)
         usb_buffer_toggle++;
 
     // BSB 20140917 attempting to help uacX_device_audio_task.c synchronize to DMA
-    if (!audio_OUT_alive)        // If no packet has been received since last DMA reset,
-        audio_OUT_must_sync = 1; // indicate that next arriving packet must enter mid-buffer
-    audio_OUT_alive = 0;         // Start detecting packets on audio OUT endpoint at DMA reset
+    if (!audio_OUT_alive)         // If no packet has been received since last DMA reset,
+        audio_OUT_must_sync = 1;  // indicate that next arriving packet must enter mid-buffer
+    audio_OUT_alive = 0;          // Start detecting packets on audio OUT endpoint at DMA reset
 }
 
 /*! \brief Init interrupt controller and register pdca_int_handler interrupt.
@@ -193,8 +193,8 @@ static void pdca_set_irq(void)
     // AVR32_PDCA_IRQ_0 The interrupt line to register to.
     // AVR32_INTC_INT2  The priority level to set for this interrupt line.  INT0 is lowest.
     // INTC_register_interrupt(__int_handler handler, int line, int priority);
-    INTC_register_interrupt((__int_handler)&pdca_int_handler, AVR32_PDCA_IRQ_0, AVR32_INTC_INT0);     //2
-    INTC_register_interrupt((__int_handler)&spk_pdca_int_handler, AVR32_PDCA_IRQ_1, AVR32_INTC_INT0); //1
+    INTC_register_interrupt((__int_handler)&pdca_int_handler, AVR32_PDCA_IRQ_0, AVR32_INTC_INT0);      //2
+    INTC_register_interrupt((__int_handler)&spk_pdca_int_handler, AVR32_PDCA_IRQ_1, AVR32_INTC_INT0);  //1
     // Enable all interrupt/exception.
     Enable_global_interrupt();
 }
@@ -206,7 +206,7 @@ void AK5394A_pdca_disable(void)
 // The old pdca_enable() code which will remain.
 void AK5394A_pdca_enable(void)
 {
-    pdca_init_channel(PDCA_CHANNEL_SSC_RX, &PDCA_OPTIONS); // init PDCA channel with options.
+    pdca_init_channel(PDCA_CHANNEL_SSC_RX, &PDCA_OPTIONS);  // init PDCA channel with options.
     pdca_enable_interrupt_reload_counter_zero(PDCA_CHANNEL_SSC_RX);
 }
 
@@ -223,9 +223,7 @@ void AK5394A_pdca_rx_enable(U32 frequency)
 
     taskENTER_CRITICAL();
 
-    if ((frequency == FREQ_44) || (frequency == FREQ_48) ||
-        (frequency == FREQ_88) || (frequency == FREQ_96) ||
-        (frequency == FREQ_176) || (frequency == FREQ_192)) {
+    if ((frequency == FREQ_44) || (frequency == FREQ_48) || (frequency == FREQ_88) || (frequency == FREQ_96) || (frequency == FREQ_176) || (frequency == FREQ_192)) {
         while ((gpio_get_pin_value(AK5394_LRCK) == 0) && (countdown != 0))
             countdown--;
         while ((gpio_get_pin_value(AK5394_LRCK) == 1) && (countdown != 0))
@@ -238,7 +236,7 @@ void AK5394A_pdca_rx_enable(U32 frequency)
         ADC_buf_DMA_write = 0;
 
         //   	gpio_clr_gpio_pin(AVR32_PIN_PX17);
-    } else { // No known frequency, don't halt system while polling for LRCK edge
+    } else {  // No known frequency, don't halt system while polling for LRCK edge
         pdca_init_channel(PDCA_CHANNEL_SSC_RX, &PDCA_OPTIONS);
         ADC_buf_DMA_write = 0;
 
@@ -265,15 +263,13 @@ void AK5394A_pdca_tx_enable(U32 frequency)
     pdca_disable_interrupt_reload_counter_zero(PDCA_CHANNEL_SSC_TX);
 
 #ifdef USB_STATE_MACHINE_DEBUG
-    print_dbg_char_char('N'); // xperia
+    print_dbg_char_char('N');  // xperia
 #endif
-    mobo_clear_dac_channel(); // To avoid odd spurs which some times occur
+    mobo_clear_dac_channel();  // To avoid odd spurs which some times occur
 
     taskENTER_CRITICAL();
 
-    if ((frequency == FREQ_44) || (frequency == FREQ_48) ||
-        (frequency == FREQ_88) || (frequency == FREQ_96) ||
-        (frequency == FREQ_176) || (frequency == FREQ_192)) {
+    if ((frequency == FREQ_44) || (frequency == FREQ_48) || (frequency == FREQ_88) || (frequency == FREQ_96) || (frequency == FREQ_176) || (frequency == FREQ_192)) {
         while ((gpio_get_pin_value(AVR32_PIN_PX27) == 0) && (countdown != 0))
             countdown--;
         while ((gpio_get_pin_value(AVR32_PIN_PX27) == 1) && (countdown != 0))
@@ -283,10 +279,10 @@ void AK5394A_pdca_tx_enable(U32 frequency)
         while ((gpio_get_pin_value(AVR32_PIN_PX27) == 1) && (countdown != 0))
             countdown--;
         pdca_init_channel(PDCA_CHANNEL_SSC_TX, &SPK_PDCA_OPTIONS);
-        DAC_buf_DMA_read = 0; // pdca_init_channel will force start from spk_buffer_0[] as NEXT buffer to use after int
+        DAC_buf_DMA_read = 0;  // pdca_init_channel will force start from spk_buffer_0[] as NEXT buffer to use after int
 
         gpio_clr_gpio_pin(AVR32_PIN_PX25);
-    } else { // No known frequency, don't halt system while polling for LRCK edge
+    } else {  // No known frequency, don't halt system while polling for LRCK edge
         pdca_init_channel(PDCA_CHANNEL_SSC_TX, &SPK_PDCA_OPTIONS);
         DAC_buf_DMA_read = 0;
 
@@ -306,7 +302,7 @@ void AK5394A_task_init(const Bool uac1)
 {
     // Set up CS4344
     // Set up GLCK1 to provide master clock for CS4344
-    gpio_enable_module_pin(GCLK1, GCLK1_FUNCTION); // for DA_SCLK
+    gpio_enable_module_pin(GCLK1, GCLK1_FUNCTION);  // for DA_SCLK
     // LRCK is SCLK / 64 generated by TX_SSC
     // so SCLK of 6.144Mhz ===> 96khz
 
@@ -316,7 +312,7 @@ void AK5394A_task_init(const Bool uac1)
     spk_pdca_channel = pdca_get_handler(PDCA_CHANNEL_SSC_TX);
 
     // from AK5394A Xtal Oscillator. This takes a while. Bit clock starts running after this.
-    pm_enable_osc1_ext_clock(&AVR32_PM); // OSC1 is clocked by 12.288Mhz Osc
+    pm_enable_osc1_ext_clock(&AVR32_PM);  // OSC1 is clocked by 12.288Mhz Osc
     pm_enable_clk1(&AVR32_PM, OSC1_STARTUP);
 
     // Assign GPIO to SSC.
@@ -368,7 +364,7 @@ void AK5394A_task_init(const Bool uac1)
     // Init PDCA channel with the pdca_options.
     // REMOVE! The ADC should be designed out completely
     if (!FEATURE_ADC_NONE) {
-        pdca_init_channel(PDCA_CHANNEL_SSC_RX, &PDCA_OPTIONS); // init PDCA channel with options.
+        pdca_init_channel(PDCA_CHANNEL_SSC_RX, &PDCA_OPTIONS);  // init PDCA channel with options.
         pdca_enable_interrupt_reload_counter_zero(PDCA_CHANNEL_SSC_RX);
     }
 #endif
@@ -384,7 +380,7 @@ void AK5394A_task_init(const Bool uac1)
     cpu_delay_ms(80, FCPU_HZ);
 
     // Short the shared 12R resistor at charge pump inputs while 12R at LDO input is still engaged. FIX: add board design!
-    gpio_clr_gpio_pin(AVR32_PIN_PA22); // TP18
+    gpio_clr_gpio_pin(AVR32_PIN_PA22);  // TP18
 
     cpu_delay_ms(200, FCPU_HZ);
 

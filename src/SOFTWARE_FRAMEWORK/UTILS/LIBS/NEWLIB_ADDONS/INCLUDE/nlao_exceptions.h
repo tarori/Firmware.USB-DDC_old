@@ -91,8 +91,8 @@ typedef unsigned int (*__exception_handler)(int /*evba_offset*/, int /*return ad
 */
 
 typedef void (*__scall_handler)(int /*code*/, int /*p1*/, int /*p2*/
-                                ,
-                                int /*p3*/, int /*p4*/);
+    ,
+    int /*p3*/, int /*p4*/);
 
 /*
    Function for registering an exception handler for the exception with
@@ -113,7 +113,7 @@ void _register_scall_handler(__scall_handler handler);
    the exception handlers are stored. This array must be at least 0x104 bytes
    and word aligned.
 */
-void init_exceptions(void *evba, void *handler_table);
+void init_exceptions(void* evba, void* handler_table);
 
 _END_STD_C
 

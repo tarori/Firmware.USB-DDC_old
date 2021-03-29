@@ -65,8 +65,8 @@
 /*! \name Constants of field DESCRIPTOR_HID
  */
 //! @{
-#define HID_BDC 0x0111                 //!< Numeric expression identifying the HID Class Specification release (here V1.11)
-#define HID_CLASS_DESC_NB_DEFAULT 0x01 //!< Numeric expression specifying the number of class descriptors (always at least one i.e. Report descriptor.)
+#define HID_BDC 0x0111                  //!< Numeric expression identifying the HID Class Specification release (here V1.11)
+#define HID_CLASS_DESC_NB_DEFAULT 0x01  //!< Numeric expression specifying the number of class descriptors (always at least one i.e. Report descriptor.)
 //! @}
 
 /*! \name HID Country Codes
@@ -530,4 +530,4 @@ typedef union {
 
 //_____ D E C L A R A T I O N S ________________________________________________
 
-#endif // _HID_H_
+#endif  // _HID_H_

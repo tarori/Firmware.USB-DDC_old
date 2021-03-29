@@ -87,17 +87,17 @@
 #define Is_usb_device() (g_usb_mode == USB_MODE_DEVICE)
 #define Is_usb_host() (g_usb_mode == USB_MODE_HOST)
 
-#define EVT_USB_POWERED 1         // USB plugged
-#define EVT_USB_UNPOWERED 2       // USB unplugged
-#define EVT_USB_DEVICE_FUNCTION 3 // USB in device
-#define EVT_USB_HOST_FUNCTION 4   // USB in host
-#define EVT_USB_SUSPEND 5         // USB suspend
-#define EVT_USB_WAKE_UP 6         // USB wake-up
-#define EVT_USB_RESUME 7          // USB resume
-#define EVT_USB_RESET 8           // USB reset
-#define EVT_HOST_SOF 9            // Host start-of-frame sent
-#define EVT_HOST_HWUP 10          // Host wake-up detected
-#define EVT_HOST_DISCONNECTION 11 // The target device is disconnected \
+#define EVT_USB_POWERED 1          // USB plugged
+#define EVT_USB_UNPOWERED 2        // USB unplugged
+#define EVT_USB_DEVICE_FUNCTION 3  // USB in device
+#define EVT_USB_HOST_FUNCTION 4    // USB in host
+#define EVT_USB_SUSPEND 5          // USB suspend
+#define EVT_USB_WAKE_UP 6          // USB wake-up
+#define EVT_USB_RESUME 7           // USB resume
+#define EVT_USB_RESET 8            // USB reset
+#define EVT_HOST_SOF 9             // Host start-of-frame sent
+#define EVT_HOST_HWUP 10           // Host wake-up detected
+#define EVT_HOST_DISCONNECTION 11  // The target device is disconnected \
                                   //! @}
 
 //! @defgroup std_req_values Standard requests defines
@@ -176,7 +176,7 @@
 #define Usb_format_usb_to_mcu_data(width, data) ((TPASTE2(U, width))(data))
 #define usb_format_mcu_to_usb_data(width, data) ((TPASTE2(U, width))(data))
 #define usb_format_usb_to_mcu_data(width, data) ((TPASTE2(U, width))(data))
-#else // BIG_ENDIAN_MCU
+#else  // BIG_ENDIAN_MCU
 #define Usb_format_mcu_to_usb_data(width, data) (TPASTE2(Swap, width)(data))
 #define Usb_format_usb_to_mcu_data(width, data) (TPASTE2(Swap, width)(data))
 #define usb_format_mcu_to_usb_data(width, data) (TPASTE2(swap, width)(data))
@@ -225,11 +225,11 @@ extern void usb_task_init(void);
 //! Depending on the mode supported (HOST/DEVICE/DUAL_ROLE) the function
 //! calls the corespong USB management function
 #ifdef FREERTOS_USED
-extern void usb_task(void *pvParameters);
+extern void usb_task(void* pvParameters);
 #else
 extern void usb_task(void);
 #endif
 
 //! @}
 
-#endif // _USB_TASK_H_
+#endif  // _USB_TASK_H_

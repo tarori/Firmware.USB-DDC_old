@@ -110,18 +110,18 @@ void usb_device_task_init(void)
     Usb_enable();
     Usb_unfreeze_clock();
     (void)Is_usb_clock_frozen();
-    Usb_ack_suspend(); // A suspend condition may be detected right after enabling the USB macro
+    Usb_ack_suspend();  // A suspend condition may be detected right after enabling the USB macro
     Usb_enable_vbus_interrupt();
     Enable_global_interrupt();
 
 #ifdef FREERTOS_USED
     xTaskCreate(usb_device_task,
-                configTSK_USB_DEV_NAME,
-                configTSK_USB_DEV_STACK_SIZE,
-                NULL,
-                configTSK_USB_DEV_PRIORITY,
-                &usb_device_tsk);
-#endif // FREERTOS_USED
+        configTSK_USB_DEV_NAME,
+        configTSK_USB_DEV_STACK_SIZE,
+        NULL,
+        configTSK_USB_DEV_PRIORITY,
+        &usb_device_tsk);
+#endif  // FREERTOS_USED
 }
 
 //!
@@ -148,7 +148,7 @@ void usb_start_device(void)
         Usb_use_dual_speed_mode();
 #endif
 
-    usb_init_device(); // Configure the USB controller EP0
+    usb_init_device();  // Configure the USB controller EP0
     Usb_attach();
     usb_connected = TRUE;
 }
@@ -162,7 +162,7 @@ void usb_start_device(void)
 //! the usb_process_request() function is call in the usb_standard_request.c file
 //!
 #ifdef FREERTOS_USED
-void usb_device_task(void *pvParameters)
+void usb_device_task(void* pvParameters)
 #else
 void usb_device_task(void)
 #endif
@@ -174,7 +174,7 @@ void usb_device_task(void)
     while (TRUE) {
         vTaskDelayUntil(&xLastWakeTime, configTSK_USB_DEV_PERIOD);
 
-#endif // FREERTOS_USED
+#endif  // FREERTOS_USED
         if (!usb_connected && Is_usb_vbus_high()) {
             usb_start_device();
             Usb_send_event(EVT_USB_POWERED);
@@ -196,4 +196,4 @@ void usb_device_task(void)
 #endif
 }
 
-#endif // USB_DEVICE_FEATURE == ENABLED
+#endif  // USB_DEVICE_FEATURE == ENABLED

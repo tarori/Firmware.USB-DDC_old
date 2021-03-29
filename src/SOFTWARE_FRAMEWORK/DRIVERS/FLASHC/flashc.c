@@ -75,28 +75,26 @@ typedef union {
 unsigned int flashc_get_flash_size(void)
 {
 #if (defined AVR32_FLASHC_300_H_INCLUDED)
-    static const unsigned int FLASH_SIZE[1 << AVR32_FLASHC_PR_FSZ_SIZE] =
-        {
-            32 << 10,
-            64 << 10,
-            128 << 10,
-            256 << 10,
-            384 << 10,
-            512 << 10,
-            768 << 10,
-            1024 << 10};
+    static const unsigned int FLASH_SIZE[1 << AVR32_FLASHC_PR_FSZ_SIZE] = {
+        32 << 10,
+        64 << 10,
+        128 << 10,
+        256 << 10,
+        384 << 10,
+        512 << 10,
+        768 << 10,
+        1024 << 10};
     return FLASH_SIZE[(AVR32_FLASHC.pr & AVR32_FLASHC_PR_FSZ_MASK) >> AVR32_FLASHC_PR_FSZ_OFFSET];
 #else
-    static const unsigned int FLASH_SIZE[1 << AVR32_FLASHC_FSR_FSZ_SIZE] =
-        {
-            32 << 10,
-            64 << 10,
-            128 << 10,
-            256 << 10,
-            384 << 10,
-            512 << 10,
-            768 << 10,
-            1024 << 10};
+    static const unsigned int FLASH_SIZE[1 << AVR32_FLASHC_FSR_FSZ_SIZE] = {
+        32 << 10,
+        64 << 10,
+        128 << 10,
+        256 << 10,
+        384 << 10,
+        512 << 10,
+        768 << 10,
+        1024 << 10};
     return FLASH_SIZE[(AVR32_FLASHC.fsr & AVR32_FLASHC_FSR_FSZ_MASK) >> AVR32_FLASHC_FSR_FSZ_OFFSET];
 #endif
 }
@@ -206,8 +204,7 @@ void (*volatile flashc_wait_until_ready)(void) = flashc_default_wait_until_ready
  */
 static unsigned int flashc_get_error_status(void)
 {
-    return AVR32_FLASHC.fsr & (AVR32_FLASHC_FSR_LOCKE_MASK |
-                               AVR32_FLASHC_FSR_PROGE_MASK);
+    return AVR32_FLASHC.fsr & (AVR32_FLASHC_FSR_LOCKE_MASK | AVR32_FLASHC_FSR_PROGE_MASK);
 }
 
 //! Sticky error status of the FLASHC.
@@ -290,18 +287,15 @@ void flashc_activate_security_bit(void)
 
 unsigned int flashc_get_bootloader_protected_size(void)
 {
-    unsigned int bootprot = (1 << AVR32_FLASHC_FGPFRLO_BOOTPROT_SIZE) - 1 -
-                            flashc_read_gp_fuse_bitfield(AVR32_FLASHC_FGPFRLO_BOOTPROT_OFFSET,
-                                                         AVR32_FLASHC_FGPFRLO_BOOTPROT_SIZE);
+    unsigned int bootprot = (1 << AVR32_FLASHC_FGPFRLO_BOOTPROT_SIZE) - 1 - flashc_read_gp_fuse_bitfield(AVR32_FLASHC_FGPFRLO_BOOTPROT_OFFSET, AVR32_FLASHC_FGPFRLO_BOOTPROT_SIZE);
     return (bootprot) ? AVR32_FLASHC_PAGE_SIZE << bootprot : 0;
 }
 
 unsigned int flashc_set_bootloader_protected_size(unsigned int bootprot_size)
 {
     flashc_set_gp_fuse_bitfield(AVR32_FLASHC_FGPFRLO_BOOTPROT_OFFSET,
-                                AVR32_FLASHC_FGPFRLO_BOOTPROT_SIZE,
-                                (1 << AVR32_FLASHC_FGPFRLO_BOOTPROT_SIZE) - 1 -
-                                    ((bootprot_size) ? 32 - clz((((min(max(bootprot_size, AVR32_FLASHC_PAGE_SIZE << 1), AVR32_FLASHC_PAGE_SIZE << ((1 << AVR32_FLASHC_FGPFRLO_BOOTPROT_SIZE) - 1)) + AVR32_FLASHC_PAGE_SIZE - 1) / AVR32_FLASHC_PAGE_SIZE) << 1) - 1) - 1 : 0));
+        AVR32_FLASHC_FGPFRLO_BOOTPROT_SIZE,
+        (1 << AVR32_FLASHC_FGPFRLO_BOOTPROT_SIZE) - 1 - ((bootprot_size) ? 32 - clz((((min(max(bootprot_size, AVR32_FLASHC_PAGE_SIZE << 1), AVR32_FLASHC_PAGE_SIZE << ((1 << AVR32_FLASHC_FGPFRLO_BOOTPROT_SIZE) - 1)) + AVR32_FLASHC_PAGE_SIZE - 1) / AVR32_FLASHC_PAGE_SIZE) << 1) - 1) - 1 : 0));
     return flashc_get_bootloader_protected_size();
 }
 
@@ -576,22 +570,22 @@ void flashc_write_user_page(void)
     flashc_issue_command(AVR32_FLASHC_FCMD_CMD_WUP, -1);
 }
 
-volatile void *flashc_memset8(volatile void *dst, U8 src, size_t nbytes, Bool erase)
+volatile void* flashc_memset8(volatile void* dst, U8 src, size_t nbytes, Bool erase)
 {
     return flashc_memset16(dst, src | (U16)src << 8, nbytes, erase);
 }
 
-volatile void *flashc_memset16(volatile void *dst, U16 src, size_t nbytes, Bool erase)
+volatile void* flashc_memset16(volatile void* dst, U16 src, size_t nbytes, Bool erase)
 {
     return flashc_memset32(dst, src | (U32)src << 16, nbytes, erase);
 }
 
-volatile void *flashc_memset32(volatile void *dst, U32 src, size_t nbytes, Bool erase)
+volatile void* flashc_memset32(volatile void* dst, U32 src, size_t nbytes, Bool erase)
 {
     return flashc_memset64(dst, src | (U64)src << 32, nbytes, erase);
 }
 
-volatile void *flashc_memset64(volatile void *dst, U64 src, size_t nbytes, Bool erase)
+volatile void* flashc_memset64(volatile void* dst, U64 src, size_t nbytes, Bool erase)
 {
     // Use aggregated pointers to have several alignments available for a same address.
     UnionCVPtr flash_array_end;
@@ -630,9 +624,9 @@ volatile void *flashc_memset64(volatile void *dst, U64 src, size_t nbytes, Bool 
     }
 
     // Align each end of destination pointer with its natural boundary.
-    dest_end.u16ptr = (U16 *)Align_down((U32)dest_end.u8ptr, sizeof(U16));
-    dest_end.u32ptr = (U32 *)Align_down((U32)dest_end.u16ptr, sizeof(U32));
-    dest_end.u64ptr = (U64 *)Align_down((U32)dest_end.u32ptr, sizeof(U64));
+    dest_end.u16ptr = (U16*)Align_down((U32)dest_end.u8ptr, sizeof(U16));
+    dest_end.u32ptr = (U32*)Align_down((U32)dest_end.u16ptr, sizeof(U32));
+    dest_end.u64ptr = (U64*)Align_down((U32)dest_end.u32ptr, sizeof(U64));
 
     // While end of destination is not reached...
     while (dest.u8ptr < dest_end.u8ptr) {
@@ -641,13 +635,11 @@ volatile void *flashc_memset64(volatile void *dst, U64 src, size_t nbytes, Bool 
         error_status |= flashc_error_status;
 
         // Determine where the source data will end in the current flash page.
-        flash_page_source_end.u64ptr =
-            (U64 *)min((U32)dest_end.u64ptr,
-                       Align_down((U32)dest.u8ptr, AVR32_FLASHC_PAGE_SIZE) + AVR32_FLASHC_PAGE_SIZE);
+        flash_page_source_end.u64ptr = (U64*)min((U32)dest_end.u64ptr,
+            Align_down((U32)dest.u8ptr, AVR32_FLASHC_PAGE_SIZE) + AVR32_FLASHC_PAGE_SIZE);
 
         // Determine if the current destination page has an incomplete end.
-        incomplete_flash_page_end = (Align_down((U32)dest.u8ptr, AVR32_FLASHC_PAGE_SIZE) >=
-                                     Align_down((U32)dest_end.u8ptr, AVR32_FLASHC_PAGE_SIZE));
+        incomplete_flash_page_end = (Align_down((U32)dest.u8ptr, AVR32_FLASHC_PAGE_SIZE) >= Align_down((U32)dest_end.u8ptr, AVR32_FLASHC_PAGE_SIZE));
 
         // Use a flash double-word buffer to manage unaligned accesses.
         flash_dword.u64 = source.u64;
@@ -658,8 +650,8 @@ volatile void *flashc_memset64(volatile void *dst, U64 src, size_t nbytes, Bool 
             // This is required by the hardware, even if page erase is not requested,
             // in order to be able to write successfully to erased parts of flash
             // pages that have already been written to.
-            for (tmp.u8ptr = (U8 *)Align_down((U32)dest.u8ptr, AVR32_FLASHC_PAGE_SIZE);
-                 tmp.u64ptr < (U64 *)Align_down((U32)dest.u8ptr, sizeof(U64));
+            for (tmp.u8ptr = (U8*)Align_down((U32)dest.u8ptr, AVR32_FLASHC_PAGE_SIZE);
+                 tmp.u64ptr < (U64*)Align_down((U32)dest.u8ptr, sizeof(U64));
                  tmp.u64ptr++)
                 *tmp.u64ptr = *tmp.u64ptr;
 
@@ -674,7 +666,7 @@ volatile void *flashc_memset64(volatile void *dst, U64 src, size_t nbytes, Bool 
                     flash_dword.u8[i] = *tmp.u8ptr++;
 
                 // Align the destination pointer with its 64-bit boundary.
-                dest.u64ptr = (U64 *)Align_down((U32)dest.u8ptr, sizeof(U64));
+                dest.u64ptr = (U64*)Align_down((U32)dest.u8ptr, sizeof(U64));
 
                 // If the current destination double-word is not the last one...
                 if (dest.u64ptr < dest_end.u64ptr) {
@@ -695,7 +687,7 @@ volatile void *flashc_memset64(volatile void *dst, U64 src, size_t nbytes, Bool 
             // in order to be able to write successfully to erased parts of flash
             // pages that have already been written to.
             {
-                tmp.u8ptr = (volatile U8 *)dest_end.u8ptr;
+                tmp.u8ptr = (volatile U8*)dest_end.u8ptr;
 
                 // If end of destination is not 64-bit aligned...
                 if (!Test_align((U32)dest_end.u8ptr, sizeof(U64))) {
@@ -746,7 +738,7 @@ volatile void *flashc_memset64(volatile void *dst, U64 src, size_t nbytes, Bool 
     return dst;
 }
 
-volatile void *flashc_memcpy(volatile void *dst, const void *src, size_t nbytes, Bool erase)
+volatile void* flashc_memcpy(volatile void* dst, const void* src, size_t nbytes, Bool erase)
 {
     // Use aggregated pointers to have several alignments available for a same address.
     UnionCVPtr flash_array_end;
@@ -784,9 +776,9 @@ volatile void *flashc_memcpy(volatile void *dst, const void *src, size_t nbytes,
     }
 
     // Align each end of destination pointer with its natural boundary.
-    dest_end.u16ptr = (U16 *)Align_down((U32)dest_end.u8ptr, sizeof(U16));
-    dest_end.u32ptr = (U32 *)Align_down((U32)dest_end.u16ptr, sizeof(U32));
-    dest_end.u64ptr = (U64 *)Align_down((U32)dest_end.u32ptr, sizeof(U64));
+    dest_end.u16ptr = (U16*)Align_down((U32)dest_end.u8ptr, sizeof(U16));
+    dest_end.u32ptr = (U32*)Align_down((U32)dest_end.u16ptr, sizeof(U32));
+    dest_end.u64ptr = (U64*)Align_down((U32)dest_end.u32ptr, sizeof(U64));
 
     // While end of destination is not reached...
     while (dest.u8ptr < dest_end.u8ptr) {
@@ -795,13 +787,11 @@ volatile void *flashc_memcpy(volatile void *dst, const void *src, size_t nbytes,
         error_status |= flashc_error_status;
 
         // Determine where the source data will end in the current flash page.
-        flash_page_source_end.u64ptr =
-            (U64 *)min((U32)dest_end.u64ptr,
-                       Align_down((U32)dest.u8ptr, AVR32_FLASHC_PAGE_SIZE) + AVR32_FLASHC_PAGE_SIZE);
+        flash_page_source_end.u64ptr = (U64*)min((U32)dest_end.u64ptr,
+            Align_down((U32)dest.u8ptr, AVR32_FLASHC_PAGE_SIZE) + AVR32_FLASHC_PAGE_SIZE);
 
         // Determine if the current destination page has an incomplete end.
-        incomplete_flash_page_end = (Align_down((U32)dest.u8ptr, AVR32_FLASHC_PAGE_SIZE) >=
-                                     Align_down((U32)dest_end.u8ptr, AVR32_FLASHC_PAGE_SIZE));
+        incomplete_flash_page_end = (Align_down((U32)dest.u8ptr, AVR32_FLASHC_PAGE_SIZE) >= Align_down((U32)dest_end.u8ptr, AVR32_FLASHC_PAGE_SIZE));
 
         // If destination does not point to the beginning of the current flash page...
         if (!Test_align((U32)dest.u8ptr, AVR32_FLASHC_PAGE_SIZE)) {
@@ -809,8 +799,8 @@ volatile void *flashc_memcpy(volatile void *dst, const void *src, size_t nbytes,
             // This is required by the hardware, even if page erase is not requested,
             // in order to be able to write successfully to erased parts of flash
             // pages that have already been written to.
-            for (tmp.u8ptr = (U8 *)Align_down((U32)dest.u8ptr, AVR32_FLASHC_PAGE_SIZE);
-                 tmp.u64ptr < (U64 *)Align_down((U32)dest.u8ptr, sizeof(U64));
+            for (tmp.u8ptr = (U8*)Align_down((U32)dest.u8ptr, AVR32_FLASHC_PAGE_SIZE);
+                 tmp.u64ptr < (U64*)Align_down((U32)dest.u8ptr, sizeof(U64));
                  tmp.u64ptr++)
                 *tmp.u64ptr = *tmp.u64ptr;
 
@@ -829,7 +819,7 @@ volatile void *flashc_memcpy(volatile void *dst, const void *src, size_t nbytes,
                     flash_dword.u8[i] = *source.u8ptr++;
 
                 // Align the destination pointer with its 64-bit boundary.
-                dest.u64ptr = (U64 *)Align_down((U32)dest.u8ptr, sizeof(U64));
+                dest.u64ptr = (U64*)Align_down((U32)dest.u8ptr, sizeof(U64));
 
                 // If the current destination double-word is not the last one...
                 if (dest.u64ptr < dest_end.u64ptr) {
@@ -883,7 +873,7 @@ volatile void *flashc_memcpy(volatile void *dst, const void *src, size_t nbytes,
             // in order to be able to write successfully to erased parts of flash
             // pages that have already been written to.
             {
-                tmp.u8ptr = (volatile U8 *)dest_end.u8ptr;
+                tmp.u8ptr = (volatile U8*)dest_end.u8ptr;
 
                 // If end of destination is not 64-bit aligned...
                 if (!Test_align((U32)dest_end.u8ptr, sizeof(U64))) {
@@ -951,20 +941,20 @@ void flashc_set_flash_waitstate_and_readmode(unsigned long cpu_f_hz)
     // These defines are missing from or wrong in the toolchain header files uc3cxxx.h
     // Put a Bugzilla
 
-    if (cpu_f_hz > AVR32_FLASHC_HSEN_FWS_0_MAX_FREQ) // > 33MHz
+    if (cpu_f_hz > AVR32_FLASHC_HSEN_FWS_0_MAX_FREQ)  // > 33MHz
     {
         // Set a wait-state
         flashc_set_wait_state(1);
-        if (cpu_f_hz <= AVR32_FLASHC_FWS_1_MAX_FREQ) // <= 66MHz and >33Mhz
+        if (cpu_f_hz <= AVR32_FLASHC_FWS_1_MAX_FREQ)  // <= 66MHz and >33Mhz
         {
             // Disable the high-speed read mode.
             flashc_issue_command(AVR32_FLASHC_FCMD_CMD_HSDIS, -1);
-        } else // > 66Mhz
+        } else  // > 66Mhz
         {
             // Enable the high-speed read mode.
             flashc_issue_command(AVR32_FLASHC_FCMD_CMD_HSEN, -1);
         }
-    } else // <= 33 MHz
+    } else  // <= 33 MHz
     {
         // Disable wait-state
         flashc_set_wait_state(0);
@@ -973,6 +963,6 @@ void flashc_set_flash_waitstate_and_readmode(unsigned long cpu_f_hz)
         flashc_issue_command(AVR32_FLASHC_FCMD_CMD_HSDIS, -1);
     }
 }
-#endif // UC3C device-specific implementation
+#endif  // UC3C device-specific implementation
 
 //! @}

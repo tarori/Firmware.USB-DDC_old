@@ -51,14 +51,14 @@
 
 //! Device-specific data
 #if UC3L
-static long int pcl_configure_clocks_uc3l(pcl_freq_param_t *param); // FORWARD declaration
+static long int pcl_configure_clocks_uc3l(pcl_freq_param_t* param);  // FORWARD declaration
 #endif
 
 #if UC3C
-static long int pcl_configure_clocks_uc3c(pcl_freq_param_t *param); // FORWARD declaration
+static long int pcl_configure_clocks_uc3c(pcl_freq_param_t* param);  // FORWARD declaration
 #endif
 
-long int pcl_configure_clocks(pcl_freq_param_t *param)
+long int pcl_configure_clocks(pcl_freq_param_t* param)
 {
 #ifndef AVR32_PM_VERSION_RESETVALUE
     // Implementation for UC3A, UC3A3, UC3B parts.
@@ -78,10 +78,10 @@ long int pcl_configure_clocks(pcl_freq_param_t *param)
 #if UC3L
 // FORWARD declaration
 static long int pcl_configure_synchronous_clocks(pm_clk_src_t main_clk_src,
-                                                 unsigned long main_clock_freq_hz,
-                                                 pcl_freq_param_t *param);
+    unsigned long main_clock_freq_hz,
+    pcl_freq_param_t* param);
 
-long int pcl_configure_clocks_rcsys(pcl_freq_param_t *param)
+long int pcl_configure_clocks_rcsys(pcl_freq_param_t* param)
 {
     // Supported main clock sources: PCL_MC_RCSYS
 
@@ -106,7 +106,7 @@ long int pcl_configure_clocks_rcsys(pcl_freq_param_t *param)
     return (pcl_configure_synchronous_clocks(PM_CLK_SRC_SLOW, SCIF_SLOWCLOCK_FREQ_HZ, param));
 }
 
-long int pcl_configure_clocks_rc120m(pcl_freq_param_t *param)
+long int pcl_configure_clocks_rc120m(pcl_freq_param_t* param)
 {
     // Supported main clock sources: PCL_MC_RC120M
 
@@ -134,7 +134,7 @@ long int pcl_configure_clocks_rc120m(pcl_freq_param_t *param)
     return (pcl_configure_synchronous_clocks(PM_CLK_SRC_RC120M, SCIF_RC120M_FREQ_HZ, param));
 }
 
-long int pcl_configure_clocks_osc0(pcl_freq_param_t *param)
+long int pcl_configure_clocks_osc0(pcl_freq_param_t* param)
 {
     // Supported main clock sources: PCL_MC_OSC0
 
@@ -167,7 +167,7 @@ long int pcl_configure_clocks_osc0(pcl_freq_param_t *param)
     return (pcl_configure_synchronous_clocks(PM_CLK_SRC_OSC0, main_clock_freq, param));
 }
 
-long int pcl_configure_clocks_dfll0(pcl_freq_param_t *param)
+long int pcl_configure_clocks_dfll0(pcl_freq_param_t* param)
 {
     // Supported main clock sources: PCL_MC_DFLL
 
@@ -179,7 +179,7 @@ long int pcl_configure_clocks_dfll0(pcl_freq_param_t *param)
     // input parameters. To enable the checks, define AVR32SFW_INPUT_CHECK.
 
     unsigned long main_clock_freq;
-    scif_gclk_opt_t *pgc_dfllif_ref_opt;
+    scif_gclk_opt_t* pgc_dfllif_ref_opt;
 
 #ifdef AVR32SFW_INPUT_CHECK
     // Verify that fCPU >= fPBx
@@ -196,7 +196,7 @@ long int pcl_configure_clocks_dfll0(pcl_freq_param_t *param)
     if ((param->cpu_f > main_clock_freq) || (param->pba_f > main_clock_freq) || (param->pbb_f > main_clock_freq))
         return (-1);
 #endif
-    pgc_dfllif_ref_opt = (scif_gclk_opt_t *)param->pextra_params;
+    pgc_dfllif_ref_opt = (scif_gclk_opt_t*)param->pextra_params;
     // Implementation note: this implementation configures the DFLL in closed-loop
     // mode (because it gives the best accuracy) which enables the generic clock CLK_DFLLIF_REF
     // as a reference (RCSYS being used as the generic clock source, undivided).
@@ -205,7 +205,7 @@ long int pcl_configure_clocks_dfll0(pcl_freq_param_t *param)
     return (pcl_configure_synchronous_clocks(PM_CLK_SRC_DFLL0, main_clock_freq, param));
 }
 
-static long int pcl_configure_clocks_uc3l(pcl_freq_param_t *param)
+static long int pcl_configure_clocks_uc3l(pcl_freq_param_t* param)
 {
     // Supported main clock sources: PCL_MC_RCSYS, PCL_MC_OSC0, PCL_MC_DFLL0, PCL_MC_RC120M
 
@@ -238,13 +238,13 @@ static long int pcl_configure_clocks_uc3l(pcl_freq_param_t *param)
         return (pcl_configure_clocks_rc120m(param));
     } else if (PCL_MC_OSC0 == param->main_clk_src) {
         return (pcl_configure_clocks_osc0(param));
-    } else // PCL_MC_DFLL0 == param->main_clk_src
+    } else  // PCL_MC_DFLL0 == param->main_clk_src
     {
         return (pcl_configure_clocks_dfll0(param));
     }
 }
 
-static long int pcl_configure_synchronous_clocks(pm_clk_src_t main_clk_src, unsigned long main_clock_freq_hz, pcl_freq_param_t *param)
+static long int pcl_configure_synchronous_clocks(pm_clk_src_t main_clk_src, unsigned long main_clock_freq_hz, pcl_freq_param_t* param)
 {
     //#
     //# Set the Synchronous clock division ratio for each clock domain
@@ -268,11 +268,11 @@ static long int pcl_configure_synchronous_clocks(pm_clk_src_t main_clk_src, unsi
     return PASS;
 }
 
-#endif // UC3L device-specific implementation
+#endif  // UC3L device-specific implementation
 
 //! UC3C Device-specific implementation
 #if UC3C
-static long int pcl_configure_clocks_uc3c(pcl_freq_param_t *param)
+static long int pcl_configure_clocks_uc3c(pcl_freq_param_t* param)
 {
 #define PM_MAX_MUL ((1 << AVR32_SCIF_PLLMUL_SIZE) - 1)
 #define AVR32_PM_PBA_MAX_FREQ 66000000
@@ -360,15 +360,15 @@ static long int pcl_configure_clocks_uc3c(pcl_freq_param_t *param)
 
     scif_pll_opt_t opt;
 
-    opt.osc = SCIF_OSC0,                                                      // Sel Osc0 or Osc1
-        opt.lockcount = 16,                                                   // lockcount in main clock for the PLL wait lock
-        opt.div = div,                                                        // DIV=1 in the formula
-        opt.mul = mul,                                                        // MUL=7 in the formula
-        opt.pll_div2 = div2_en,                                               // pll_div2 Divide the PLL output frequency by 2 (this settings does not change the FVCO value)
-        opt.pll_wbwdisable = 0,                                               //pll_wbwdisable 1 Disable the Wide-Bandith Mode (Wide-Bandwith mode allow a faster startup time and out-of-lock time). 0 to enable the Wide-Bandith Mode.
-        opt.pll_freq = (pll_freq < AVR32_PM_PLL_VCO_RANGE0_MIN_FREQ) ? 1 : 0, // Set to 1 for VCO frequency range 80-180MHz, set to 0 for VCO frequency range 160-240Mhz.
+    opt.osc = SCIF_OSC0,                                                       // Sel Osc0 or Osc1
+        opt.lockcount = 16,                                                    // lockcount in main clock for the PLL wait lock
+        opt.div = div,                                                         // DIV=1 in the formula
+        opt.mul = mul,                                                         // MUL=7 in the formula
+        opt.pll_div2 = div2_en,                                                // pll_div2 Divide the PLL output frequency by 2 (this settings does not change the FVCO value)
+        opt.pll_wbwdisable = 0,                                                //pll_wbwdisable 1 Disable the Wide-Bandith Mode (Wide-Bandwith mode allow a faster startup time and out-of-lock time). 0 to enable the Wide-Bandith Mode.
+        opt.pll_freq = (pll_freq < AVR32_PM_PLL_VCO_RANGE0_MIN_FREQ) ? 1 : 0,  // Set to 1 for VCO frequency range 80-180MHz, set to 0 for VCO frequency range 160-240Mhz.
 
-        scif_pll_setup(SCIF_PLL0, opt); // lockcount in main clock for the PLL wait lock
+        scif_pll_setup(SCIF_PLL0, opt);  // lockcount in main clock for the PLL wait lock
 
     /* Enable PLL0 */
     scif_pll_enable(SCIF_PLL0);
@@ -377,8 +377,7 @@ static long int pcl_configure_clocks_uc3c(pcl_freq_param_t *param)
     scif_wait_for_pll_locked(SCIF_PLL0);
 
     rest = pll_freq;
-    while (rest > AVR32_PM_PBA_MAX_FREQ ||
-           rest != param->pba_f) {
+    while (rest > AVR32_PM_PBA_MAX_FREQ || rest != param->pba_f) {
         div2_pba++;
         rest = pll_freq / (1 << div2_pba);
         if (rest < param->pba_f)
@@ -401,13 +400,13 @@ static long int pcl_configure_clocks_uc3c(pcl_freq_param_t *param)
         b_div2_pba = FALSE;
 
     if (b_div2_cpu == TRUE) {
-        pm_set_clk_domain_div(PM_CLK_DOMAIN_0, (pm_divratio_t)div2_cpu); // CPU
-        pm_set_clk_domain_div(PM_CLK_DOMAIN_1, (pm_divratio_t)div2_cpu); // HSB
-        pm_set_clk_domain_div(PM_CLK_DOMAIN_3, (pm_divratio_t)div2_cpu); // PBB
+        pm_set_clk_domain_div(PM_CLK_DOMAIN_0, (pm_divratio_t)div2_cpu);  // CPU
+        pm_set_clk_domain_div(PM_CLK_DOMAIN_1, (pm_divratio_t)div2_cpu);  // HSB
+        pm_set_clk_domain_div(PM_CLK_DOMAIN_3, (pm_divratio_t)div2_cpu);  // PBB
     }
     if (b_div2_pba == TRUE) {
-        pm_set_clk_domain_div(PM_CLK_DOMAIN_2, (pm_divratio_t)div2_pba); // PBA
-        pm_set_clk_domain_div(PM_CLK_DOMAIN_4, (pm_divratio_t)div2_pba); // PBC
+        pm_set_clk_domain_div(PM_CLK_DOMAIN_2, (pm_divratio_t)div2_pba);  // PBA
+        pm_set_clk_domain_div(PM_CLK_DOMAIN_4, (pm_divratio_t)div2_pba);  // PBC
     }
 
     // Set Flashc Wait State
@@ -418,7 +417,7 @@ static long int pcl_configure_clocks_uc3c(pcl_freq_param_t *param)
 
     return PASS;
 }
-#endif // UC3C device-specific implementation
+#endif  // UC3C device-specific implementation
 
 long int pcl_switch_to_osc(pcl_osc_t osc, unsigned int fcrystal, unsigned int startup)
 {
@@ -466,17 +465,17 @@ long int pcl_configure_usb_clock(void)
 #else
 #ifdef AVR32_PM_410_H_INCLUDED
     const scif_pll_opt_t opt = {
-        .osc = SCIF_OSC0,    // Sel Osc0 or Osc1
-        .lockcount = 16,     // lockcount in main clock for the PLL wait lock
-        .div = 1,            // DIV=1 in the formula
-        .mul = 5,            // MUL=7 in the formula
-        .pll_div2 = 1,       // pll_div2 Divide the PLL output frequency by 2 (this settings does not change the FVCO value)
-        .pll_wbwdisable = 0, //pll_wbwdisable 1 Disable the Wide-Bandith Mode (Wide-Bandwith mode allow a faster startup time and out-of-lock time). 0 to enable the Wide-Bandith Mode.
-        .pll_freq = 1,       // Set to 1 for VCO frequency range 80-180MHz, set to 0 for VCO frequency range 160-240Mhz.
+        .osc = SCIF_OSC0,     // Sel Osc0 or Osc1
+        .lockcount = 16,      // lockcount in main clock for the PLL wait lock
+        .div = 1,             // DIV=1 in the formula
+        .mul = 5,             // MUL=7 in the formula
+        .pll_div2 = 1,        // pll_div2 Divide the PLL output frequency by 2 (this settings does not change the FVCO value)
+        .pll_wbwdisable = 0,  //pll_wbwdisable 1 Disable the Wide-Bandith Mode (Wide-Bandwith mode allow a faster startup time and out-of-lock time). 0 to enable the Wide-Bandith Mode.
+        .pll_freq = 1,        // Set to 1 for VCO frequency range 80-180MHz, set to 0 for VCO frequency range 160-240Mhz.
     };
 
     /* Setup PLL1 on Osc0, mul=7 ,no divisor, lockcount=16, ie. 16Mhzx6 = 96MHz output */
-    scif_pll_setup(SCIF_PLL1, opt); // lockcount in main clock for the PLL wait lock
+    scif_pll_setup(SCIF_PLL1, opt);  // lockcount in main clock for the PLL wait lock
 
     /* Enable PLL1 */
     scif_pll_enable(SCIF_PLL1);
@@ -487,9 +486,9 @@ long int pcl_configure_usb_clock(void)
     // Implementation for UC3C parts.
     // Setup the generic clock for USB
     scif_gc_setup(AVR32_SCIF_GCLK_USB,
-                  SCIF_GCCTRL_PLL1,
-                  AVR32_SCIF_GC_NO_DIV_CLOCK,
-                  0);
+        SCIF_GCCTRL_PLL1,
+        AVR32_SCIF_GC_NO_DIV_CLOCK,
+        0);
     // Now enable the generic clock
     scif_gc_enable(AVR32_SCIF_GCLK_USB);
     return PASS;

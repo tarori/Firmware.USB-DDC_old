@@ -89,9 +89,9 @@ extern void host_audio_set_cur(U16 unit, U16 channel_number, U16 volume);
 extern void host_set_sampling_rate(U16 endpoint, U32 sampling_rate);
 extern void host_audio_task_init(void);
 #ifdef FREERTOS_USED
-extern void host_audio_task(void *pvParameters);
+extern void host_audio_task(void* pvParameters);
 #else
 extern void host_audio_task(void);
 #endif
 
-#endif // _HOST_AUDIO_TASK_H_
+#endif  // _HOST_AUDIO_TASK_H_

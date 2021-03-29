@@ -75,12 +75,11 @@ MREPEAT(AVR32_INTC_NUM_INT_GRPS, DECL_INT_LINE_HANDLER_TABLE, ~);
 static const struct
 {
     unsigned int num_irqs;
-    volatile __int_handler *_int_line_handler_table;
-} _int_handler_table[AVR32_INTC_NUM_INT_GRPS] =
-    {
+    volatile __int_handler* _int_line_handler_table;
+} _int_handler_table[AVR32_INTC_NUM_INT_GRPS] = {
 #define INSERT_INT_LINE_HANDLER_TABLE(GRP, unused) \
     {AVR32_INTC_NUM_IRQS_PER_GRP##GRP, _int_line_handler_table_##GRP},
-        MREPEAT(AVR32_INTC_NUM_INT_GRPS, INSERT_INT_LINE_HANDLER_TABLE, ~)
+    MREPEAT(AVR32_INTC_NUM_INT_GRPS, INSERT_INT_LINE_HANDLER_TABLE, ~)
 #undef INSERT_INT_LINE_HANDLER_TABLE
 };
 

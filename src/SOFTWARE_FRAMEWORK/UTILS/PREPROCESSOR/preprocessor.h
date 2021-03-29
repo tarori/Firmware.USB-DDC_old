@@ -51,4 +51,4 @@
 #include "stringz.h"
 #include "tpaste.h"
 
-#endif // _PREPROCESSOR_H_
+#endif  // _PREPROCESSOR_H_

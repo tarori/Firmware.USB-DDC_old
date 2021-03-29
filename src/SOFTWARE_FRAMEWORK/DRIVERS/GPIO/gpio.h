@@ -56,23 +56,23 @@
 /*! \name Return Values of the GPIO API
  */
 //! @{
-#define GPIO_SUCCESS 0          //!< Function successfully completed.
-#define GPIO_INVALID_ARGUMENT 1 //!< Input parameters are out of range.
+#define GPIO_SUCCESS 0           //!< Function successfully completed.
+#define GPIO_INVALID_ARGUMENT 1  //!< Input parameters are out of range.
 //! @}
 
 /*! \name Interrupt Trigger Modes
  */
 //! @{
-#define GPIO_PIN_CHANGE 0   //!< Interrupt triggered upon pin change.
-#define GPIO_RISING_EDGE 1  //!< Interrupt triggered upon rising edge.
-#define GPIO_FALLING_EDGE 2 //!< Interrupt triggered upon falling edge.
+#define GPIO_PIN_CHANGE 0    //!< Interrupt triggered upon pin change.
+#define GPIO_RISING_EDGE 1   //!< Interrupt triggered upon rising edge.
+#define GPIO_FALLING_EDGE 2  //!< Interrupt triggered upon falling edge.
 //! @}
 
 //! A type definition of pins and modules connectivity.
 typedef struct
 {
-    unsigned char pin;      //!< Module pin.
-    unsigned char function; //!< Module function.
+    unsigned char pin;       //!< Module pin.
+    unsigned char function;  //!< Module function.
 } gpio_map_t[];
 
 /*! \name Peripheral Bus Interface
@@ -345,7 +345,7 @@ extern __inline__ void
 gpio_local_init(void)
 {
     Set_system_register(AVR32_CPUCR,
-                        Get_system_register(AVR32_CPUCR) | AVR32_CPUCR_LOCEN_MASK);
+        Get_system_register(AVR32_CPUCR) | AVR32_CPUCR_LOCEN_MASK);
 }
 
 /*! \brief Enables the output driver of a pin.
@@ -533,7 +533,7 @@ gpio_local_tgl_gpio_open_drain_pin(unsigned int pin)
 }
 
 //! @}
-#endif // AVR32_GPIO_LOCAL_ADDRESS
+#endif  // AVR32_GPIO_LOCAL_ADDRESS
 
 #if UC3L
 //! @{
@@ -556,7 +556,7 @@ __attribute__((__always_inline__))
 extern __inline__ void
 gpio_enable_pin_periph_event(unsigned int pin)
 {
-    AVR32_GPIO.port[pin >> 5].oderc = 1 << (pin & 0x1F); // The GPIO output driver is disabled for that pin.
+    AVR32_GPIO.port[pin >> 5].oderc = 1 << (pin & 0x1F);  // The GPIO output driver is disabled for that pin.
     AVR32_GPIO.port[pin >> 5].evers = 1 << (pin & 0x1F);
 }
 
@@ -588,4 +588,4 @@ extern int gpio_configure_pin_periph_event_mode(unsigned int pin, unsigned int m
 //! @}
 #endif
 
-#endif // _GPIO_H_
+#endif  // _GPIO_H_

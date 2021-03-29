@@ -57,7 +57,7 @@ extern void flashc_issue_command(unsigned int command, int page_number);
 
 #define PM_MAX_MUL ((1 << AVR32_PM_PLL0_PLLMUL_SIZE) - 1)
 
-int pm_configure_clocks(pm_freq_param_t *param)
+int pm_configure_clocks(pm_freq_param_t* param)
 {
     // Supported frequencies:
     // Fosc0 mul div PLL div2_en cpu_f pba_f   Comment
@@ -133,30 +133,29 @@ int pm_configure_clocks(pm_freq_param_t *param)
     param->cpu_f = pll_freq / (1 << div2_cpu);
     mul--;
 
-    pm_pll_setup(&AVR32_PM, 0 // pll
-                 ,
-                 mul // mul
-                 ,
-                 div // div
-                 ,
-                 0 // osc
-                 ,
-                 16 // lockcount
+    pm_pll_setup(&AVR32_PM, 0  // pll
+        ,
+        mul  // mul
+        ,
+        div  // div
+        ,
+        0  // osc
+        ,
+        16  // lockcount
     );
 
-    pm_pll_set_option(&AVR32_PM, 0 // pll
-                      // PLL clock is lower than 160MHz: need to set pllopt.
-                      ,
-                      (pll_freq < AVR32_PM_PLL_VCO_RANGE0_MIN_FREQ) ? 1 : 0 // pll_freq
-                      ,
-                      div2_en // pll_div2
-                      ,
-                      0 // pll_wbwdisable
+    pm_pll_set_option(&AVR32_PM, 0  // pll
+        // PLL clock is lower than 160MHz: need to set pllopt.
+        ,
+        (pll_freq < AVR32_PM_PLL_VCO_RANGE0_MIN_FREQ) ? 1 : 0  // pll_freq
+        ,
+        div2_en  // pll_div2
+        ,
+        0  // pll_wbwdisable
     );
 
     rest = pll_freq;
-    while (rest > AVR32_PM_PBA_MAX_FREQ ||
-           rest != param->pba_f) {
+    while (rest > AVR32_PM_PBA_MAX_FREQ || rest != param->pba_f) {
         div2_pba++;
         rest = pll_freq / (1 << div2_pba);
         if (rest < param->pba_f)
@@ -184,11 +183,11 @@ int pm_configure_clocks(pm_freq_param_t *param)
     } else
         b_div2_pba = FALSE;
 
-    pm_cksel(&AVR32_PM, b_div2_pba, div2_pba // PBA
-             ,
-             b_div2_cpu, div2_cpu // PBB
-             ,
-             b_div2_cpu, div2_cpu // HSB
+    pm_cksel(&AVR32_PM, b_div2_pba, div2_pba  // PBA
+        ,
+        b_div2_cpu, div2_cpu  // PBB
+        ,
+        b_div2_cpu, div2_cpu  // HSB
     );
 
     if (param->cpu_f > AVR32_FLASHC_FWS_0_MAX_FREQ) {
@@ -219,26 +218,26 @@ void pm_configure_usb_clock(void)
 #if UC3A3
 
     // Setup USB GCLK.
-    pm_gc_setup(&AVR32_PM, AVR32_PM_GCLK_USBB, // gc
-                0,                             // osc_or_pll: use Osc (if 0) or PLL (if 1)
-                0,                             // pll_osc: select Osc0/PLL0 or Osc1/PLL1
-                0,                             // diven
-                0);                            // div
+    pm_gc_setup(&AVR32_PM, AVR32_PM_GCLK_USBB,  // gc
+        0,                                      // osc_or_pll: use Osc (if 0) or PLL (if 1)
+        0,                                      // pll_osc: select Osc0/PLL0 or Osc1/PLL1
+        0,                                      // diven
+        0);                                     // div
 
     // Enable USB GCLK.
     pm_gc_enable(&AVR32_PM, AVR32_PM_GCLK_USBB);
 #else
     // Use 12MHz from OSC0 and generate 96 MHz
-    pm_pll_setup(&AVR32_PM, 1, // pll.
-                 7,            // mul.
-                 1,            // div.
-                 0,            // osc.
-                 16);          // lockcount.
+    pm_pll_setup(&AVR32_PM, 1,  // pll.
+        7,                      // mul.
+        1,                      // div.
+        0,                      // osc.
+        16);                    // lockcount.
 
-    pm_pll_set_option(&AVR32_PM, 1, // pll.
-                      1,            // pll_freq: choose the range 80-180MHz.
-                      1,            // pll_div2.
-                      0);           // pll_wbwdisable.
+    pm_pll_set_option(&AVR32_PM, 1,  // pll.
+        1,                           // pll_freq: choose the range 80-180MHz.
+        1,                           // pll_div2.
+        0);                          // pll_wbwdisable.
 
     // start PLL1 and wait forl lock
     pm_pll_enable(&AVR32_PM, 1);
@@ -246,11 +245,11 @@ void pm_configure_usb_clock(void)
     // Wait for PLL1 locked.
     pm_wait_for_pll1_locked(&AVR32_PM);
 
-    pm_gc_setup(&AVR32_PM, AVR32_PM_GCLK_USBB, // gc.
-                1,                             // osc_or_pll: use Osc (if 0) or PLL (if 1).
-                1,                             // pll_osc: select Osc0/PLL0 or Osc1/PLL1.
-                0,                             // diven.
-                0);                            // div.
+    pm_gc_setup(&AVR32_PM, AVR32_PM_GCLK_USBB,  // gc.
+        1,                                      // osc_or_pll: use Osc (if 0) or PLL (if 1).
+        1,                                      // pll_osc: select Osc0/PLL0 or Osc1/PLL1.
+        0,                                      // diven.
+        0);                                     // div.
     pm_gc_enable(&AVR32_PM, AVR32_PM_GCLK_USBB);
 #endif
 }

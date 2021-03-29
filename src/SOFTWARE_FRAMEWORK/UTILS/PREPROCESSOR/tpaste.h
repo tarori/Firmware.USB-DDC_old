@@ -90,4 +90,4 @@
 #define ATPASTE10(a, b, c, d, e, f, g, h, i, j) TPASTE10(a, b, c, d, e, f, g, h, i, j)
 //! @}
 
-#endif // _TPASTE_H_
+#endif  // _TPASTE_H_

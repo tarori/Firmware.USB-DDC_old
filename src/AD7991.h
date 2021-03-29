@@ -19,8 +19,8 @@
 #define AD7991_POWER_REF 2
 #define AD7991_PSU_VOLTAGE 3
 
-extern uint16_t ad7991_adc[4]; // Last measured values read from the AD7991 ADC
-                               // all values adjusted for a full scale 16 bit unsigned int
+extern uint16_t ad7991_adc[4];  // Last measured values read from the AD7991 ADC
+                                // all values adjusted for a full scale 16 bit unsigned int
 extern uint8_t ad7991_setup(uint8_t i2c_address);
 extern uint8_t ad7991_poll(uint8_t i2c_address);
 

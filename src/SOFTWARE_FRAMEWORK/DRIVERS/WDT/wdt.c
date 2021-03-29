@@ -66,10 +66,7 @@ static void wdt_set_ctrl(unsigned long ctrl)
 long long wdt_get_us_timeout_period(void)
 {
     // Read CTRL.PSEL and translate it into us.
-    return (AVR32_WDT.ctrl & AVR32_WDT_CTRL_EN_MASK) ? ((1ULL << (((AVR32_WDT.ctrl & AVR32_WDT_CTRL_PSEL_MASK) >> AVR32_WDT_CTRL_PSEL_OFFSET) + 1)) *
-                                                            1000000 +
-                                                        AVR32_PM_RCOSC_FREQUENCY / 2) /
-                                                           AVR32_PM_RCOSC_FREQUENCY
+    return (AVR32_WDT.ctrl & AVR32_WDT_CTRL_EN_MASK) ? ((1ULL << (((AVR32_WDT.ctrl & AVR32_WDT_CTRL_PSEL_MASK) >> AVR32_WDT_CTRL_PSEL_OFFSET) + 1)) * 1000000 + AVR32_PM_RCOSC_FREQUENCY / 2) / AVR32_PM_RCOSC_FREQUENCY
                                                      : -1ULL;
 }
 
@@ -85,8 +82,7 @@ unsigned long long wdt_enable(unsigned long long us_timeout_period)
 
     // Set the CTRL.EN bit and translate the us timeout to fit in CTRL.PSEL using
     // the formula Twdt = 2pow(PSEL+1) / fRCosc
-    wdt_set_ctrl(AVR32_WDT_CTRL_EN_MASK |
-                 ((32 - clz(((((Min(Max(us_timeout_period, MIN_US_TIMEOUT_PERIOD), MAX_US_TIMEOUT_PERIOD) * AVR32_PM_RCOSC_FREQUENCY + 500000) / 1000000) << 1) - 1) >> 1) - 1) << AVR32_WDT_CTRL_PSEL_OFFSET));
+    wdt_set_ctrl(AVR32_WDT_CTRL_EN_MASK | ((32 - clz(((((Min(Max(us_timeout_period, MIN_US_TIMEOUT_PERIOD), MAX_US_TIMEOUT_PERIOD) * AVR32_PM_RCOSC_FREQUENCY + 500000) / 1000000) << 1) - 1) >> 1) - 1) << AVR32_WDT_CTRL_PSEL_OFFSET));
 
     // Return the actual wdt period in us.
     return wdt_get_us_timeout_period();

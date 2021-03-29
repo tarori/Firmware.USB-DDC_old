@@ -68,16 +68,16 @@ U32 get_heap_free_size(void)
     U32 high_mark = AVR32_SRAM_SIZE;
     U32 low_mark = 0;
     U32 size;
-    void *p_mem;
+    void* p_mem;
 
     size = (high_mark + low_mark) / 2;
 
     do {
         p_mem = malloc(size);
-        if (p_mem != NULL) { // Can allocate memory
+        if (p_mem != NULL) {  // Can allocate memory
             free(p_mem);
             low_mark = size;
-        } else { // Can not allocate memory
+        } else {  // Can not allocate memory
             high_mark = size;
         }
 
@@ -87,13 +87,13 @@ U32 get_heap_free_size(void)
     return size;
 }
 
-static void *round_trace_pbuf;
+static void* round_trace_pbuf;
 static U32 round_trace_size;
 
-void uc3_round_trace_init(void *buf, U32 size)
+void uc3_round_trace_init(void* buf, U32 size)
 {
     round_trace_pbuf = buf;
-    (*(U32 *)round_trace_pbuf) = (U32)buf + 4;
+    (*(U32*)round_trace_pbuf) = (U32)buf + 4;
     round_trace_size = size;
 }
 
@@ -101,13 +101,13 @@ void uc3_round_trace(U32 val)
 {
     //Disable_global_interrupt();
 
-    U32 *p_wr = (U32 *)(*(U32 *)round_trace_pbuf);
+    U32* p_wr = (U32*)(*(U32*)round_trace_pbuf);
     *p_wr = val;
     p_wr++;
     if (((U32)p_wr % round_trace_size) == 0)
-        p_wr = (U32 *)round_trace_pbuf + 1;
+        p_wr = (U32*)round_trace_pbuf + 1;
     *p_wr = 0xdeadbeef;
-    *(U32 *)round_trace_pbuf = (U32)p_wr;
+    *(U32*)round_trace_pbuf = (U32)p_wr;
 
     //Enable_global_interrupt();
 }

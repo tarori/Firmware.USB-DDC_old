@@ -114,14 +114,14 @@ Bool freq_changed = FALSE;
 // static U16   wIndex;
 // static U16   wLength;
 
-extern const void *pbuffer;
+extern const void* pbuffer;
 extern U16 data_to_transfer;
 
 //
 // this is the dg8saq command data incoming and outgoing
 // commands are restricted, I think, to 256 bytes
 //
-U8 dg8saqBuffer[256]; // 256 bytes long input/output buffer for DG8SAQ commands
+U8 dg8saqBuffer[256];  // 256 bytes long input/output buffer for DG8SAQ commands
 
 //_____ D E C L A R A T I O N S ____________________________________________
 
@@ -130,13 +130,13 @@ U8 dg8saqBuffer[256]; // 256 bytes long input/output buffer for DG8SAQ commands
 // Output: 32-bit volume multiplier to volume control
 S32 usb_volume_format(S16 spk_vol_usb)
 {
-    S32 V = VOL_MULT_UNITY; // Encodes unity
+    S32 V = VOL_MULT_UNITY;  // Encodes unity
 
     if ((spk_vol_usb < VOL_MIN) || (spk_vol_usb > VOL_MAX))
-        return 0; // Full mute
+        return 0;  // Full mute
 
     // simple shifts for 6dB steps
-    spk_vol_usb -= 0.5 * 256; // One step up to allow for clean loops
+    spk_vol_usb -= 0.5 * 256;  // One step up to allow for clean loops
     while (spk_vol_usb < (-6 * 256)) {
         V >>= 1;
         spk_vol_usb += (6 * 256);
@@ -159,8 +159,7 @@ uint8_t rand8(void)
 #define MULT 0x13B /* for STATE_BYTES==6 only */
 #define MULT_LO (MULT & 255)
 #define MULT_HI (MULT & 256)
-    static uint8_t state[STATE_BYTES] =
-        {0x87, 0xdd, 0xdc, 0x10, 0x35, 0xbc, 0x5c};
+    static uint8_t state[STATE_BYTES] = {0x87, 0xdd, 0xdc, 0x10, 0x35, 0xbc, 0x5c};
     static uint16_t c = 0x42;
     static int i = 0;
     uint16_t t;
@@ -192,8 +191,8 @@ S16 usb_volume_flash(U8 channel, S16 volume, U8 rw)
                 return temp;
             } else {
                 temp = VOL_DEFAULT;
-                feature_set_nvram(feature_msb_vol_L, (U8)(temp >> 8)); // Storing default msb
-                feature_set_nvram(feature_lsb_vol_L, (U8)(temp >> 0)); // Storing default lsb
+                feature_set_nvram(feature_msb_vol_L, (U8)(temp >> 8));  // Storing default msb
+                feature_set_nvram(feature_lsb_vol_L, (U8)(temp >> 0));  // Storing default lsb
                 return temp;
             }
         } else if (rw == VOL_WRITE) {
@@ -212,8 +211,8 @@ S16 usb_volume_flash(U8 channel, S16 volume, U8 rw)
                 return temp;
             else {
                 temp = VOL_DEFAULT;
-                feature_set_nvram(feature_msb_vol_R, (U8)(temp >> 8)); // Storing default msb
-                feature_set_nvram(feature_lsb_vol_R, (U8)(temp >> 0)); // Storing default lsb
+                feature_set_nvram(feature_msb_vol_R, (U8)(temp >> 8));  // Storing default msb
+                feature_set_nvram(feature_lsb_vol_R, (U8)(temp >> 0));  // Storing default lsb
                 return temp;
             }
         } else if (rw == VOL_WRITE) {
@@ -399,13 +398,13 @@ Bool usb_user_DG8SAQ(U8 type, U8 command)
         // Write out if packet is larger than zero
         if (replyLen) {
             for (x = replyLen - 1; x >= 0; x--) {
-                Usb_write_endpoint_data(EP_CONTROL, 8, dg8saqBuffer[x]); // send the reply
+                Usb_write_endpoint_data(EP_CONTROL, 8, dg8saqBuffer[x]);  // send the reply
             }
         }
 
         Usb_ack_control_in_ready_send();
         while (!Is_usb_control_in_ready())
-            ; // handshake modified by Alex 16 May 2010
+            ;  // handshake modified by Alex 16 May 2010
 
         while (!Is_usb_control_out_received())
             ;
@@ -415,4 +414,4 @@ Bool usb_user_DG8SAQ(U8 type, U8 command)
     return TRUE;
 }
 
-#endif // USB_DEVICE_FEATURE == ENABLED
+#endif  // USB_DEVICE_FEATURE == ENABLED

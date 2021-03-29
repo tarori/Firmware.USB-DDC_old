@@ -43,7 +43,7 @@
 #include "taskPushButtonMenu.h"
 #include "wdt.h"
 
-#if LCD_DISPLAY // Multi-line LCD display
+#if LCD_DISPLAY  // Multi-line LCD display
 #include "taskLCD.h"
 #include "taskStartupLogDisplay.h"
 #endif
@@ -68,28 +68,28 @@ static void x_image_init(void)
 #ifdef VDD_SENSE
     if (gpio_get_pin_value(AVR32_PIN_PA19)) {
         uac1_usb_conf_desc_fs.cfg.bmAttributes = USB_CONFIG_SELFPOWERED;
-        uac1_usb_conf_desc_fs.cfg.MaxPower = 5; // 10mA
+        uac1_usb_conf_desc_fs.cfg.MaxPower = 5;  // 10mA
         uac1_usb_conf_desc_fs_widget.cfg.bmAttributes = USB_CONFIG_SELFPOWERED;
-        uac1_usb_conf_desc_fs_widget.cfg.MaxPower = 5; // 10mA
+        uac1_usb_conf_desc_fs_widget.cfg.MaxPower = 5;  // 10mA
 #if USB_HIGH_SPEED_SUPPORT == ENABLED
         uac1_usb_conf_desc_hs.cfg.bmAttributes = USB_CONFIG_SELFPOWERED;
-        uac1_usb_conf_desc_hs.cfg.MaxPower = 5; // 10mA
+        uac1_usb_conf_desc_hs.cfg.MaxPower = 5;  // 10mA
         uac1_usb_conf_desc_hs_widget.cfg.bmAttributes = USB_CONFIG_SELFPOWERED;
-        uac1_usb_conf_desc_hs_widget.cfg.MaxPower = 5; // 10mA
+        uac1_usb_conf_desc_hs_widget.cfg.MaxPower = 5;  // 10mA
 #endif
     } else {
         uac1_usb_conf_desc_fs.cfg.bmAttributes = USB_CONFIG_BUSPOWERED;
-        uac1_usb_conf_desc_fs.cfg.MaxPower = 250; // 500mA
+        uac1_usb_conf_desc_fs.cfg.MaxPower = 250;  // 500mA
         uac1_usb_conf_desc_fs_widget.cfg.bmAttributes = USB_CONFIG_BUSPOWERED;
-        uac1_usb_conf_desc_fs_widget.cfg.MaxPower = 250; // 500mA
+        uac1_usb_conf_desc_fs_widget.cfg.MaxPower = 250;  // 500mA
 #if USB_HIGH_SPEED_SUPPORT == ENABLED
         uac1_usb_conf_desc_hs.cfg.bmAttributes = USB_CONFIG_BUSPOWERED;
-        uac1_usb_conf_desc_hs.cfg.MaxPower = 250; // 500mA
+        uac1_usb_conf_desc_hs.cfg.MaxPower = 250;  // 500mA
         uac1_usb_conf_desc_hs_widget.cfg.bmAttributes = USB_CONFIG_BUSPOWERED;
-        uac1_usb_conf_desc_hs_widget.cfg.MaxPower = 250; // 500mA
+        uac1_usb_conf_desc_hs_widget.cfg.MaxPower = 250;  // 500mA
 #endif
     }
-#endif // VDD_SENSE
+#endif  // VDD_SENSE
 }
 
 static void x_image_task_init(void)
@@ -99,9 +99,9 @@ static void x_image_task_init(void)
 
 #if USB_DEVICE_FEATURE == ENABLED
 
-    mutexEP_IN = xSemaphoreCreateMutex(); // for co-ordinating multiple tasks using EP IN
+    mutexEP_IN = xSemaphoreCreateMutex();  // for co-ordinating multiple tasks using EP IN
 
-#if LCD_DISPLAY // Multi-line LCD display
+#if LCD_DISPLAY  // Multi-line LCD display
     vStartTaskLCD();
     vStartTaskPowerDisplay();
     vStartTaskPushButtonMenu();
@@ -115,35 +115,35 @@ static void x_image_task_init(void)
 #endif
     uac1_device_audio_task_init(UAC1_EP_AUDIO_IN, UAC1_EP_AUDIO_OUT, UAC1_EP_AUDIO_OUT_FB);
 #endif
-#if LCD_DISPLAY // Multi-line LCD display
+#if LCD_DISPLAY  // Multi-line LCD display
     if (!FEATURE_LOG_NONE)
         vStartTaskStartupLogDisplay();
 #endif
 }
 
 // descriptor accessors
-static uint8_t *x_audio_get_dev_desc_pointer(void)
+static uint8_t* x_audio_get_dev_desc_pointer(void)
 {
-    return (uint8_t *)&uac1_audio_usb_dev_desc;
+    return (uint8_t*)&uac1_audio_usb_dev_desc;
 }
 static uint16_t x_audio_get_dev_desc_length(void)
 {
     return (uint16_t)sizeof(uac1_audio_usb_dev_desc);
 }
-static uint8_t *x_dg8saq_get_dev_desc_pointer(void)
+static uint8_t* x_dg8saq_get_dev_desc_pointer(void)
 {
-    return (uint8_t *)&uac1_dg8saq_usb_dev_desc;
+    return (uint8_t*)&uac1_dg8saq_usb_dev_desc;
 }
 static uint16_t x_dg8saq_get_dev_desc_length(void)
 {
     return (uint16_t)sizeof(uac1_dg8saq_usb_dev_desc);
 }
-static uint8_t *x_image_get_conf_desc_pointer(void)
+static uint8_t* x_image_get_conf_desc_pointer(void)
 {
     if (FEATURE_BOARD_WIDGET)
-        return (uint8_t *)&uac1_usb_conf_desc_fs_widget;
+        return (uint8_t*)&uac1_usb_conf_desc_fs_widget;
     else
-        return (uint8_t *)&uac1_usb_conf_desc_fs;
+        return (uint8_t*)&uac1_usb_conf_desc_fs;
 }
 static uint16_t x_image_get_conf_desc_length(void)
 {
@@ -152,12 +152,12 @@ static uint16_t x_image_get_conf_desc_length(void)
     else
         return sizeof(uac1_usb_conf_desc_fs);
 }
-static uint8_t *x_image_get_conf_desc_fs_pointer(void)
+static uint8_t* x_image_get_conf_desc_fs_pointer(void)
 {
     if (FEATURE_BOARD_WIDGET)
-        return (uint8_t *)&uac1_usb_conf_desc_fs_widget;
+        return (uint8_t*)&uac1_usb_conf_desc_fs_widget;
     else
-        return (uint8_t *)&uac1_usb_conf_desc_fs;
+        return (uint8_t*)&uac1_usb_conf_desc_fs;
 }
 static uint16_t x_image_get_conf_desc_fs_length(void)
 {
@@ -167,12 +167,12 @@ static uint16_t x_image_get_conf_desc_fs_length(void)
         return sizeof(uac1_usb_conf_desc_fs);
 }
 #if USB_HIGH_SPEED_SUPPORT == ENABLED
-static uint8_t *x_image_get_conf_desc_hs_pointer(void)
+static uint8_t* x_image_get_conf_desc_hs_pointer(void)
 {
     if (FEATURE_BOARD_WIDGET)
-        return (uint8_t *)&uac1_usb_conf_desc_hs_widget;
+        return (uint8_t*)&uac1_usb_conf_desc_hs_widget;
     else
-        return (uint8_t *)&uac1_usb_conf_desc_hs;
+        return (uint8_t*)&uac1_usb_conf_desc_hs;
 }
 static uint16_t x_image_get_conf_desc_hs_length(void)
 {
@@ -181,9 +181,9 @@ static uint16_t x_image_get_conf_desc_hs_length(void)
     else
         return sizeof(uac1_usb_conf_desc_hs);
 }
-static uint8_t *x_image_get_qualifier_desc_pointer(void)
+static uint8_t* x_image_get_qualifier_desc_pointer(void)
 {
-    return (uint8_t *)&uac1_usb_qualifier_desc;
+    return (uint8_t*)&uac1_usb_qualifier_desc;
 }
 static uint16_t x_image_get_qualifier_desc_length(void)
 {

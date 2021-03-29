@@ -69,12 +69,12 @@ _BEGIN_STD_C
 #define INT2 2
 #define INT3 3
 
-typedef void (*__newlib_int_handler)(int /* int_grp*/, void * /*user_handle*/);
+typedef void (*__newlib_int_handler)(int /* int_grp*/, void* /*user_handle*/);
 
 __newlib_int_handler register_interrupt(__newlib_int_handler handler, int int_grp, int line, int priority,
-                                        ... /* void *user_handle*/);
+    ... /* void *user_handle*/);
 void init_interrupts();
-void set_interrupts_base(void *base);
+void set_interrupts_base(void* base);
 
 _END_STD_C
 

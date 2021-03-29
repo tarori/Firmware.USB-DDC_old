@@ -146,7 +146,7 @@ Bool hpsdr_user_read_request(U8 type, U8 request)
     wIndex = usb_format_usb_to_mcu_data(16, Usb_read_endpoint_data(EP_CONTROL, 16));
     wLength = usb_format_usb_to_mcu_data(16, Usb_read_endpoint_data(EP_CONTROL, 16));
 
-    return FALSE; // No supported request
+    return FALSE;  // No supported request
 }
 
-#endif // USB_DEVICE_FEATURE == ENABLED
+#endif  // USB_DEVICE_FEATURE == ENABLED

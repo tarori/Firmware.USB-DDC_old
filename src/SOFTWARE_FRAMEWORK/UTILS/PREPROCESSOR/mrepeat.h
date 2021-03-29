@@ -837,4 +837,4 @@
     MREPEAT255(macro, data)     \
     macro(255, data)
 
-#endif // _MREPEAT_H_
+#endif  // _MREPEAT_H_

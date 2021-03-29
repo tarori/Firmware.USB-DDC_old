@@ -27,8 +27,8 @@
 //_____  I N C L U D E S ___________________________________________________
 
 //#include <stdio.h>
-#include "usart.h" // Shall be included before FreeRTOS header files, since 'inline' is defined to ''; leading to
-                   // link errors
+#include "usart.h"  // Shall be included before FreeRTOS header files, since 'inline' is defined to ''; leading to
+                    // link errors
 #include "conf_usb.h"
 
 #include <avr32/io.h>
@@ -60,7 +60,7 @@
 
 //_____ D E C L A R A T I O N S ____________________________________________
 
-void uac1_AK5394A_task(void *);
+void uac1_AK5394A_task(void*);
 
 //!
 //! @brief This function initializes the hardware/software resources
@@ -70,17 +70,17 @@ void uac1_AK5394A_task_init(void)
 {
     AK5394A_task_init(TRUE);
     xTaskCreate(uac1_AK5394A_task,
-                configTSK_AK5394A_NAME,
-                configTSK_AK5394A_STACK_SIZE,
-                NULL,
-                UAC1_configTSK_AK5394A_PRIORITY,
-                NULL);
+        configTSK_AK5394A_NAME,
+        configTSK_AK5394A_STACK_SIZE,
+        NULL,
+        UAC1_configTSK_AK5394A_PRIORITY,
+        NULL);
 }
 
 //!
 //! @brief Entry point of the AK5394A task management
 //!
-void uac1_AK5394A_task(void *pvParameters)
+void uac1_AK5394A_task(void* pvParameters)
 {
     portTickType xLastWakeTime;
     xLastWakeTime = xTaskGetTickCount();
@@ -99,12 +99,12 @@ void uac1_AK5394A_task(void *pvParameters)
             spk_mute = TRUE;
             if (current_freq.frequency == FREQ_48) {
                 FB_rate = 48 << 14;
-                FB_rate_initial = FB_rate;                     // BSB 20131031 Record FB_rate as it was set by control system
-                FB_rate_nominal = FB_rate + FB_NOMINAL_OFFSET; // BSB 20131115 Record FB_rate as it was set by control system;
+                FB_rate_initial = FB_rate;                      // BSB 20131031 Record FB_rate as it was set by control system
+                FB_rate_nominal = FB_rate + FB_NOMINAL_OFFSET;  // BSB 20131115 Record FB_rate as it was set by control system;
             } else {
                 FB_rate = (44 << 14) + (1 << 14) / 10;
-                FB_rate_initial = FB_rate;                     // BSB 20131031 Record FB_rate as it was set by control system
-                FB_rate_nominal = FB_rate + FB_NOMINAL_OFFSET; // BSB 20131115 Record FB_rate as it was set by control system;
+                FB_rate_initial = FB_rate;                      // BSB 20131031 Record FB_rate as it was set by control system
+                FB_rate_nominal = FB_rate + FB_NOMINAL_OFFSET;  // BSB 20131115 Record FB_rate as it was set by control system;
             }
             spk_mute = FALSE;
             freq_changed = FALSE;
@@ -179,5 +179,5 @@ void uac1_AK5394A_task(void *pvParameters)
 			mute = TX_state ? TRUE : FALSE;
 		}
 */
-    } // end while (TRUE)
+    }  // end while (TRUE)
 }

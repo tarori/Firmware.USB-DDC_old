@@ -16,7 +16,7 @@
 #endif
 
 // pcf8574_mobo_data_out contains the current output data on the builtin PCF8574 on the Mobo
-volatile uint8_t pcf8574_mobo_data_out = 0xfa; // Not really necessary, set initial BPF for filter 2.
+volatile uint8_t pcf8574_mobo_data_out = 0xfa;  // Not really necessary, set initial BPF for filter 2.
 
 /*! \brief Write all 8 bits to the PCF8574
  *
@@ -35,7 +35,7 @@ uint8_t pcf8574_out_byte(uint8_t i2c_address, uint8_t data)
  *
  * \retval I2C status.
  */
-uint8_t pcf8574_in_byte(uint8_t i2c_address, uint8_t *read_byte)
+uint8_t pcf8574_in_byte(uint8_t i2c_address, uint8_t* read_byte)
 {
     uint8_t status;
 
@@ -52,8 +52,8 @@ uint8_t pcf8574_mobo_set(uint8_t i2c_address, uint8_t byte)
 {
     uint8_t status;
     // pcf_mobo_data_out contains the current output data on the builtin PCF8574 on the Mobo
-    pcf8574_mobo_data_out = pcf8574_mobo_data_out | byte;          // Set bits
-    status = pcf8574_out_byte(i2c_address, pcf8574_mobo_data_out); // Write out to Mobo PCF8574
+    pcf8574_mobo_data_out = pcf8574_mobo_data_out | byte;           // Set bits
+    status = pcf8574_out_byte(i2c_address, pcf8574_mobo_data_out);  // Write out to Mobo PCF8574
     return status;
 }
 
@@ -65,7 +65,7 @@ uint8_t pcf8574_mobo_clear(uint8_t i2c_address, uint8_t byte)
 {
     uint8_t status;
     // pcf_mobo_data_out contains the current output data on the builtin PCF8574 on the Mobo
-    pcf8574_mobo_data_out = pcf8574_mobo_data_out & ~byte;         // Clear bits
-    status = pcf8574_out_byte(i2c_address, pcf8574_mobo_data_out); // Write out to Mobo PCF8574
+    pcf8574_mobo_data_out = pcf8574_mobo_data_out & ~byte;          // Clear bits
+    status = pcf8574_out_byte(i2c_address, pcf8574_mobo_data_out);  // Write out to Mobo PCF8574
     return status;
 }

@@ -17,12 +17,12 @@
 #include "rotary_encoder.h"
 #include "widget.h"
 
-#if LCD_DISPLAY // Multi-line LCD display
+#if LCD_DISPLAY  // Multi-line LCD display
 #include "taskLCD.h"
 #endif
 
-char frq_lcd[13]; // Pass frequency information to LCD
-char flt_lcd[5];  // LCD Print formatting for filters
+char frq_lcd[13];  // Pass frequency information to LCD
+char flt_lcd[5];   // LCD Print formatting for filters
 
 /*! \brief Display the running frequency on an LCD
  *
@@ -30,8 +30,8 @@ char flt_lcd[5];  // LCD Print formatting for filters
  */
 void display_frequency(void)
 {
-#if LCD_DISPLAY       // Multi-line LCD display
-#if FRQ_IN_FIRST_LINE // Normal Frequency display in first line of LCD. Can be disabled for Debug
+#if LCD_DISPLAY        // Multi-line LCD display
+#if FRQ_IN_FIRST_LINE  // Normal Frequency display in first line of LCD. Can be disabled for Debug
 
     // Translate frequency to a double precision float
     double freq_display = (double)cdata.Freq[0] / _2(23);
@@ -52,19 +52,19 @@ void display_frequency(void)
  *
  * \retval None or RX frequency band, depending on #define CALC_BAND_MUL_ADD
  */
-#if CALC_BAND_MUL_ADD // Band dependent Frequency Subtract and Multiply
+#if CALC_BAND_MUL_ADD  // Band dependent Frequency Subtract and Multiply
 uint8_t SetFilter(uint32_t freq)
 #else
 void SetFilter(uint32_t freq)
 #endif
 {
-    uint8_t selectedFilters[2] = {0, 0}; // Contains info on which filters are selected, for LCD print
+    uint8_t selectedFilters[2] = {0, 0};  // Contains info on which filters are selected, for LCD print
 
 #if TX_FILTERS
-    sint16_t band_sel; // TX Filter selector, used with scrambled filters feature
+    sint16_t band_sel;  // TX Filter selector, used with scrambled filters feature
 #endif
 
-#if CALC_BAND_MUL_ADD // Band dependent Frequency Subtract and Multiply
+#if CALC_BAND_MUL_ADD  // Band dependent Frequency Subtract and Multiply
     uint8_t freqBand = 0, i;
 #else
     uint8_t i;
@@ -76,7 +76,7 @@ void SetFilter(uint32_t freq)
 
     sint32_t Freq;
 
-    Freq.dw = freq; // Freq.w1 is 11.5bits
+    Freq.dw = freq;  // Freq.w1 is 11.5bits
 
     //-------------------------------------------
     // Set RX Band Pass filters
@@ -88,20 +88,20 @@ void SetFilter(uint32_t freq)
             if (Freq.w0 < cdata.FilterCrossOver[i])
                 break;
         }
-#if SCRAMBLED_FILTERS                                    // Enable a non contiguous order of filters
-        data = cdata.FilterNumber[i] & 0x07;             // We only want 3 bits
-        pcf8574_mobo_data_out &= 0xf8;                   // clear and leave upper 5 bits untouched
-        pcf8574_mobo_set(cdata.PCF_I2C_Mobo_addr, data); // Combine the two and write out
-        selectedFilters[0] = cdata.FilterNumber[i];      // Used for LCD Print indication
+#if SCRAMBLED_FILTERS                                     // Enable a non contiguous order of filters
+        data = cdata.FilterNumber[i] & 0x07;              // We only want 3 bits
+        pcf8574_mobo_data_out &= 0xf8;                    // clear and leave upper 5 bits untouched
+        pcf8574_mobo_set(cdata.PCF_I2C_Mobo_addr, data);  // Combine the two and write out
+        selectedFilters[0] = cdata.FilterNumber[i];       // Used for LCD Print indication
 #else
         //i = i & 0x07;								// We only want 3 bits
-        pcf8574_mobo_data_out &= 0xf8;                // clear and leave upper 5 bits untouched
-        pcf8574_mobo_set(cdata.PCF_I2C_Mobo_addr, i); // Combine the two and write out
-        selectedFilters[0] = i;                       // Used for LCD Print indication
+        pcf8574_mobo_data_out &= 0xf8;                 // clear and leave upper 5 bits untouched
+        pcf8574_mobo_set(cdata.PCF_I2C_Mobo_addr, i);  // Combine the two and write out
+        selectedFilters[0] = i;                        // Used for LCD Print indication
 #endif
 
-#if CALC_BAND_MUL_ADD // Band dependent Frequency Subtract and Multiply
-        freqBand = i; // Band info used for Freq Subtract/Multiply feature
+#if CALC_BAND_MUL_ADD  // Band dependent Frequency Subtract and Multiply
+        freqBand = i;  // Band info used for Freq Subtract/Multiply feature
 #endif
     }
     //
@@ -111,13 +111,13 @@ void SetFilter(uint32_t freq)
             if (Freq.w0 < cdata.FilterCrossOver[i])
                 break;
         }
-#if SCRAMBLED_FILTERS                        // Enable a non contiguous order of filters
-        data = cdata.FilterNumber[i] & 0x03; // We only want 2 bits
+#if SCRAMBLED_FILTERS                         // Enable a non contiguous order of filters
+        data = cdata.FilterNumber[i] & 0x03;  // We only want 2 bits
 
-        selectedFilters[0] = cdata.FilterNumber[i]; // Used for LCD Print indication
+        selectedFilters[0] = cdata.FilterNumber[i];  // Used for LCD Print indication
 #else
         data = i;
-        selectedFilters[0] = i; // Used for LCD Print indication
+        selectedFilters[0] = i;  // Used for LCD Print indication
 #endif
         // Manipulate 2 bit binary output to set the 4 BPF
         if (data & 0b00000001)
@@ -129,8 +129,8 @@ void SetFilter(uint32_t freq)
         else
             gpio_clr_gpio_pin(PTT_3);
 
-#if CALC_BAND_MUL_ADD // Band dependent Frequency Subtract and Multiply
-        freqBand = i; // Band info used for Freq Subtract/Multiply feature
+#if CALC_BAND_MUL_ADD  // Band dependent Frequency Subtract and Multiply
+        freqBand = i;  // Band info used for Freq Subtract/Multiply feature
 #endif
     }
 
@@ -143,28 +143,28 @@ void SetFilter(uint32_t freq)
             break;
     }
 
-#if PCF_LPF // External Port Expander Control of Low Pass filters
+#if PCF_LPF  // External Port Expander Control of Low Pass filters
     // If we write to I2C without the device being present, then later I2C writes produce unexpected results
     if (i2c.pcflpf1) {
-#if SCRAMBLED_FILTERS                              // Enable a non contiguous order of filters
-        band_sel.w = 1 << cdata.TXFilterNumber[i]; // Set bit in a 16 bit register
+#if SCRAMBLED_FILTERS                               // Enable a non contiguous order of filters
+        band_sel.w = 1 << cdata.TXFilterNumber[i];  // Set bit in a 16 bit register
         pcf8574_out_byte(cdata.PCF_I2C_lpf1_addr, band_sel.b1);
-#if PCF_16LPF // External Port Expander Control of 16 Low Pass filters
+#if PCF_16LPF  // External Port Expander Control of 16 Low Pass filters
         // If we write without the device being present, later I2C writes produce unexpected results
         if (i2c.pcflpf2)
             pcf8574_out_byte(cdata.PCF_I2C_lpf2_addr, band_sel.b0);
 #endif
-        selectedFilters[1] = cdata.TXFilterNumber[i]; // Used for LCD Print indication
+        selectedFilters[1] = cdata.TXFilterNumber[i];  // Used for LCD Print indication
 #else
-        band_sel.w = 1 << i; // Set bit in a 16 bit register
+        band_sel.w = 1 << i;  // Set bit in a 16 bit register
         pcf8574_out_byte(cdata.PCF_I2C_lpf1_addr, band_sel.b1);
-#if PCF_16LPF // External Port Expander Control of 16 Low Pass filters
+#if PCF_16LPF  // External Port Expander Control of 16 Low Pass filters
         // If we write without the device being present, later I2C writes produce unexpected results
         if (i2c.pcflpf2)
             pcf8574_out_byte(cdata.PCF_I2C_lpf2_addr, band_sel.b0);
 #endif
-        selectedFilters[1] = i;                       // Used for LCD Print indication
-#endif // SCRAMBLED_FILTERS
+        selectedFilters[1] = i;                        // Used for LCD Print indication
+#endif  // SCRAMBLED_FILTERS
     }
     //else selectedFilters[1] = 0x0f;			// Error indication
     else {
@@ -173,14 +173,14 @@ void SetFilter(uint32_t freq)
         // we can use Widget PTT_1/PTT_2/PTT_2 for LPF control output
         if (i2c.pcfmobo) {
             uint8_t j;
-#if SCRAMBLED_FILTERS                                     // Enable a non contiguous order of filters
-            band_sel.b1 = cdata.TXFilterNumber[i] & 0x07; // Set and Enforce bounds for a 3 bit value
-            j = band_sel.b1 << 3;                         // leftshift x 3 for bits 3 - 5
-            selectedFilters[1] = cdata.TXFilterNumber[i]; // Used for LCD Print indication
+#if SCRAMBLED_FILTERS                                      // Enable a non contiguous order of filters
+            band_sel.b1 = cdata.TXFilterNumber[i] & 0x07;  // Set and Enforce bounds for a 3 bit value
+            j = band_sel.b1 << 3;                          // leftshift x 3 for bits 3 - 5
+            selectedFilters[1] = cdata.TXFilterNumber[i];  // Used for LCD Print indication
 #else
-            band_sel.b1 = i & 0x07;                   // Set and Enforce bounds for a 3 bit value
-            j = band_sel.b1 << 3;                     // leftshift x 3 for bits 3 - 5
-            selectedFilters[1] = i;                   // Used for LCD Print indication
+            band_sel.b1 = i & 0x07;                    // Set and Enforce bounds for a 3 bit value
+            j = band_sel.b1 << 3;                      // leftshift x 3 for bits 3 - 5
+            selectedFilters[1] = i;                    // Used for LCD Print indication
 #endif
             // Manipulate 3 bit binary output to set the 8 LPF
             if (j & 0b00000001)
@@ -198,50 +198,50 @@ void SetFilter(uint32_t freq)
         }
         // PTT_1/PTT_2/PTT_3 outputs not available, used for RX/TX and BPF control
         else
-            selectedFilters[1] = 0x0f; // Error indication
+            selectedFilters[1] = 0x0f;  // Error indication
     }
 
-#endif //PCF_LPF
+#endif  //PCF_LPF
 
-#if PCF_FILTER_IO // 8x BCD control for LPF switching, switches P1 pins 4-6
+#if PCF_FILTER_IO  // 8x BCD control for LPF switching, switches P1 pins 4-6
     if (i2c.pcfmobo) {
         uint8_t j;
-#if SCRAMBLED_FILTERS                                 // Enable a non contiguous order of filters
-        band_sel.b1 = cdata.TXFilterNumber[i] & 0x07; // Set and Enforce bounds for a 3 bit value
-        j = band_sel.b1 << 3;                         // leftshift x 3 for bits 3 - 5
-        pcf8574_mobo_data_out &= 0b11000111;          // Clear out old data before adding new
-        pcf8574_mobo_set(cdata.PCF_I2C_Mobo_addr, j); // Combine the two and write out
-        selectedFilters[1] = cdata.TXFilterNumber[i]; // Used for LCD Print indication
+#if SCRAMBLED_FILTERS                                  // Enable a non contiguous order of filters
+        band_sel.b1 = cdata.TXFilterNumber[i] & 0x07;  // Set and Enforce bounds for a 3 bit value
+        j = band_sel.b1 << 3;                          // leftshift x 3 for bits 3 - 5
+        pcf8574_mobo_data_out &= 0b11000111;           // Clear out old data before adding new
+        pcf8574_mobo_set(cdata.PCF_I2C_Mobo_addr, j);  // Combine the two and write out
+        selectedFilters[1] = cdata.TXFilterNumber[i];  // Used for LCD Print indication
 #else
-        band_sel.b1 = i & 0x07;                       // Set and Enforce bounds for a 3 bit value
-        j = band_sel.b1 << 3;                         // leftshift x 3 for bits 3 - 5
-        pcf8574_mobo_data_out &= 0b11000111;          // Clear out old data before adding new
-        pcf8574_mobo_set(cdata.PCF_I2C_Mobo_addr, j); // Combine the two and write out
-        selectedFilters[1] = i;                       // Used for LCD Print indication
+        band_sel.b1 = i & 0x07;                        // Set and Enforce bounds for a 3 bit value
+        j = band_sel.b1 << 3;                          // leftshift x 3 for bits 3 - 5
+        pcf8574_mobo_data_out &= 0b11000111;           // Clear out old data before adding new
+        pcf8574_mobo_set(cdata.PCF_I2C_Mobo_addr, j);  // Combine the two and write out
+        selectedFilters[1] = i;                        // Used for LCD Print indication
 #endif
     }
 #endif
 
-#if M0RZF_FILTER_IO // M0RZF 20W amplifier LPF switching, switches P1 pins 4-6
+#if M0RZF_FILTER_IO  // M0RZF 20W amplifier LPF switching, switches P1 pins 4-6
     if (i2c.pcfmobo) {
-        uint8_t j; // filter value
+        uint8_t j;  // filter value
         if (i == 0)
-            j = 0b00001000; // First filter, as defined in data struct in AVR-Mobo.c
+            j = 0b00001000;  // First filter, as defined in data struct in AVR-Mobo.c
         else if (i == 1)
-            j = 0b00010000; // Second filter
+            j = 0b00010000;  // Second filter
         else if (i == 2)
-            j = 0b00100000; // Third filter
+            j = 0b00100000;  // Third filter
         else
-            j = 0b00000000;                           // Default filter
-        pcf8574_mobo_data_out &= 0b11000111;          // Clear out old data before adding new
-        pcf8574_mobo_set(cdata.PCF_I2C_Mobo_addr, j); // Combine the two and write out
-        selectedFilters[1] = i;                       // Used for LCD Print indication
+            j = 0b00000000;                            // Default filter
+        pcf8574_mobo_data_out &= 0b11000111;           // Clear out old data before adding new
+        pcf8574_mobo_set(cdata.PCF_I2C_Mobo_addr, j);  // Combine the two and write out
+        selectedFilters[1] = i;                        // Used for LCD Print indication
     }
 #endif
 #endif
 
-#if LCD_DISPLAY       // Multi-line LCD display
-#if FRQ_IN_FIRST_LINE // Normal Frequency display in first line of LCD. Can be disabled for Debug
+#if LCD_DISPLAY        // Multi-line LCD display
+#if FRQ_IN_FIRST_LINE  // Normal Frequency display in first line of LCD. Can be disabled for Debug
     if (!MENU_mode) {
         // Display Selected Filters
         sprintf(flt_lcd, "F%x-%x", selectedFilters[0], selectedFilters[1]);
@@ -253,7 +253,7 @@ void SetFilter(uint32_t freq)
 #endif
 #endif
 
-#if CALC_BAND_MUL_ADD // Band dependent Frequency Subtract and Multiply
+#if CALC_BAND_MUL_ADD  // Band dependent Frequency Subtract and Multiply
     return freqBand;
 #endif
 }
@@ -264,9 +264,9 @@ void SetFilter(uint32_t freq)
  */
 uint8_t new_freq_and_filters(uint32_t freq)
 {
-    uint8_t status = 0;   // Is the Si570 On Line?
-    static uint8_t band;  // which BPF frequency band? (used with CALC_BAND_MUL_ADD)
-    double set_frequency; // Frequency in double precision floating point
+    uint8_t status = 0;    // Is the Si570 On Line?
+    static uint8_t band;   // which BPF frequency band? (used with CALC_BAND_MUL_ADD)
+    double set_frequency;  // Frequency in double precision floating point
 
     // Translate frequency to a double precision float
     set_frequency = (double)freq / _2(21);
@@ -277,32 +277,32 @@ uint8_t new_freq_and_filters(uint32_t freq)
     if (set_frequency < 3.45)
         return 0;
 
-    cdata.Freq[0] = freq; // Some Command calls to this func do not update si570.Freq[0]
+    cdata.Freq[0] = freq;  // Some Command calls to this func do not update si570.Freq[0]
 
-#if !FRQ_CGH_DURING_TX // Do not allow Si570 frequency change and corresponding filter change during TX
-    if (TX_flag)       // Oops, we are transmitting... return without changing frequency
+#if !FRQ_CGH_DURING_TX  // Do not allow Si570 frequency change and corresponding filter change during TX
+    if (TX_flag)        // Oops, we are transmitting... return without changing frequency
         return TWI_INVALID_ARGUMENT;
 #endif
 
-#if CALC_FREQ_MUL_ADD // Frequency Subtract and Multiply Routines (for smart VFO) \
+#if CALC_FREQ_MUL_ADD  // Frequency Subtract and Multiply Routines (for smart VFO) \
                       // Modify Si570 frequency according to Mul/Sub values
     set_frequency = (set_frequency - (double)cdata.FreqSub / _2(21)) * (double)cdata.FreqMul / _2(21);
 
-#elif CALC_BAND_MUL_ADD // Band dependent Frequency Subtract and Multiply \
+#elif CALC_BAND_MUL_ADD  // Band dependent Frequency Subtract and Multiply \
                         // Modify Si570 frequency according to Mul/Sub values
     set_frequency = (set_frequency - (double)cdata.BandSub[band] / _2(21)) * (double)cdata.BandMul[band] / _2(21);
 #endif
 
     status = SetFrequency(set_frequency);
 
-#if BPF_LPF_Module      // Band Pass and Low Pass filter switcing
-#if !FLTR_CGH_DURING_TX // Do not allow Filter changes when frequency is changed during TX
-    if (!TX_flag)       // Only change filters when not transmitting
+#if BPF_LPF_Module       // Band Pass and Low Pass filter switcing
+#if !FLTR_CGH_DURING_TX  // Do not allow Filter changes when frequency is changed during TX
+    if (!TX_flag)        // Only change filters when not transmitting
 #endif
-#if CALC_BAND_MUL_ADD           // Band dependent Frequency Subtract and Multiply
-        band = SetFilter(freq); // Select Band Pass Filter, according to the frequency selected
+#if CALC_BAND_MUL_ADD            // Band dependent Frequency Subtract and Multiply
+        band = SetFilter(freq);  // Select Band Pass Filter, according to the frequency selected
 #else
-    SetFilter(freq); // Select Band Pass Filter, according to the frequency selected
+    SetFilter(freq);  // Select Band Pass Filter, according to the frequency selected
 #endif
 #endif
 
@@ -322,17 +322,17 @@ void freq_and_filter_control(void)
         // USB always takes precedence
         if (FRQ_fromusbreg == TRUE) {
             freq_from_usb = Freq_From_Register((double)cdata.FreqXtal / _2(24)) * _2(21);
-            new_freq_and_filters(freq_from_usb); // Write usb frequency to Si570
-            FRQ_fromusbreg = FALSE;              // Clear input flags
-            FRQ_fromusb = FALSE;                 // Clear input flags
-            FRQ_fromenc = FALSE;                 // USB takes precedence
-            FRQ_lcdupdate = TRUE;                // Update LCD
+            new_freq_and_filters(freq_from_usb);  // Write usb frequency to Si570
+            FRQ_fromusbreg = FALSE;               // Clear input flags
+            FRQ_fromusb = FALSE;                  // Clear input flags
+            FRQ_fromenc = FALSE;                  // USB takes precedence
+            FRQ_lcdupdate = TRUE;                 // Update LCD
         } else if (FRQ_fromusb == TRUE) {
-            new_freq_and_filters(freq_from_usb); // Write usb frequency to Si570
-            FRQ_fromusbreg = FALSE;              // Clear input flags
-            FRQ_fromusb = FALSE;                 // Clear input flags
-            FRQ_fromenc = FALSE;                 // USB takes precedence
-            FRQ_lcdupdate = TRUE;                // Update LCD
+            new_freq_and_filters(freq_from_usb);  // Write usb frequency to Si570
+            FRQ_fromusbreg = FALSE;               // Clear input flags
+            FRQ_fromusb = FALSE;                  // Clear input flags
+            FRQ_fromenc = FALSE;                  // USB takes precedence
+            FRQ_lcdupdate = TRUE;                 // Update LCD
         }
         // This is ignored while in Menu Mode, then Menu uses the Encoder.
         else if (FRQ_fromenc == TRUE) {
@@ -340,18 +340,18 @@ void freq_and_filter_control(void)
                 // Add the accumulated but yet unenacted frequency delta from the
                 // encoder to the current Si570 frequency
                 frq_from_encoder = cdata.Freq[0] + freq_delta_from_enc;
-                freq_delta_from_enc = 0;                // Zero the accumulator
-                new_freq_and_filters(frq_from_encoder); // Write new freq to Si570
-                FRQ_fromenc = FALSE;                    // Clear input flag
-                FRQ_lcdupdate = TRUE;                   // Update LCD
+                freq_delta_from_enc = 0;                 // Zero the accumulator
+                new_freq_and_filters(frq_from_encoder);  // Write new freq to Si570
+                FRQ_fromenc = FALSE;                     // Clear input flag
+                FRQ_lcdupdate = TRUE;                    // Update LCD
             } else
-                freq_delta_from_enc = 0; // Zero any changes while Menu Control
+                freq_delta_from_enc = 0;  // Zero any changes while Menu Control
         }
 
         // Check if a simple LCD update of Frequency and filters display is required
         if ((FRQ_lcdupdate == TRUE) && (!MENU_mode)) {
             display_frequency();
-            SetFilter(cdata.Freq[0]); // Select Band Pass Filter, according to the frequency selected
+            SetFilter(cdata.Freq[0]);  // Select Band Pass Filter, according to the frequency selected
             FRQ_lcdupdate = FALSE;
         }
     }

@@ -56,7 +56,7 @@
 #define TC_INVALID_ARGUMENT (-1)
 
 //! Number of timer/counter channels.
-#define TC_NUMBER_OF_CHANNELS (sizeof(((avr32_tc_t *)0)->channel) / sizeof(avr32_tc_channel_t))
+#define TC_NUMBER_OF_CHANNELS (sizeof(((avr32_tc_t*)0)->channel) / sizeof(avr32_tc_channel_t))
 
 /*! \name External Clock Signal 0 Selection
  */
@@ -403,7 +403,7 @@ typedef struct
  * \retval >=0 The interrupt enable configuration organized according to \ref tc_interrupt_t.
  * \retval TC_INVALID_ARGUMENT Invalid argument(s).
  */
-extern int tc_get_interrupt_settings(volatile avr32_tc_t *tc, unsigned int channel);
+extern int tc_get_interrupt_settings(volatile avr32_tc_t* tc, unsigned int channel);
 
 /*! \brief Enables various timer/counter interrupts.
  *
@@ -414,7 +414,7 @@ extern int tc_get_interrupt_settings(volatile avr32_tc_t *tc, unsigned int chann
  * \retval 0 Success.
  * \retval TC_INVALID_ARGUMENT Invalid argument(s).
  */
-extern int tc_configure_interrupts(volatile avr32_tc_t *tc, unsigned int channel, const tc_interrupt_t *bitfield);
+extern int tc_configure_interrupts(volatile avr32_tc_t* tc, unsigned int channel, const tc_interrupt_t* bitfield);
 
 /*! \brief Selects which external clock to use and how to configure it.
  *
@@ -437,7 +437,7 @@ extern int tc_configure_interrupts(volatile avr32_tc_t *tc, unsigned int channel
  * \retval 0 Success.
  * \retval TC_INVALID_ARGUMENT Invalid argument(s).
  */
-extern int tc_select_external_clock(volatile avr32_tc_t *tc, unsigned int channel, unsigned int ext_clk_sig_src);
+extern int tc_select_external_clock(volatile avr32_tc_t* tc, unsigned int channel, unsigned int ext_clk_sig_src);
 
 /*! \brief Sets options for timer/counter capture initialization.
  *
@@ -447,7 +447,7 @@ extern int tc_select_external_clock(volatile avr32_tc_t *tc, unsigned int channe
  * \retval 0 Success.
  * \retval TC_INVALID_ARGUMENT Invalid argument(s).
  */
-extern int tc_init_capture(volatile avr32_tc_t *tc, const tc_capture_opt_t *opt);
+extern int tc_init_capture(volatile avr32_tc_t* tc, const tc_capture_opt_t* opt);
 
 /*! \brief Sets options for timer/counter waveform initialization.
  *
@@ -457,7 +457,7 @@ extern int tc_init_capture(volatile avr32_tc_t *tc, const tc_capture_opt_t *opt)
  * \retval 0 Success.
  * \retval TC_INVALID_ARGUMENT Invalid argument(s).
  */
-extern int tc_init_waveform(volatile avr32_tc_t *tc, const tc_waveform_opt_t *opt);
+extern int tc_init_waveform(volatile avr32_tc_t* tc, const tc_waveform_opt_t* opt);
 
 /*! \brief Starts a timer/counter.
  *
@@ -467,7 +467,7 @@ extern int tc_init_waveform(volatile avr32_tc_t *tc, const tc_waveform_opt_t *op
  * \retval 0 Success.
  * \retval TC_INVALID_ARGUMENT Invalid argument(s).
  */
-extern int tc_start(volatile avr32_tc_t *tc, unsigned int channel);
+extern int tc_start(volatile avr32_tc_t* tc, unsigned int channel);
 
 /*! \brief Stops a timer/counter.
  *
@@ -477,7 +477,7 @@ extern int tc_start(volatile avr32_tc_t *tc, unsigned int channel);
  * \retval 0 Success.
  * \retval TC_INVALID_ARGUMENT Invalid argument(s).
  */
-extern int tc_stop(volatile avr32_tc_t *tc, unsigned int channel);
+extern int tc_stop(volatile avr32_tc_t* tc, unsigned int channel);
 
 /*! \brief Performs a software trigger: the counter is reset and the clock is started.
  *
@@ -487,19 +487,19 @@ extern int tc_stop(volatile avr32_tc_t *tc, unsigned int channel);
  * \retval 0 Success.
  * \retval TC_INVALID_ARGUMENT Invalid argument(s).
  */
-extern int tc_software_trigger(volatile avr32_tc_t *tc, unsigned int channel);
+extern int tc_software_trigger(volatile avr32_tc_t* tc, unsigned int channel);
 
 /*! \brief Asserts a SYNC signal to generate a software trigger and reset all channels.
  *
  * \param tc              Pointer to the TC instance to access.
  */
-extern void tc_sync_trigger(volatile avr32_tc_t *tc);
+extern void tc_sync_trigger(volatile avr32_tc_t* tc);
 
 /*! \brief Start all TC channels simultaneously.
  *
  * \param tc              Pointer to the TC instance to access.
  */
-extern void tc_sync_start(volatile avr32_tc_t *tc);
+extern void tc_sync_start(volatile avr32_tc_t* tc);
 
 /*! \brief Reads the status register.
  *
@@ -509,7 +509,7 @@ extern void tc_sync_start(volatile avr32_tc_t *tc);
  * \retval >=0 Status register value.
  * \retval TC_INVALID_ARGUMENT Invalid argument(s).
  */
-extern int tc_read_sr(volatile avr32_tc_t *tc, unsigned int channel);
+extern int tc_read_sr(volatile avr32_tc_t* tc, unsigned int channel);
 
 /*! \brief Reads the channel's TC counter and returns the value.
  *
@@ -519,7 +519,7 @@ extern int tc_read_sr(volatile avr32_tc_t *tc, unsigned int channel);
  * \retval >=0 TC counter value.
  * \retval TC_INVALID_ARGUMENT Invalid argument(s).
  */
-extern int tc_read_tc(volatile avr32_tc_t *tc, unsigned int channel);
+extern int tc_read_tc(volatile avr32_tc_t* tc, unsigned int channel);
 
 /*! \brief Reads the channel's RA register and returns the value.
  *
@@ -529,7 +529,7 @@ extern int tc_read_tc(volatile avr32_tc_t *tc, unsigned int channel);
  * \retval >=0 RA register value.
  * \retval TC_INVALID_ARGUMENT Invalid argument(s).
  */
-extern int tc_read_ra(volatile avr32_tc_t *tc, unsigned int channel);
+extern int tc_read_ra(volatile avr32_tc_t* tc, unsigned int channel);
 
 /*! \brief Reads the channel's RB register and returns the value.
  *
@@ -539,7 +539,7 @@ extern int tc_read_ra(volatile avr32_tc_t *tc, unsigned int channel);
  * \retval >=0 RB register value.
  * \retval TC_INVALID_ARGUMENT Invalid argument(s).
  */
-extern int tc_read_rb(volatile avr32_tc_t *tc, unsigned int channel);
+extern int tc_read_rb(volatile avr32_tc_t* tc, unsigned int channel);
 
 /*! \brief Reads the channel's RC register and returns the value.
  *
@@ -549,7 +549,7 @@ extern int tc_read_rb(volatile avr32_tc_t *tc, unsigned int channel);
  * \retval >=0 RC register value.
  * \retval TC_INVALID_ARGUMENT Invalid argument(s).
  */
-extern int tc_read_rc(volatile avr32_tc_t *tc, unsigned int channel);
+extern int tc_read_rc(volatile avr32_tc_t* tc, unsigned int channel);
 
 /*! \brief Writes a value to the channel's RA register.
  *
@@ -560,7 +560,7 @@ extern int tc_read_rc(volatile avr32_tc_t *tc, unsigned int channel);
  * \retval >=0 Written value.
  * \retval TC_INVALID_ARGUMENT Invalid argument(s).
  */
-extern int tc_write_ra(volatile avr32_tc_t *tc, unsigned int channel, unsigned short value);
+extern int tc_write_ra(volatile avr32_tc_t* tc, unsigned int channel, unsigned short value);
 
 /*! \brief Writes a value to the channel's RB register.
  *
@@ -571,7 +571,7 @@ extern int tc_write_ra(volatile avr32_tc_t *tc, unsigned int channel, unsigned s
  * \retval >=0 Written value.
  * \retval TC_INVALID_ARGUMENT Invalid argument(s).
  */
-extern int tc_write_rb(volatile avr32_tc_t *tc, unsigned int channel, unsigned short value);
+extern int tc_write_rb(volatile avr32_tc_t* tc, unsigned int channel, unsigned short value);
 
 /*! \brief Writes a value to the channel's RC register.
  *
@@ -582,6 +582,6 @@ extern int tc_write_rb(volatile avr32_tc_t *tc, unsigned int channel, unsigned s
  * \retval >=0 Written value.
  * \retval TC_INVALID_ARGUMENT Invalid argument(s).
  */
-extern int tc_write_rc(volatile avr32_tc_t *tc, unsigned int channel, unsigned short value);
+extern int tc_write_rc(volatile avr32_tc_t* tc, unsigned int channel, unsigned short value);
 
-#endif // _TC_H_
+#endif  // _TC_H_

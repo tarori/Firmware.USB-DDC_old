@@ -71,11 +71,11 @@ int gpio_enable_module(const gpio_map_t gpiomap, unsigned int size)
 
 int gpio_enable_module_pin(unsigned int pin, unsigned int function)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
 
     // Enable the correct function.
     switch (function) {
-    case 0: // A function.
+    case 0:  // A function.
         gpio_port->pmr0c = 1 << (pin & 0x1F);
         gpio_port->pmr1c = 1 << (pin & 0x1F);
 #if defined(AVR32_GPIO_210_H_INCLUDED) || defined(AVR32_GPIO_211_H_INCLUDED)
@@ -83,7 +83,7 @@ int gpio_enable_module_pin(unsigned int pin, unsigned int function)
 #endif
         break;
 
-    case 1: // B function.
+    case 1:  // B function.
         gpio_port->pmr0s = 1 << (pin & 0x1F);
         gpio_port->pmr1c = 1 << (pin & 0x1F);
 #if defined(AVR32_GPIO_210_H_INCLUDED) || defined(AVR32_GPIO_211_H_INCLUDED)
@@ -91,7 +91,7 @@ int gpio_enable_module_pin(unsigned int pin, unsigned int function)
 #endif
         break;
 
-    case 2: // C function.
+    case 2:  // C function.
         gpio_port->pmr0c = 1 << (pin & 0x1F);
         gpio_port->pmr1s = 1 << (pin & 0x1F);
 #if defined(AVR32_GPIO_210_H_INCLUDED) || defined(AVR32_GPIO_211_H_INCLUDED)
@@ -99,7 +99,7 @@ int gpio_enable_module_pin(unsigned int pin, unsigned int function)
 #endif
         break;
 
-    case 3: // D function.
+    case 3:  // D function.
         gpio_port->pmr0s = 1 << (pin & 0x1F);
         gpio_port->pmr1s = 1 << (pin & 0x1F);
 #if defined(AVR32_GPIO_210_H_INCLUDED) || defined(AVR32_GPIO_211_H_INCLUDED)
@@ -108,25 +108,25 @@ int gpio_enable_module_pin(unsigned int pin, unsigned int function)
         break;
 
 #if defined(AVR32_GPIO_210_H_INCLUDED) || defined(AVR32_GPIO_211_H_INCLUDED)
-    case 4: // E function.
+    case 4:  // E function.
         gpio_port->pmr0c = 1 << (pin & 0x1F);
         gpio_port->pmr1c = 1 << (pin & 0x1F);
         gpio_port->pmr2s = 1 << (pin & 0x1F);
         break;
 
-    case 5: // F function.
+    case 5:  // F function.
         gpio_port->pmr0s = 1 << (pin & 0x1F);
         gpio_port->pmr1c = 1 << (pin & 0x1F);
         gpio_port->pmr2s = 1 << (pin & 0x1F);
         break;
 
-    case 6: // G function.
+    case 6:  // G function.
         gpio_port->pmr0c = 1 << (pin & 0x1F);
         gpio_port->pmr1s = 1 << (pin & 0x1F);
         gpio_port->pmr2s = 1 << (pin & 0x1F);
         break;
 
-    case 7: // H function.
+    case 7:  // H function.
         gpio_port->pmr0s = 1 << (pin & 0x1F);
         gpio_port->pmr1s = 1 << (pin & 0x1F);
         gpio_port->pmr2s = 1 << (pin & 0x1F);
@@ -155,7 +155,7 @@ void gpio_enable_gpio(const gpio_map_t gpiomap, unsigned int size)
 
 void gpio_enable_gpio_pin(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
     gpio_port->oderc = 1 << (pin & 0x1F);
     gpio_port->gpers = 1 << (pin & 0x1F);
 }
@@ -187,7 +187,7 @@ void gpio_disable_pin_open_drain(unsigned int pin)
 
 void gpio_enable_pin_pull_up(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
     gpio_port->puers = 1 << (pin & 0x1F);
 #if defined(AVR32_GPIO_200_H_INCLUDED) || defined(AVR32_GPIO_210_H_INCLUDED) || defined(AVR32_GPIO_211_H_INCLUDED)
     gpio_port->pderc = 1 << (pin & 0x1F);
@@ -196,7 +196,7 @@ void gpio_enable_pin_pull_up(unsigned int pin)
 
 void gpio_disable_pin_pull_up(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
     gpio_port->puerc = 1 << (pin & 0x1F);
 }
 
@@ -209,7 +209,7 @@ void gpio_disable_pin_pull_up(unsigned int pin)
  */
 void gpio_enable_pin_pull_down(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
     gpio_port->puerc = 1 << (pin & 0x1F);
     gpio_port->pders = 1 << (pin & 0x1F);
 }
@@ -220,7 +220,7 @@ void gpio_enable_pin_pull_down(unsigned int pin)
  */
 void gpio_disable_pin_pull_down(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
     gpio_port->pderc = 1 << (pin & 0x1F);
 }
 
@@ -230,7 +230,7 @@ void gpio_disable_pin_pull_down(unsigned int pin)
  */
 void gpio_enable_pin_buskeeper(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
     gpio_port->puers = 1 << (pin & 0x1F);
     gpio_port->pders = 1 << (pin & 0x1F);
 }
@@ -241,7 +241,7 @@ void gpio_enable_pin_buskeeper(unsigned int pin)
  */
 void gpio_disable_pin_buskeeper(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
     gpio_port->puerc = 1 << (pin & 0x1F);
     gpio_port->pderc = 1 << (pin & 0x1F);
 }
@@ -250,84 +250,84 @@ void gpio_disable_pin_buskeeper(unsigned int pin)
 
 int gpio_get_pin_value(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
     return (gpio_port->pvr >> (pin & 0x1F)) & 1;
 }
 
 int gpio_get_gpio_pin_output_value(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
     return (gpio_port->ovr >> (pin & 0x1F)) & 1;
 }
 
 int gpio_get_gpio_open_drain_pin_output_value(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
     return ((gpio_port->oder >> (pin & 0x1F)) & 1) ^ 1;
 }
 
 void gpio_set_gpio_pin(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
 
-    gpio_port->ovrs = 1 << (pin & 0x1F);  // Value to be driven on the I/O line: 1.
-    gpio_port->oders = 1 << (pin & 0x1F); // The GPIO output driver is enabled for that pin.
-    gpio_port->gpers = 1 << (pin & 0x1F); // The GPIO module controls that pin.
+    gpio_port->ovrs = 1 << (pin & 0x1F);   // Value to be driven on the I/O line: 1.
+    gpio_port->oders = 1 << (pin & 0x1F);  // The GPIO output driver is enabled for that pin.
+    gpio_port->gpers = 1 << (pin & 0x1F);  // The GPIO module controls that pin.
 }
 
 void gpio_clr_gpio_pin(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
 
-    gpio_port->ovrc = 1 << (pin & 0x1F);  // Value to be driven on the I/O line: 0.
-    gpio_port->oders = 1 << (pin & 0x1F); // The GPIO output driver is enabled for that pin.
-    gpio_port->gpers = 1 << (pin & 0x1F); // The GPIO module controls that pin.
+    gpio_port->ovrc = 1 << (pin & 0x1F);   // Value to be driven on the I/O line: 0.
+    gpio_port->oders = 1 << (pin & 0x1F);  // The GPIO output driver is enabled for that pin.
+    gpio_port->gpers = 1 << (pin & 0x1F);  // The GPIO module controls that pin.
 }
 
 void gpio_tgl_gpio_pin(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
 
-    gpio_port->ovrt = 1 << (pin & 0x1F);  // Toggle the I/O line.
-    gpio_port->oders = 1 << (pin & 0x1F); // The GPIO output driver is enabled for that pin.
-    gpio_port->gpers = 1 << (pin & 0x1F); // The GPIO module controls that pin.
+    gpio_port->ovrt = 1 << (pin & 0x1F);   // Toggle the I/O line.
+    gpio_port->oders = 1 << (pin & 0x1F);  // The GPIO output driver is enabled for that pin.
+    gpio_port->gpers = 1 << (pin & 0x1F);  // The GPIO module controls that pin.
 }
 
 void gpio_set_gpio_open_drain_pin(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
 
-    gpio_port->oderc = 1 << (pin & 0x1F); // The GPIO output driver is disabled for that pin.
-    gpio_port->gpers = 1 << (pin & 0x1F); // The GPIO module controls that pin.
+    gpio_port->oderc = 1 << (pin & 0x1F);  // The GPIO output driver is disabled for that pin.
+    gpio_port->gpers = 1 << (pin & 0x1F);  // The GPIO module controls that pin.
 }
 
 void gpio_clr_gpio_open_drain_pin(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
 
-    gpio_port->ovrc = 1 << (pin & 0x1F);  // Value to be driven on the I/O line: 0.
-    gpio_port->oders = 1 << (pin & 0x1F); // The GPIO output driver is enabled for that pin.
-    gpio_port->gpers = 1 << (pin & 0x1F); // The GPIO module controls that pin.
+    gpio_port->ovrc = 1 << (pin & 0x1F);   // Value to be driven on the I/O line: 0.
+    gpio_port->oders = 1 << (pin & 0x1F);  // The GPIO output driver is enabled for that pin.
+    gpio_port->gpers = 1 << (pin & 0x1F);  // The GPIO module controls that pin.
 }
 
 void gpio_tgl_gpio_open_drain_pin(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
 
-    gpio_port->ovrc = 1 << (pin & 0x1F);  // Value to be driven on the I/O line if the GPIO output driver is enabled: 0.
-    gpio_port->odert = 1 << (pin & 0x1F); // The GPIO output driver is toggled for that pin.
-    gpio_port->gpers = 1 << (pin & 0x1F); // The GPIO module controls that pin.
+    gpio_port->ovrc = 1 << (pin & 0x1F);   // Value to be driven on the I/O line if the GPIO output driver is enabled: 0.
+    gpio_port->odert = 1 << (pin & 0x1F);  // The GPIO output driver is toggled for that pin.
+    gpio_port->gpers = 1 << (pin & 0x1F);  // The GPIO module controls that pin.
 }
 
 void gpio_enable_pin_glitch_filter(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
     gpio_port->gfers = 1 << (pin & 0x1F);
 }
 
 void gpio_disable_pin_glitch_filter(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
     gpio_port->gferc = 1 << (pin & 0x1F);
 }
 
@@ -341,7 +341,7 @@ void gpio_disable_pin_glitch_filter(unsigned int pin)
  */
 static int gpio_configure_edge_detector(unsigned int pin, unsigned int mode)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
 
     // Configure the edge detector.
     switch (mode) {
@@ -369,7 +369,7 @@ static int gpio_configure_edge_detector(unsigned int pin, unsigned int mode)
 
 int gpio_enable_pin_interrupt(unsigned int pin, unsigned int mode)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
 
     // Enable the glitch filter.
     gpio_port->gfers = 1 << (pin & 0x1F);
@@ -386,19 +386,19 @@ int gpio_enable_pin_interrupt(unsigned int pin, unsigned int mode)
 
 void gpio_disable_pin_interrupt(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
     gpio_port->ierc = 1 << (pin & 0x1F);
 }
 
 int gpio_get_pin_interrupt_flag(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
     return (gpio_port->ifr >> (pin & 0x1F)) & 1;
 }
 
 void gpio_clear_pin_interrupt_flag(unsigned int pin)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
     gpio_port->ifrc = 1 << (pin & 0x1F);
 }
 
@@ -408,7 +408,7 @@ void gpio_clear_pin_interrupt_flag(unsigned int pin)
 #if UC3L
 int gpio_configure_pin_periph_event_mode(unsigned int pin, unsigned int mode, unsigned int use_igf)
 {
-    volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
+    volatile avr32_gpio_port_t* gpio_port = &GPIO.port[pin >> 5];
 
     if (TRUE == use_igf) {
         // Enable the glitch filter.

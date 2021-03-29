@@ -21,8 +21,8 @@ uint8_t tmp100_init(uint8_t i2c_address)
 {
     uint8_t status;
     twi_package_t packet;
-    uint8_t set_hidef[] = {0x01, 0xe0}; // Set the TMP100 into 12 bit mode
-    uint8_t set_read = 0x00;            // Set the TMP100 into Read mode
+    uint8_t set_hidef[] = {0x01, 0xe0};  // Set the TMP100 into 12 bit mode
+    uint8_t set_read = 0x00;             // Set the TMP100 into Read mode
 
     // Wait for I2C port to become free
     xSemaphoreTake(mutexI2C, portMAX_DELAY);
