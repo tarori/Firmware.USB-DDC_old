@@ -608,7 +608,7 @@ void uac2_device_audio_task(void* pvParameters)
                             silence_det_R |= sample_R;
                         }
 
-                        if ((silence_det_L == sample_L) && (silence_det_R == sample_R))
+                        if ((silence_det_L == 0) && (silence_det_R == 0))
                             silence_det = 1;
                         else
                             silence_det = 0;
