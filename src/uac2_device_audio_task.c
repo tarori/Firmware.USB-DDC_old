@@ -161,10 +161,6 @@ void uac2_device_audio_task(void* pvParameters)
     const U8 EP_AUDIO_IN = ep_audio_in;
     const U8 EP_AUDIO_OUT = ep_audio_out;
     const U8 EP_AUDIO_OUT_FB = ep_audio_out_fb;
-    uint32_t silence_USB = SILENCE_USB_LIMIT;  // BSB 20150621: detect silence in USB channel, initially assume silence
-    int32_t silence_det_L = 0;
-    int32_t silence_det_R = 0;
-    int8_t silence_det = 0;
     U8 DAC_buf_DMA_read_local = 0;  // Local copy read in atomic operations
 
 #if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)
@@ -575,9 +571,6 @@ void uac2_device_audio_task(void* pvParameters)
 
                     }  // end if skip_enable
 
-                    silence_det_L = 0;  // We're looking for non-zero or non-static audio data..
-                    silence_det_R = 0;  // We're looking for non-zero or non-static audio data..
-
                     for (i = 0; i < num_samples; i++) {
                         // bBitResolution
                         if (usb_alternate_setting_out == ALT1_AS_INTERFACE_INDEX) {  // Alternate 1 24 bits/sample, 8 bytes per stereo sample
@@ -587,35 +580,26 @@ void uac2_device_audio_task(void* pvParameters)
                             sample_SB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
                             sample_MSB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
                             sample_L = (((U32)sample_MSB) << 24) + (((U32)sample_SB) << 16) + (((U32)sample_LSB) << 8);  //  + sample_HSB; // bBitResolution
-                            silence_det_L |= sample_L;
 
                             sample_HSB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);  // bBitResolution void input byte to fill up to 4 bytes?
                             sample_LSB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
                             sample_SB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
                             sample_MSB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
                             sample_R = (((U32)sample_MSB) << 24) + (((U32)sample_SB) << 16) + (((U32)sample_LSB) << 8);  // + sample_HSB; // bBitResolution
-                            silence_det_R |= sample_R;
-                        } else if (usb_alternate_setting_out == ALT2_AS_INTERFACE_INDEX) {  // Alternate 2 16 bits/sample, 4 bytes per stereo sample
+                        } else if (usb_alternate_setting_out == ALT2_AS_INTERFACE_INDEX) {                               // Alternate 2 16 bits/sample, 4 bytes per stereo sample
                             // 16-bit code
                             sample_LSB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
                             sample_MSB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
                             sample_L = (((U32)sample_MSB) << 24) + (((U32)sample_LSB) << 16);
-                            silence_det_L |= sample_L;
 
                             sample_LSB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
                             sample_MSB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
                             sample_R = (((U32)sample_MSB) << 24) + (((U32)sample_LSB) << 16);
-                            silence_det_R |= sample_R;
                         }
 
-                        if ((silence_det_L == 0) && (silence_det_R == 0))
-                            silence_det = 1;
-                        else
-                            silence_det = 0;
-
                         // New site for setting playerStarted and aligning buffers
-                        if ((silence_det == 0) && (input_select == MOBO_SRC_NONE)) {  // There is actual USB audio.
-#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)                                  // With WM8805 present, handle semaphores
+                        if (input_select == MOBO_SRC_NONE) {  // There is actual USB audio.
+#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)          // With WM8805 present, handle semaphores
 #ifdef USB_STATE_MACHINE_DEBUG
                             print_dbg_char('t');                                     // Debug semaphore, lowercase letters in USB tasks
                             if (xSemaphoreTake(input_select_semphr, 0) == pdTRUE) {  // Re-take of taken semaphore returns false
@@ -702,55 +686,7 @@ void uac2_device_audio_task(void* pvParameters)
                         samples_to_transfer_OUT = 1;  // Revert to default:1. I.e. only one skip or insert per USB package
                     }                                 // end for num_samples
 
-                    /*
-					// The silence detector detects the correct arrival of samples
-					if (silence_det_L != 0)
-						print_dbg_char('l');
-					if (silence_det_R != 0)
-						print_dbg_char('r');
-*/
-
-                    // Detect USB silence. We're counting USB packets. UAC2: 250us, UAC1: 1ms
-                    if (silence_det == 1) {
-                        if (!USB_IS_SILENT())
-                            silence_USB++;
-                    } else                               // stereo sample is non-zero
-                        silence_USB = SILENCE_USB_INIT;  // USB interface is not silent!
-
                     Usb_ack_out_received_free(EP_AUDIO_OUT);
-
-                    //					if ( (USB_IS_SILENT()) && (input_select == MOBO_SRC_UAC2) ) { // Oops, we just went silent, probably from pause
-                    // mobodebug untested fix
-                    if ((USB_IS_SILENT()) && (input_select == MOBO_SRC_UAC2) && (playerStarted != FALSE)) {  // Oops, we just went silent, probably from pause
-                        playerStarted = FALSE;
-
-#ifdef HW_GEN_DIN20  // Dedicated mute pin
-                        mobo_i2s_enable(MOBO_I2S_DISABLE);  // Hard-mute of I2S pin
-#endif
-
-// Clear buffers before give
-#ifdef USB_STATE_MACHINE_DEBUG
-                        //							print_dbg_char('8');
-#endif
-                        mobo_clear_dac_channel();
-                        // mobodebug Could this be the spot which sucks up CPU time with input_select == MOBO_SRC_UAC2
-
-#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)  // With WM8805 present, handle semaphores
-                        ledSet = FALSE;
-#ifdef USB_STATE_MACHINE_DEBUG
-                        print_dbg_char('g');  // Debug semaphore, lowercase letters for USB tasks
-                        if (xSemaphoreGive(input_select_semphr) == pdTRUE) {
-                            input_select = MOBO_SRC_NONE;  // Indicate WM may take over control
-                            print_dbg_char(60);            // '<'
-                        } else
-                            print_dbg_char(62);  // '>'
-#else
-                        if (xSemaphoreGive(input_select_semphr) == pdTRUE)
-                            input_select = MOBO_SRC_NONE;  // Indicate WM may take over control
-#endif
-                            //	 		           	mobo_led(FLED_DARK, FLED_YELLOW, FLED_DARK);	// Indicate silence detected by USB subsystem
-#endif
-                    }
 
                     /* BSB 20131031 New location of gap calculation code */
 
@@ -866,8 +802,6 @@ void uac2_device_audio_task(void* pvParameters)
 #else
             if (1) {
 #endif
-                //				playerStarted = FALSE;  // mobodebug, commented out here and included below
-                silence_USB = SILENCE_USB_LIMIT;  // Indicate USB silence
 
 #ifdef HW_GEN_DIN20  // Dedicated mute pin
                 if (usb_ch_swap == USB_CH_SWAPDET)
