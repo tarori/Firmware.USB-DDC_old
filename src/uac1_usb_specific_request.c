@@ -180,9 +180,6 @@ static Bool uac1_user_get_interface_descriptor()
     U8 string_type;
     U16 wInterface;
 
-#ifdef USB_STATE_MACHINE_DEBUG
-//	print_dbg_char('a'); // BSB debug 20120803
-#endif
 
     zlp = FALSE;                                             /* no zero length packet */
     string_type = Usb_read_endpoint_data(EP_CONTROL, 8);     /* read LSB of wValue    */
@@ -194,9 +191,6 @@ static Bool uac1_user_get_interface_descriptor()
         if (wInterface == DSC_INTERFACE_HID) {
 #if (USB_HIGH_SPEED_SUPPORT == DISABLED)
 
-#ifdef USB_STATE_MACHINE_DEBUG
-//			print_dbg_char('c'); // BSB debug 20120803
-#endif
 
             if (FEATURE_BOARD_WIDGET) {
                 data_to_transfer = sizeof(uac1_usb_conf_desc_fs_widget.hid);
@@ -208,9 +202,6 @@ static Bool uac1_user_get_interface_descriptor()
             break;
 #else
 
-#ifdef USB_STATE_MACHINE_DEBUG
-//			 print_dbg_char('d'); // BSB debug 20120803
-#endif
 
             if (FEATURE_BOARD_WIDGET) {
                 if (Is_usb_full_speed_mode()) {
@@ -235,25 +226,16 @@ static Bool uac1_user_get_interface_descriptor()
         return FALSE;
     case HID_REPORT_DESCRIPTOR:
 
-#ifdef USB_STATE_MACHINE_DEBUG
-//		print_dbg_char('e'); // BSB debug 20120803
-#endif
         //? Why doesn't this test for wInterface == DSC_INTERFACE_HID ?
         data_to_transfer = sizeof(usb_hid_report_descriptor);
         pbuffer = usb_hid_report_descriptor;
         break;
     case HID_PHYSICAL_DESCRIPTOR:
 
-#ifdef USB_STATE_MACHINE_DEBUG
-//		print_dbg_char('f'); // BSB debug 20120803
-#endif
         // TODO
         return FALSE;
     default:
 
-#ifdef USB_STATE_MACHINE_DEBUG
-//		print_dbg_char('g'); // BSB debug 20120803
-#endif
         return FALSE;
     }
 
@@ -300,9 +282,6 @@ static Bool uac1_user_get_interface_descriptor()
         ;
     Usb_ack_control_out_received_free();
 
-#ifdef USB_STATE_MACHINE_DEBUG
-//	print_dbg_char('h'); // BSB debug 20120803
-#endif
 
     return TRUE;
 
@@ -605,13 +584,6 @@ void audio_get_cur(void)
                     }
                     Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, spk_vol_usb_L));
 
-#ifdef USB_STATE_MACHINE_DEBUG
-                    print_dbg_char('g');
-                    print_dbg_char('l');
-                    print_dbg_char_hex(((spk_vol_usb_L >> 8) & 0xff));
-                    print_dbg_char_hex(((spk_vol_usb_L >> 0) & 0xff));
-                    print_dbg_char('\n');
-#endif
 
                 } else if (wValue_lsb == CH_RIGHT) {
                     // Be on the safe side here, even though fetch is done in uac1_device_audio_task.c init
@@ -657,9 +629,6 @@ void audio_set_cur(void)
         freq_changed = TRUE;
         if (speed == 0) {  // 44.1khz
 
-#ifdef USB_STATE_MACHINE_DEBUG
-            print_dbg_char('1');  // BSB debug 20121212
-#endif
 
             current_freq.frequency = FREQ_44;
             // BSB 20130602: code section moved here from uac1_device_audio_task.c
@@ -668,9 +637,6 @@ void audio_set_cur(void)
             FB_rate_nominal = FB_rate + FB_NOMINAL_OFFSET;  // BSB 20131115 Record FB_rate as it was set by control system;
         } else {                                            // 48khz
 
-#ifdef USB_STATE_MACHINE_DEBUG
-            print_dbg_char('2');  // BSB debug 20121212
-#endif
 
             current_freq.frequency = FREQ_48;
             // BSB 20130602: code section moved here from uac1_device_audio_task.c
@@ -680,9 +646,6 @@ void audio_set_cur(void)
         }
 
         spk_mute = TRUE;  // mute speaker while changing frequency and oscillator
-#ifdef USB_STATE_MACHINE_DEBUG
-        print_dbg_char_char('=');
-#endif
         mobo_clear_dac_channel();
 
         mobo_xo_select(current_freq.frequency, MOBO_SRC_UAC1);  // GPIO XO control and frequency indication
@@ -711,13 +674,6 @@ void audio_set_cur(void)
                     MSB(spk_vol_usb_L) = temp2;
                     spk_vol_mult_L = usb_volume_format(spk_vol_usb_L);
 
-#ifdef USB_STATE_MACHINE_DEBUG
-                    print_dbg_char('s');
-                    print_dbg_char('L');
-                    print_dbg_char_hex(((spk_vol_usb_L >> 8) & 0xff));
-                    print_dbg_char_hex(((spk_vol_usb_L >> 0) & 0xff));
-                    print_dbg_char('\n');
-#endif
 
                 } else if (wValue_lsb == CH_RIGHT) {
                     LSB(spk_vol_usb_R) = temp1;
@@ -768,9 +724,6 @@ Bool uac1_user_read_request(U8 type, U8 request)
 {
 
     usb_type = type;
-#ifdef USB_STATE_MACHINE_DEBUG
-//	print_dbg_char('z'); // BSB debug 20121212
-#endif
 
     // this should vector to specified interface handler
     if (type == IN_INTERFACE && request == GET_DESCRIPTOR)

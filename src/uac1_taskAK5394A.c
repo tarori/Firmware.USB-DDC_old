@@ -114,7 +114,7 @@ void uac1_AK5394A_task(void* pvParameters)
 
             //			print_dbg_char('7');	// Does this ever happen? // Doesn't look like that..
 
-// FIX: This is not pretty! We only comment out the disabling of PDCA_CHANNEL_SSC_RX, not what else is going on in the file
+            // FIX: This is not pretty! We only comment out the disabling of PDCA_CHANNEL_SSC_RX, not what else is going on in the file
             pdca_disable_interrupt_reload_counter_zero(PDCA_CHANNEL_SSC_RX);
             pdca_disable(PDCA_CHANNEL_SSC_RX);
 
@@ -158,9 +158,6 @@ void uac1_AK5394A_task(void* pvParameters)
         // silence speaker if USB data out is stalled, as indicated by heart-beat counter
         if (old_spk_usb_heart_beat == spk_usb_heart_beat) {
             if ((input_select == MOBO_SRC_UAC1) || (input_select == MOBO_SRC_NONE)) {
-#ifdef USB_STATE_MACHINE_DEBUG
-                //					print_dbg_char_char('?');
-#endif
                 mobo_clear_dac_channel();
             }
 

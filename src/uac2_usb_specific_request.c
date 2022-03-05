@@ -218,9 +218,6 @@ void uac2_freq_change_handler()
     if (freq_changed) {
 
         spk_mute = TRUE;  // mute speaker while changing frequency and oscillator
-#ifdef USB_STATE_MACHINE_DEBUG
-        print_dbg_char_char('=');
-#endif
         mobo_clear_dac_channel();
 
         mobo_xo_select(current_freq.frequency, MOBO_SRC_UAC2);  // GPIO XO control and frequency indication
@@ -233,9 +230,6 @@ void uac2_freq_change_handler()
 		 FB_rate = (FB_rate_int << 16) | (FB_rate_frac << 4);
 		 */
         if (current_freq.frequency == FREQ_96) {
-#ifdef USB_STATE_MACHINE_DEBUG
-            print_dbg_char('4');  // BSB debug 20121212
-#endif
 
             pdca_disable_interrupt_reload_counter_zero(PDCA_CHANNEL_SSC_RX);
             pdca_disable(PDCA_CHANNEL_SSC_RX);
@@ -258,9 +252,6 @@ void uac2_freq_change_handler()
         }
 
         else if (current_freq.frequency == FREQ_88) {
-#ifdef USB_STATE_MACHINE_DEBUG
-            print_dbg_char('3');  // BSB debug 20121212
-#endif
 
             pdca_disable_interrupt_reload_counter_zero(PDCA_CHANNEL_SSC_RX);
             pdca_disable(PDCA_CHANNEL_SSC_RX);
@@ -283,9 +274,6 @@ void uac2_freq_change_handler()
         }
 
         else if (current_freq.frequency == FREQ_176) {
-#ifdef USB_STATE_MACHINE_DEBUG
-            print_dbg_char('5');  // BSB debug 20121212
-#endif
 
             pdca_disable_interrupt_reload_counter_zero(PDCA_CHANNEL_SSC_RX);
             pdca_disable(PDCA_CHANNEL_SSC_RX);
@@ -299,9 +287,6 @@ void uac2_freq_change_handler()
         }
 
         else if (current_freq.frequency == FREQ_192) {
-#ifdef USB_STATE_MACHINE_DEBUG
-            print_dbg_char('6');  // BSB debug 20121212
-#endif
 
             pdca_disable_interrupt_reload_counter_zero(PDCA_CHANNEL_SSC_RX);
             pdca_disable(PDCA_CHANNEL_SSC_RX);
@@ -317,9 +302,6 @@ void uac2_freq_change_handler()
         }
 
         else if (current_freq.frequency == FREQ_48) {
-#ifdef USB_STATE_MACHINE_DEBUG
-            print_dbg_char('2');  // BSB debug 20121212
-#endif
 
             pdca_disable_interrupt_reload_counter_zero(PDCA_CHANNEL_SSC_RX);
             pdca_disable(PDCA_CHANNEL_SSC_RX);
@@ -335,9 +317,6 @@ void uac2_freq_change_handler()
         }
 
         else if (current_freq.frequency == FREQ_44) {
-#ifdef USB_STATE_MACHINE_DEBUG
-            print_dbg_char('1');  // BSB debug 20121212
-#endif
 
             pdca_disable_interrupt_reload_counter_zero(PDCA_CHANNEL_SSC_RX);
             pdca_disable(PDCA_CHANNEL_SSC_RX);
@@ -448,9 +427,6 @@ static Bool uac2_user_get_interface_descriptor()
     U8 string_type;
     U16 wInterface;
 
-#ifdef USB_STATE_MACHINE_DEBUG
-    print_dbg_char('a');  // xperia
-#endif
 
     zlp = FALSE;                                             /* no zero length packet */
     string_type = Usb_read_endpoint_data(EP_CONTROL, 8);     /* read LSB of wValue    */
@@ -460,25 +436,16 @@ static Bool uac2_user_get_interface_descriptor()
     switch (descriptor_type) {
     case HID_DESCRIPTOR:
 
-#ifdef USB_STATE_MACHINE_DEBUG
-        print_dbg_char('b');  // xperia
-#endif
 
         if (wInterface == DSC_INTERFACE_HID) {
 #if (USB_HIGH_SPEED_SUPPORT == DISABLED)
 
-#ifdef USB_STATE_MACHINE_DEBUG
-            print_dbg_char('c');  // xperia
-#endif
 
             data_to_transfer = sizeof(uac2_usb_conf_desc_fs.hid);
             pbuffer = (const U8*)&uac2_usb_conf_desc_fs.hid;
             break;
 #else
 
-#ifdef USB_STATE_MACHINE_DEBUG
-            print_dbg_char('d');  // xperia
-#endif
 
             if (Is_usb_full_speed_mode()) {
                 data_to_transfer = sizeof(uac2_usb_conf_desc_fs.hid);
@@ -493,9 +460,6 @@ static Bool uac2_user_get_interface_descriptor()
         return FALSE;
     case HID_REPORT_DESCRIPTOR:
 
-#ifdef USB_STATE_MACHINE_DEBUG
-        print_dbg_char('e');  // xperia
-#endif
 
         //? Why doesn't this test for wInterface == DSC_INTERFACE_HID ?
         data_to_transfer = sizeof(usb_hid_report_descriptor);
@@ -503,16 +467,10 @@ static Bool uac2_user_get_interface_descriptor()
         break;
     case HID_PHYSICAL_DESCRIPTOR:
 
-#ifdef USB_STATE_MACHINE_DEBUG
-        print_dbg_char('f');  // xperia
-#endif
         // TODO
         return FALSE;
     default:
 
-#ifdef USB_STATE_MACHINE_DEBUG
-        print_dbg_char('g');  // xperia
-#endif
 
         return FALSE;
     }
@@ -524,9 +482,6 @@ static Bool uac2_user_get_interface_descriptor()
     Usb_ack_setup_received_free();  //!< clear the setup received flag
     send_descriptor(wLength, zlp);  // Send the descriptor. pbuffer and data_to_transfer are global variables which must be set up by code
 
-#ifdef USB_STATE_MACHINE_DEBUG
-    print_dbg_char('h');  // xperia
-#endif
 
     return TRUE;
 
@@ -590,11 +545,6 @@ Bool uac2_user_read_request(U8 type, U8 request)
     uint8_t temp1 = 0;
     uint8_t temp2 = 0;
 
-#ifdef USB_STATE_MACHINE_DEBUG
-    print_dbg_char('t');          // xperia
-    print_dbg_char_hex(type);     // xperia
-    print_dbg_char_hex(request);  // xperia
-#endif
 
     // BSB 20120720 added
     // this should vector to specified interface handler
@@ -608,16 +558,6 @@ Bool uac2_user_read_request(U8 type, U8 request)
     wIndex = usb_format_usb_to_mcu_data(16, Usb_read_endpoint_data(EP_CONTROL, 16));
     wLength = usb_format_usb_to_mcu_data(16, Usb_read_endpoint_data(EP_CONTROL, 16));
 
-#ifdef USB_STATE_MACHINE_DEBUG
-    print_dbg_char('w');               // xperia
-    print_dbg_char_hex(wValue_lsb);    // xperia
-    print_dbg_char_hex(wValue_msb);    // xperia
-    print_dbg_char('v');               // xperia
-    print_dbg_char_hex(wIndex / 256);  // xperia MSB
-    print_dbg_char_hex(wIndex % 256);  // xperia LSB
-    print_dbg_char_hex(wLength);       // xperia
-    print_dbg_char('\n');              // xperia
-#endif
 
     // Mute button push
     // R2101.0114 type=OUT_CL_INTERFACE request=1 wIndex = 0x1401
@@ -913,9 +853,6 @@ Bool uac2_user_read_request(U8 type, U8 request)
                     if (wValue_msb == AUDIO_CS_CONTROL_SAM_FREQ  //&& wValue_lsb == 0
                         && request == AUDIO_CS_REQUEST_CUR) {
 
-#ifdef USB_STATE_MACHINE_DEBUG
-                        print_dbg_char('k');  // BSB debug 20120910 Xperia
-#endif
 
                         Usb_ack_setup_received_free();
                         Usb_reset_endpoint_fifo_access(EP_CONTROL);
@@ -931,9 +868,6 @@ Bool uac2_user_read_request(U8 type, U8 request)
                     } else if (wValue_msb == AUDIO_CS_CONTROL_CLOCK_VALID  //&& wValue_lsb == 0
                                && request == AUDIO_CS_REQUEST_CUR) {
 
-#ifdef USB_STATE_MACHINE_DEBUG
-                        print_dbg_char('i');  // BSB debug 20120910 Xperia
-#endif
 
                         Usb_ack_setup_received_free();
                         Usb_reset_endpoint_fifo_access(EP_CONTROL);
@@ -950,9 +884,6 @@ Bool uac2_user_read_request(U8 type, U8 request)
                     } else if (wValue_msb == AUDIO_CS_CONTROL_SAM_FREQ  //&& wValue_lsb == 0
                                && request == AUDIO_CS_REQUEST_RANGE) {
 
-#ifdef USB_STATE_MACHINE_DEBUG
-                        print_dbg_char('j');  // BSB debug 20120910 Xperia
-#endif
 
                         Usb_ack_setup_received_free();
                         Usb_reset_endpoint_fifo_access(EP_CONTROL);
@@ -1022,12 +953,6 @@ Bool uac2_user_read_request(U8 type, U8 request)
 
                         print_dbg_char('m');  // bBitResolution
 
-#ifdef USB_STATE_MACHINE_DEBUG
-                        // Trying to catch mute event
-                        print_dbg_char('m');
-                        print_dbg_char_hex(usb_spk_mute);
-                        print_dbg_char(' ');
-#endif
 
                         Usb_ack_control_in_ready_send();
                         while (!Is_usb_control_out_received())
@@ -1054,13 +979,6 @@ Bool uac2_user_read_request(U8 type, U8 request)
                                 }
                                 Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, spk_vol_usb_L));
 
-#ifdef USB_STATE_MACHINE_DEBUG
-                                print_dbg_char('g');
-                                print_dbg_char('L');
-                                print_dbg_char_hex(((spk_vol_usb_L >> 8) & 0xff));
-                                print_dbg_char_hex(((spk_vol_usb_L >> 0) & 0xff));
-                                print_dbg_char('\n');
-#endif
 
                             } else if (wValue_lsb == CH_RIGHT) {
                                 // Be on the safe side here, even though fetch is done in uac1_device_audio_task.c init
@@ -1088,10 +1006,6 @@ Bool uac2_user_read_request(U8 type, U8 request)
                         Usb_ack_setup_received_free();
                         Usb_reset_endpoint_fifo_access(EP_CONTROL);
 
-#ifdef USB_STATE_MACHINE_DEBUG
-                        print_dbg_char_char('x');
-                        print_dbg_char_hex(wLength);
-#endif
 
                         if (wLength == 8) {
                             //							Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, VOL_RES));
@@ -1197,9 +1111,6 @@ Bool uac2_user_read_request(U8 type, U8 request)
             } else if (type == OUT_CL_INTERFACE) {  // set controls
                 switch (wIndex / 256) {
                 case CSD_ID_1:  // set CUR freq of Mic
-#ifdef USB_STATE_MACHINE_DEBUG
-//					print_dbg_char('f'); // BSB debug 20121212
-#endif
 
                     if (wValue_msb == AUDIO_CS_CONTROL_SAM_FREQ && wValue_lsb == 0 && request == AUDIO_CS_REQUEST_CUR) {
                         freq_changed = TRUE;
@@ -1228,9 +1139,6 @@ Bool uac2_user_read_request(U8 type, U8 request)
                         return FALSE;
 
                 case CSD_ID_2:  // set CUR freq
-#ifdef USB_STATE_MACHINE_DEBUG
-//					print_dbg_char('K'); // BSB debug 20121212
-#endif
 
                     if (wValue_msb == AUDIO_CS_CONTROL_SAM_FREQ && wValue_lsb == 0 && request == AUDIO_CS_REQUEST_CUR) {
                         freq_changed = TRUE;
@@ -1313,12 +1221,6 @@ Bool uac2_user_read_request(U8 type, U8 request)
 
                         print_dbg_char('M');  // bBitResolution
 
-#ifdef USB_STATE_MACHINE_DEBUG
-                        // Trying to catch Win10 mute event
-                        print_dbg_char('M');
-                        print_dbg_char_hex(usb_spk_mute);
-                        print_dbg_char(' ');
-#endif
 
                         Usb_ack_control_out_received_free();
                         Usb_ack_control_in_ready_send();  //!< send a ZLP for STATUS phase
@@ -1343,13 +1245,6 @@ Bool uac2_user_read_request(U8 type, U8 request)
                                 spk_vol_mult_L = usb_volume_format(
                                     spk_vol_usb_L);
 
-#ifdef USB_STATE_MACHINE_DEBUG
-                                print_dbg_char('s');
-                                print_dbg_char('L');
-                                print_dbg_char_hex(((spk_vol_usb_L >> 8) & 0xff));
-                                print_dbg_char_hex(((spk_vol_usb_L >> 0) & 0xff));
-                                print_dbg_char('\n');
-#endif
 
                             } else if (wValue_lsb == CH_RIGHT) {
                                 LSB(spk_vol_usb_R) = temp1;

@@ -167,8 +167,8 @@ const
             ,
             CSX_ID  // CSD_ID_2 ClockSelector
 #else
-        ,
-        CSD_ID_2  // Straight clock
+            ,
+            CSD_ID_2  // Straight clock
 #endif
             ,
             SPK_INPUT_TERMINAL_NB_CHANNELS, Usb_format_mcu_to_usb_data(32, SPK_INPUT_TERMINAL_CHANNEL_CONF)  // 0 in Pro-Ject
@@ -183,8 +183,8 @@ const
             ,
             CSX_ID  // CSD_ID_2 ClockSelector
 #else
-        ,
-        CSD_ID_2  // Straight clock
+            ,
+            CSD_ID_2  // Straight clock
 #endif
             ,
             Usb_format_mcu_to_usb_data(16, SPK_OUTPUT_TERMINAL_CONTROLS), 0x00}
@@ -356,8 +356,8 @@ const
             ,
             CSX_ID  // CSD_ID_2 ClockSelector
 #else
-        ,
-        CSD_ID_2  // Straight clock
+            ,
+            CSD_ID_2  // Straight clock
 #endif
             ,
             SPK_INPUT_TERMINAL_NB_CHANNELS, Usb_format_mcu_to_usb_data(32, SPK_INPUT_TERMINAL_CHANNEL_CONF)  // 0 in Pro-Ject
@@ -371,8 +371,8 @@ const
             ,
             CSX_ID  // CSD_ID_2 ClockSelector
 #else
-        ,
-        CSD_ID_2  // Straight clock
+            ,
+            CSD_ID_2  // Straight clock
 #endif
             ,
             Usb_format_mcu_to_usb_data(16, SPK_OUTPUT_TERMINAL_CONTROLS), 0x00},

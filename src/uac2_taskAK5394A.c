@@ -121,10 +121,7 @@ void uac2_AK5394A_task(void* pvParameters)
         if (old_spk_usb_heart_beat == spk_usb_heart_beat) {
             if ((input_select == MOBO_SRC_UAC2) || (input_select == MOBO_SRC_NONE)) {
 
-// This is quite busy while idle
-#ifdef USB_STATE_MACHINE_DEBUG
-                //					print_dbg_char_char('?');
-#endif
+                // This is quite busy while idle
                 mobo_clear_dac_channel();
             }
 

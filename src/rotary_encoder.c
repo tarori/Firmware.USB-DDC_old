@@ -231,7 +231,7 @@ eic_nmi_handler(void)
 #else
     steps = steps + increment;
 #endif
-                        menu_steps_from_enc
+                menu_steps_from_enc
         = steps / (ENC_PULSES / 10);
     val_steps_from_enc = steps / (ENC_PULSES / 100);
     if (menu_steps_from_enc) {
@@ -321,7 +321,7 @@ eic_int_handler1(void)
 #else
     steps = steps + increment;
 #endif
-                        menu_steps_from_enc
+                menu_steps_from_enc
         = steps / (ENC_PULSES / 10);
     val_steps_from_enc = steps / (ENC_PULSES / 100);
     if (menu_steps_from_enc) {

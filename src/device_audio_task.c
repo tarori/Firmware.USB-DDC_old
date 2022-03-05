@@ -24,5 +24,3 @@ S32 spk_vol_mult_L = 0;  // Full mute for now, re-formated in uac?_device_audio_
 S32 spk_vol_mult_R = 0;
 
 volatile uint8_t input_select;  // BSB 20150501 global variable for input selector
-
-

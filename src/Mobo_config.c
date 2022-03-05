@@ -99,7 +99,6 @@ void mobo_led(uint8_t fled)
 #endif
 
 
-
 /*! \brief Audio Widget select oscillator
  *
  * \retval none
@@ -330,9 +329,6 @@ void mobo_clear_dac_channel(void)
 {
     int i;
 
-#ifdef USB_STATE_MACHINE_DEBUG
-//	print_dbg_char('C');
-#endif
 
     //	gpio_set_gpio_pin(AVR32_PIN_PX17); // ch3
 

@@ -243,7 +243,6 @@ int main(void)
 #endif
 
 
-
     // Set CPU and PBA clock
     if (PM_FREQ_STATUS_FAIL == pm_configure_clocks(&pm_freq_param))
         return 42;

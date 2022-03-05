@@ -126,15 +126,9 @@ __attribute__((__interrupt__)) static void pdca_int_handler(void)
         // we choose the same buffer number here as in the seq. code
         pdca_reload_channel(PDCA_CHANNEL_SSC_RX, (void*)audio_buffer_1, ADC_BUFFER_SIZE);
         ADC_buf_DMA_write = 1;
-#ifdef USB_STATE_MACHINE_GPIO
-        gpio_set_gpio_pin(AVR32_PIN_PX17);  // Pin 83
-#endif
     } else if (ADC_buf_DMA_write == 1) {
         pdca_reload_channel(PDCA_CHANNEL_SSC_RX, (void*)audio_buffer_0, ADC_BUFFER_SIZE);
         ADC_buf_DMA_write = 0;
-#ifdef USB_STATE_MACHINE_GPIO
-        gpio_clr_gpio_pin(AVR32_PIN_PX17);  // Pin 83
-#endif
     }
 }
 
@@ -150,24 +144,9 @@ __attribute__((__interrupt__)) static void spk_pdca_int_handler(void)
         pdca_reload_channel(PDCA_CHANNEL_SSC_TX, (void*)spk_buffer_1, DAC_BUFFER_SIZE);
         DAC_buf_DMA_read = 1;
 
-#ifdef USB_STATE_MACHINE_GPIO
-#ifdef PRODUCT_FEATURE_AMB
-        gpio_set_gpio_pin(AVR32_PIN_PX56);  // For AMB use PX56/GPIO_04
-#else
-        gpio_set_gpio_pin(AVR32_PIN_PX25);  // BSB 20140820 debug on GPIO_09/TP70 (was PX56 / GPIO_04)
-#endif
-#endif
     } else if (DAC_buf_DMA_read == 1) {
         pdca_reload_channel(PDCA_CHANNEL_SSC_TX, (void*)spk_buffer_0, DAC_BUFFER_SIZE);
         DAC_buf_DMA_read = 0;
-
-#ifdef USB_STATE_MACHINE_GPIO
-#ifdef PRODUCT_FEATURE_AMB
-        gpio_clr_gpio_pin(AVR32_PIN_PX56);  // For AMB use PX56/GPIO_04
-#else
-        gpio_clr_gpio_pin(AVR32_PIN_PX25);  // BSB 20140820 debug on GPIO_09/TP70 (was PX56 / GPIO_04)
-#endif
-#endif
     }
 
     // BSB 20131201 attempting improved playerstarted detection, FIX: move to seq. code!
@@ -262,9 +241,6 @@ void AK5394A_pdca_tx_enable(U32 frequency)
 
     pdca_disable_interrupt_reload_counter_zero(PDCA_CHANNEL_SSC_TX);
 
-#ifdef USB_STATE_MACHINE_DEBUG
-    print_dbg_char_char('N');  // xperia
-#endif
     mobo_clear_dac_channel();  // To avoid odd spurs which some times occur
 
     taskENTER_CRITICAL();
@@ -353,7 +329,7 @@ void AK5394A_task_init(const Bool uac1)
     // Register PDCA IRQ interruptS. // Plural those are!
     pdca_set_irq();
 
-// Init ADC channel for SPDIF buffering
+    // Init ADC channel for SPDIF buffering
     // Init PDCA channel with the pdca_options.
     // REMOVE! The ADC should be designed out completely
     if (!FEATURE_ADC_NONE) {
@@ -364,5 +340,4 @@ void AK5394A_task_init(const Bool uac1)
     // Initial setup of clock and TX IO. This will cause LR inversion when called with FREQ_INVALID
     // Therefore, call it with proper frequency when playback starts.
     mobo_clock_division(FREQ_INVALID);
-
 }
