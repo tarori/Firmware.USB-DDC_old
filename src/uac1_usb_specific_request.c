@@ -679,18 +679,6 @@ void audio_set_cur(void)
             FB_rate_nominal = FB_rate + FB_NOMINAL_OFFSET;  // BSB 20131115 Record FB_rate as it was set by control system;
         }
 
-#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)
-        if (input_select == MOBO_SRC_UAC1) {  // Only mute if appropriate. Perhaps input has changed to NONE before this can execute
-            spk_mute = TRUE;                  // mute speaker while changing frequency and oscillator
-            mobo_clear_dac_channel();
-        }
-        if ((input_select == MOBO_SRC_UAC1) || (input_select == MOBO_SRC_NONE)) {  // Only change I2S settings if appropriate
-            mobo_xo_select(current_freq.frequency, MOBO_SRC_UAC1);                 // Give USB the I2S control with proper MCLK
-            mobo_clock_division(current_freq.frequency);                           // Re-configure correct USB sample rate
-
-            // Will this work if we go from SPDIF to USB already playing at different sample rate?
-        }
-#else
         spk_mute = TRUE;  // mute speaker while changing frequency and oscillator
 #ifdef USB_STATE_MACHINE_DEBUG
         print_dbg_char_char('=');
@@ -699,7 +687,6 @@ void audio_set_cur(void)
 
         mobo_xo_select(current_freq.frequency, MOBO_SRC_UAC1);  // GPIO XO control and frequency indication
         mobo_clock_division(current_freq.frequency);            // This is redundant in UAC1, but we attempt restart for good measure!
-#endif
 
     }
 

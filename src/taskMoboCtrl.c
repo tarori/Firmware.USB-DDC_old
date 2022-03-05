@@ -47,10 +47,6 @@
 #include "taskLCD.h"
 #endif
 
-#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)
-#include "device_audio_task.h"
-#include "wm8805.h"
-#endif
 
 //#define GPIO_PIN_EXAMPLE_3    GPIO_PUSH_BUTTON_SW2
 
@@ -499,9 +495,6 @@ static void vtaskMoboCtrl(void* pcParameters)
     (void)pcParameters;
     uint32_t time = 0;  // Time management
 
-#ifdef HW_GEN_DIN20
-    uint8_t usb_ch_counter = 0;  // How many poll periods have passed since a USB change detection?
-#endif
 
     widget_initialization_start();
     widget_factory_reset_handler_register(mobo_ctrl_factory_reset_handler);
@@ -565,12 +558,6 @@ static void vtaskMoboCtrl(void* pcParameters)
     i2c_device_scan();
 #endif
 
-#if ((defined HW_GEN_DIN10) || (defined HW_GEN_DIN20))
-    // FIX: Why must this code be here and not in device_mouse_hid_task.c:device_mouse_hid_task_init ?
-    wm8805_init();  // Start up the WM8805 in a fairly dead mode
-    wm8805_sleep();
-    input_select_semphr = xSemaphoreCreateMutex();  // Tasks may take input select semaphore after init
-#endif
 
 #endif
 
@@ -720,11 +707,6 @@ static void vtaskMoboCtrl(void* pcParameters)
                     mobo_led(FLED_GREEN);
                 }
 
-#elif ((defined HW_GEN_DIN10) || (defined HW_GEN_DIN20))
-                if (feature_get_nvram(feature_image_index) == feature_image_uac1_audio)
-                    mobo_led(FLED_DARK, FLED_DARK, FLED_RED);  // With UAC1
-                else
-                    mobo_led(FLED_DARK, FLED_DARK, FLED_GREEN);  // With UAC != 1
 #else
 #error undefined hardware
 #endif
@@ -745,9 +727,6 @@ static void vtaskMoboCtrl(void* pcParameters)
                     if (btn_poll_temp == 100) {
 #if defined(HW_GEN_AB1X)
                         mobo_led(FLED_DARK);
-#elif ((defined HW_GEN_DIN10) || (defined HW_GEN_DIN20))
-                        mobo_led(FLED_DARK, FLED_DARK, FLED_DARK);  // Dark after performed change in nvram
-                                                                    // FIX: Make sure automatic sample rate or source change doesn't turn LEDs back on!
 #else
 #error undefined hardware
 #endif
@@ -769,12 +748,6 @@ static void vtaskMoboCtrl(void* pcParameters)
                     } else {  // With UAC != 1
                         mobo_led(FLED_RED);
                     }
-#elif ((defined HW_GEN_DIN10) || (defined HW_GEN_DIN20))
-                    // FIX: Resort to defaults according to playback mode and source. That will require some global vars or other mess
-                    if (feature_get_nvram(feature_image_index) == feature_image_uac1_audio)
-                        mobo_led(FLED_DARK, FLED_DARK, FLED_YELLOW);  // With UAC1:
-                    else
-                        mobo_led(FLED_DARK, FLED_DARK, FLED_PURPLE);  // With UAC != 1
 #else
 #error undefined hardware
 #endif
@@ -972,16 +945,12 @@ static void vtaskMoboCtrl(void* pcParameters)
                 {                 // also present, then we can use Widget PTT_1
                                   // for additional PTT control
                                   //					#if !defined(HW_GEN_DIN10) // PTT_1 line recycled in HW_GEN_DIN10
-#if !((defined HW_GEN_DIN10) || (defined HW_GEN_DIN20))  // PTT_1 (PX45) line recycled in HW_GEN_DIN10
                     gpio_set_gpio_pin(PTT_1);
-#endif
                 }
             } else
 #endif
             //				#if !defined(HW_GEN_DIN10) // PTT_1 line recycled in HW_GEN_DIN10
-#if !((defined HW_GEN_DIN10) || (defined HW_GEN_DIN20))  // PTT_1 line recycled in HW_GEN_DIN10
                 gpio_set_gpio_pin(PTT_1);
-#endif
 
 #if LCD_DISPLAY  // Multi-line LCD display
 #if FRQ_IN_FIRST_LINE  // Normal Frequency display in first line of LCD. Can be disabled for Debug
@@ -1006,15 +975,11 @@ static void vtaskMoboCtrl(void* pcParameters)
                 if (i2c.pcflpf1)  // If the PCF for Low Pass switching is
                 {                 // also present, then we can use Widget PTT_1
                                   // for additional PTT control
-#if !((defined HW_GEN_DIN10) || (defined HW_GEN_DIN20))  // PTT_1 line recycled in HW_GEN_DIN10
                     gpio_clr_gpio_pin(PTT_1);
-#endif
                 }
             } else
 #endif
-#if !((defined HW_GEN_DIN10) || (defined HW_GEN_DIN20))  // PTT_1 line recycled in HW_GEN_DIN10
                 gpio_clr_gpio_pin(PTT_1);
-#endif
 
             if (!MENU_mode) {
 #if LCD_DISPLAY  // Multi-line LCD display
@@ -1044,40 +1009,7 @@ static void vtaskMoboCtrl(void* pcParameters)
 
         LED_Toggle(LED2);  // FIX: Needed???
 
-#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20)
-        wm8805_poll();  // Handle WM8805's various hardware needs
-#endif
 
-#ifdef HW_GEN_DIN20
-        if (mobo_usb_detect() != usb_ch) {
-            print_dbg_char('#');
-
-            if (usb_ch_counter++ > 2) {        // Different USB plug for some time:
-                usb_ch_swap = USB_CH_SWAPDET;  // Signal USB audio tasks to take mute and mutex action
-                vTaskDelay(200);               // Chill for a while, at least one execution of uac?_device_audio_task
-                mobo_usb_select(USB_CH_NONE);  // Disconnect USB cables. Various house keeping in other tasks...
-                vTaskDelay(500);               // Chill for a while, at least one execution of uac?_device_audio_task
-                usb_ch = mobo_usb_detect();
-
-#ifdef USB_STATE_MACHINE_DEBUG  // Report what just happened
-                if (usb_ch == USB_CH_A)
-                    print_dbg_char('a');
-                else if (usb_ch == USB_CH_B)
-                    print_dbg_char('b');
-#endif
-
-                mobo_usb_select(usb_ch);
-
-                if ((input_select == MOBO_SRC_UAC1) || (input_select == MOBO_SRC_UAC2) || (input_select == MOBO_SRC_NONE)) {
-                    //					print_dbg_char('X');
-                    mobo_led_select(FREQ_44, input_select);  // Change LED according to recently plugged in USB cable. Assume 44.1
-                }
-
-                usb_ch_swap = USB_CH_NOSWAP;
-                usb_ch_counter = 0;
-            }
-        }
-#endif
 
         //        vTaskDelay(120);						// Changed from 100 to 120 to match device_mouse_hid_task and wm8805_poll()
     }
