@@ -1,8 +1,10 @@
 #!/bin/sh
 
 for d in \
-	"/cygdrive/c/Program Files (x86)/Atmel/AVR Tools/AVR32 Toolchain/bin" \
+    "/cygdrive/c/Program Files (x86)/Atmel/AVR Tools/AVR32 Toolchain/bin" \
     "/mnt/c/Program Files (x86)/Atmel/AVR Tools/AVR32 Toolchain/bin" \
+    "/cygdrive/c/Program Files (x86)/Atmel/AVR Tools/AVR Toolchain/bin" \
+    "/mnt/c/Program Files (x86)/Atmel/AVR Tools/AVR Toolchain/bin" \
     ;do
 	if [ -d "$d" ]
 	then
