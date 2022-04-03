@@ -203,7 +203,7 @@
             Usb_unicode('v'), \
             Usb_unicode('8'), \
             Usb_unicode('.'), \
-            Usb_unicode('0')  \
+            Usb_unicode('2')  \
     }
 
 #else
@@ -217,11 +217,11 @@
         Usb_unicode('2'),     \
             Usb_unicode('0'), \
             Usb_unicode('2'), \
-            Usb_unicode('1'), \
+            Usb_unicode('2'), \
             Usb_unicode('0'), \
             Usb_unicode('4'), \
-            Usb_unicode('1'), \
-            Usb_unicode('6'), \
+            Usb_unicode('0'), \
+            Usb_unicode('3'), \
             Usb_unicode('D'), \
             Usb_unicode('A'), \
             Usb_unicode('C')  \
