@@ -429,23 +429,6 @@ mobo_data_t cdata  // Variables in ram/flash rom (default)
 //,	( 30.0 * 4.0 * _2(5) )	// The highest two values parked above 30 MHz
 //,	( 30.0 * 4.0 * _2(5) )
 //,	( True ) }
-#if PCF_LPF || PCF_FILTER_IO  // 8x BCD control for LPF switching, switches P1 pins 4-6
-        ,
-        {(2.0 * 4.0 * _2(5))  // Default filter crossover
-            ,
-            (4.0 * 4.0 * _2(5))  // frequencies as per Alex email
-            ,
-            (8.0 * 4.0 * _2(5))  // 2009-08-15
-            ,
-            (11.0 * 4.0 * _2(5)), (14.5 * 4.0 * _2(5)), (18.2 * 4.0 * _2(5)), (21.0 * 4.0 * _2(5)), (TRUE)}
-#elif M0RZF_FILTER_IO  // M0RZF 20W amplifier LPF switching, switches P1 pins 4-6
-        ,
-        {(5.0 * 4.0 * _2(5))  // Default filter crossover
-            ,
-            (9.0 * 4.0 * _2(5))  // frequencies as per M0RZFR
-            ,
-            (15.0 * 4.0 * _2(5)), (TRUE)}
-#else
         ,
         {(2.0 * 4.0 * _2(5))  // Default filter crossover
             ,
@@ -454,7 +437,6 @@ mobo_data_t cdata  // Variables in ram/flash rom (default)
             (8.0 * 4.0 * _2(5))  // 2009-08-15
             ,
             (11.0 * 4.0 * _2(5)), (14.5 * 4.0 * _2(5)), (18.2 * 4.0 * _2(5)), (21.0 * 4.0 * _2(5)), (30.0 * 4.0 * _2(5)), (31.0 * 4.0 * _2(5)), (32.0 * 4.0 * _2(5)), (33.0 * 4.0 * _2(5)), (34.0 * 4.0 * _2(5)), (35.0 * 4.0 * _2(5)), (36.0 * 4.0 * _2(5)), (37.0 * 4.0 * _2(5)), (TRUE)}
-#endif
         ,
         PWR_FULL_SCALE  // Full Scale setting for Power Output Bargraph, in W
         ,
@@ -474,42 +456,4 @@ mobo_data_t cdata  // Variables in ram/flash rom (default)
         40  // Fan Off trigger temp in degrees C
         ,
         PCF_EXT_FAN_BIT  // Which bit is used to control the Cooling Fan
-#if SCRAMBLED_FILTERS    // Enable a non contiguous order of filters
-        ,
-        {Mobo_PCF_FLT0  // Band Pass filter selection
-            ,
-            Mobo_PCF_FLT1  // these values are mapped against the result of the
-            ,
-            Mobo_PCF_FLT2  // filter crossover point comparison
-            ,
-            Mobo_PCF_FLT3  // Filter selected by writing value to output port
-            ,
-            Mobo_PCF_FLT4, Mobo_PCF_FLT5, Mobo_PCF_FLT6, Mobo_PCF_FLT7},
-        {I2C_EXTERN_FLT0  // External LPF filter selection
-            ,
-            I2C_EXTERN_FLT1  // these values are mapped against the result of the
-            ,
-            I2C_EXTERN_FLT2  // filter crossover point comparison
-            ,
-            I2C_EXTERN_FLT3  // Value is used to set 1 out of 16 bits in a double
-            ,
-            I2C_EXTERN_FLT4  // 8bit port (2x PCF8574 GPIO)
-            ,
-            I2C_EXTERN_FLT5, I2C_EXTERN_FLT6, I2C_EXTERN_FLT7, I2C_EXTERN_FLT8, I2C_EXTERN_FLT9, I2C_EXTERN_FLTa, I2C_EXTERN_FLTb, I2C_EXTERN_FLTc, I2C_EXTERN_FLTd, I2C_EXTERN_FLTe, I2C_EXTERN_FLTf}
-#endif
-#if CALC_FREQ_MUL_ADD  // Frequency Subtract and Multiply Routines (for Smart VFO)
-        ,
-        0.000 * _2(21)  // Freq subtract value is 0.0MHz (11.21bits)
-        ,
-        1.000 * _2(21)  // Freq multiply value os 1.0    (11.21bits)
-#endif
-#if CALC_BAND_MUL_ADD  // Frequency Subtract and Multiply Routines (for smart VFO)
-        ,
-        {0.000 * _2(21)  // Freq subtract value is 0.0MHz (11.21bits)
-            ,
-            0.000 * _2(21), 0.000 * _2(21), 0.000 * _2(21), 0.000 * _2(21), 0.000 * _2(21), 0.000 * _2(21), 0.000 * _2(21)},
-        {1.000 * _2(21)  // Freq multiply value is 1.0MHz (11.21bits)
-            ,
-            1.000 * _2(21), 1.000 * _2(21), 1.000 * _2(21), 1.000 * _2(21), 1.000 * _2(21), 1.000 * _2(21), 1.000 * _2(21)}
-#endif
 };

@@ -100,9 +100,6 @@
 #include "ssc_i2s.h"  // For I2S tests
 
 
-#if LCD_DISPLAY  // Multi-line LCD display
-#include "taskLCD.h"
-#endif
 //#include "taskEXERCISE.h"
 
 //_____ M A C R O S ________________________________________________________
@@ -129,12 +126,6 @@ void device_mouse_hid_task_init(U8 ep_tx)
     //	ep_hid_rx = ep_rx; // BSB 20120718 unused variable, sane?
     ep_hid_tx = ep_tx;
 #ifndef FREERTOS_USED
-#if USB_HOST_FEATURE == ENABLED
-    // If both device and host features are enabled, check if device mode is engaged
-    // (accessing the USB registers of a non-engaged mode, even with load operations,
-    // may corrupt USB FIFO data).
-    if (Is_usb_device())
-#endif  // USB_HOST_FEATURE == ENABLED
         Usb_enable_sof_interrupt();
 #endif  // FREERTOS_USED
 
@@ -151,9 +142,6 @@ void device_mouse_hid_task_init(U8 ep_tx)
     print_dbg("\nHID ready\n");  // usart is ready to receive HID commands!
 
     // Added BSB 20120719
-#if LCD_DISPLAY
-#define HID2LCD  // Use LCD to debug incoming HID commands from uart
-#endif
 
 #ifdef HID2LCD  // Needed here? Including these lines seems to break functionality
 //	lcd_q_init();

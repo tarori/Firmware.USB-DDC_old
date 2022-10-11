@@ -78,9 +78,6 @@
 #include "usb_specific_request.h"
 #include "usb_standard_request.h"
 
-#if LCD_DISPLAY  // Multi-line LCD display
-#include "taskLCD.h"
-#endif
 
 #include "composite_widget.h"
 #include "taskAK5394A.h"

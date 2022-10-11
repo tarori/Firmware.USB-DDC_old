@@ -25,17 +25,6 @@
 #define Mobo_PCF_TX2 (1 << 6)  // SWR Protect secondary PTT
 #define Mobo_PCF_TX (1 << 7)   // TX PTT, active low
 
-#if SCRAMBLED_FILTERS  // Enable a non contiguous order of filters
-// Default filter addresses for Band Pass filters
-#define Mobo_PCF_FLT0 0x00  // Filter setting is a 3 bit value
-#define Mobo_PCF_FLT1 0x01  // Filter order could be scrambled if desired
-#define Mobo_PCF_FLT2 0x02  // Can be read/modified through
-#define Mobo_PCF_FLT3 0x03  // USB commands 0x18/19 (see Readme.txt file)
-#define Mobo_PCF_FLT4 0x04
-#define Mobo_PCF_FLT5 0x05
-#define Mobo_PCF_FLT6 0x06
-#define Mobo_PCF_FLT7 0x07
-#endif
 
 //Defs for two offboard PCF8574A chips in the MegaFilter Mobo
 // I2C Addresses for these chips can be:
@@ -47,25 +36,6 @@
 #define PCF_LPF1_I2C_ADDR 0x39  // I2C address for first Megafilter Mobo PCF8574
 #define PCF_LPF2_I2C_ADDR 0x3a  // I2C address for second Megafilter Mobo PCF8574
 
-#if SCRAMBLED_FILTERS  // Enable a non contiguous order of filters
-// Default filter addresses for Band Pass filters
-#define I2C_EXTERN_FLT0 0x00  // Filter setting is a 4bit value
-#define I2C_EXTERN_FLT1 0x01  // Filter order could be scrambled if desired
-#define I2C_EXTERN_FLT2 0x02  // Can be read/modified through
-#define I2C_EXTERN_FLT3 0x03  // USB commands 0x1a/1b (see Readme.txt file)
-#define I2C_EXTERN_FLT4 0x04
-#define I2C_EXTERN_FLT5 0x05
-#define I2C_EXTERN_FLT6 0x06
-#define I2C_EXTERN_FLT7 0x07
-#define I2C_EXTERN_FLT8 0x08
-#define I2C_EXTERN_FLT9 0x09
-#define I2C_EXTERN_FLTa 0x0a
-#define I2C_EXTERN_FLTb 0x0b
-#define I2C_EXTERN_FLTc 0x0c
-#define I2C_EXTERN_FLTd 0x0d
-#define I2C_EXTERN_FLTe 0x0e
-#define I2C_EXTERN_FLTf 0x0f
-#endif
 
 //Defs used for a PCF8574 used for control of a cooling FAN, attenuators, etc...
 //Normally this will be an external PCF8574, but alternately the on-board PCF (PCF_MOBO_I2C_ADDR)

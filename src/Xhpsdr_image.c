@@ -23,10 +23,6 @@
 #if USB_DEVICE_FEATURE == ENABLED
 #include "device_mouse_hid_task.h"
 #endif
-#if USB_HOST_FEATURE == ENABLED
-//#include "host_keyboard_hid_task.h"
-//#include "host_mouse_hid_task.h"
-#endif
 #include "composite_widget.h"
 #include "hpsdr_taskAK5394A.h"
 #include "taskAK5394A.h"
@@ -45,10 +41,6 @@
 #include "taskPushButtonMenu.h"
 #include "wdt.h"
 
-#if LCD_DISPLAY  // Multi-line LCD display
-#include "taskLCD.h"
-#include "taskStartupLogDisplay.h"
-#endif
 
 /*
 ** Image specific headers
@@ -78,18 +70,10 @@ static void x_image_task_init(void)
 
     mutexEP_IN = xSemaphoreCreateMutex();  // for co-ordinating multiple tasks using EP IN
 
-#if LCD_DISPLAY  // Multi-line LCD display
-    vStartTaskLCD();
-    vStartTaskPowerDisplay();
-    vStartTaskPushButtonMenu();
-#endif
     vStartTaskMoboCtrl();
     // vStartTaskEXERCISE( tskIDLE_PRIORITY );
     hpsdr_AK5394A_task_init();
     hpsdr_device_audio_task_init(HPSDR_EP_IQ_IN, HPSDR_EP_IQ_OUT, 0);
-#endif
-#if LCD_DISPLAY  // Multi-line LCD display
-    vStartTaskStartupLogDisplay();
 #endif
 }
 

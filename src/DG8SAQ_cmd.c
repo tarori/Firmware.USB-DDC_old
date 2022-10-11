@@ -66,26 +66,6 @@ void dg8saqFunctionWrite(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* Buf
             FRQ_fromusbreg = TRUE;
         }
         break;
-#if CALC_FREQ_MUL_ADD  // Frequency Subtract and Multiply Routines (for smart VFO)
-    case 0x31:         // Write the frequency subtract multiply to the eeprom
-        if (len == 2 * sizeof(uint32_t)) {
-            cdata.FreqSub = Buf32[1];
-            cdata.FreqMul = Buf32[0];
-            flashc_memset32((void*)&nvram_cdata.FreqSub, cdata.FreqSub, sizeof(uint32_t), TRUE);
-            flashc_memset32((void*)&nvram_cdata.FreqMul, cdata.FreqMul, sizeof(uint32_t), TRUE);
-        }
-        break;
-#endif
-#if CALC_BAND_MUL_ADD  // Frequency Subtract and Multiply Routines (for smart VFO)
-    case 0x31:         // Write the frequency subtract multiply to the eeprom
-        if (len == 2 * sizeof(uint32_t)) {
-            cdata.BandSub[wIndex & 0x0f] = Buf32[1];
-            cdata.BandMul[wIndex & 0x0f] = Buf32[0];
-            flashc_memset32((void*)&nvram_cdata.BandSub[wIndex & 0x0f], Buf32[1], sizeof(uint32_t), TRUE);
-            flashc_memset32((void*)&nvram_cdata.BandMul[wIndex & 0x0f], Buf32[0], sizeof(uint32_t), TRUE);
-        }
-        break;
-#endif
 
     case 0x32:  // Set frequency by value and load Si570
         if (len == 4) {
@@ -226,13 +206,7 @@ uint8_t dg8saqFunctionSetup(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* 
         else {
             wIndex = wIndex & 0xff;  // Remove high byte
 
-#if PCF_FILTER_IO            // 8x BCD TX filter control, switches P1 pins 4-6
-            if (wIndex < 8)  // Make sure we don't overwrite other parts of table
-#elif M0RZF_FILTER_IO        // M0RZF 20W amplifier LPF switching, switches P1 pins 4-6
-            if (wIndex < 4)  // Make sure we don't overwrite other parts of table
-#else
             if (wIndex < 16)  // Make sure we don't overwrite other parts of table
-#endif
             {
                 cdata.TXFilterCrossOver[wIndex] = wValue;
                 flashc_memset16((void*)&nvram_cdata.TXFilterCrossOver[wIndex], wValue, sizeof(uint16_t), TRUE);
@@ -244,29 +218,6 @@ uint8_t dg8saqFunctionSetup(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* 
         }
     }
 
-#if SCRAMBLED_FILTERS  // Enable a non contiguous order of Filters
-    case 0x18:         // Set the Band Pass Filter Address for one band: 0,1,2...7
-        cdata.FilterNumber[wIndex] = wValue;
-        flashc_memset8((void*)&nvram_cdata.FilterNumber[wIndex], wValue, sizeof(uint8_t), TRUE);
-        // passthrough to case 0x19
-
-    case 0x19:  // Read the Band Pass Filter Addresses for bands 0,1,2...7
-        for (x = 0; x < 8; x++) {
-            Buffer[7 - x] = cdata.FilterNumber[x];
-        }
-        return 8 * sizeof(uint8_t);
-
-    case 0x1a:  // Set the Low Pass Filter Address for one band: 0,1,2...15
-        cdata.TXFilterNumber[wIndex] = wValue;
-        flashc_memset8((void*)&nvram_cdata.TXFilterNumber[wIndex], wValue, sizeof(uint8_t), TRUE);
-        // passthrough to case 0x1b
-
-    case 0x1b:  // Read the Low Pass Filter Addresses for bands 0,1,2...15
-        for (x = 0; x < TXF; x++) {
-            Buffer[(TXF - 1) - x] = cdata.TXFilterNumber[x];
-        }
-        return TXF * sizeof(uint8_t);
-#endif
 
         // Todo -- delete, most likely
         //case 0x20:								// [DEBUG] Write byte to Si570 register
@@ -288,18 +239,6 @@ uint8_t dg8saqFunctionSetup(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* 
         //	return 0		;					// Hey we're not supposed to be here
         // 	we use usbFunctionWrite() to transfer data
 
-#if CALC_FREQ_MUL_ADD  // Frequency Subtract and Multiply Routines (for smart VFO)
-    case 0x39:         // Return the current Subtract and Multiply values
-        Buf32[1] = cdata.FreqSub;
-        Buf32[0] = cdata.FreqMul;
-        return 2 * sizeof(uint32_t);
-#endif
-#if CALC_BAND_MUL_ADD  // Frequency Subtract and Multiply Routines (for smart VFO)
-    case 0x39:         // Return the current Subtract and Multiply values
-        Buf32[1] = cdata.BandSub[wIndex & 0x0f];
-        Buf32[0] = cdata.BandMul[wIndex & 0x0f];
-        return 2 * sizeof(uint32_t);
-#endif
 
     case 0x3a:  // Return running frequnecy
         *Buf32 = cdata.Freq[0];
