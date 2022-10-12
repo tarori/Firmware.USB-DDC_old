@@ -80,9 +80,6 @@
 
 #include "conf_usb.h"
 
-#if USB_DEVICE_FEATURE == DISABLED
-#error usb_standard_request.h is #included although USB_DEVICE_FEATURE is disabled
-#endif
 
 #include "usb_descriptors.h"
 #include "usb_task.h"

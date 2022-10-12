@@ -72,9 +72,6 @@
 
 #include "conf_usb.h"
 
-#if USB_DEVICE_FEATURE == DISABLED
-#error usb_specific_request.h is #included although USB_DEVICE_FEATURE is disabled
-#endif
 
 //_____ M A C R O S ________________________________________________________
 

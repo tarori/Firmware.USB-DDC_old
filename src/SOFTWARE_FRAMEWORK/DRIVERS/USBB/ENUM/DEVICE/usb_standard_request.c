@@ -78,7 +78,6 @@
 
 #include "conf_usb.h"
 
-#if USB_DEVICE_FEATURE == ENABLED
 
 #include "usb_descriptors.h"
 #include "usb_drv.h"
@@ -723,4 +722,3 @@ void usb_set_interface(void)
         ;
 }
 
-#endif  // USB_DEVICE_FEATURE == ENABLED

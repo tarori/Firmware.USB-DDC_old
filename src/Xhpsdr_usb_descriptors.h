@@ -39,9 +39,6 @@
 #include "conf_usb.h"
 #include "usb_descriptors.h"
 
-#if USB_DEVICE_FEATURE == DISABLED
-#error hpsdr_usb_descriptors.h is #included although USB_DEVICE_FEATURE is disabled
-#endif
 
 #include "usb_standard_request.h"
 #include "usb_task.h"

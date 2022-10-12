@@ -348,16 +348,12 @@ static void vtaskMoboCtrl(void* pcParameters)
                                                                                     // At first detection of Prog pin change AB-1.x / USB DAC 128 mkI/II front LEDs for contrast:
                                                                                     // RED->GREEN / GREEN->RED depending on LED_AB_FRONT
                                                                                     // Historical note: Here used to be a pink definition and a bunch of defines. Removed 20150403
-#if defined(HW_GEN_AB1X)
                 if (feature_get_nvram(feature_image_index) == feature_image_uac1_audio) {  // With UAC1:
                     mobo_led(FLED_RED);
                 } else {  // With UAC != 1
                     mobo_led(FLED_GREEN);
                 }
 
-#else
-#error undefined hardware
-#endif
 
                 if (btn_poll_temp > 2)  // If button pressed during at least 2 consecutive 2Hz polls...
                 {
@@ -373,11 +369,7 @@ static void vtaskMoboCtrl(void* pcParameters)
                     }
 
                     if (btn_poll_temp == 100) {
-#if defined(HW_GEN_AB1X)
                         mobo_led(FLED_DARK);
-#else
-#error undefined hardware
-#endif
                     }
                 } else
                     btn_poll_temp++;
@@ -390,15 +382,11 @@ static void vtaskMoboCtrl(void* pcParameters)
                 if (btn_poll_temp != 100)  // Prog released without nvram change -> default front LED color
                 {                          // Keep front LEDs dark after nvram change
 
-#if defined(HW_GEN_AB1X)
                     if (feature_get_nvram(feature_image_index) == feature_image_uac1_audio) {  // With UAC1:
                         mobo_led(FLED_GREEN);
                     } else {  // With UAC != 1
                         mobo_led(FLED_RED);
                     }
-#else
-#error undefined hardware
-#endif
                 }
                 btn_poll_temp = 0;
             }

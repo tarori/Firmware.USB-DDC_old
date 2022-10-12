@@ -21,7 +21,6 @@
 
 #include "conf_usb.h"
 
-#if USB_DEVICE_FEATURE == ENABLED
 
 #include "hpsdr_usb_descriptors.h"
 #include "hpsdr_usb_specific_request.h"
@@ -139,4 +138,3 @@ const S_usb_product_string_descriptor hpsdr_usb_user_product_string_descriptor =
     STRING_DESCRIPTOR,
     HPSDR_USB_PRODUCT_NAME};
 
-#endif  // USB_DEVICE_FEATURE == ENABLED

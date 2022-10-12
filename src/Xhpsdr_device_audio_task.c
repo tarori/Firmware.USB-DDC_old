@@ -59,13 +59,10 @@
 #include "conf_usb.h"
 #include "features.h"
 
-#if USB_DEVICE_FEATURE == ENABLED
 
 #include "board.h"
-#ifdef FREERTOS_USED
 #include "FreeRTOS.h"
 #include "task.h"
-#endif
 #include "device_audio_task.h"
 #include "gpio.h"
 #include "hpsdr_device_audio_task.h"
@@ -411,4 +408,3 @@ void hpsdr_device_audio_task(void* pvParameters)
     }  // end while vTask
 }
 
-#endif  // USB_DEVICE_FEATURE == ENABLED

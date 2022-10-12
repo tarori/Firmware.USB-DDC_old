@@ -18,9 +18,7 @@
 #include "print_funcs.h"
 #include "task.h"
 #include "usb_task.h"
-#if USB_DEVICE_FEATURE == ENABLED
 #include "device_mouse_hid_task.h"
-#endif
 #include "composite_widget.h"
 #include "taskAK5394A.h"
 #include "uac1_taskAK5394A.h"
@@ -57,31 +55,6 @@ static void x_image_boot(void)
 
 static void x_image_init(void)
 {
-#ifdef VDD_SENSE
-    if (gpio_get_pin_value(AVR32_PIN_PA19)) {
-        uac1_usb_conf_desc_fs.cfg.bmAttributes = USB_CONFIG_SELFPOWERED;
-        uac1_usb_conf_desc_fs.cfg.MaxPower = 5;  // 10mA
-        uac1_usb_conf_desc_fs_widget.cfg.bmAttributes = USB_CONFIG_SELFPOWERED;
-        uac1_usb_conf_desc_fs_widget.cfg.MaxPower = 5;  // 10mA
-#if USB_HIGH_SPEED_SUPPORT == ENABLED
-        uac1_usb_conf_desc_hs.cfg.bmAttributes = USB_CONFIG_SELFPOWERED;
-        uac1_usb_conf_desc_hs.cfg.MaxPower = 5;  // 10mA
-        uac1_usb_conf_desc_hs_widget.cfg.bmAttributes = USB_CONFIG_SELFPOWERED;
-        uac1_usb_conf_desc_hs_widget.cfg.MaxPower = 5;  // 10mA
-#endif
-    } else {
-        uac1_usb_conf_desc_fs.cfg.bmAttributes = USB_CONFIG_BUSPOWERED;
-        uac1_usb_conf_desc_fs.cfg.MaxPower = 250;  // 500mA
-        uac1_usb_conf_desc_fs_widget.cfg.bmAttributes = USB_CONFIG_BUSPOWERED;
-        uac1_usb_conf_desc_fs_widget.cfg.MaxPower = 250;  // 500mA
-#if USB_HIGH_SPEED_SUPPORT == ENABLED
-        uac1_usb_conf_desc_hs.cfg.bmAttributes = USB_CONFIG_BUSPOWERED;
-        uac1_usb_conf_desc_hs.cfg.MaxPower = 250;  // 500mA
-        uac1_usb_conf_desc_hs_widget.cfg.bmAttributes = USB_CONFIG_BUSPOWERED;
-        uac1_usb_conf_desc_hs_widget.cfg.MaxPower = 250;  // 500mA
-#endif
-    }
-#endif  // VDD_SENSE
 }
 
 static void x_image_task_init(void)
@@ -89,19 +62,13 @@ static void x_image_task_init(void)
     // Initialize USB task
     usb_task_init();
 
-#if USB_DEVICE_FEATURE == ENABLED
 
     mutexEP_IN = xSemaphoreCreateMutex();  // for co-ordinating multiple tasks using EP IN
 
     vStartTaskMoboCtrl();
     // vStartTaskEXERCISE( tskIDLE_PRIORITY );
     uac1_AK5394A_task_init();
-#ifdef FEATURE_HID
-    //  device_mouse_hid_task_init(UAC1_EP_HID_RX, UAC1_EP_HID_TX);
-    device_mouse_hid_task_init(UAC1_EP_HID_TX);
-#endif
     uac1_device_audio_task_init(UAC1_EP_AUDIO_IN, UAC1_EP_AUDIO_OUT, UAC1_EP_AUDIO_OUT_FB);
-#endif
 }
 
 // descriptor accessors

@@ -58,9 +58,6 @@
 
 #include "conf_usb.h"
 
-#if USB_DEVICE_FEATURE == DISABLED
-#error uac1_device_audio_task.h is #included although USB_DEVICE_FEATURE is disabled
-#endif
 
 //_____ D E F I N I T I O N S ______________________________________________
 
@@ -69,10 +66,6 @@
 //_____ D E C L A R A T I O N S ____________________________________________
 
 extern void uac1_device_audio_task_init(U8 ep_in, U8 ep_out, U8 ep_out_fb);
-#ifdef FREERTOS_USED
 extern void uac1_device_audio_task(void* pvParameters);
-#else
-extern void uac1_device_audio_task(void);
-#endif
 
 #endif  // _UAC1_DEVICE_AUDIO_TASK_H_

@@ -70,9 +70,6 @@
 // To access SPDIF RX status
 #include "wm8805.h"
 
-#if USB_DEVICE_FEATURE == DISABLED
-#error device_audio_task.h is #included although USB_DEVICE_FEATURE is disabled
-#endif
 
 //_____ D E F I N I T I O N S ______________________________________________
 

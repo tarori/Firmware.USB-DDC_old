@@ -39,12 +39,10 @@
 #include "intc.h"
 #endif
 #include "board.h"
-#ifdef FREERTOS_USED
 #include "FreeRTOS.h"
 #include "FreeRTOSConfig.h"
 #include "semphr.h"
 #include "task.h"
-#endif
 #include "Mobo_config.h"
 #include "device_audio_task.h"
 #include "features.h"
@@ -78,10 +76,8 @@ void uac2_AK5394A_task_init(void)
     AK5394A_task_init(FALSE);
 
 //clear samplerate indication FIX: move to different _init() routine
-#if defined(HW_GEN_AB1X)
     gpio_clr_gpio_pin(SAMPLEFREQ_VAL1);
     gpio_set_gpio_pin(SAMPLEFREQ_VAL0);
-#endif
 
     xTaskCreate(uac2_AK5394A_task,
         configTSK_AK5394A_NAME,

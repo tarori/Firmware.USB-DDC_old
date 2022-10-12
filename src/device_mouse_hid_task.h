@@ -54,9 +54,6 @@
 
 #include "conf_usb.h"
 
-#if USB_DEVICE_FEATURE == DISABLED
-#error device_mouse_hid_task.h is #included although USB_DEVICE_FEATURE is disabled
-#endif
 
 //_____ M A C R O S ________________________________________________________
 
@@ -64,10 +61,6 @@
 
 //extern void device_mouse_hid_task_init(U8 ep_hid_rx, U8 ep_hid_tx);
 extern void device_mouse_hid_task_init(U8 ep_hid_tx);
-#ifdef FREERTOS_USED
 extern void device_mouse_hid_task(void* pvParameters);
-#else
-extern void device_mouse_hid_task(void);
-#endif
 
 #endif  // _DEVICE_MOUSE_HID_TASK_H_

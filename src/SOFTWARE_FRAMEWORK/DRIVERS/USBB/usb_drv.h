@@ -204,26 +204,6 @@
     Clr_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_UNLOCK_MASK),                             \
     Rd_bitfield(AVR32_USBB_usbcon, AVR32_USBB_USBCON_TIMVALUE_MASK))
 
-#if USB_DEVICE_FEATURE == ENABLED && USB_HOST_FEATURE == ENABLED
-//! Check that multiplexed pin used for USB_ID is defined
-#ifndef USB_ID
-#error YOU MUST define in your board header file the multiplexed pin used for USB_ID as AVR32_USBB_USB_ID_x_x
-#endif
-//! Pin and function for USB_ID according to configuration from USB_ID
-#define USB_ID_PIN ATPASTE2(USB_ID, _PIN)
-#define USB_ID_FUNCTION ATPASTE2(USB_ID, _FUNCTION)
-//! Input USB_ID from its pin
-#define Usb_input_id_pin()                                                                                                                                                             \
-    {                                                                                                                                                                                  \
-        (Tst_bits(USB_ID_FUNCTION, 0x01)) ? (AVR32_GPIO.port[USB_ID_PIN >> 5].pmr0s = 1 << (USB_ID_PIN & 0x1F)) : (AVR32_GPIO.port[USB_ID_PIN >> 5].pmr0c = 1 << (USB_ID_PIN & 0x1F)); \
-        (Tst_bits(USB_ID_FUNCTION, 0x02)) ? (AVR32_GPIO.port[USB_ID_PIN >> 5].pmr1s = 1 << (USB_ID_PIN & 0x1F)) : (AVR32_GPIO.port[USB_ID_PIN >> 5].pmr1c = 1 << (USB_ID_PIN & 0x1F)); \
-        AVR32_GPIO.port[USB_ID_PIN >> 5].gperc = 1 << (USB_ID_PIN & 0x1F);                                                                                                             \
-        AVR32_GPIO.port[USB_ID_PIN >> 5].puers = 1 << (USB_ID_PIN & 0x1F);                                                                                                             \
-    }
-//! Test if USB_ID is input from its pin
-#define Is_usb_id_pin_input() \
-    (!Tst_bits(AVR32_GPIO.port[USB_ID_PIN >> 5].gper, 1 << (USB_ID_PIN & 0x1F)) && Tst_bits(AVR32_GPIO.port[USB_ID_PIN >> 5].pmr0, 1 << (USB_ID_PIN & 0x1F)) == Tst_bits(USB_ID_PIN, 0x01) && Tst_bits(AVR32_GPIO.port[USB_ID_PIN >> 5].pmr1, 1 << (USB_ID_PIN & 0x1F)) == Tst_bits(USB_ID_PIN, 0x02))
-#endif  // USB_DEVICE_FEATURE == ENABLED && USB_HOST_FEATURE == ENABLED \
        //! Enable external USB_ID pin (listened to by USB)
 #define Usb_enable_id_pin() (Set_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_UIDE_MASK))
 //! Disable external USB_ID pin (ignored by USB)
@@ -239,27 +219,6 @@
 //! Test if host mode is forced
 #define Is_usb_host_mode_forced() (!Is_usb_id_pin_enabled() && !Tst_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_UIMOD_MASK))
 
-#if USB_HOST_FEATURE == ENABLED
-//! Check that multiplexed pin used for USB_VBOF is defined
-#ifndef USB_VBOF
-#error YOU MUST define in your board header file the multiplexed pin used for USB_VBOF as AVR32_USBB_USB_VBOF_x_x
-#endif
-//! Pin and function for USB_VBOF according to configuration from USB_VBOF
-#define USB_VBOF_PIN ATPASTE2(USB_VBOF, _PIN)
-#define USB_VBOF_FUNCTION ATPASTE2(USB_VBOF, _FUNCTION)
-//! Output USB_VBOF onto its pin
-#define Usb_output_vbof_pin()                                                                                                                                                                    \
-    {                                                                                                                                                                                            \
-        (Tst_bits(USB_VBOF_FUNCTION, 0x01)) ? (AVR32_GPIO.port[USB_VBOF_PIN >> 5].pmr0s = 1 << (USB_VBOF_PIN & 0x1F)) : (AVR32_GPIO.port[USB_VBOF_PIN >> 5].pmr0c = 1 << (USB_VBOF_PIN & 0x1F)); \
-        (Tst_bits(USB_VBOF_FUNCTION, 0x02)) ? (AVR32_GPIO.port[USB_VBOF_PIN >> 5].pmr1s = 1 << (USB_VBOF_PIN & 0x1F)) : (AVR32_GPIO.port[USB_VBOF_PIN >> 5].pmr1c = 1 << (USB_VBOF_PIN & 0x1F)); \
-        AVR32_GPIO.port[USB_VBOF_PIN >> 5].gperc = 1 << (USB_VBOF_PIN & 0x1F);                                                                                                                   \
-        AVR32_GPIO.port[USB_VBOF_PIN >> 5].odmerc = 1 << (USB_VBOF_PIN & 0x1F);                                                                                                                  \
-        AVR32_GPIO.port[USB_VBOF_PIN >> 5].puerc = 1 << (USB_VBOF_PIN & 0x1F);                                                                                                                   \
-    }
-//! Test if USB_VBOF is output onto its pin
-#define Is_usb_vbof_pin_output() \
-    (!Tst_bits(AVR32_GPIO.port[USB_VBOF_PIN >> 5].gper, 1 << (USB_VBOF_PIN & 0x1F)) && Tst_bits(AVR32_GPIO.port[USB_VBOF_PIN >> 5].pmr0, 1 << (USB_VBOF_PIN & 0x1F)) == Tst_bits(USB_VBOF_FUNCTION, 0x01) && Tst_bits(AVR32_GPIO.port[USB_VBOF_PIN >> 5].pmr1, 1 << (USB_VBOF_PIN & 0x1F)) == Tst_bits(USB_VBOF_FUNCTION, 0x02))
-#endif  // USB_HOST_FEATURE == ENABLED \
        //! Set USB_VBOF output pin polarity
 #define Usb_set_vbof_active_high() (Clr_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_VBUSPO_MASK))
 #define Usb_set_vbof_active_low() (Set_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_VBUSPO_MASK))
@@ -924,26 +883,6 @@
 //! tests if the selected endpoint DMA channel interrupt is enabled
 #define Is_usb_endpoint_dma_interrupt_enabled(epdma) (Tst_bits(AVR32_USBB_udinte, AVR32_USBB_UDINTE_DMA1INTE_MASK << ((epdma)-1)))
 //! @todo Implement macros for endpoint DMA registers and descriptors
-#if 0
-#define Usb_set_endpoint_dma_nxt_desc_addr(epdma, nxt_desc_addr) (AVR32_USBB_UDDMAX_NEXTDESC(epdma).nxt_desc_addr = (U32)(nxt_desc_addr))
-#define Usb_get_endpoint_dma_nxt_desc_addr(epdma) ((avr32_usbb_uxdmax_t*)AVR32_USBB_UDDMAX_NEXTDESC(epdma).nxt_desc_addr)
-#define(epdma)(AVR32_USBB_UDDMAX_addr(epdma))
-#define(epdma)(AVR32_USBB_UDDMAX_CONTROL(epdma).ch_byte_length)
-#define(epdma)(AVR32_USBB_UDDMAX_CONTROL(epdma).burst_lock_en)
-#define(epdma)(AVR32_USBB_UDDMAX_CONTROL(epdma).desc_ld_irq_en)
-#define(epdma)(AVR32_USBB_UDDMAX_CONTROL(epdma).eobuff_irq_en)
-#define(epdma)(AVR32_USBB_UDDMAX_CONTROL(epdma).eot_irq_en)
-#define(epdma)(AVR32_USBB_UDDMAX_CONTROL(epdma).dmaend_en)
-#define(epdma)(AVR32_USBB_UDDMAX_CONTROL(epdma).buff_close_in_en)
-#define(epdma)(AVR32_USBB_UDDMAX_CONTROL(epdma).ld_nxt_ch_desc_en)
-#define(epdma)(AVR32_USBB_UDDMAX_CONTROL(epdma).ch_en)
-#define(epdma)(AVR32_USBB_UDDMAX_STATUS(epdma).ch_byte_cnt)
-#define(epdma)(AVR32_USBB_UDDMAX_STATUS(epdma).desc_ld_sta)
-#define(epdma)(AVR32_USBB_UDDMAX_STATUS(epdma).eoch_buff_sta)
-#define(epdma)(AVR32_USBB_UDDMAX_STATUS(epdma).eot_sta)
-#define(epdma)(AVR32_USBB_UDDMAX_STATUS(epdma).ch_active)
-#define(epdma)(AVR32_USBB_UDDMAX_STATUS(epdma).ch_en)
-#endif
 //! @}
 
 //! @defgroup USBB_host_driver USBB host controller drivers
@@ -1526,18 +1465,10 @@
 
 extern UnionVPtr pep_fifo[MAX_PEP_NB];
 
-#if USB_DEVICE_FEATURE == ENABLED
 extern Status_bool_t usb_init_device(void);
 extern U32 usb_set_ep_txpacket(U8, U8, U32);
 extern U32 usb_write_ep_txpacket(U8, const void*, U32, const void**);
 extern U32 usb_read_ep_rxpacket(U8, void*, U32, void**);
-#endif
 
-#if USB_HOST_FEATURE == ENABLED
-extern void host_disable_all_pipes(void);
-extern U32 host_set_p_txpacket(U8, U8, U32);
-extern U32 host_write_p_txpacket(U8, const void*, U32, const void**);
-extern U32 host_read_p_rxpacket(U8, void*, U32, void**);
-#endif
 
 #endif  // _USB_DRV_H_

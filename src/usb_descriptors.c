@@ -72,7 +72,6 @@
 #include "conf_usb.h"
 #include "features.h"
 
-#if USB_DEVICE_FEATURE == ENABLED
 
 #include "usb_audio.h"
 #include "usb_descriptors.h"
@@ -257,4 +256,3 @@ const U8 usb_hid_report_descriptor[USB_HID_REPORT_DESC] = {
 // Byte 1 7:0 Rewind FForward Stop ScanPrevious ScanNext Play VolumeDn VolumeUp
 // Byte 2 7:0 Reserved Reserved Reserved Reserved Reserved MicMute HookSwitch Redial
 
-#endif  // USB_DEVICE_FEATURE == ENABLED

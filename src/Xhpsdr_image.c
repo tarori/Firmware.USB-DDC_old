@@ -20,9 +20,7 @@
 #include "print_funcs.h"
 #include "task.h"
 #include "usb_task.h"
-#if USB_DEVICE_FEATURE == ENABLED
 #include "device_mouse_hid_task.h"
-#endif
 #include "composite_widget.h"
 #include "hpsdr_taskAK5394A.h"
 #include "taskAK5394A.h"
@@ -66,7 +64,6 @@ static void x_image_task_init(void)
     // Initialize USB task
     usb_task_init();
 
-#if USB_DEVICE_FEATURE == ENABLED
 
     mutexEP_IN = xSemaphoreCreateMutex();  // for co-ordinating multiple tasks using EP IN
 
@@ -74,7 +71,6 @@ static void x_image_task_init(void)
     // vStartTaskEXERCISE( tskIDLE_PRIORITY );
     hpsdr_AK5394A_task_init();
     hpsdr_device_audio_task_init(HPSDR_EP_IQ_IN, HPSDR_EP_IQ_OUT, 0);
-#endif
 }
 
 // descriptor accessors

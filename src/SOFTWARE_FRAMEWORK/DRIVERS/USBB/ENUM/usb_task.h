@@ -193,19 +193,8 @@
 
 extern volatile U16 g_usb_event;
 
-#if USB_HOST_FEATURE == ENABLED
-extern volatile U32 private_sof_counter;
-#endif
 
-#if USB_DEVICE_FEATURE == ENABLED && USB_HOST_FEATURE == ENABLED
-extern volatile U8 g_usb_mode;
-#elif USB_DEVICE_FEATURE == ENABLED
 #define g_usb_mode USB_MODE_DEVICE
-#elif USB_HOST_FEATURE == ENABLED
-#define g_usb_mode USB_MODE_HOST
-#else
-#error At least one of USB_DEVICE_FEATURE and USB_HOST_FEATURE must be enabled
-#endif
 
 #if (!defined USB_HIGH_SPEED_SUPPORT)
 #define USB_HIGH_SPEED_SUPPORT DISABLED

@@ -6,14 +6,7 @@
 **      Author: Roger E Critchlow Jr, AD5DZ
 */
 
-#ifndef FREERTOS_USED
-#if (defined __GNUC__)
-#include "nlao_cpu.h"
-#include "nlao_usart.h"
-#endif
-#else
 #include <stdio.h>
-#endif
 
 #include "board.h"
 #include "compiler.h"
@@ -21,15 +14,11 @@
 #include "intc.h"
 #include "pm.h"
 #include "print_funcs.h"
-#ifdef FREERTOS_USED
 #include "FreeRTOS.h"
 #include "task.h"
-#endif
 #include "conf_usb.h"
 #include "usb_task.h"
-#if USB_DEVICE_FEATURE == ENABLED
 #include "device_mouse_hid_task.h"
-#endif
 #include "composite_widget.h"
 #include "taskAK5394A.h"
 #include "uac2_taskAK5394A.h"
@@ -66,23 +55,6 @@ static void x_image_boot(void)
 
 static void x_image_init(void)
 {
-#ifdef VDD_SENSE
-    if (gpio_get_pin_value(AVR32_PIN_PA19)) {
-        uac2_usb_conf_desc_fs.cfg.bmAttributes = USB_CONFIG_SELFPOWERED;
-        uac2_usb_conf_desc_fs.cfg.MaxPower = 5;  // 10mA
-#if USB_HIGH_SPEED_SUPPORT == ENABLED
-        uac2_usb_conf_desc_hs.cfg.bmAttributes = USB_CONFIG_SELFPOWERED;
-        uac2_usb_conf_desc_hs.cfg.MaxPower = 5;  // 10mA
-#endif
-    } else {
-        uac2_usb_conf_desc_fs.cfg.bmAttributes = USB_CONFIG_BUSPOWERED;
-        uac2_usb_conf_desc_fs.cfg.MaxPower = 250;  // 500mA
-#if USB_HIGH_SPEED_SUPPORT == ENABLED
-        uac2_usb_conf_desc_hs.cfg.bmAttributes = USB_CONFIG_BUSPOWERED;
-        uac2_usb_conf_desc_hs.cfg.MaxPower = 250;  // 500mA
-#endif
-    }
-#endif  // VDD_SENSE
 }
 
 static void x_image_task_init(void)
@@ -92,7 +64,6 @@ static void x_image_task_init(void)
 
     usb_task_init();
 
-#if USB_DEVICE_FEATURE == ENABLED
     mutexEP_IN = xSemaphoreCreateMutex();  // for co-ordinating multiple tasks using EP IN
 
     vStartTaskMoboCtrl();
@@ -101,7 +72,6 @@ static void x_image_task_init(void)
     //	device_mouse_hid_task_init(UAC2_EP_HID_RX, UAC2_EP_HID_TX); // Added BSB 20120719
     device_mouse_hid_task_init(UAC2_EP_HID_TX);  // Added BSB 20120719
     uac2_device_audio_task_init(UAC2_EP_AUDIO_IN, UAC2_EP_AUDIO_OUT, UAC2_EP_AUDIO_OUT_FB);
-#endif
 }
 
 // descriptor accessors

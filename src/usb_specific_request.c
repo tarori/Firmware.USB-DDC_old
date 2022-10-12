@@ -72,7 +72,6 @@
 
 #include "conf_usb.h"
 
-#if USB_DEVICE_FEATURE == ENABLED
 
 #include "DG8SAQ_cmd.h"
 #include "Mobo_config.h"
@@ -414,4 +413,3 @@ Bool usb_user_DG8SAQ(U8 type, U8 command)
     return TRUE;
 }
 
-#endif  // USB_DEVICE_FEATURE == ENABLED

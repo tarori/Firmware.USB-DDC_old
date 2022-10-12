@@ -85,9 +85,6 @@
 
 #include "conf_usb.h"
 
-#if USB_DEVICE_FEATURE == DISABLED
-#error usb_descriptors.h is #included although USB_DEVICE_FEATURE is disabled
-#endif
 
 #include "image.h"
 #include "usb_standard_request.h"
@@ -128,13 +125,9 @@
 #define DG8SAQ_PRODUCT_ID 0x05dc
 
 // Use product-specific VID/PIDs
-#if defined(FEATURE_PRODUCT_AB1x)
 #define AUDIO_VENDOR_ID 0x6340      // VID
 #define AUDIO_PRODUCT_ID_9 0x0700   // UAC1 PID
 #define AUDIO_PRODUCT_ID_10 0x0701  // UAC2 PID
-#else
-#error No recognized FEATURE_PRODUCT... is defined in Makefile, aborting.
-#endif
 
 #define HPSDR_VENDOR_ID 0xfffe  //! Ozy Device
 #define HPSDR_PRODUCT_ID 0x0007
@@ -164,7 +157,6 @@
 #define LANG_ID 0x00
 
 // BSB 20120928 new VID/PID system
-#if defined(FEATURE_PRODUCT_AB1x)  // AUDIO_PRODUCT_ID_9 and _10
 #define USB_MN_LENGTH 12
 #define USB_MANUFACTURER_NAME \
     {                         \
@@ -181,12 +173,8 @@
             Usb_unicode('i'), \
             Usb_unicode('o')  \
     }
-#else
-#error No recognized FEATURE_PRODUCT... is defined in Makefile, aborting.
-#endif
 
 // BSB 20120928 new VID/PID system
-#if defined(FEATURE_PRODUCT_AB1x)  // AUDIO_PRODUCT_ID_9 and _10
 #define USB_PN_LENGTH 14
 #define USB_PRODUCT_NAME      \
     {                         \
@@ -206,11 +194,7 @@
             Usb_unicode('2')  \
     }
 
-#else
-#error No recognized FEATURE_PRODUCT... is defined in Makefile, aborting.
-#endif
 
-#if defined(FEATURE_PRODUCT_AB1x)
 #define USB_SN_LENGTH 11  // Encode the build date and user prefix
 #define USB_SERIAL_NUMBER     \
     {                         \
@@ -226,9 +210,6 @@
             Usb_unicode('A'), \
             Usb_unicode('C')  \
     }  //
-#else
-#error No recognized FEATURE_PRODUCT... is defined in Makefile, aborting.
-#endif
 
 #define USB_CS1_LENGTH 7
 #define USB_CLOCK_SOURCE_1    \
@@ -1178,30 +1159,6 @@ typedef
     U8 iClockSource;      /* String descriptor of this clock source */
 } S_usb_clock_source_descriptor;
 
-#ifdef FEATURE_CLOCK_SELECTOR  // Only if clock selector is compiled in do we expose it in the feature unit
-
-//! Clock Selector descriptor pp 4.7.2.2
-typedef
-#if (defined __ICCAVR32__)
-#pragma pack(1)
-#endif
-    struct
-#if (defined __GNUC__)
-    __attribute__((__packed__))
-#endif
-{
-    U8 bLength;                               /* Size of this descriptor in bytes */
-    U8 bDescriptorType;                       /* CS_INTERFACE descriptor type */
-    U8 bDescritorSubtype;                     /* CLOCK_SELECTOR subtype */
-    U8 bClockID;                              /* Clock Selector ID */
-    U8 bNrInPins; /* Number of Input Pins */  // Set to 1
-    U8 baCSourceID1;                          /* variable length */
-                                              //  U8  baCSourceID2;		// Only one...
-    U8 bmControls;                            /* Clock selector control bitmap  */
-    U8 iClockSelector;                        /* String descriptor of this clock selector */
-} S_usb_clock_selector_descriptor;
-
-#endif
 
 //! Clock Multiplier descriptor pp 4.7.2.3
 typedef

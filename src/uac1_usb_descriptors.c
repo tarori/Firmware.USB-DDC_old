@@ -22,7 +22,6 @@
 #include "conf_usb.h"
 //#include "features.h"
 
-#if USB_DEVICE_FEATURE == ENABLED
 
 #include "uac1_usb_descriptors.h"
 #include "usb_audio.h"
@@ -68,13 +67,7 @@ const S_usb_device_descriptor uac1_audio_usb_dev_desc = {
     Usb_format_mcu_to_usb_data(16, AUDIO_VENDOR_ID),
 
 // BSB 20120928 new VID/PID system
-#if defined(FEATURE_PRODUCT_SDR_WIDGET)  // AUDIO_PRODUCT_ID_1 and _2
-    Usb_format_mcu_to_usb_data(16, AUDIO_PRODUCT_ID_1),
-#elif defined(FEATURE_PRODUCT_AB1x)  // AUDIO_PRODUCT_ID_9 and _10
     Usb_format_mcu_to_usb_data(16, AUDIO_PRODUCT_ID_9),
-#else
-#error No recognized FEATURE_PRODUCT... is defined in Makefile, aborting.
-#endif
 
     Usb_format_mcu_to_usb_data(16, RELEASE_NUMBER),
     MAN_INDEX,
@@ -83,9 +76,7 @@ const S_usb_device_descriptor uac1_audio_usb_dev_desc = {
     NB_CONFIGURATION};
 
 // usb_user_configuration_descriptor FS
-#ifndef VDD_SENSE
 const
-#endif
     S_usb_user_configuration_descriptor uac1_usb_conf_desc_fs
     = {
         {sizeof(S_usb_configuration_descriptor),
@@ -98,18 +89,6 @@ const
             MAX_POWER}
 
 // Config interface at endpoint 0
-#ifdef FEATURE_CFG_INTERFACE
-        ,
-        {sizeof(S_usb_interface_descriptor),
-            INTERFACE_DESCRIPTOR,
-            INTERFACE_NB0,
-            ALTERNATE_NB0,
-            NB_ENDPOINT0,
-            INTERFACE_CLASS0,
-            INTERFACE_SUB_CLASS0,
-            INTERFACE_PROTOCOL0,
-            INTERFACE_INDEX0}
-#endif
 
         ,
         {sizeof(S_usb_interface_association_descriptor), DESCRIPTOR_IAD, FIRST_INTERFACE1  // bFirstInterface
@@ -269,51 +248,12 @@ const
 	   ,  Usb_format_mcu_to_usb_data(16, AUDIO_EP_LOCK_DELAY)
 	}*/
 
-#ifdef FEATURE_HID
-        ,
-        {sizeof(S_usb_interface_descriptor),
-            INTERFACE_DESCRIPTOR,
-            INTERFACE_NB1,
-            ALTERNATE_NB1,
-            NB_ENDPOINT1,
-            INTERFACE_CLASS1,
-            INTERFACE_SUB_CLASS1,
-            INTERFACE_PROTOCOL1,
-            INTERFACE_INDEX1},
-        {sizeof(S_usb_hid_descriptor),
-            HID_DESCRIPTOR,
-            Usb_format_mcu_to_usb_data(16, HID_VERSION),
-            HID_COUNTRY_CODE,
-            HID_NUM_DESCRIPTORS,
-            HID_REPORT_DESCRIPTOR,
-            Usb_format_mcu_to_usb_data(16, sizeof(usb_hid_report_descriptor))},
-
-        {sizeof(S_usb_endpoint_descriptor),
-            ENDPOINT_DESCRIPTOR,
-            ENDPOINT_NB_1,
-            EP_ATTRIBUTES_1,
-            Usb_format_mcu_to_usb_data(16, EP_SIZE_1_FS),
-            EP_INTERVAL_1_FS}
-/*
-	,
-	{
-		sizeof(S_usb_endpoint_descriptor),
-		ENDPOINT_DESCRIPTOR,
-		ENDPOINT_NB_2,
-		EP_ATTRIBUTES_2,
-		Usb_format_mcu_to_usb_data(16, EP_SIZE_2_FS),
-		EP_INTERVAL_2
-	}
-*/
-#endif
 };
 
 #if (USB_HIGH_SPEED_SUPPORT == ENABLED)
 
 // usb_user_configuration_descriptor HS
-#ifndef VDD_SENSE
 const
-#endif
     S_usb_user_configuration_descriptor uac1_usb_conf_desc_hs
     = {
         {sizeof(S_usb_configuration_descriptor),
@@ -326,18 +266,6 @@ const
             MAX_POWER}
 
 // Config interface at endpoint 0
-#ifdef FEATURE_CFG_INTERFACE
-        ,
-        {sizeof(S_usb_interface_descriptor),
-            INTERFACE_DESCRIPTOR,
-            INTERFACE_NB0,
-            ALTERNATE_NB0,
-            NB_ENDPOINT0,
-            INTERFACE_CLASS0,
-            INTERFACE_SUB_CLASS0,
-            INTERFACE_PROTOCOL0,
-            INTERFACE_INDEX0}
-#endif
 
         ,
         {sizeof(S_usb_interface_association_descriptor), DESCRIPTOR_IAD, FIRST_INTERFACE1  // bFirstInterface
@@ -497,50 +425,11 @@ const
 	   ,  AUDIO_EP_DELAY_UNIT
 	   ,  Usb_format_mcu_to_usb_data(16, AUDIO_EP_LOCK_DELAY)
 	}*/
-#ifdef FEATURE_HID
-        ,
-        {sizeof(S_usb_interface_descriptor),
-            INTERFACE_DESCRIPTOR,
-            INTERFACE_NB1,
-            ALTERNATE_NB1,
-            NB_ENDPOINT1,
-            INTERFACE_CLASS1,
-            INTERFACE_SUB_CLASS1,
-            INTERFACE_PROTOCOL1,
-            INTERFACE_INDEX1},
-        {sizeof(S_usb_hid_descriptor),
-            HID_DESCRIPTOR,
-            Usb_format_mcu_to_usb_data(16, HID_VERSION),
-            HID_COUNTRY_CODE,
-            HID_NUM_DESCRIPTORS,
-            HID_REPORT_DESCRIPTOR,
-            Usb_format_mcu_to_usb_data(16, sizeof(usb_hid_report_descriptor))},
-
-        {sizeof(S_usb_endpoint_descriptor),
-            ENDPOINT_DESCRIPTOR,
-            ENDPOINT_NB_1,
-            EP_ATTRIBUTES_1,
-            Usb_format_mcu_to_usb_data(16, EP_SIZE_1_HS),
-            EP_INTERVAL_1_HS}
-/*
-  ,
-	{
-		sizeof(S_usb_endpoint_descriptor),
-		ENDPOINT_DESCRIPTOR,
-		ENDPOINT_NB_2,
-		EP_ATTRIBUTES_2,
-		Usb_format_mcu_to_usb_data(16, EP_SIZE_2_HS),
-		EP_INTERVAL_2
-	}
-	*/
-#endif
 
 };
 
 // usb_user_configuration_descriptor HS
-#ifndef VDD_SENSE
 const
-#endif
     S_usb_user_configuration_descriptor uac1_usb_conf_desc_hs_widget
     = {
         {sizeof(S_usb_configuration_descriptor),
@@ -553,18 +442,6 @@ const
             MAX_POWER}
 
 // Config interface at endpoint 0
-#ifdef FEATURE_CFG_INTERFACE
-        ,
-        {sizeof(S_usb_interface_descriptor),
-            INTERFACE_DESCRIPTOR,
-            INTERFACE_NB0,
-            ALTERNATE_NB0,
-            NB_ENDPOINT0,
-            INTERFACE_CLASS0,
-            INTERFACE_SUB_CLASS0,
-            INTERFACE_PROTOCOL0,
-            INTERFACE_INDEX0}
-#endif
 
         ,
         {sizeof(S_usb_interface_association_descriptor), DESCRIPTOR_IAD, FIRST_INTERFACE1  // bFirstInterface
@@ -719,50 +596,11 @@ const
 	   ,  AUDIO_EP_DELAY_UNIT
 	   ,  Usb_format_mcu_to_usb_data(16, AUDIO_EP_LOCK_DELAY)
 	}*/
-#ifdef FEATURE_HID
-        ,
-        {sizeof(S_usb_interface_descriptor),
-            INTERFACE_DESCRIPTOR,
-            INTERFACE_NB1,
-            ALTERNATE_NB1,
-            NB_ENDPOINT1,
-            INTERFACE_CLASS1,
-            INTERFACE_SUB_CLASS1,
-            INTERFACE_PROTOCOL1,
-            INTERFACE_INDEX1},
-        {sizeof(S_usb_hid_descriptor),
-            HID_DESCRIPTOR,
-            Usb_format_mcu_to_usb_data(16, HID_VERSION),
-            HID_COUNTRY_CODE,
-            HID_NUM_DESCRIPTORS,
-            HID_REPORT_DESCRIPTOR,
-            Usb_format_mcu_to_usb_data(16, sizeof(usb_hid_report_descriptor))},
-
-        {sizeof(S_usb_endpoint_descriptor),
-            ENDPOINT_DESCRIPTOR,
-            ENDPOINT_NB_1,
-            EP_ATTRIBUTES_1,
-            Usb_format_mcu_to_usb_data(16, EP_SIZE_1_HS),
-            EP_INTERVAL_1_HS}
-/*
-	 ,
-	{
-		sizeof(S_usb_endpoint_descriptor),
-		ENDPOINT_DESCRIPTOR,
-		ENDPOINT_NB_2,
-		EP_ATTRIBUTES_2,
-		Usb_format_mcu_to_usb_data(16, EP_SIZE_2_HS),
-		EP_INTERVAL_2
-	}
-*/
-#endif
 
 };
 #endif
 
-#ifndef VDD_SENSE
 const
-#endif
     S_usb_user_configuration_descriptor uac1_usb_conf_desc_fs_widget
     = {
         {sizeof(S_usb_configuration_descriptor),
@@ -775,18 +613,6 @@ const
             MAX_POWER}
 
 // Config interface at endpoint 0
-#ifdef FEATURE_CFG_INTERFACE
-        ,
-        {sizeof(S_usb_interface_descriptor),
-            INTERFACE_DESCRIPTOR,
-            INTERFACE_NB0,
-            ALTERNATE_NB0,
-            NB_ENDPOINT0,
-            INTERFACE_CLASS0,
-            INTERFACE_SUB_CLASS0,
-            INTERFACE_PROTOCOL0,
-            INTERFACE_INDEX0}
-#endif
         ,
         {sizeof(S_usb_interface_association_descriptor), DESCRIPTOR_IAD, FIRST_INTERFACE1  // bFirstInterface
             ,
@@ -942,45 +768,6 @@ const
 	   ,  Usb_format_mcu_to_usb_data(16, AUDIO_EP_LOCK_DELAY)
 	}*/
 
-#ifdef FEATURE_HID
-        ,
-        {sizeof(S_usb_interface_descriptor),
-            INTERFACE_DESCRIPTOR,
-            INTERFACE_NB1,
-            ALTERNATE_NB1,
-            NB_ENDPOINT1,
-            INTERFACE_CLASS1,
-            INTERFACE_SUB_CLASS1,
-            INTERFACE_PROTOCOL1,
-            INTERFACE_INDEX1},
-
-        {sizeof(S_usb_hid_descriptor),
-            HID_DESCRIPTOR,
-            Usb_format_mcu_to_usb_data(16, HID_VERSION),
-            HID_COUNTRY_CODE,
-            HID_NUM_DESCRIPTORS,
-            HID_REPORT_DESCRIPTOR,
-            Usb_format_mcu_to_usb_data(16, sizeof(usb_hid_report_descriptor))},
-
-        {sizeof(S_usb_endpoint_descriptor),
-            ENDPOINT_DESCRIPTOR,
-            ENDPOINT_NB_1,
-            EP_ATTRIBUTES_1,
-            Usb_format_mcu_to_usb_data(16, EP_SIZE_1_FS),
-            EP_INTERVAL_1_FS}
-
-/*
-    ,
-	{
-		sizeof(S_usb_endpoint_descriptor),
-		ENDPOINT_DESCRIPTOR,
-		ENDPOINT_NB_2,
-		EP_ATTRIBUTES_2,
-		Usb_format_mcu_to_usb_data(16, EP_SIZE_2_FS),
-		EP_INTERVAL_2
-	}
-*/
-#endif
 
 };
 
@@ -998,5 +785,4 @@ const S_usb_device_qualifier_descriptor uac1_usb_qualifier_desc = {
     EP_CONTROL_LENGTH,
     NB_CONFIGURATION,
     0};
-#endif
 #endif

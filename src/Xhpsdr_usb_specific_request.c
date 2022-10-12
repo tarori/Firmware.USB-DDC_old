@@ -72,7 +72,6 @@
 
 #include "conf_usb.h"
 
-#if USB_DEVICE_FEATURE == ENABLED
 
 #include "Mobo_config.h"
 #include "device_audio_task.h"
@@ -149,4 +148,3 @@ Bool hpsdr_user_read_request(U8 type, U8 request)
     return FALSE;  // No supported request
 }
 
-#endif  // USB_DEVICE_FEATURE == ENABLED

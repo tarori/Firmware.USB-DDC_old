@@ -35,10 +35,8 @@
 #include "intc.h"
 #endif
 #include "board.h"
-#ifdef FREERTOS_USED
 #include "FreeRTOS.h"
 #include "task.h"
-#endif
 #include "Mobo_config.h"
 #include "cycle_counter.h"
 #include "device_audio_task.h"

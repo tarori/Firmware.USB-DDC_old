@@ -22,7 +22,6 @@
 #include "conf_usb.h"
 //#include "features.h"
 
-#if USB_DEVICE_FEATURE == ENABLED
 
 #include "uac2_usb_descriptors.h"
 #include "usb_audio.h"
@@ -63,13 +62,7 @@ const S_usb_device_descriptor uac2_audio_usb_dev_desc = {
     Usb_format_mcu_to_usb_data(16, AUDIO_VENDOR_ID),
 
 // BSB 20120928 new VID/PID system
-#if defined(FEATURE_PRODUCT_SDR_WIDGET)  // AUDIO_PRODUCT_ID_1 and _2
-    Usb_format_mcu_to_usb_data(16, AUDIO_PRODUCT_ID_2),
-#elif defined(FEATURE_PRODUCT_AB1x)  // AUDIO_PRODUCT_ID_9 and _10
     Usb_format_mcu_to_usb_data(16, AUDIO_PRODUCT_ID_10),
-#else
-#error No recognized FEATURE_PRODUCT... is defined in Makefile, aborting.
-#endif
 
     Usb_format_mcu_to_usb_data(16, RELEASE_NUMBER),
     MAN_INDEX,
@@ -78,9 +71,7 @@ const S_usb_device_descriptor uac2_audio_usb_dev_desc = {
     NB_CONFIGURATION};
 
 // usb_user_configuration_descriptor FS
-#ifndef VDD_SENSE
 const
-#endif
     S_usb_user_configuration_descriptor uac2_usb_conf_desc_fs
     = {
         {sizeof(S_usb_configuration_descriptor),
@@ -94,18 +85,6 @@ const
 
 // Config interface at endpoint 0
 // Interface used by Widget-Control. No endpoints. Comes up as "Other device" in Windows
-#ifdef FEATURE_CFG_INTERFACE
-        ,
-        {sizeof(S_usb_interface_descriptor),
-            INTERFACE_DESCRIPTOR,
-            INTERFACE_NB0,
-            ALTERNATE_NB0,
-            NB_ENDPOINT0,
-            INTERFACE_CLASS0,
-            INTERFACE_SUB_CLASS0,
-            INTERFACE_PROTOCOL0,
-            INTERFACE_INDEX0}
-#endif
 
         ,
         {
@@ -133,9 +112,6 @@ const
             INTERFACE_INDEX1},
 
         {sizeof(S_usb_ac_interface_descriptor_2), CS_INTERFACE, HEADER_SUB_TYPE, Usb_format_mcu_to_usb_data(16, AUDIO_CLASS_REVISION_2), HEADSET_CATEGORY, Usb_format_mcu_to_usb_data(16, sizeof(S_usb_ac_interface_descriptor_2) + /*2* */ sizeof(S_usb_clock_source_descriptor)
-#ifdef FEATURE_CLOCK_SELECTOR                                                                                                                                                                                                                    // Only if clock selector is compiled in do we expose it in the feature unit
-                                                                                                                                                                                              + /*2* */ sizeof(S_usb_clock_selector_descriptor)  // ClockSelector
-#endif
                                                                                                                                                                                               + /*2* */ sizeof(S_usb_in_ter_descriptor_2)
 #ifdef FEATURE_VOLUME_CTRL  // Only if volume control is compiled in do we expose it in the feature unit
                                                                                                                                                                                               + /*2* */ sizeof(S_usb_feature_unit_descriptor_2)
@@ -149,27 +125,9 @@ const
             ,
             CLOCK_SOURCE_2_INDEX  //   Was: 0x00 BSB UAC2 debug WHY?
         },
-#ifdef FEATURE_CLOCK_SELECTOR  // Only if clock selector is compiled in do we expose it in the feature unit
-        {
-            sizeof(S_usb_clock_selector_descriptor)  // ClockSelector
-            ,
-            CS_INTERFACE, DESCRIPTOR_SUBTYPE_AUDIO_AC_CLOCK_SELECTOR, CSX_ID, 0x01  // 1 pins
-            ,
-            CSD_ID_2  // the only input pin
-            ,
-            CSX_CONTROL  // clock selector is readable and writable
-            ,
-            0x00  // No string descriptor
-        },
-#endif
         {sizeof(S_usb_in_ter_descriptor_2), CS_INTERFACE, INPUT_TERMINAL_SUB_TYPE, SPK_INPUT_TERMINAL_ID, Usb_format_mcu_to_usb_data(16, SPK_INPUT_TERMINAL_TYPE), SPK_INPUT_TERMINAL_ASSOCIATION
-#ifdef FEATURE_CLOCK_SELECTOR  // Only if clock selector is compiled in do we expose it in the feature unit
-            ,
-            CSX_ID  // CSD_ID_2 ClockSelector
-#else
             ,
             CSD_ID_2  // Straight clock
-#endif
             ,
             SPK_INPUT_TERMINAL_NB_CHANNELS, Usb_format_mcu_to_usb_data(32, SPK_INPUT_TERMINAL_CHANNEL_CONF)  // 0 in Pro-Ject
             ,
@@ -179,13 +137,8 @@ const
 #endif
 
         {sizeof(S_usb_out_ter_descriptor_2), CS_INTERFACE, OUTPUT_TERMINAL_SUB_TYPE, SPK_OUTPUT_TERMINAL_ID, Usb_format_mcu_to_usb_data(16, SPK_OUTPUT_TERMINAL_TYPE), SPK_OUTPUT_TERMINAL_ASSOCIATION, SPK_OUTPUT_TERMINAL_SOURCE_ID
-#ifdef FEATURE_CLOCK_SELECTOR  // Only if clock selector is compiled in do we expose it in the feature unit
-            ,
-            CSX_ID  // CSD_ID_2 ClockSelector
-#else
             ,
             CSD_ID_2  // Straight clock
-#endif
             ,
             Usb_format_mcu_to_usb_data(16, SPK_OUTPUT_TERMINAL_CONTROLS), 0x00}
 
@@ -228,52 +181,13 @@ const
 // End of audio streaming interface and its ALTs
 
 // BSB 20120720 Insert EP 4 and 5, HID TX and RX begin
-#ifdef FEATURE_HID
-        ,
-        {sizeof(S_usb_interface_descriptor),
-            INTERFACE_DESCRIPTOR,
-            INTERFACE_NB3,
-            ALTERNATE_NB3,
-            NB_ENDPOINT3,
-            INTERFACE_CLASS3,
-            INTERFACE_SUB_CLASS3,
-            INTERFACE_PROTOCOL3,
-            INTERFACE_INDEX3},
-        {sizeof(S_usb_hid_descriptor),
-            HID_DESCRIPTOR,
-            Usb_format_mcu_to_usb_data(16, HID_VERSION),
-            HID_COUNTRY_CODE,
-            HID_NUM_DESCRIPTORS,
-            HID_REPORT_DESCRIPTOR,
-            Usb_format_mcu_to_usb_data(16, sizeof(usb_hid_report_descriptor))},
-        {sizeof(S_usb_endpoint_descriptor),
-            ENDPOINT_DESCRIPTOR,
-            ENDPOINT_NB_4,
-            EP_ATTRIBUTES_4,
-            Usb_format_mcu_to_usb_data(16, EP_SIZE_4_FS),
-            EP_INTERVAL_4_FS}
-/*// Unused HID RX endpoint
-	  ,
-	  {
-		sizeof(S_usb_endpoint_descriptor),
-		ENDPOINT_DESCRIPTOR,
-		ENDPOINT_NB_5,
-		EP_ATTRIBUTES_5,
-		Usb_format_mcu_to_usb_data(16, EP_SIZE_5_FS),
-		EP_INTERVAL_5
-	  }
-
-	  */
-#endif
         // BSB 20120720 Insert EP 4 and 5, HID TX and RX end
 };
 
 #if (USB_HIGH_SPEED_SUPPORT == ENABLED)
 
 // usb_user_configuration_descriptor HS
-#ifndef VDD_SENSE
 const
-#endif
     S_usb_user_configuration_descriptor uac2_usb_conf_desc_hs
     = {
         {sizeof(S_usb_configuration_descriptor),
@@ -287,18 +201,6 @@ const
 
 // Interface used by Widget-Control. No endpoints. Comes up as "Other device" in Windows
 // Config interface at endpoint 0
-#ifdef FEATURE_CFG_INTERFACE
-        ,
-        {sizeof(S_usb_interface_descriptor),
-            INTERFACE_DESCRIPTOR,
-            INTERFACE_NB0,
-            ALTERNATE_NB0,
-            NB_ENDPOINT0,
-            INTERFACE_CLASS0,
-            INTERFACE_SUB_CLASS0,
-            INTERFACE_PROTOCOL0,
-            INTERFACE_INDEX0}
-#endif
 
         ,
 
@@ -324,9 +226,6 @@ const
             INTERFACE_INDEX1},
 
         {sizeof(S_usb_ac_interface_descriptor_2), CS_INTERFACE, HEADER_SUB_TYPE, Usb_format_mcu_to_usb_data(16, AUDIO_CLASS_REVISION_2), HEADSET_CATEGORY, Usb_format_mcu_to_usb_data(16, sizeof(S_usb_ac_interface_descriptor_2) + /*2* */ sizeof(S_usb_clock_source_descriptor)
-#ifdef FEATURE_CLOCK_SELECTOR                                                                                                                                                                                                                    // Only if clock selector is compiled in do we expose it in the feature unit
-                                                                                                                                                                                              + /*2* */ sizeof(S_usb_clock_selector_descriptor)  // ClockSelector
-#endif
                                                                                                                                                                                               + /*2* */ sizeof(S_usb_in_ter_descriptor_2)
 #ifdef FEATURE_VOLUME_CTRL  // Only if volume control is compiled in do we expose it in the feature unit
                                                                                                                                                                                               + /*2* */ sizeof(S_usb_feature_unit_descriptor_2)
@@ -337,28 +236,10 @@ const
             ,
             CLOCK_SOURCE_2_INDEX},
 
-#ifdef FEATURE_CLOCK_SELECTOR  // Only if clock selector is compiled in do we expose it in the feature unit
-        {
-            sizeof(S_usb_clock_selector_descriptor)  // ClockSelector
-            ,
-            CS_INTERFACE, DESCRIPTOR_SUBTYPE_AUDIO_AC_CLOCK_SELECTOR, CSX_ID, 0x01  // 1 pins
-            ,
-            CSD_ID_2  // the only input pin
-            ,
-            CSX_CONTROL  // clock selector is readable and writable
-            ,
-            0x00  // No string descriptor
-        },
-#endif
 
         {sizeof(S_usb_in_ter_descriptor_2), CS_INTERFACE, INPUT_TERMINAL_SUB_TYPE, SPK_INPUT_TERMINAL_ID, Usb_format_mcu_to_usb_data(16, SPK_INPUT_TERMINAL_TYPE), SPK_INPUT_TERMINAL_ASSOCIATION
-#ifdef FEATURE_CLOCK_SELECTOR  // Only if clock selector is compiled in do we expose it in the feature unit
-            ,
-            CSX_ID  // CSD_ID_2 ClockSelector
-#else
             ,
             CSD_ID_2  // Straight clock
-#endif
             ,
             SPK_INPUT_TERMINAL_NB_CHANNELS, Usb_format_mcu_to_usb_data(32, SPK_INPUT_TERMINAL_CHANNEL_CONF)  // 0 in Pro-Ject
             ,
@@ -367,13 +248,8 @@ const
         {sizeof(S_usb_feature_unit_descriptor_2), CS_INTERFACE, FEATURE_UNIT_SUB_TYPE, SPK_FEATURE_UNIT_ID, SPK_FEATURE_UNIT_SOURCE_ID, Usb_format_mcu_to_usb_data(32, SPK_BMA_CONTROLS), Usb_format_mcu_to_usb_data(32, SPK_BMA_CONTROLS_CH_1), Usb_format_mcu_to_usb_data(32, SPK_BMA_CONTROLS_CH_2), 0x00},
 #endif
         {sizeof(S_usb_out_ter_descriptor_2), CS_INTERFACE, OUTPUT_TERMINAL_SUB_TYPE, SPK_OUTPUT_TERMINAL_ID, Usb_format_mcu_to_usb_data(16, SPK_OUTPUT_TERMINAL_TYPE), SPK_OUTPUT_TERMINAL_ASSOCIATION, SPK_OUTPUT_TERMINAL_SOURCE_ID
-#ifdef FEATURE_CLOCK_SELECTOR  // Only if clock selector is compiled in do we expose it in the feature unit
-            ,
-            CSX_ID  // CSD_ID_2 ClockSelector
-#else
             ,
             CSD_ID_2  // Straight clock
-#endif
             ,
             Usb_format_mcu_to_usb_data(16, SPK_OUTPUT_TERMINAL_CONTROLS), 0x00},
 
@@ -412,43 +288,6 @@ const
 // End of audio streaming interface and its ALTs
 
 // BSB 20120720 Insert EP 4 and 5, HID TX and RX begin
-#ifdef FEATURE_HID
-        ,
-        {sizeof(S_usb_interface_descriptor),
-            INTERFACE_DESCRIPTOR,
-            INTERFACE_NB3,
-            ALTERNATE_NB3,
-            NB_ENDPOINT3,
-            INTERFACE_CLASS3,
-            INTERFACE_SUB_CLASS3,
-            INTERFACE_PROTOCOL3,
-            INTERFACE_INDEX3},
-        {sizeof(S_usb_hid_descriptor),
-            HID_DESCRIPTOR,
-            Usb_format_mcu_to_usb_data(16, HID_VERSION),
-            HID_COUNTRY_CODE,
-            HID_NUM_DESCRIPTORS,
-            HID_REPORT_DESCRIPTOR,
-            Usb_format_mcu_to_usb_data(16, sizeof(usb_hid_report_descriptor))},
-        {sizeof(S_usb_endpoint_descriptor),
-            ENDPOINT_DESCRIPTOR,
-            ENDPOINT_NB_4,
-            EP_ATTRIBUTES_4,
-            Usb_format_mcu_to_usb_data(16, EP_SIZE_4_HS),
-            EP_INTERVAL_4_HS}
-
-/*// Removed idle HID EP
-  ,
-  {
-  	sizeof(S_usb_endpoint_descriptor),
-  	ENDPOINT_DESCRIPTOR,
-  	ENDPOINT_NB_5,
-  	EP_ATTRIBUTES_5,
-  	Usb_format_mcu_to_usb_data(16, EP_SIZE_5_HS),
-  	EP_INTERVAL_5
-  }
-*/
-#endif
         // BSB 20120720 Insert EP 4 and 5, HID TX and RX end
 };
 
@@ -465,4 +304,3 @@ const S_usb_device_qualifier_descriptor uac2_usb_qualifier_desc = {
     0};
 #endif
 
-#endif  // USB_DEVICE_FEATURE == ENABLED

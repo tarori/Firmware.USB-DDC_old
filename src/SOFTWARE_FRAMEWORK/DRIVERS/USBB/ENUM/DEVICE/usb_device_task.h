@@ -55,9 +55,6 @@
 
 #include "conf_usb.h"
 
-#if USB_DEVICE_FEATURE == DISABLED
-#error usb_device_task.h is #included although USB_DEVICE_FEATURE is disabled
-#endif
 
 //! @defgroup usb_device_task USB device task module
 //! @{

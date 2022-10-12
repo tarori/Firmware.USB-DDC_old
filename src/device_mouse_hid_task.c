@@ -78,13 +78,10 @@
 #include "lis3l06al.h"
 #endif
 
-#if USB_DEVICE_FEATURE == ENABLED
 
 #include "board.h"
-#ifdef FREERTOS_USED
 #include "FreeRTOS.h"
 #include "task.h"
-#endif
 #include "Mobo_config.h"
 #include "device_audio_task.h"
 #include "device_mouse_hid_task.h"
@@ -125,18 +122,13 @@ void device_mouse_hid_task_init(U8 ep_tx)
 #endif
     //	ep_hid_rx = ep_rx; // BSB 20120718 unused variable, sane?
     ep_hid_tx = ep_tx;
-#ifndef FREERTOS_USED
-        Usb_enable_sof_interrupt();
-#endif  // FREERTOS_USED
 
-#ifdef FREERTOS_USED
     xTaskCreate(device_mouse_hid_task,
         configTSK_USB_DHID_MOUSE_NAME,
         configTSK_USB_DHID_MOUSE_STACK_SIZE,
         NULL,
         configTSK_USB_DHID_MOUSE_PRIORITY,
         NULL);
-#endif  // FREERTOS_USED
 
     // Added BSB 20120718
     print_dbg("\nHID ready\n");  // usart is ready to receive HID commands!
@@ -152,14 +144,9 @@ void device_mouse_hid_task_init(U8 ep_tx)
 //!
 //! @brief Entry point of the device mouse HID task management
 //!
-#ifdef FREERTOS_USED
 void device_mouse_hid_task(void* pvParameters)
 {
     (void)pvParameters;
-#else
-void device_mouse_hid_task(void)
-{
-#endif
 
     // BSB 20120810 HID variables moved up
     U8 ReportByte1 = 0;       // 1st variable byte of HID report
@@ -168,7 +155,6 @@ void device_mouse_hid_task(void)
     char a = 0;               // ASCII character as part of HID protocol over uart
     char gotcmd = 0;          // Initially, no user command was recorded
 
-#ifdef FREERTOS_USED
     portTickType xLastWakeTime;
 
     xLastWakeTime = xTaskGetTickCount();
@@ -177,10 +163,6 @@ void device_mouse_hid_task(void)
 
         // First, check the device enumeration state BSB 20160504 Let's drop that for now...
 //    if (!Is_device_enumerated()) continue;
-#else
-        // First, check the device enumeration state
-//    if (!Is_device_enumerated()) return;
-#endif  // FREERTOS_USED
 
         // BSB 20120711: Debugging HID
         /*
@@ -347,23 +329,7 @@ void device_mouse_hid_task(void)
 #endif
 
         // Send the HID report over USB
-#ifdef FEATURE_HID
-        if (Is_usb_in_ready(EP_HID_TX)) {
-            Usb_reset_endpoint_fifo_access(EP_HID_TX);
-            Usb_write_endpoint_data(EP_HID_TX, 8, ReportByte0);  // HID report number, hard-coded to 0x01
-            Usb_write_endpoint_data(EP_HID_TX, 8, ReportByte1);
-            Usb_write_endpoint_data(EP_HID_TX, 8, ReportByte2);
-            Usb_ack_in_ready_send(EP_HID_TX);
-            print_dbg_char('H');   // Confirm HID command forwarded to HOST
-            print_dbg_char('\n');  // Confirm HID command forwarded to HOST
-#ifdef HID2LCD
-            lcd_q_putc('H');
-#endif
-            // usb_state = 'r'; // May we ignore usb_state for HID TX ??
-        } else {  // Failure
-#else
     if (1) {
-#endif
             print_dbg_char('-');   // NO HID command forwarded to HOST
             print_dbg_char('\n');  // NO HID command forwarded to HOST
 #ifdef HID2LCD
@@ -373,8 +339,5 @@ void device_mouse_hid_task(void)
 
         // BSB 20120711: Debugging HID end
 
-#ifdef FREERTOS_USED
     }
-#endif
 }
-#endif  // USB_DEVICE_FEATURE == ENABLED

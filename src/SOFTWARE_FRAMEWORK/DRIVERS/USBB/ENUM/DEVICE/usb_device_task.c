@@ -54,7 +54,6 @@
 
 #include "conf_usb.h"
 
-#if USB_DEVICE_FEATURE == ENABLED
 
 #include "compiler.h"
 #ifdef FREERTOS_USED
@@ -196,4 +195,3 @@ void usb_device_task(void)
 #endif
 }
 
-#endif  // USB_DEVICE_FEATURE == ENABLED

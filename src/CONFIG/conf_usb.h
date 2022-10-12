@@ -119,7 +119,6 @@
 //!
 //! @{
 
-#if USB_DEVICE_FEATURE == ENABLED
 
 #define COMPOSITE_DEVICE
 
@@ -164,7 +163,6 @@
 #define Usb_set_configuration_action() print_dbg_char('H');
 //! @}
 
-#endif  // USB_DEVICE_FEATURE == ENABLED
 
 //! @}
 

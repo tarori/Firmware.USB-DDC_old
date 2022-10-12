@@ -139,21 +139,6 @@ extern void gpio_enable_gpio_pin(unsigned int pin);
 // drain in GPIO mode. The advantage of the open-drain mode functions over these
 // other functions is that they can be used not only in GPIO mode but also in
 // module mode.
-#if 0
-
-/*! \brief Enables the open-drain mode of a pin.
- *
- * \param pin The pin number.
- */
-extern void gpio_enable_pin_open_drain(unsigned int pin);
-
-/*! \brief Disables the open-drain mode of a pin.
- *
- * \param pin The pin number.
- */
-extern void gpio_disable_pin_open_drain(unsigned int pin);
-
-#endif
 
 /*! \brief Enables the pull-up resistor of a pin.
  *

@@ -54,9 +54,7 @@
 
 #include "conf_usb.h"
 
-#if USB_HOST_FEATURE == DISABLED
 #error host_audio_task.h is #included although USB_HOST_FEATURE is disabled
-#endif
 
 #include "usb_host_task.h"
 
@@ -88,10 +86,6 @@ extern U16 host_audio_get_max(U16 unit, U16 channel_number);
 extern void host_audio_set_cur(U16 unit, U16 channel_number, U16 volume);
 extern void host_set_sampling_rate(U16 endpoint, U32 sampling_rate);
 extern void host_audio_task_init(void);
-#ifdef FREERTOS_USED
 extern void host_audio_task(void* pvParameters);
-#else
-extern void host_audio_task(void);
-#endif
 
 #endif  // _HOST_AUDIO_TASK_H_

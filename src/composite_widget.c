@@ -238,9 +238,7 @@ int main(void)
 	// Low power sleep test end
 */
 
-#if (defined HW_GEN_DIN10) || (defined HW_GEN_AB1X)
     gpio_set_gpio_pin(AVR32_PIN_PX51);  // Enables power to XO and DAC in USBI2C AB-1.X and USB DAC 128
-#endif
 
 
     // Set CPU and PBA clock
@@ -266,7 +264,6 @@ int main(void)
 
 
 //clear samplerate indication
-#if defined(HW_GEN_AB1X)
     gpio_clr_gpio_pin(SAMPLEFREQ_VAL0);
     gpio_clr_gpio_pin(SAMPLEFREQ_VAL1);
 
@@ -277,7 +274,6 @@ int main(void)
     } else {  // With UAC != 1
         mobo_led(FLED_RED);
     }
-#endif
 
     // Initialize Real Time Counter
     rtc_init(&AVR32_RTC, RTC_OSC_RC, 0);  // RC clock at 115kHz

@@ -60,7 +60,6 @@ void mobo_sleep_rtc_ms(uint16_t time_ms)
     SLEEP(AVR32_PM_SMODE_DEEP_STOP);  // Disable all but RC clock
 }
 
-#ifdef HW_GEN_AB1X
 void mobo_led(uint8_t fled)
 {
     gpio_enable_pin_pull_up(AVR32_PIN_PA04);  // Floating: Active high. GND: Active low
@@ -96,7 +95,6 @@ void mobo_led(uint8_t fled)
     }
     gpio_disable_pin_pull_up(AVR32_PIN_PA04);  // Floating: Active high. GND: Active low
 }
-#endif
 
 
 /*! \brief Audio Widget select oscillator
@@ -110,7 +108,6 @@ void mobo_xo_select(U32 frequency, uint8_t source)
     static U32 prev_frequency = FREQ_INVALID;
 
     if ((frequency != prev_frequency) || (prev_frequency == FREQ_INVALID)) {  // Only run at startup or when things change
-#if defined(HW_GEN_AB1X)
         switch (frequency) {
         case FREQ_44:
             if (FEATURE_BOARD_USBI2S)
@@ -172,9 +169,6 @@ void mobo_xo_select(U32 frequency, uint8_t source)
 
         // XO control and I2S muxing on Digital Input 1.0 / 2.0 generation
         // NB: updated to support SPDIF buffering in MCU. That is highly experimental code!
-#else
-#error undefined hardware
-#endif
 
         prev_frequency = frequency;
     }  // if (frequency != prev_frequency)

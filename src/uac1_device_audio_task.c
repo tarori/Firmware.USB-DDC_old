@@ -58,14 +58,11 @@
 // link errors
 #include "conf_usb.h"
 
-#if USB_DEVICE_FEATURE == ENABLED
 
 #include "board.h"
 #include "features.h"
-#ifdef FREERTOS_USED
 #include "FreeRTOS.h"
 #include "task.h"
-#endif
 #include "device_audio_task.h"
 #include "gpio.h"
 #include "pdca.h"
@@ -161,17 +158,10 @@ void uac1_device_audio_task(void* pvParameters)
 
 
 // The Henry Audio and QNKTC series of hardware only use NORMAL I2S with left before right
-#if (defined HW_GEN_DIN10) || (defined HW_GEN_DIN20) || (defined HW_GEN_AB1X)
 #define IN_LEFT 0
 #define IN_RIGHT 1
 #define OUT_LEFT 0
 #define OUT_RIGHT 1
-#else
-    const U8 IN_LEFT = FEATURE_IN_NORMAL ? 0 : 1;
-    const U8 IN_RIGHT = FEATURE_IN_NORMAL ? 1 : 0;
-    const U8 OUT_LEFT = FEATURE_OUT_NORMAL ? 0 : 1;
-    const U8 OUT_RIGHT = FEATURE_OUT_NORMAL ? 1 : 0;
-#endif
 
     // BSB 20130602: code section moved to uac1_usb_specific_request.c
     // if (current_freq.frequency == FREQ_48) FB_rate = 48 << 14;
@@ -639,4 +629,3 @@ void uac1_device_audio_task(void* pvParameters)
     }  // end while vTask
 }
 
-#endif  // USB_DEVICE_FEATURE == ENABLED

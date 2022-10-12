@@ -167,23 +167,6 @@ void gpio_enable_gpio_pin(unsigned int pin)
 // drain in GPIO mode. The advantage of the open-drain mode functions over these
 // other functions is that they can be used not only in GPIO mode but also in
 // module mode.
-#if 0
-
-
-void gpio_enable_pin_open_drain(unsigned int pin)
-{
-  volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
-  gpio_port->odmers = 1 << (pin & 0x1F);
-}
-
-
-void gpio_disable_pin_open_drain(unsigned int pin)
-{
-  volatile avr32_gpio_port_t *gpio_port = &GPIO.port[pin >> 5];
-  gpio_port->odmerc = 1 << (pin & 0x1F);
-}
-
-#endif
 
 void gpio_enable_pin_pull_up(unsigned int pin)
 {

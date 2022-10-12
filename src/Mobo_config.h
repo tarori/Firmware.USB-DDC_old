@@ -37,10 +37,8 @@ void mobo_clear_adc_channel(void);
 void mobo_clear_dac_channel(void);
 
 
-#ifdef HW_GEN_AB1X
 // Front panel RG LED control
 void mobo_led(uint8_t fled);
-#endif
 
 
 //
