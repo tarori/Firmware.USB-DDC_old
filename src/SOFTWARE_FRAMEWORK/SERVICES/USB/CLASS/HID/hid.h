@@ -155,15 +155,15 @@
 #define HID_SPACEBAR 44
 #define HID_UNDERSCORE 45
 #define HID_PLUS 46
-/*                           
-#define  HID_[ {              47  
-#define  HID_] }              48  
+/*
+#define  HID_[ {              47
+#define  HID_] }              48
 */
 #define HID_BACKSLASH 49
-/*                           
-#define  HID_# ~              50  
-#define  HID_; :              51  
-#define  HID_‘ "              52  
+/*
+#define  HID_# ~              50
+#define  HID_; :              51
+#define  HID_‘ "              52
 */
 #define HID_TILDE 53
 #define HID_COMMA 54

@@ -149,63 +149,63 @@ void send_descriptor(U16 wLength, Bool zlp)
 // Sample rate triplet. Windows 10 Creators Update refused. Use single frequencies.
 // This will cause the ASIO driver to not see the 196ksps definition.
 // To fix -that- search for "triplets" in the ASIO driver code and change the array size from 64 to 128.
-//const U8 Speedx[38] = { // 74
+// const U8 Speedx[38] = { // 74
 const U8 Speedx_hs[74] = {
     0x06, 0x00,  // Number of sample rate triplets with UAC2 over USB 2.0
 
-    0x44, 0xac, 0x00, 0x00,  //44.1k Min
-    0x44, 0xac, 0x00, 0x00,  //44.1k Max
+    0x44, 0xac, 0x00, 0x00,  // 44.1k Min
+    0x44, 0xac, 0x00, 0x00,  // 44.1k Max
     0x00, 0x00, 0x00, 0x00,  // 0 Res
 
-    0x80, 0xbb, 0x00, 0x00,  //48k Min
-    0x80, 0xbb, 0x00, 0x00,  //48k Max
+    0x80, 0xbb, 0x00, 0x00,  // 48k Min
+    0x80, 0xbb, 0x00, 0x00,  // 48k Max
     0x00, 0x00, 0x00, 0x00,  // 0 Res
 
-    0x88, 0x58, 0x01, 0x00,  //88.2k Min
-    0x88, 0x58, 0x01, 0x00,  //88.2k Max
+    0x88, 0x58, 0x01, 0x00,  // 88.2k Min
+    0x88, 0x58, 0x01, 0x00,  // 88.2k Max
     0x00, 0x00, 0x00, 0x00,  // 0 Res
 
-    0x00, 0x77, 0x01, 0x00,  //96k Min
-    0x00, 0x77, 0x01, 0x00,  //96k Max
+    0x00, 0x77, 0x01, 0x00,  // 96k Min
+    0x00, 0x77, 0x01, 0x00,  // 96k Max
     0x00, 0x00, 0x00, 0x00,  // 0 Res
 
-    0x10, 0xb1, 0x02, 0x00,  //176.4k Min
-    0x10, 0xb1, 0x02, 0x00,  //176.4k Max
+    0x10, 0xb1, 0x02, 0x00,  // 176.4k Min
+    0x10, 0xb1, 0x02, 0x00,  // 176.4k Max
     0x00, 0x00, 0x00, 0x00,  // 0 Res
 
-    0x00, 0xee, 0x02, 0x00,  //192k Min
-    0x00, 0xee, 0x02, 0x00,  //192k Max
+    0x00, 0xee, 0x02, 0x00,  // 192k Min
+    0x00, 0xee, 0x02, 0x00,  // 192k Max
     0x00, 0x00, 0x00, 0x00,  // 0 Res
 };
 
 const U8 Speedx_fs[26] = {
     0x02, 0x00,  // Number of sample rate triplets with UAC2 over USB 1.1 (not tested!)
 
-    0x44, 0xac, 0x00, 0x00,  //44.1k Min
-    0x44, 0xac, 0x00, 0x00,  //44.1k Max
+    0x44, 0xac, 0x00, 0x00,  // 44.1k Min
+    0x44, 0xac, 0x00, 0x00,  // 44.1k Max
     0x00, 0x00, 0x00, 0x00,  // 0 Res
 
-    0x80, 0xbb, 0x00, 0x00,  //48k Min
-    0x80, 0xbb, 0x00, 0x00,  //48k Max
+    0x80, 0xbb, 0x00, 0x00,  // 48k Min
+    0x80, 0xbb, 0x00, 0x00,  // 48k Max
     0x00, 0x00, 0x00, 0x00,  // 0 Res
 };
 
 /*
 // Sample rate triplet. Works in Win10 build 16232 and in ASIO driver
 const U8 Speedx[38] = {
-	0x03, 0x00, // Number of sample rate triplets
+        0x03, 0x00, // Number of sample rate triplets
 
-	0x44,0xac,0x00,0x00,	//44.1k Min
-	0x80,0xbb,0x00,0x00,	//48k Max
-	0x3c,0x0f,0x00,0x00,	//48-44.1 Res
+        0x44,0xac,0x00,0x00,	//44.1k Min
+        0x80,0xbb,0x00,0x00,	//48k Max
+        0x3c,0x0f,0x00,0x00,	//48-44.1 Res
 
-	0x88,0x58,0x01,0x00,	//88.2k Min
-	0x00,0x77,0x01,0x00,	//96k Max
-	0x78,0x1e,0x00,0x00,	//96-88.2 Res
+        0x88,0x58,0x01,0x00,	//88.2k Min
+        0x00,0x77,0x01,0x00,	//96k Max
+        0x78,0x1e,0x00,0x00,	//96-88.2 Res
 
-	0x10,0xb1,0x02,0x00,	//176.4k Min
-	0x00,0xee,0x02,0x00,	//192k Max
-	0xf0,0x3c,0x00,0x00,	//192-176.4 Res
+        0x10,0xb1,0x02,0x00,	//176.4k Min
+        0x00,0xee,0x02,0x00,	//192k Max
+        0xf0,0x3c,0x00,0x00,	//192-176.4 Res
 };
 */
 
@@ -223,11 +223,11 @@ void uac2_freq_change_handler()
         mobo_clock_division(current_freq.frequency);
 
         /*
-		 poolingFreq = 8000 / (1 << (EP_INTERVAL_2_HS - 1));
-		 FB_rate_int = current_freq.frequency / poolingFreq;
-		 FB_rate_frac = current_freq.frequency % poolingFreq;
-		 FB_rate = (FB_rate_int << 16) | (FB_rate_frac << 4);
-		 */
+                 poolingFreq = 8000 / (1 << (EP_INTERVAL_2_HS - 1));
+                 FB_rate_int = current_freq.frequency / poolingFreq;
+                 FB_rate_frac = current_freq.frequency % poolingFreq;
+                 FB_rate = (FB_rate_int << 16) | (FB_rate_frac << 4);
+                 */
         if (current_freq.frequency == FREQ_96) {
 
             pdca_disable_interrupt_reload_counter_zero(PDCA_CHANNEL_SSC_RX);
@@ -239,10 +239,10 @@ void uac2_freq_change_handler()
             }
 
             /*
-			 if (FEATURE_LINUX_QUIRK_ON)
-			 FB_rate = (96) << 15;
-			 else
-			 */
+                         if (FEATURE_LINUX_QUIRK_ON)
+                         FB_rate = (96) << 15;
+                         else
+                         */
 
             //				FB_rate = (96) << 14; // Generic OS, supported by linux OS patch...
             FB_rate = (99) << 14;                                // Needed by Linux, linux-quirk replacement, in initial, not in nominal
@@ -261,10 +261,10 @@ void uac2_freq_change_handler()
             }
 
             /*
-			 if (FEATURE_LINUX_QUIRK_ON)
-			 FB_rate = (88 << 15) + (1<<15)/5;
-			 else
-			 */
+                         if (FEATURE_LINUX_QUIRK_ON)
+                         FB_rate = (88 << 15) + (1<<15)/5;
+                         else
+                         */
 
             //				FB_rate = (88 << 14) + (1<<14)/5; // Generic code, supported by linux OS patch
             FB_rate = (99 << 14);                                                // Needed by Linux, Linux-quirk replacement, in initial, not in nominal
@@ -369,14 +369,14 @@ void uac2_user_endpoint_init(U8 conf_nb)
     if (Is_usb_full_speed_mode()) {
         (void)Usb_configure_endpoint(UAC2_EP_AUDIO_OUT_FB, EP_ATTRIBUTES_3, DIRECTION_IN, EP_SIZE_3_FS, DOUBLE_BANK, 0);
         (void)Usb_configure_endpoint(UAC2_EP_AUDIO_OUT, EP_ATTRIBUTES_2, DIRECTION_OUT, EP_SIZE_2_FS, DOUBLE_BANK, 0);
-//(void)Usb_configure_endpoint(UAC2_EP_AUDIO_IN, EP_ATTRIBUTES_1, DIRECTION_IN, EP_SIZE_1_FS, DOUBLE_BANK, 0);
-// BSB 20120720 HID insert attempt begin
+        //(void)Usb_configure_endpoint(UAC2_EP_AUDIO_IN, EP_ATTRIBUTES_1, DIRECTION_IN, EP_SIZE_1_FS, DOUBLE_BANK, 0);
+        // BSB 20120720 HID insert attempt begin
         // BSB 20120720 HID insert attempt end
     } else {
         (void)Usb_configure_endpoint(UAC2_EP_AUDIO_OUT_FB, EP_ATTRIBUTES_3, DIRECTION_IN, EP_SIZE_3_HS, DOUBLE_BANK, 0);
         (void)Usb_configure_endpoint(UAC2_EP_AUDIO_OUT, EP_ATTRIBUTES_2, DIRECTION_OUT, EP_SIZE_2_HS, DOUBLE_BANK, 0);
-//(void)Usb_configure_endpoint(UAC2_EP_AUDIO_IN, EP_ATTRIBUTES_1, DIRECTION_IN, EP_SIZE_1_HS, DOUBLE_BANK, 0);
-// BSB 20120720 HID insert attempt begin
+        //(void)Usb_configure_endpoint(UAC2_EP_AUDIO_IN, EP_ATTRIBUTES_1, DIRECTION_IN, EP_SIZE_1_HS, DOUBLE_BANK, 0);
+        // BSB 20120720 HID insert attempt begin
         // BSB 20120720 HID insert attempt end
     }
 }
@@ -399,10 +399,10 @@ void uac2_user_set_interface(U8 wIndex, U8 wValue)
 
     // BSB 20130604 disabling UAC1 IN
     /*
-	else if (usb_interface_nb == STD_AS_INTERFACE_IN) {
-		usb_alternate_setting = wValue;
-		usb_alternate_setting_changed = TRUE;
-	} */
+        else if (usb_interface_nb == STD_AS_INTERFACE_IN) {
+                usb_alternate_setting = wValue;
+                usb_alternate_setting_changed = TRUE;
+        } */
 }
 
 // BSB 20120720 copy from uac1_usb_specific_request.c insert
@@ -478,60 +478,60 @@ Bool uac2_user_read_request(U8 type, U8 request)
         //  request for AUDIO interfaces
 
         /*
-		 if (wIndex == DSC_INTERFACE_AS) {				// Audio Streaming Interface
-		 if (type == IN_CL_INTERFACE) {			// get controls
+                 if (wIndex == DSC_INTERFACE_AS) {				// Audio Streaming Interface
+                 if (type == IN_CL_INTERFACE) {			// get controls
 
-		 if (wValue_msb == AUDIO_AS_VAL_ALT_SETTINGS && wValue_lsb == 0
-		 && request == AUDIO_CS_REQUEST_CUR) {
-		 Usb_ack_setup_received_free();
+                 if (wValue_msb == AUDIO_AS_VAL_ALT_SETTINGS && wValue_lsb == 0
+                 && request == AUDIO_CS_REQUEST_CUR) {
+                 Usb_ack_setup_received_free();
 
-		 Usb_reset_endpoint_fifo_access(EP_CONTROL);
-		 Usb_write_endpoint_data(EP_CONTROL, 8, 0x01);
-		 Usb_write_endpoint_data(EP_CONTROL, 8, 0b00000011); // alt 0 and 1 valid
-		 Usb_ack_control_in_ready_send();
+                 Usb_reset_endpoint_fifo_access(EP_CONTROL);
+                 Usb_write_endpoint_data(EP_CONTROL, 8, 0x01);
+                 Usb_write_endpoint_data(EP_CONTROL, 8, 0b00000011); // alt 0 and 1 valid
+                 Usb_ack_control_in_ready_send();
 
-		 while (!Is_usb_control_out_received());
-		 Usb_ack_control_out_received_free();
-		 return TRUE;
-		 } else if (wValue_msb == AUDIO_AS_ACT_ALT_SETTINGS && wValue_lsb == 0
-		 && request == AUDIO_CS_REQUEST_CUR) {
-		 Usb_ack_setup_received_free();
-		 Usb_reset_endpoint_fifo_access(EP_CONTROL);
-		 Usb_write_endpoint_data(EP_CONTROL, 8, usb_alternate_setting);
-		 Usb_ack_control_in_ready_send();
-		 while (!Is_usb_control_out_received());
-		 Usb_ack_control_out_received_free();
-		 return TRUE;
-		 } else if (wValue_msb == AUDIO_AS_AUDIO_DATA_FORMAT && wValue_lsb == 0
-		 && request == AUDIO_CS_REQUEST_CUR) {
-		 Usb_ack_setup_received_free();
-		 Usb_reset_endpoint_fifo_access(EP_CONTROL);
-		 Usb_write_endpoint_data(EP_CONTROL, 8, 0x01);
-		 Usb_write_endpoint_data(EP_CONTROL, 8, 0x00);
-		 Usb_write_endpoint_data(EP_CONTROL, 8, 0x00);
-		 Usb_write_endpoint_data(EP_CONTROL, 8, 0x00);	// only PCM format
-		 Usb_ack_control_in_ready_send();
-		 while (!Is_usb_control_out_received());
-		 Usb_ack_control_out_received_free();
-		 return TRUE;
-		 } else return FALSE;
+                 while (!Is_usb_control_out_received());
+                 Usb_ack_control_out_received_free();
+                 return TRUE;
+                 } else if (wValue_msb == AUDIO_AS_ACT_ALT_SETTINGS && wValue_lsb == 0
+                 && request == AUDIO_CS_REQUEST_CUR) {
+                 Usb_ack_setup_received_free();
+                 Usb_reset_endpoint_fifo_access(EP_CONTROL);
+                 Usb_write_endpoint_data(EP_CONTROL, 8, usb_alternate_setting);
+                 Usb_ack_control_in_ready_send();
+                 while (!Is_usb_control_out_received());
+                 Usb_ack_control_out_received_free();
+                 return TRUE;
+                 } else if (wValue_msb == AUDIO_AS_AUDIO_DATA_FORMAT && wValue_lsb == 0
+                 && request == AUDIO_CS_REQUEST_CUR) {
+                 Usb_ack_setup_received_free();
+                 Usb_reset_endpoint_fifo_access(EP_CONTROL);
+                 Usb_write_endpoint_data(EP_CONTROL, 8, 0x01);
+                 Usb_write_endpoint_data(EP_CONTROL, 8, 0x00);
+                 Usb_write_endpoint_data(EP_CONTROL, 8, 0x00);
+                 Usb_write_endpoint_data(EP_CONTROL, 8, 0x00);	// only PCM format
+                 Usb_ack_control_in_ready_send();
+                 while (!Is_usb_control_out_received());
+                 Usb_ack_control_out_received_free();
+                 return TRUE;
+                 } else return FALSE;
 
-		 } else if (type == OUT_CL_INTERFACE) {		// set controls
-		 if (wValue_msb == AUDIO_AS_ACT_ALT_SETTINGS
-		 && request == AUDIO_CS_REQUEST_CUR) {
-		 Usb_ack_setup_received_free();
-		 while (!Is_usb_control_out_received());
-		 Usb_reset_endpoint_fifo_access(EP_CONTROL);
-		 usb_alternate_setting = Usb_read_endpoint_data(EP_CONTROL, 8);
-		 usb_alternate_setting_changed = TRUE;
-		 Usb_ack_control_out_received_free();
-		 Usb_ack_control_in_ready_send();    //!< send a ZLP for STATUS phase
-		 while (!Is_usb_control_in_ready()); //!< waits for status phase done
-		 return FALSE;
-		 }
-		 } // end OUT_CL_INTERFACE
-		 } // end DSC_INTERFACE_AS
-		 */
+                 } else if (type == OUT_CL_INTERFACE) {		// set controls
+                 if (wValue_msb == AUDIO_AS_ACT_ALT_SETTINGS
+                 && request == AUDIO_CS_REQUEST_CUR) {
+                 Usb_ack_setup_received_free();
+                 while (!Is_usb_control_out_received());
+                 Usb_reset_endpoint_fifo_access(EP_CONTROL);
+                 usb_alternate_setting = Usb_read_endpoint_data(EP_CONTROL, 8);
+                 usb_alternate_setting_changed = TRUE;
+                 Usb_ack_control_out_received_free();
+                 Usb_ack_control_in_ready_send();    //!< send a ZLP for STATUS phase
+                 while (!Is_usb_control_in_ready()); //!< waits for status phase done
+                 return FALSE;
+                 }
+                 } // end OUT_CL_INTERFACE
+                 } // end DSC_INTERFACE_AS
+                 */
 
         if (wIndex == DSC_INTERFACE_AS_OUT) {  // Playback Audio Streaming Interface
 
@@ -827,13 +827,13 @@ Bool uac2_user_read_request(U8 type, U8 request)
                             Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, VOL_MAX));
                             Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, VOL_RES));
                             /*
-							Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, 2));	// Two triplets
-							Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, VOL_MIN));
-							Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, VOL_MAX));
-							Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, VOL_RES));
-							Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, VOL_MIN));
-							Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, VOL_MAX));
-							Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, VOL_RES));
+                                                        Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, 2));	// Two triplets
+                                                        Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, VOL_MIN));
+                                                        Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, VOL_MAX));
+                                                        Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, VOL_RES));
+                                                        Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, VOL_MIN));
+                                                        Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, VOL_MAX));
+                                                        Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, VOL_RES));
 */
                         }
 
@@ -1077,4 +1077,3 @@ Bool uac2_user_read_request(U8 type, U8 request)
 
     return FALSE;  // No supported request
 }
-

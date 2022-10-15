@@ -200,17 +200,17 @@ void hpsdr_device_audio_task(void* pvParameters)
         }
 
         /*
-		// recover from stalls
-		while (Is_usb_endpoint_stall_requested(EP_IQ_IN))
-		{
-		if (Is_usb_setup_received()) usb_process_request();
-		}
+                // recover from stalls
+                while (Is_usb_endpoint_stall_requested(EP_IQ_IN))
+                {
+                if (Is_usb_setup_received()) usb_process_request();
+                }
 
-		while (Is_usb_endpoint_stall_requested(EP_IQ_OUT))
-		{
-		if (Is_usb_setup_received()) usb_process_request();
-		}
-		*/
+                while (Is_usb_endpoint_stall_requested(EP_IQ_OUT))
+                {
+                if (Is_usb_setup_received()) usb_process_request();
+                }
+                */
 
         //  Fill frames of 512 bytes and send to host
 
@@ -351,60 +351,59 @@ void hpsdr_device_audio_task(void* pvParameters)
             }
 
             /*
-			  for (i = 0; i < num_samples; i++){
+                          for (i = 0; i < num_samples; i++){
 
-			  // skip audio left and right samples
-			  Usb_read_endpoint_data(EP_IQ_OUT, 8);
-			  Usb_read_endpoint_data(EP_IQ_OUT, 8);
-			  Usb_read_endpoint_data(EP_IQ_OUT, 8);
-			  Usb_read_endpoint_data(EP_IQ_OUT, 8);
+                          // skip audio left and right samples
+                          Usb_read_endpoint_data(EP_IQ_OUT, 8);
+                          Usb_read_endpoint_data(EP_IQ_OUT, 8);
+                          Usb_read_endpoint_data(EP_IQ_OUT, 8);
+                          Usb_read_endpoint_data(EP_IQ_OUT, 8);
 
-			  if (spk_mute) {
-			  Usb_read_endpoint_data(EP_IQ_OUT, 8);
-			  Usb_read_endpoint_data(EP_IQ_OUT, 8);
-			  sample_LSB = 0;
-			  sample_SB = 0;
-			  sample_MSB = 0;
-			  } else {
-			  // read left IQ out 16 bits
-			  sample_MSB = Usb_read_endpoint_data(EP_IQ_OUT, 8);
-			  sample_SB = Usb_read_endpoint_data(EP_IQ_OUT, 8);
-			  sample_LSB = 0;
-			  };
+                          if (spk_mute) {
+                          Usb_read_endpoint_data(EP_IQ_OUT, 8);
+                          Usb_read_endpoint_data(EP_IQ_OUT, 8);
+                          sample_LSB = 0;
+                          sample_SB = 0;
+                          sample_MSB = 0;
+                          } else {
+                          // read left IQ out 16 bits
+                          sample_MSB = Usb_read_endpoint_data(EP_IQ_OUT, 8);
+                          sample_SB = Usb_read_endpoint_data(EP_IQ_OUT, 8);
+                          sample_LSB = 0;
+                          };
 
-			  sample = (((U32) sample_MSB) << 16) + (((U32)sample_SB) << 8) + sample_LSB;
-			  if (DAC_buf_USB_OUT == 0) spk_buffer_0[spk_index+OUT_LEFT] = sample;
-			  else spk_buffer_1[spk_index+OUT_LEFT] = sample;
+                          sample = (((U32) sample_MSB) << 16) + (((U32)sample_SB) << 8) + sample_LSB;
+                          if (DAC_buf_USB_OUT == 0) spk_buffer_0[spk_index+OUT_LEFT] = sample;
+                          else spk_buffer_1[spk_index+OUT_LEFT] = sample;
 
-			  if (spk_mute) {
-			  Usb_read_endpoint_data(EP_IQ_OUT, 8);
-			  Usb_read_endpoint_data(EP_IQ_OUT, 8);
-			  sample_LSB = 0;
-			  sample_SB = 0;
-			  sample_MSB = 0;
-			  } else {
-			  // read right IQ out 16 bits
-			  sample_MSB = Usb_read_endpoint_data(EP_IQ_OUT, 8);
-			  sample_SB = Usb_read_endpoint_data(EP_IQ_OUT, 8);
-			  sample_LSB = 0;
-			  };
+                          if (spk_mute) {
+                          Usb_read_endpoint_data(EP_IQ_OUT, 8);
+                          Usb_read_endpoint_data(EP_IQ_OUT, 8);
+                          sample_LSB = 0;
+                          sample_SB = 0;
+                          sample_MSB = 0;
+                          } else {
+                          // read right IQ out 16 bits
+                          sample_MSB = Usb_read_endpoint_data(EP_IQ_OUT, 8);
+                          sample_SB = Usb_read_endpoint_data(EP_IQ_OUT, 8);
+                          sample_LSB = 0;
+                          };
 
-			  sample = (((U32) sample_MSB) << 16) + (((U32)sample_SB) << 8) + sample_LSB;
-			  if (DAC_buf_USB_OUT == 0) spk_buffer_0[spk_index+OUT_RIGHT] = sample;
-			  else spk_buffer_1[spk_index+OUT_RIGHT] = sample;
+                          sample = (((U32) sample_MSB) << 16) + (((U32)sample_SB) << 8) + sample_LSB;
+                          if (DAC_buf_USB_OUT == 0) spk_buffer_0[spk_index+OUT_RIGHT] = sample;
+                          else spk_buffer_1[spk_index+OUT_RIGHT] = sample;
 
-			  spk_index += 2;
-			  if (spk_index >= DAC_BUFFER_SIZE){
-			  spk_index = 0;
-			  DAC_buf_USB_OUT = 1 - DAC_buf_USB_OUT;
-			  }
-			  }
+                          spk_index += 2;
+                          if (spk_index >= DAC_BUFFER_SIZE){
+                          spk_index = 0;
+                          DAC_buf_USB_OUT = 1 - DAC_buf_USB_OUT;
+                          }
+                          }
 
-			*/
+                        */
 
             Usb_ack_out_received_free(EP_IQ_OUT);
         }  // end if out received
 
     }  // end while vTask
 }
-

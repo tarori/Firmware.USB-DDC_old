@@ -204,7 +204,7 @@
     Clr_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_UNLOCK_MASK),                             \
     Rd_bitfield(AVR32_USBB_usbcon, AVR32_USBB_USBCON_TIMVALUE_MASK))
 
-       //! Enable external USB_ID pin (listened to by USB)
+//! Enable external USB_ID pin (listened to by USB)
 #define Usb_enable_id_pin() (Set_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_UIDE_MASK))
 //! Disable external USB_ID pin (ignored by USB)
 #define Usb_disable_id_pin() (Clr_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_UIDE_MASK))
@@ -219,7 +219,7 @@
 //! Test if host mode is forced
 #define Is_usb_host_mode_forced() (!Is_usb_id_pin_enabled() && !Tst_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_UIMOD_MASK))
 
-       //! Set USB_VBOF output pin polarity
+//! Set USB_VBOF output pin polarity
 #define Usb_set_vbof_active_high() (Clr_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_VBUSPO_MASK))
 #define Usb_set_vbof_active_low() (Set_bits(AVR32_USBB_usbcon, AVR32_USBB_USBCON_VBUSPO_MASK))
 //! Get USB_VBOF output pin polarity

@@ -66,7 +66,7 @@ const S_usb_device_descriptor uac1_audio_usb_dev_desc = {
     EP_CONTROL_LENGTH,
     Usb_format_mcu_to_usb_data(16, AUDIO_VENDOR_ID),
 
-// BSB 20120928 new VID/PID system
+    // BSB 20120928 new VID/PID system
     Usb_format_mcu_to_usb_data(16, AUDIO_PRODUCT_ID_9),
 
     Usb_format_mcu_to_usb_data(16, RELEASE_NUMBER),
@@ -76,8 +76,7 @@ const S_usb_device_descriptor uac1_audio_usb_dev_desc = {
     NB_CONFIGURATION};
 
 // usb_user_configuration_descriptor FS
-const
-    S_usb_user_configuration_descriptor uac1_usb_conf_desc_fs
+const S_usb_user_configuration_descriptor uac1_usb_conf_desc_fs
     = {
         {sizeof(S_usb_configuration_descriptor),
             CONFIGURATION_DESCRIPTOR,
@@ -88,7 +87,7 @@ const
             CONF_ATTRIBUTES,
             MAX_POWER}
 
-// Config interface at endpoint 0
+        // Config interface at endpoint 0
 
         ,
         {sizeof(S_usb_interface_association_descriptor), DESCRIPTOR_IAD, FIRST_INTERFACE1  // bFirstInterface
@@ -117,39 +116,39 @@ const
         },
         // BSB 20130604 disabling UAC1 IN
         /*{  sizeof(S_usb_in_ter_descriptor_1)
-	   ,  CS_INTERFACE
-	   ,  INPUT_TERMINAL_SUB_TYPE
-	   ,  INPUT_TERMINAL_ID
-	   ,  Usb_format_mcu_to_usb_data(16, INPUT_TERMINAL_TYPE)
-	   ,  INPUT_TERMINAL_ASSOCIATION
-	   ,  INPUT_TERMINAL_NB_CHANNELS
-	   ,  Usb_format_mcu_to_usb_data(16, INPUT_TERMINAL_CHANNEL_CONF)
-	   ,  0x00
-	   ,  INPUT_TERMINAL_CH_NAME_ID
+           ,  CS_INTERFACE
+           ,  INPUT_TERMINAL_SUB_TYPE
+           ,  INPUT_TERMINAL_ID
+           ,  Usb_format_mcu_to_usb_data(16, INPUT_TERMINAL_TYPE)
+           ,  INPUT_TERMINAL_ASSOCIATION
+           ,  INPUT_TERMINAL_NB_CHANNELS
+           ,  Usb_format_mcu_to_usb_data(16, INPUT_TERMINAL_CHANNEL_CONF)
+           ,  0x00
+           ,  INPUT_TERMINAL_CH_NAME_ID
     }
-	,
+        ,
     {  sizeof(S_usb_feature_unit_descriptor_1)
-	   ,  CS_INTERFACE
-	   ,  FEATURE_UNIT_SUB_TYPE
-	   ,  MIC_FEATURE_UNIT_ID
-	   ,  MIC_FEATURE_UNIT_SOURCE_ID
-	   ,  MIC_FEATURE_UNIT_CONTROL_SIZE
-	   ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_0)
-	   ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_1)
-	   ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_2)
-	   ,  MIC_FEATURE_UNIT_CH_NAME_ID
+           ,  CS_INTERFACE
+           ,  FEATURE_UNIT_SUB_TYPE
+           ,  MIC_FEATURE_UNIT_ID
+           ,  MIC_FEATURE_UNIT_SOURCE_ID
+           ,  MIC_FEATURE_UNIT_CONTROL_SIZE
+           ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_0)
+           ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_1)
+           ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_2)
+           ,  MIC_FEATURE_UNIT_CH_NAME_ID
     }
-	,
+        ,
     {  sizeof(S_usb_out_ter_descriptor_1)
-	   ,  CS_INTERFACE
-	   ,  OUTPUT_TERMINAL_SUB_TYPE
-	   ,  OUTPUT_TERMINAL_ID
-	   ,  Usb_format_mcu_to_usb_data(16, OUTPUT_TERMINAL_TYPE)
-	   ,  OUTPUT_TERMINAL_ASSOCIATION
-	   ,  OUTPUT_TERMINAL_SOURCE_ID
-	   ,  0x00
+           ,  CS_INTERFACE
+           ,  OUTPUT_TERMINAL_SUB_TYPE
+           ,  OUTPUT_TERMINAL_ID
+           ,  Usb_format_mcu_to_usb_data(16, OUTPUT_TERMINAL_TYPE)
+           ,  OUTPUT_TERMINAL_ASSOCIATION
+           ,  OUTPUT_TERMINAL_SOURCE_ID
+           ,  0x00
     }
-	,*/
+        ,*/
         {sizeof(S_usb_in_ter_descriptor_1), CS_INTERFACE, INPUT_TERMINAL_SUB_TYPE, SPK_INPUT_TERMINAL_ID, Usb_format_mcu_to_usb_data(16, SPK_INPUT_TERMINAL_TYPE), SPK_INPUT_TERMINAL_ASSOCIATION, SPK_INPUT_TERMINAL_NB_CHANNELS, Usb_format_mcu_to_usb_data(16, SPK_INPUT_TERMINAL_CHANNEL_CONF), 0x00, SPK_INPUT_TERMINAL_CH_NAME_ID}
 #ifdef FEATURE_VOLUME_CTRL  // Only if volume control is compiled in do we expose it in the feature unit
         ,
@@ -181,80 +180,79 @@ const
             ENDPOINT_NB_5},
         {sizeof(S_usb_endpoint_audio_specific_1), CS_ENDPOINT, GENERAL_SUB_TYPE, AUDIO_EP_ATRIBUTES, AUDIO_EP_DELAY_UNIT, Usb_format_mcu_to_usb_data(16, AUDIO_EP_LOCK_DELAY)},
         {sizeof(S_usb_endpoint_audio_descriptor_1), ENDPOINT_DESCRIPTOR, ENDPOINT_NB_5, EP_ATTRIBUTES_5, Usb_format_mcu_to_usb_data(16, EP_SIZE_5_FS), EP_INTERVAL_5_FS, EP_REFRESH_5_FS, 0x00}
-// End of audio streaming interface and its ALTs
+        // End of audio streaming interface and its ALTs
 
-// BSB 20130604 disabling UAC1 IN
-/*
-	 ,
-	 {  sizeof(S_usb_as_interface_descriptor)
-	   ,  INTERFACE_DESCRIPTOR
-	   ,  STD_AS_INTERFACE_IN
-	   ,  ALT0_AS_INTERFACE_INDEX
-	   ,  ALT0_AS_NB_ENDPOINT
-	   ,  ALT0_AS_INTERFACE_CLASS
-	   ,  ALT0_AS_INTERFACE_SUB_CLASS
-	   ,  ALT0_AS_INTERFACE_PROTOCOL
-	   ,  0x00
-	}
-	,
-	{  sizeof(S_usb_as_interface_descriptor)
-	   ,  INTERFACE_DESCRIPTOR
-	   ,  STD_AS_INTERFACE_IN
-	   ,  ALT1_AS_INTERFACE_INDEX
-	   ,  ALT1_AS_NB_ENDPOINT
-	   ,  ALT1_AS_INTERFACE_CLASS
-	   ,  ALT1_AS_INTERFACE_SUB_CLASS
-	   ,  ALT1_AS_INTERFACE_PROTOCOL
-	   ,  0x00
-	}
-	,
-	{  sizeof(S_usb_as_g_interface_descriptor_1)
-	   ,  CS_INTERFACE
-	   ,  GENERAL_SUB_TYPE
-	   ,  AS_TERMINAL_LINK
-	   ,  AS_DELAY
-	   ,  Usb_format_mcu_to_usb_data(16, AS_FORMAT_TAG)
-	}
-	,
-	{  sizeof(S_usb_format_type_1)
-	   ,  CS_INTERFACE
-	   ,  FORMAT_SUB_TYPE
-	   ,  FORMAT_TYPE
-	   ,  FORMAT_NB_CHANNELS
-	   ,  FORMAT_FRAME_SIZE
-	   ,  FORMAT_BIT_RESOLUTION
-	   ,  FORMAT_SAMPLE_FREQ_NB
-	   ,  Usb_format_mcu_to_usb_data(16, FORMAT_LSBYTE_SAMPLE_FREQ_441)
-	   ,  FORMAT_MSBYTE_SAMPLE_FREQ
-	   ,  Usb_format_mcu_to_usb_data(16, FORMAT_LSBYTE_SAMPLE_FREQ_48)
-	   ,  FORMAT_MSBYTE_SAMPLE_FREQ
-	}
-    ,
-    {   sizeof(S_usb_endpoint_audio_descriptor_1)
-        ,   ENDPOINT_DESCRIPTOR
-        ,   ENDPOINT_NB_4
-        ,   EP_ATTRIBUTES_4
-        ,   Usb_format_mcu_to_usb_data(16, EP_SIZE_4_FS)
-        ,   EP_INTERVAL_4_FS
-        ,   0x00
-        ,   0x00
-	}
-	,
-	{  sizeof(S_usb_endpoint_audio_specific_1)
-	   ,  CS_ENDPOINT
-	   ,  GENERAL_SUB_TYPE
-	   ,  AUDIO_EP_ATRIBUTES
-	   ,  AUDIO_EP_DELAY_UNIT
-	   ,  Usb_format_mcu_to_usb_data(16, AUDIO_EP_LOCK_DELAY)
-	}*/
+        // BSB 20130604 disabling UAC1 IN
+        /*
+                 ,
+                 {  sizeof(S_usb_as_interface_descriptor)
+                   ,  INTERFACE_DESCRIPTOR
+                   ,  STD_AS_INTERFACE_IN
+                   ,  ALT0_AS_INTERFACE_INDEX
+                   ,  ALT0_AS_NB_ENDPOINT
+                   ,  ALT0_AS_INTERFACE_CLASS
+                   ,  ALT0_AS_INTERFACE_SUB_CLASS
+                   ,  ALT0_AS_INTERFACE_PROTOCOL
+                   ,  0x00
+                }
+                ,
+                {  sizeof(S_usb_as_interface_descriptor)
+                   ,  INTERFACE_DESCRIPTOR
+                   ,  STD_AS_INTERFACE_IN
+                   ,  ALT1_AS_INTERFACE_INDEX
+                   ,  ALT1_AS_NB_ENDPOINT
+                   ,  ALT1_AS_INTERFACE_CLASS
+                   ,  ALT1_AS_INTERFACE_SUB_CLASS
+                   ,  ALT1_AS_INTERFACE_PROTOCOL
+                   ,  0x00
+                }
+                ,
+                {  sizeof(S_usb_as_g_interface_descriptor_1)
+                   ,  CS_INTERFACE
+                   ,  GENERAL_SUB_TYPE
+                   ,  AS_TERMINAL_LINK
+                   ,  AS_DELAY
+                   ,  Usb_format_mcu_to_usb_data(16, AS_FORMAT_TAG)
+                }
+                ,
+                {  sizeof(S_usb_format_type_1)
+                   ,  CS_INTERFACE
+                   ,  FORMAT_SUB_TYPE
+                   ,  FORMAT_TYPE
+                   ,  FORMAT_NB_CHANNELS
+                   ,  FORMAT_FRAME_SIZE
+                   ,  FORMAT_BIT_RESOLUTION
+                   ,  FORMAT_SAMPLE_FREQ_NB
+                   ,  Usb_format_mcu_to_usb_data(16, FORMAT_LSBYTE_SAMPLE_FREQ_441)
+                   ,  FORMAT_MSBYTE_SAMPLE_FREQ
+                   ,  Usb_format_mcu_to_usb_data(16, FORMAT_LSBYTE_SAMPLE_FREQ_48)
+                   ,  FORMAT_MSBYTE_SAMPLE_FREQ
+                }
+            ,
+            {   sizeof(S_usb_endpoint_audio_descriptor_1)
+                ,   ENDPOINT_DESCRIPTOR
+                ,   ENDPOINT_NB_4
+                ,   EP_ATTRIBUTES_4
+                ,   Usb_format_mcu_to_usb_data(16, EP_SIZE_4_FS)
+                ,   EP_INTERVAL_4_FS
+                ,   0x00
+                ,   0x00
+                }
+                ,
+                {  sizeof(S_usb_endpoint_audio_specific_1)
+                   ,  CS_ENDPOINT
+                   ,  GENERAL_SUB_TYPE
+                   ,  AUDIO_EP_ATRIBUTES
+                   ,  AUDIO_EP_DELAY_UNIT
+                   ,  Usb_format_mcu_to_usb_data(16, AUDIO_EP_LOCK_DELAY)
+                }*/
 
 };
 
 #if (USB_HIGH_SPEED_SUPPORT == ENABLED)
 
 // usb_user_configuration_descriptor HS
-const
-    S_usb_user_configuration_descriptor uac1_usb_conf_desc_hs
+const S_usb_user_configuration_descriptor uac1_usb_conf_desc_hs
     = {
         {sizeof(S_usb_configuration_descriptor),
             CONFIGURATION_DESCRIPTOR,
@@ -265,7 +263,7 @@ const
             CONF_ATTRIBUTES,
             MAX_POWER}
 
-// Config interface at endpoint 0
+        // Config interface at endpoint 0
 
         ,
         {sizeof(S_usb_interface_association_descriptor), DESCRIPTOR_IAD, FIRST_INTERFACE1  // bFirstInterface
@@ -295,39 +293,39 @@ const
         },
         // BSB 20130604 disabling UAC1 IN
         /*{  sizeof(S_usb_in_ter_descriptor_1)
-	   ,  CS_INTERFACE
-	   ,  INPUT_TERMINAL_SUB_TYPE
-	   ,  INPUT_TERMINAL_ID
-	   ,  Usb_format_mcu_to_usb_data(16, INPUT_TERMINAL_TYPE)
-	   ,  INPUT_TERMINAL_ASSOCIATION
-	   ,  INPUT_TERMINAL_NB_CHANNELS
-	   ,  Usb_format_mcu_to_usb_data(16, INPUT_TERMINAL_CHANNEL_CONF)
-	   ,  0x00
-	   ,  INPUT_TERMINAL_CH_NAME_ID
-	}
-	,
-	{  sizeof(S_usb_feature_unit_descriptor_1)
-	   ,  CS_INTERFACE
-	   ,  FEATURE_UNIT_SUB_TYPE
-	   ,  MIC_FEATURE_UNIT_ID
-	   ,  MIC_FEATURE_UNIT_SOURCE_ID
-	   ,  MIC_FEATURE_UNIT_CONTROL_SIZE
-	   ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_0)
-	   ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_1)
-	   ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_2)
-	   ,  MIC_FEATURE_UNIT_CH_NAME_ID
-	}
-	,
-	{  sizeof(S_usb_out_ter_descriptor_1)
-	   ,  CS_INTERFACE
-	   ,  OUTPUT_TERMINAL_SUB_TYPE
-	   ,  OUTPUT_TERMINAL_ID
-	   ,  Usb_format_mcu_to_usb_data(16, OUTPUT_TERMINAL_TYPE)
-	   ,  OUTPUT_TERMINAL_ASSOCIATION
-	   ,  OUTPUT_TERMINAL_SOURCE_ID
-	   ,  0x00
-	}
-	,*/
+           ,  CS_INTERFACE
+           ,  INPUT_TERMINAL_SUB_TYPE
+           ,  INPUT_TERMINAL_ID
+           ,  Usb_format_mcu_to_usb_data(16, INPUT_TERMINAL_TYPE)
+           ,  INPUT_TERMINAL_ASSOCIATION
+           ,  INPUT_TERMINAL_NB_CHANNELS
+           ,  Usb_format_mcu_to_usb_data(16, INPUT_TERMINAL_CHANNEL_CONF)
+           ,  0x00
+           ,  INPUT_TERMINAL_CH_NAME_ID
+        }
+        ,
+        {  sizeof(S_usb_feature_unit_descriptor_1)
+           ,  CS_INTERFACE
+           ,  FEATURE_UNIT_SUB_TYPE
+           ,  MIC_FEATURE_UNIT_ID
+           ,  MIC_FEATURE_UNIT_SOURCE_ID
+           ,  MIC_FEATURE_UNIT_CONTROL_SIZE
+           ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_0)
+           ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_1)
+           ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_2)
+           ,  MIC_FEATURE_UNIT_CH_NAME_ID
+        }
+        ,
+        {  sizeof(S_usb_out_ter_descriptor_1)
+           ,  CS_INTERFACE
+           ,  OUTPUT_TERMINAL_SUB_TYPE
+           ,  OUTPUT_TERMINAL_ID
+           ,  Usb_format_mcu_to_usb_data(16, OUTPUT_TERMINAL_TYPE)
+           ,  OUTPUT_TERMINAL_ASSOCIATION
+           ,  OUTPUT_TERMINAL_SOURCE_ID
+           ,  0x00
+        }
+        ,*/
         {sizeof(S_usb_in_ter_descriptor_1), CS_INTERFACE, INPUT_TERMINAL_SUB_TYPE, SPK_INPUT_TERMINAL_ID, Usb_format_mcu_to_usb_data(16, SPK_INPUT_TERMINAL_TYPE), SPK_INPUT_TERMINAL_ASSOCIATION, SPK_INPUT_TERMINAL_NB_CHANNELS, Usb_format_mcu_to_usb_data(16, SPK_INPUT_TERMINAL_CHANNEL_CONF), 0x00, SPK_INPUT_TERMINAL_CH_NAME_ID}
 #ifdef FEATURE_VOLUME_CTRL  // Only if volume control is compiled in do we expose it in the feature unit
         ,
@@ -360,77 +358,76 @@ const
             ENDPOINT_NB_5},
         {sizeof(S_usb_endpoint_audio_specific_1), CS_ENDPOINT, GENERAL_SUB_TYPE, AUDIO_EP_ATRIBUTES, AUDIO_EP_DELAY_UNIT, Usb_format_mcu_to_usb_data(16, AUDIO_EP_LOCK_DELAY)},
         {sizeof(S_usb_endpoint_audio_descriptor_1), ENDPOINT_DESCRIPTOR, ENDPOINT_NB_5, EP_ATTRIBUTES_5, Usb_format_mcu_to_usb_data(16, EP_SIZE_5_HS), EP_INTERVAL_5_HS, EP_REFRESH_5_HS, 0x00}
-// End of audio streaming interface and its ALTs
+        // End of audio streaming interface and its ALTs
 
-//	,
-// BSB 20130604 disabling UAC1 IN
-/*{  sizeof(S_usb_as_interface_descriptor)
-	   ,  INTERFACE_DESCRIPTOR
-	   ,  STD_AS_INTERFACE_IN
-	   ,  ALT0_AS_INTERFACE_INDEX
-	   ,  ALT0_AS_NB_ENDPOINT
-	   ,  ALT0_AS_INTERFACE_CLASS
-	   ,  ALT0_AS_INTERFACE_SUB_CLASS
-	   ,  ALT0_AS_INTERFACE_PROTOCOL
-	   ,  0x00
-    }
-	,
-    {  sizeof(S_usb_as_interface_descriptor)
-	   ,  INTERFACE_DESCRIPTOR
-	   ,  STD_AS_INTERFACE_IN
-	   ,  ALT1_AS_INTERFACE_INDEX
-	   ,  ALT1_AS_NB_ENDPOINT
-	   ,  ALT1_AS_INTERFACE_CLASS
-	   ,  ALT1_AS_INTERFACE_SUB_CLASS
-	   ,  ALT1_AS_INTERFACE_PROTOCOL
-	   ,  0x00
-    }
-	,
-    {  sizeof(S_usb_as_g_interface_descriptor_1)
-	   ,  CS_INTERFACE
-	   ,  GENERAL_SUB_TYPE
-	   ,  AS_TERMINAL_LINK
-	   ,  AS_DELAY
-	   ,  Usb_format_mcu_to_usb_data(16, AS_FORMAT_TAG)
-    }
-	,
-    {  sizeof(S_usb_format_type_1)
-	   ,  CS_INTERFACE
-	   ,  FORMAT_SUB_TYPE
-	   ,  FORMAT_TYPE
-	   ,  FORMAT_NB_CHANNELS
-	   ,  FORMAT_FRAME_SIZE
-	   ,  FORMAT_BIT_RESOLUTION
-	   ,  FORMAT_SAMPLE_FREQ_NB
-	   ,  Usb_format_mcu_to_usb_data(16, FORMAT_LSBYTE_SAMPLE_FREQ_441)
-	   ,  FORMAT_MSBYTE_SAMPLE_FREQ
-	   ,  Usb_format_mcu_to_usb_data(16, FORMAT_LSBYTE_SAMPLE_FREQ_48)
-	   ,  FORMAT_MSBYTE_SAMPLE_FREQ
-    }
-	,
-	{   sizeof(S_usb_endpoint_audio_descriptor_1)
-		,   ENDPOINT_DESCRIPTOR
-		,   ENDPOINT_NB_4
-		,   EP_ATTRIBUTES_4
-		,   Usb_format_mcu_to_usb_data(16, EP_SIZE_4_HS)
-		,   EP_INTERVAL_4_HS
-		,   0x00
-		,   0x00
-	}
-	,
-	{  sizeof(S_usb_endpoint_audio_specific_1)
-	   ,  CS_ENDPOINT
-	   ,  GENERAL_SUB_TYPE
-	   ,  AUDIO_EP_ATRIBUTES
-	   ,  AUDIO_EP_DELAY_UNIT
-	   ,  Usb_format_mcu_to_usb_data(16, AUDIO_EP_LOCK_DELAY)
-	}*/
+        //	,
+        // BSB 20130604 disabling UAC1 IN
+        /*{  sizeof(S_usb_as_interface_descriptor)
+                   ,  INTERFACE_DESCRIPTOR
+                   ,  STD_AS_INTERFACE_IN
+                   ,  ALT0_AS_INTERFACE_INDEX
+                   ,  ALT0_AS_NB_ENDPOINT
+                   ,  ALT0_AS_INTERFACE_CLASS
+                   ,  ALT0_AS_INTERFACE_SUB_CLASS
+                   ,  ALT0_AS_INTERFACE_PROTOCOL
+                   ,  0x00
+            }
+                ,
+            {  sizeof(S_usb_as_interface_descriptor)
+                   ,  INTERFACE_DESCRIPTOR
+                   ,  STD_AS_INTERFACE_IN
+                   ,  ALT1_AS_INTERFACE_INDEX
+                   ,  ALT1_AS_NB_ENDPOINT
+                   ,  ALT1_AS_INTERFACE_CLASS
+                   ,  ALT1_AS_INTERFACE_SUB_CLASS
+                   ,  ALT1_AS_INTERFACE_PROTOCOL
+                   ,  0x00
+            }
+                ,
+            {  sizeof(S_usb_as_g_interface_descriptor_1)
+                   ,  CS_INTERFACE
+                   ,  GENERAL_SUB_TYPE
+                   ,  AS_TERMINAL_LINK
+                   ,  AS_DELAY
+                   ,  Usb_format_mcu_to_usb_data(16, AS_FORMAT_TAG)
+            }
+                ,
+            {  sizeof(S_usb_format_type_1)
+                   ,  CS_INTERFACE
+                   ,  FORMAT_SUB_TYPE
+                   ,  FORMAT_TYPE
+                   ,  FORMAT_NB_CHANNELS
+                   ,  FORMAT_FRAME_SIZE
+                   ,  FORMAT_BIT_RESOLUTION
+                   ,  FORMAT_SAMPLE_FREQ_NB
+                   ,  Usb_format_mcu_to_usb_data(16, FORMAT_LSBYTE_SAMPLE_FREQ_441)
+                   ,  FORMAT_MSBYTE_SAMPLE_FREQ
+                   ,  Usb_format_mcu_to_usb_data(16, FORMAT_LSBYTE_SAMPLE_FREQ_48)
+                   ,  FORMAT_MSBYTE_SAMPLE_FREQ
+            }
+                ,
+                {   sizeof(S_usb_endpoint_audio_descriptor_1)
+                        ,   ENDPOINT_DESCRIPTOR
+                        ,   ENDPOINT_NB_4
+                        ,   EP_ATTRIBUTES_4
+                        ,   Usb_format_mcu_to_usb_data(16, EP_SIZE_4_HS)
+                        ,   EP_INTERVAL_4_HS
+                        ,   0x00
+                        ,   0x00
+                }
+                ,
+                {  sizeof(S_usb_endpoint_audio_specific_1)
+                   ,  CS_ENDPOINT
+                   ,  GENERAL_SUB_TYPE
+                   ,  AUDIO_EP_ATRIBUTES
+                   ,  AUDIO_EP_DELAY_UNIT
+                   ,  Usb_format_mcu_to_usb_data(16, AUDIO_EP_LOCK_DELAY)
+                }*/
 
 };
 
 // usb_user_configuration_descriptor HS
-const
-    S_usb_user_configuration_descriptor uac1_usb_conf_desc_hs_widget
+const S_usb_user_configuration_descriptor uac1_usb_conf_desc_hs_widget
     = {
         {sizeof(S_usb_configuration_descriptor),
             CONFIGURATION_DESCRIPTOR,
@@ -441,7 +438,7 @@ const
             CONF_ATTRIBUTES,
             MAX_POWER}
 
-// Config interface at endpoint 0
+        // Config interface at endpoint 0
 
         ,
         {sizeof(S_usb_interface_association_descriptor), DESCRIPTOR_IAD, FIRST_INTERFACE1  // bFirstInterface
@@ -469,39 +466,39 @@ const
         },
         // BSB 20130604 disabling UAC1 IN
         /*{  sizeof(S_usb_in_ter_descriptor_1)
-	   ,  CS_INTERFACE
-	   ,  INPUT_TERMINAL_SUB_TYPE
-	   ,  INPUT_TERMINAL_ID
-	   ,  Usb_format_mcu_to_usb_data(16, INPUT_TERMINAL_TYPE)
-	   ,  INPUT_TERMINAL_ASSOCIATION
-	   ,  INPUT_TERMINAL_NB_CHANNELS
-	   ,  Usb_format_mcu_to_usb_data(16, INPUT_TERMINAL_CHANNEL_CONF)
-	   ,  0x00
-	   ,  INPUT_TERMINAL_CH_NAME_ID
-	}
-	,
-	{  sizeof(S_usb_feature_unit_descriptor_1)
-	   ,  CS_INTERFACE
-	   ,  FEATURE_UNIT_SUB_TYPE
-	   ,  MIC_FEATURE_UNIT_ID
-	   ,  MIC_FEATURE_UNIT_SOURCE_ID
-	   ,  MIC_FEATURE_UNIT_CONTROL_SIZE
-	   ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_0)
-	   ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_1)
-	   ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_2)
-	   ,  MIC_FEATURE_UNIT_CH_NAME_ID
-	}
-	,
-	{  sizeof(S_usb_out_ter_descriptor_1)
-	   ,  CS_INTERFACE
-	   ,  OUTPUT_TERMINAL_SUB_TYPE
-	   ,  OUTPUT_TERMINAL_ID
-	   ,  Usb_format_mcu_to_usb_data(16, OUTPUT_TERMINAL_TYPE)
-	   ,  OUTPUT_TERMINAL_ASSOCIATION
-	   ,  OUTPUT_TERMINAL_SOURCE_ID
-	   ,  0x00
-	}
-	,*/
+           ,  CS_INTERFACE
+           ,  INPUT_TERMINAL_SUB_TYPE
+           ,  INPUT_TERMINAL_ID
+           ,  Usb_format_mcu_to_usb_data(16, INPUT_TERMINAL_TYPE)
+           ,  INPUT_TERMINAL_ASSOCIATION
+           ,  INPUT_TERMINAL_NB_CHANNELS
+           ,  Usb_format_mcu_to_usb_data(16, INPUT_TERMINAL_CHANNEL_CONF)
+           ,  0x00
+           ,  INPUT_TERMINAL_CH_NAME_ID
+        }
+        ,
+        {  sizeof(S_usb_feature_unit_descriptor_1)
+           ,  CS_INTERFACE
+           ,  FEATURE_UNIT_SUB_TYPE
+           ,  MIC_FEATURE_UNIT_ID
+           ,  MIC_FEATURE_UNIT_SOURCE_ID
+           ,  MIC_FEATURE_UNIT_CONTROL_SIZE
+           ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_0)
+           ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_1)
+           ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_2)
+           ,  MIC_FEATURE_UNIT_CH_NAME_ID
+        }
+        ,
+        {  sizeof(S_usb_out_ter_descriptor_1)
+           ,  CS_INTERFACE
+           ,  OUTPUT_TERMINAL_SUB_TYPE
+           ,  OUTPUT_TERMINAL_ID
+           ,  Usb_format_mcu_to_usb_data(16, OUTPUT_TERMINAL_TYPE)
+           ,  OUTPUT_TERMINAL_ASSOCIATION
+           ,  OUTPUT_TERMINAL_SOURCE_ID
+           ,  0x00
+        }
+        ,*/
         {sizeof(S_usb_in_ter_descriptor_1), CS_INTERFACE, INPUT_TERMINAL_SUB_TYPE, SPK_INPUT_TERMINAL_ID, Usb_format_mcu_to_usb_data(16, SPK_INPUT_TERMINAL_TYPE), SPK_INPUT_TERMINAL_ASSOCIATION, SPK_INPUT_TERMINAL_NB_CHANNELS, Usb_format_mcu_to_usb_data(16, SPK_INPUT_TERMINAL_CHANNEL_CONF), 0x00, SPK_INPUT_TERMINAL_CH_NAME_ID}
 #ifdef FEATURE_VOLUME_CTRL  // Only if volume control is compiled in do we expose it in the feature unit
         ,
@@ -533,75 +530,74 @@ const
 
         ,
         {sizeof(S_usb_endpoint_audio_descriptor_1), ENDPOINT_DESCRIPTOR, ENDPOINT_NB_5, EP_ATTRIBUTES_5, Usb_format_mcu_to_usb_data(16, EP_SIZE_5_HS), EP_INTERVAL_5_HS, EP_REFRESH_5_HS, 0x00}
-// End of audio streaming interface and its ALTs
+        // End of audio streaming interface and its ALTs
 
-//	,
-// BSB 20130604 disabling UAC1 IN
-/*{  sizeof(S_usb_as_interface_descriptor)
-	   ,  INTERFACE_DESCRIPTOR
-	   ,  STD_AS_INTERFACE_IN
-	   ,  ALT0_AS_INTERFACE_INDEX
-	   ,  ALT0_AS_NB_ENDPOINT
-	   ,  ALT0_AS_INTERFACE_CLASS
-	   ,  ALT0_AS_INTERFACE_SUB_CLASS
-	   ,  ALT0_AS_INTERFACE_PROTOCOL
-	   ,  0x00
-    }
-	,
-    {  sizeof(S_usb_as_interface_descriptor)
-	   ,  INTERFACE_DESCRIPTOR
-	   ,  STD_AS_INTERFACE_IN
-	   ,  ALT1_AS_INTERFACE_INDEX
-	   ,  ALT1_AS_NB_ENDPOINT
-	   ,  ALT1_AS_INTERFACE_CLASS
-	   ,  ALT1_AS_INTERFACE_SUB_CLASS
-	   ,  ALT1_AS_INTERFACE_PROTOCOL
-	   ,  0x00
-    }
-	,
-    {  sizeof(S_usb_as_g_interface_descriptor_1)
-	   ,  CS_INTERFACE
-	   ,  GENERAL_SUB_TYPE
-	   ,  AS_TERMINAL_LINK
-	   ,  AS_DELAY
-	   ,  Usb_format_mcu_to_usb_data(16, AS_FORMAT_TAG)
-    }
-	,
-    {  sizeof(S_usb_format_type_1)
-	   ,  CS_INTERFACE
-	   ,  FORMAT_SUB_TYPE
-	   ,  FORMAT_TYPE
-	   ,  FORMAT_NB_CHANNELS
-	   ,  FORMAT_FRAME_SIZE
-	   ,  FORMAT_BIT_RESOLUTION
-	   ,  0x01
-	   ,  Usb_format_mcu_to_usb_data(16, FORMAT_LSBYTE_SAMPLE_FREQ_48)
-	   ,  FORMAT_MSBYTE_SAMPLE_FREQ
-    }
-	,
-	{   sizeof(S_usb_endpoint_audio_descriptor_1)
-		,   ENDPOINT_DESCRIPTOR
-		,   ENDPOINT_NB_4
-		,   EP_ATTRIBUTES_4
-		,   Usb_format_mcu_to_usb_data(16, EP_SIZE_4_HS)
-		,   EP_INTERVAL_4_HS
-		,   0x00
-		,   0x00
-	}
-	,
-	{  sizeof(S_usb_endpoint_audio_specific_1)
-	   ,  CS_ENDPOINT
-	   ,  GENERAL_SUB_TYPE
-	   ,  AUDIO_EP_ATRIBUTES
-	   ,  AUDIO_EP_DELAY_UNIT
-	   ,  Usb_format_mcu_to_usb_data(16, AUDIO_EP_LOCK_DELAY)
-	}*/
+        //	,
+        // BSB 20130604 disabling UAC1 IN
+        /*{  sizeof(S_usb_as_interface_descriptor)
+                   ,  INTERFACE_DESCRIPTOR
+                   ,  STD_AS_INTERFACE_IN
+                   ,  ALT0_AS_INTERFACE_INDEX
+                   ,  ALT0_AS_NB_ENDPOINT
+                   ,  ALT0_AS_INTERFACE_CLASS
+                   ,  ALT0_AS_INTERFACE_SUB_CLASS
+                   ,  ALT0_AS_INTERFACE_PROTOCOL
+                   ,  0x00
+            }
+                ,
+            {  sizeof(S_usb_as_interface_descriptor)
+                   ,  INTERFACE_DESCRIPTOR
+                   ,  STD_AS_INTERFACE_IN
+                   ,  ALT1_AS_INTERFACE_INDEX
+                   ,  ALT1_AS_NB_ENDPOINT
+                   ,  ALT1_AS_INTERFACE_CLASS
+                   ,  ALT1_AS_INTERFACE_SUB_CLASS
+                   ,  ALT1_AS_INTERFACE_PROTOCOL
+                   ,  0x00
+            }
+                ,
+            {  sizeof(S_usb_as_g_interface_descriptor_1)
+                   ,  CS_INTERFACE
+                   ,  GENERAL_SUB_TYPE
+                   ,  AS_TERMINAL_LINK
+                   ,  AS_DELAY
+                   ,  Usb_format_mcu_to_usb_data(16, AS_FORMAT_TAG)
+            }
+                ,
+            {  sizeof(S_usb_format_type_1)
+                   ,  CS_INTERFACE
+                   ,  FORMAT_SUB_TYPE
+                   ,  FORMAT_TYPE
+                   ,  FORMAT_NB_CHANNELS
+                   ,  FORMAT_FRAME_SIZE
+                   ,  FORMAT_BIT_RESOLUTION
+                   ,  0x01
+                   ,  Usb_format_mcu_to_usb_data(16, FORMAT_LSBYTE_SAMPLE_FREQ_48)
+                   ,  FORMAT_MSBYTE_SAMPLE_FREQ
+            }
+                ,
+                {   sizeof(S_usb_endpoint_audio_descriptor_1)
+                        ,   ENDPOINT_DESCRIPTOR
+                        ,   ENDPOINT_NB_4
+                        ,   EP_ATTRIBUTES_4
+                        ,   Usb_format_mcu_to_usb_data(16, EP_SIZE_4_HS)
+                        ,   EP_INTERVAL_4_HS
+                        ,   0x00
+                        ,   0x00
+                }
+                ,
+                {  sizeof(S_usb_endpoint_audio_specific_1)
+                   ,  CS_ENDPOINT
+                   ,  GENERAL_SUB_TYPE
+                   ,  AUDIO_EP_ATRIBUTES
+                   ,  AUDIO_EP_DELAY_UNIT
+                   ,  Usb_format_mcu_to_usb_data(16, AUDIO_EP_LOCK_DELAY)
+                }*/
 
 };
 #endif
 
-const
-    S_usb_user_configuration_descriptor uac1_usb_conf_desc_fs_widget
+const S_usb_user_configuration_descriptor uac1_usb_conf_desc_fs_widget
     = {
         {sizeof(S_usb_configuration_descriptor),
             CONFIGURATION_DESCRIPTOR,
@@ -612,7 +608,7 @@ const
             CONF_ATTRIBUTES,
             MAX_POWER}
 
-// Config interface at endpoint 0
+        // Config interface at endpoint 0
         ,
         {sizeof(S_usb_interface_association_descriptor), DESCRIPTOR_IAD, FIRST_INTERFACE1  // bFirstInterface
             ,
@@ -639,39 +635,39 @@ const
         },
         // BSB 20130604 disabling UAC1 IN
         /*{  sizeof(S_usb_in_ter_descriptor_1)
-	   ,  CS_INTERFACE
-	   ,  INPUT_TERMINAL_SUB_TYPE
-	   ,  INPUT_TERMINAL_ID
-	   ,  Usb_format_mcu_to_usb_data(16, INPUT_TERMINAL_TYPE)
-	   ,  INPUT_TERMINAL_ASSOCIATION
-	   ,  INPUT_TERMINAL_NB_CHANNELS
-	   ,  Usb_format_mcu_to_usb_data(16, INPUT_TERMINAL_CHANNEL_CONF)
-	   ,  0x00
-	   ,  INPUT_TERMINAL_CH_NAME_ID
+           ,  CS_INTERFACE
+           ,  INPUT_TERMINAL_SUB_TYPE
+           ,  INPUT_TERMINAL_ID
+           ,  Usb_format_mcu_to_usb_data(16, INPUT_TERMINAL_TYPE)
+           ,  INPUT_TERMINAL_ASSOCIATION
+           ,  INPUT_TERMINAL_NB_CHANNELS
+           ,  Usb_format_mcu_to_usb_data(16, INPUT_TERMINAL_CHANNEL_CONF)
+           ,  0x00
+           ,  INPUT_TERMINAL_CH_NAME_ID
     }
-	,
+        ,
     {  sizeof(S_usb_feature_unit_descriptor_1)
-	   ,  CS_INTERFACE
-	   ,  FEATURE_UNIT_SUB_TYPE
-	   ,  MIC_FEATURE_UNIT_ID
-	   ,  MIC_FEATURE_UNIT_SOURCE_ID
-	   ,  MIC_FEATURE_UNIT_CONTROL_SIZE
-	   ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_0)
-	   ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_1)
-	   ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_2)
-	   ,  MIC_FEATURE_UNIT_CH_NAME_ID
+           ,  CS_INTERFACE
+           ,  FEATURE_UNIT_SUB_TYPE
+           ,  MIC_FEATURE_UNIT_ID
+           ,  MIC_FEATURE_UNIT_SOURCE_ID
+           ,  MIC_FEATURE_UNIT_CONTROL_SIZE
+           ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_0)
+           ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_1)
+           ,  Usb_format_mcu_to_usb_data(16, MIC_BMA_CONTROLS_2)
+           ,  MIC_FEATURE_UNIT_CH_NAME_ID
     }
-	,
+        ,
     {  sizeof(S_usb_out_ter_descriptor_1)
-	   ,  CS_INTERFACE
-	   ,  OUTPUT_TERMINAL_SUB_TYPE
-	   ,  OUTPUT_TERMINAL_ID
-	   ,  Usb_format_mcu_to_usb_data(16, OUTPUT_TERMINAL_TYPE)
-	   ,  OUTPUT_TERMINAL_ASSOCIATION
-	   ,  OUTPUT_TERMINAL_SOURCE_ID
-	   ,  0x00
+           ,  CS_INTERFACE
+           ,  OUTPUT_TERMINAL_SUB_TYPE
+           ,  OUTPUT_TERMINAL_ID
+           ,  Usb_format_mcu_to_usb_data(16, OUTPUT_TERMINAL_TYPE)
+           ,  OUTPUT_TERMINAL_ASSOCIATION
+           ,  OUTPUT_TERMINAL_SOURCE_ID
+           ,  0x00
     }
-	,*/
+        ,*/
         {sizeof(S_usb_in_ter_descriptor_1), CS_INTERFACE, INPUT_TERMINAL_SUB_TYPE, SPK_INPUT_TERMINAL_ID, Usb_format_mcu_to_usb_data(16, SPK_INPUT_TERMINAL_TYPE), SPK_INPUT_TERMINAL_ASSOCIATION, SPK_INPUT_TERMINAL_NB_CHANNELS, Usb_format_mcu_to_usb_data(16, SPK_INPUT_TERMINAL_CHANNEL_CONF), 0x00, SPK_INPUT_TERMINAL_CH_NAME_ID}
 #ifdef FEATURE_VOLUME_CTRL  // Only if volume control is compiled in do we expose it in the feature unit
         ,
@@ -704,69 +700,69 @@ const
         ,
         {sizeof(S_usb_endpoint_audio_descriptor_1), ENDPOINT_DESCRIPTOR, ENDPOINT_NB_5, EP_ATTRIBUTES_5, Usb_format_mcu_to_usb_data(16, EP_SIZE_5_FS), EP_INTERVAL_5_FS, EP_REFRESH_5_FS, 0x00}
 
-// End of audio streaming interface and its ALTs
+        // End of audio streaming interface and its ALTs
 
-//	,
-// BSB 20130604 disabling UAC1 IN
-/*{  sizeof(S_usb_as_interface_descriptor)
-	   ,  INTERFACE_DESCRIPTOR
-	   ,  STD_AS_INTERFACE_IN
-	   ,  ALT0_AS_INTERFACE_INDEX
-	   ,  ALT0_AS_NB_ENDPOINT
-	   ,  ALT0_AS_INTERFACE_CLASS
-	   ,  ALT0_AS_INTERFACE_SUB_CLASS
-	   ,  ALT0_AS_INTERFACE_PROTOCOL
-	   ,  0x00
-	}
-	,
-	{  sizeof(S_usb_as_interface_descriptor)
-	   ,  INTERFACE_DESCRIPTOR
-	   ,  STD_AS_INTERFACE_IN
-	   ,  ALT1_AS_INTERFACE_INDEX
-	   ,  ALT1_AS_NB_ENDPOINT
-	   ,  ALT1_AS_INTERFACE_CLASS
-	   ,  ALT1_AS_INTERFACE_SUB_CLASS
-	   ,  ALT1_AS_INTERFACE_PROTOCOL
-	   ,  0x00
-	}
-	,
-	{  sizeof(S_usb_as_g_interface_descriptor_1)
-	   ,  CS_INTERFACE
-	   ,  GENERAL_SUB_TYPE
-	   ,  AS_TERMINAL_LINK
-	   ,  AS_DELAY
-	   ,  Usb_format_mcu_to_usb_data(16, AS_FORMAT_TAG)
-	}
-	,
-	{  sizeof(S_usb_format_type_1)
-	   ,  CS_INTERFACE
-	   ,  FORMAT_SUB_TYPE
-	   ,  FORMAT_TYPE
-	   ,  FORMAT_NB_CHANNELS
-	   ,  FORMAT_FRAME_SIZE
-	   ,  FORMAT_BIT_RESOLUTION
-	   ,  0x01
-	   ,  Usb_format_mcu_to_usb_data(16, FORMAT_LSBYTE_SAMPLE_FREQ_48)
-	   ,  FORMAT_MSBYTE_SAMPLE_FREQ
-	}
-    ,
-    {   sizeof(S_usb_endpoint_audio_descriptor_1)
-        ,   ENDPOINT_DESCRIPTOR
-        ,   ENDPOINT_NB_4
-        ,   EP_ATTRIBUTES_4
-        ,   Usb_format_mcu_to_usb_data(16, EP_SIZE_4_FS)
-        ,   EP_INTERVAL_4_FS
-        ,   0x00
-        ,   0x00
-	}
-	,
-	{  sizeof(S_usb_endpoint_audio_specific_1)
-	   ,  CS_ENDPOINT
-	   ,  GENERAL_SUB_TYPE
-	   ,  AUDIO_EP_ATRIBUTES
-	   ,  AUDIO_EP_DELAY_UNIT
-	   ,  Usb_format_mcu_to_usb_data(16, AUDIO_EP_LOCK_DELAY)
-	}*/
+        //	,
+        // BSB 20130604 disabling UAC1 IN
+        /*{  sizeof(S_usb_as_interface_descriptor)
+                   ,  INTERFACE_DESCRIPTOR
+                   ,  STD_AS_INTERFACE_IN
+                   ,  ALT0_AS_INTERFACE_INDEX
+                   ,  ALT0_AS_NB_ENDPOINT
+                   ,  ALT0_AS_INTERFACE_CLASS
+                   ,  ALT0_AS_INTERFACE_SUB_CLASS
+                   ,  ALT0_AS_INTERFACE_PROTOCOL
+                   ,  0x00
+                }
+                ,
+                {  sizeof(S_usb_as_interface_descriptor)
+                   ,  INTERFACE_DESCRIPTOR
+                   ,  STD_AS_INTERFACE_IN
+                   ,  ALT1_AS_INTERFACE_INDEX
+                   ,  ALT1_AS_NB_ENDPOINT
+                   ,  ALT1_AS_INTERFACE_CLASS
+                   ,  ALT1_AS_INTERFACE_SUB_CLASS
+                   ,  ALT1_AS_INTERFACE_PROTOCOL
+                   ,  0x00
+                }
+                ,
+                {  sizeof(S_usb_as_g_interface_descriptor_1)
+                   ,  CS_INTERFACE
+                   ,  GENERAL_SUB_TYPE
+                   ,  AS_TERMINAL_LINK
+                   ,  AS_DELAY
+                   ,  Usb_format_mcu_to_usb_data(16, AS_FORMAT_TAG)
+                }
+                ,
+                {  sizeof(S_usb_format_type_1)
+                   ,  CS_INTERFACE
+                   ,  FORMAT_SUB_TYPE
+                   ,  FORMAT_TYPE
+                   ,  FORMAT_NB_CHANNELS
+                   ,  FORMAT_FRAME_SIZE
+                   ,  FORMAT_BIT_RESOLUTION
+                   ,  0x01
+                   ,  Usb_format_mcu_to_usb_data(16, FORMAT_LSBYTE_SAMPLE_FREQ_48)
+                   ,  FORMAT_MSBYTE_SAMPLE_FREQ
+                }
+            ,
+            {   sizeof(S_usb_endpoint_audio_descriptor_1)
+                ,   ENDPOINT_DESCRIPTOR
+                ,   ENDPOINT_NB_4
+                ,   EP_ATTRIBUTES_4
+                ,   Usb_format_mcu_to_usb_data(16, EP_SIZE_4_FS)
+                ,   EP_INTERVAL_4_FS
+                ,   0x00
+                ,   0x00
+                }
+                ,
+                {  sizeof(S_usb_endpoint_audio_specific_1)
+                   ,  CS_ENDPOINT
+                   ,  GENERAL_SUB_TYPE
+                   ,  AUDIO_EP_ATRIBUTES
+                   ,  AUDIO_EP_DELAY_UNIT
+                   ,  Usb_format_mcu_to_usb_data(16, AUDIO_EP_LOCK_DELAY)
+                }*/
 
 
 };

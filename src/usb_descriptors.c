@@ -111,61 +111,61 @@ const S_usb_serial_number usb_user_serial_number = {
     STRING_DESCRIPTOR,
     USB_SERIAL_NUMBER};
 
-//usb_user_clock_source_1
+// usb_user_clock_source_1
 const S_usb_clock_source_1 usb_user_clock_source_1 = {
     sizeof(S_usb_clock_source_1),
     STRING_DESCRIPTOR,
     USB_CLOCK_SOURCE_1};
 
-//usb_user_clock_source_2
+// usb_user_clock_source_2
 const S_usb_clock_source_2 usb_user_clock_source_2 = {
     sizeof(S_usb_clock_source_2),
     STRING_DESCRIPTOR,
     USB_CLOCK_SOURCE_2};
 
-//usb_user_clock_selector
+// usb_user_clock_selector
 const S_usb_clock_selector usb_user_clock_selector = {
     sizeof(S_usb_clock_selector),
     STRING_DESCRIPTOR,
     USB_CLOCK_SELECTOR};
 
-//usb_user_wl
+// usb_user_wl
 const S_usb_wl usb_user_wl = {
     sizeof(S_usb_wl),
     STRING_DESCRIPTOR,
     USB_WL};
 
-//usb_user_ait
+// usb_user_ait
 const S_usb_ait usb_user_ait = {
     sizeof(S_usb_ait),
     STRING_DESCRIPTOR,
     USB_AIT};
 
-//usb_user_aot
+// usb_user_aot
 const S_usb_aot usb_user_aot = {
     sizeof(S_usb_aot),
     STRING_DESCRIPTOR,
     USB_AOT};
 
-//usb_user_ain
+// usb_user_ain
 const S_usb_ain usb_user_ain = {
     sizeof(S_usb_ain),
     STRING_DESCRIPTOR,
     USB_AIN};
 
-//usb_user_aia
+// usb_user_aia
 const S_usb_aia usb_user_aia = {
     sizeof(S_usb_aia),
     STRING_DESCRIPTOR,
     USB_AIA};
 
-//usb_left_channel
+// usb_left_channel
 const S_usb_left_channel usb_left_channel = {
     sizeof(S_usb_left_channel),
     STRING_DESCRIPTOR,
     USB_LEFT_CH};
 
-//usb_right_channel
+// usb_right_channel
 const S_usb_right_channel usb_right_channel = {
     sizeof(S_usb_right_channel),
     STRING_DESCRIPTOR,
@@ -175,11 +175,11 @@ const S_usb_right_channel usb_right_channel = {
 // usb_hid_report_descriptor
 const U8 usb_hid_report_descriptor[USB_HID_REPORT_DESC] =
 {
-	  	0x06, 0xA0, 0xFF,	// Usage page (vendor defined)
-	  	0x09, 0x01,	// Usage ID (vendor defined)
-	  	0xA1, 0x01,	// Collection (application)
+                0x06, 0xA0, 0xFF,	// Usage page (vendor defined)
+                0x09, 0x01,	// Usage ID (vendor defined)
+                0xA1, 0x01,	// Collection (application)
 
-		// The Input report
+                // The Input report
         0x09, 0x03,     	// Usage ID - vendor defined
         0x15, 0x00,     	// Logical Minimum (0)
         0x26, 0xFF, 0x00,   // Logical Maximum (255)
@@ -187,7 +187,7 @@ const U8 usb_hid_report_descriptor[USB_HID_REPORT_DESC] =
         0x95, 0x02,     	// Report Count (2 fields)
         0x81, 0x02,     	// Input (Data, Variable, Absolute)
 
-		// The Output report
+                // The Output report
         0x09, 0x04,     	// Usage ID - vendor defined
         0x15, 0x00,     	// Logical Minimum (0)
         0x26, 0xFF, 0x00,   // Logical Maximum (255)
@@ -195,7 +195,7 @@ const U8 usb_hid_report_descriptor[USB_HID_REPORT_DESC] =
         0x95, 0x02,     	// Report Count (2 fields)
         0x91, 0x02,      	// Output (Data, Variable, Absolute)
 
-		// The Feature report
+                // The Feature report
         0x09, 0x05,     	// Usage ID - vendor defined
         0x15, 0x00,     	// Logical Minimum (0)
         0x26, 0xFF, 0x00,   // Logical Maximum (255)
@@ -203,7 +203,7 @@ const U8 usb_hid_report_descriptor[USB_HID_REPORT_DESC] =
         0x95, 0x02, 		// Report Count	(2 fields)
         0xB1, 0x02,     	// Feature (Data, Variable, Absolute)
 
-	  	0xC0	// end collection
+                0xC0	// end collection
 
 };
 */
@@ -255,4 +255,3 @@ const U8 usb_hid_report_descriptor[USB_HID_REPORT_DESC] = {
 // Byte 0 Report ID 0x01
 // Byte 1 7:0 Rewind FForward Stop ScanPrevious ScanNext Play VolumeDn VolumeUp
 // Byte 2 7:0 Reserved Reserved Reserved Reserved Reserved MicMute HookSwitch Redial
-

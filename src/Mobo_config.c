@@ -415,14 +415,14 @@ mobo_data_t cdata  // Variables in ram/flash rom (default)
             (8.0 * 4.0 * _2(5))  // BPF. eight value array.
             ,
             (11.0 * 4.0 * _2(5)), (14.5 * 4.0 * _2(5)), (22.0 * 4.0 * _2(5)), (25.0 * 4.0 * _2(5)), (TRUE)}
-//, ( {  2.0 * 4.0 * _2(5) )	// Default filter crossover
-//,	(  4.0 * 4.0 * _2(5) )	// frequencies for the K5OOR
-//,	(  7.5 * 4.0 * _2(5) )	// HF Superpacker Pro LPF bank
-//,	( 14.5 * 4.0 * _2(5) )	// Six values in an eight value array.
-//,	( 21.5 * 4.0 * _2(5) )
-//,	( 30.0 * 4.0 * _2(5) )	// The highest two values parked above 30 MHz
-//,	( 30.0 * 4.0 * _2(5) )
-//,	( True ) }
+        //, ( {  2.0 * 4.0 * _2(5) )	// Default filter crossover
+        //,	(  4.0 * 4.0 * _2(5) )	// frequencies for the K5OOR
+        //,	(  7.5 * 4.0 * _2(5) )	// HF Superpacker Pro LPF bank
+        //,	( 14.5 * 4.0 * _2(5) )	// Six values in an eight value array.
+        //,	( 21.5 * 4.0 * _2(5) )
+        //,	( 30.0 * 4.0 * _2(5) )	// The highest two values parked above 30 MHz
+        //,	( 30.0 * 4.0 * _2(5) )
+        //,	( True ) }
         ,
         {(2.0 * 4.0 * _2(5))  // Default filter crossover
             ,
@@ -430,8 +430,7 @@ mobo_data_t cdata  // Variables in ram/flash rom (default)
             ,
             (8.0 * 4.0 * _2(5))  // 2009-08-15
             ,
-            (11.0 * 4.0 * _2(5)), (14.5 * 4.0 * _2(5)), (18.2 * 4.0 * _2(5)), (21.0 * 4.0 * _2(5)), (30.0 * 4.0 * _2(5)), (31.0 * 4.0 * _2(5)), (32.0 * 4.0 * _2(5)), (33.0 * 4.0 * _2(5)), (34.0 * 4.0 * _2(5)), (35.0 * 4.0 * _2(5)), (36.0 * 4.0 * _2(5)), (37.0 * 4.0 * _2(5)), (TRUE)}
-        ,
+            (11.0 * 4.0 * _2(5)), (14.5 * 4.0 * _2(5)), (18.2 * 4.0 * _2(5)), (21.0 * 4.0 * _2(5)), (30.0 * 4.0 * _2(5)), (31.0 * 4.0 * _2(5)), (32.0 * 4.0 * _2(5)), (33.0 * 4.0 * _2(5)), (34.0 * 4.0 * _2(5)), (35.0 * 4.0 * _2(5)), (36.0 * 4.0 * _2(5)), (37.0 * 4.0 * _2(5)), (TRUE)},
         PWR_FULL_SCALE  // Full Scale setting for Power Output Bargraph, in W
         ,
         SWR_FULL_SCALE  // Full Scale setting for SWR Bargraph,

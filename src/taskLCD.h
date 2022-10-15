@@ -55,8 +55,8 @@ struct dataLCD {
     } data;
 };
 
-//volatile uint8_t position;
-//uint8_t position_saved;
+// volatile uint8_t position;
+// uint8_t position_saved;
 
 extern portBASE_TYPE xStatus;
 extern xQueueHandle lcdCMDQUE;
@@ -80,7 +80,7 @@ extern void lcd_q_set(uint8_t cmd);
 
 /**
  *  @name Definitions for LCD command instructions
- *  The constants define the various LCD controller instructions which can be passed to the 
+ *  The constants define the various LCD controller instructions which can be passed to the
  *  function lcd_command(), see HD44780 data sheet for a complete description.
  */
 

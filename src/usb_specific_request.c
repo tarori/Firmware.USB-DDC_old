@@ -370,7 +370,7 @@ Bool usb_user_DG8SAQ(U8 type, U8 command)
             ;
         Usb_reset_endpoint_fifo_access(EP_CONTROL);
 
-        //for (x = 0; x<wLength;x++)
+        // for (x = 0; x<wLength;x++)
         if (wLength > 0)
             for (x = wLength - 1; x >= 0; x--) {
                 dg8saqBuffer[x] = Usb_read_endpoint_data(EP_CONTROL, 8);
@@ -412,4 +412,3 @@ Bool usb_user_DG8SAQ(U8 type, U8 command)
 
     return TRUE;
 }
-

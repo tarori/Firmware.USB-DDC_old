@@ -49,9 +49,9 @@
     FreeRTOS is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-    more details. You should have received a copy of the GNU General Public 
-    License and the FreeRTOS license exception along with FreeRTOS; if not it 
-    can be viewed here: http://www.freertos.org/a00114.html and also obtained 
+    more details. You should have received a copy of the GNU General Public
+    License and the FreeRTOS license exception along with FreeRTOS; if not it
+    can be viewed here: http://www.freertos.org/a00114.html and also obtained
     by writing to Richard Barry, contact details for whom are available on the
     FreeRTOS WEB site.
 
@@ -233,7 +233,7 @@ __attribute__((__naked__)) static void vTick(void)
 #endif
 
     /* Because FreeRTOS is not supposed to run with nested interrupts, put all OS
-	calls in a critical section . */
+        calls in a critical section . */
     portENTER_CRITICAL();
     vTaskIncrementTick();
     portEXIT_CRITICAL();
@@ -262,8 +262,8 @@ __attribute__((__noinline__)) void vPortEnterCritical(void)
     portDISABLE_INTERRUPTS();
 
     /* Now interrupts are disabled ulCriticalNesting can be accessed
-	 directly.  Increment ulCriticalNesting to keep a count of how many times
-	 portENTER_CRITICAL() has been called. */
+         directly.  Increment ulCriticalNesting to keep a count of how many times
+         portENTER_CRITICAL() has been called. */
     ulCriticalNesting++;
 }
 /*-----------------------------------------------------------*/
@@ -289,7 +289,7 @@ __attribute__((__noinline__)) void vPortExitCritical(void)
 portSTACK_TYPE* pxPortInitialiseStack(portSTACK_TYPE* pxTopOfStack, pdTASK_CODE pxCode, void* pvParameters)
 {
     /* Setup the initial stack of the task.  The stack is set exactly as
-	expected by the portRESTORE_CONTEXT() macro. */
+        expected by the portRESTORE_CONTEXT() macro. */
 
     /* When the task starts, it will expect to find the function parameter in R12. */
     pxTopOfStack--;
@@ -318,7 +318,7 @@ portSTACK_TYPE* pxPortInitialiseStack(portSTACK_TYPE* pxTopOfStack, pdTASK_CODE 
 portBASE_TYPE xPortStartScheduler(void)
 {
     /* Start the timer that generates the tick ISR.  Interrupts are disabled
-	here already. */
+        here already. */
     prvSetupTimerInterrupt();
 
     /* Start the first task. */
@@ -332,7 +332,7 @@ portBASE_TYPE xPortStartScheduler(void)
 void vPortEndScheduler(void)
 {
     /* It is unlikely that the AVR32 port will require this function as there
-	is nothing to return to.  */
+        is nothing to return to.  */
 }
 /*-----------------------------------------------------------*/
 
@@ -407,7 +407,7 @@ static void prvSetupTimerInterrupt(void)
     portDISABLE_INTERRUPTS();
 
     /* Register the compare interrupt handler to the interrupt controller and
-	enable the compare interrupt. */
+        enable the compare interrupt. */
 
 #if (configTICK_USE_TC == 1)
     {
@@ -417,8 +417,8 @@ static void prvSetupTimerInterrupt(void)
         tc_init_waveform(tc, &waveform_opt);
 
         /* Set the compare triggers.
-		Remember TC counter is 16-bits, so counting second is not possible!
-		That's why we configure it to count ms. Set Rc to the right value with
+                Remember TC counter is 16-bits, so counting second is not possible!
+                That's why we configure it to count ms. Set Rc to the right value with
       rounding.*/
         tc_write_rc(tc, configTICK_TC_CHANNEL, (configPBA_CLOCK_HZ + 4 * configTICK_RATE_HZ) / (8 * configTICK_RATE_HZ));
 

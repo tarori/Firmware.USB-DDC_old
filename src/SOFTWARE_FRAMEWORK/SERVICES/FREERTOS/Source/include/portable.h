@@ -35,9 +35,9 @@
     FreeRTOS is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-    more details. You should have received a copy of the GNU General Public 
-    License and the FreeRTOS license exception along with FreeRTOS; if not it 
-    can be viewed here: http://www.freertos.org/a00114.html and also obtained 
+    more details. You should have received a copy of the GNU General Public
+    License and the FreeRTOS license exception along with FreeRTOS; if not it
+    can be viewed here: http://www.freertos.org/a00114.html and also obtained
     by writing to Richard Barry, contact details for whom are available on the
     FreeRTOS WEB site.
 
@@ -234,7 +234,7 @@ typedef void(__interrupt __far* pxISR)();
 
 #ifdef BCC_INDUSTRIAL_PC_PORT
 /* A short file name has to be used in place of the normal
-	FreeRTOSConfig.h when using the Borland compiler. */
+        FreeRTOSConfig.h when using the Borland compiler. */
 #include "..\portable\BCC\16BitDOS\PC\prtmacro.h"
 #include "frconfig.h"
 typedef void(__interrupt __far* pxISR)();
@@ -242,7 +242,7 @@ typedef void(__interrupt __far* pxISR)();
 
 #ifdef BCC_FLASH_LITE_186_PORT
 /* A short file name has to be used in place of the normal
-	FreeRTOSConfig.h when using the Borland compiler. */
+        FreeRTOSConfig.h when using the Borland compiler. */
 #include "..\portable\BCC\16BitDOS\flsh186\prtmacro.h"
 #include "frconfig.h"
 typedef void(__interrupt __far* pxISR)();

@@ -227,15 +227,15 @@ int main(void)
     if (PM_FREQ_STATUS_FAIL == pm_configure_clocks(&pm_freq_param_slow))
         return 42;
 
-        /*
-	// Low power sleep test start
-	while (1) {
-		mobo_sleep_rtc_ms(500); // Hm, it seems to be running for twice as long as desired...
-		mobo_led(FLED_GREEN);
-		mobo_sleep_rtc_ms(500);
-		mobo_led(FLED_DARK);
-	}
-	// Low power sleep test end
+    /*
+    // Low power sleep test start
+    while (1) {
+            mobo_sleep_rtc_ms(500); // Hm, it seems to be running for twice as long as desired...
+            mobo_led(FLED_GREEN);
+            mobo_sleep_rtc_ms(500);
+            mobo_led(FLED_DARK);
+    }
+    // Low power sleep test end
 */
 
     gpio_set_gpio_pin(AVR32_PIN_PX51);  // Enables power to XO and DAC in USBI2C AB-1.X and USB DAC 128
@@ -263,7 +263,7 @@ int main(void)
     mobo_xo_select(FREQ_INVALID, input_select);  // Initial GPIO XO control and frequency indication
 
 
-//clear samplerate indication
+    // clear samplerate indication
     gpio_clr_gpio_pin(SAMPLEFREQ_VAL0);
     gpio_clr_gpio_pin(SAMPLEFREQ_VAL1);
 

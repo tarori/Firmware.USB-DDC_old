@@ -46,7 +46,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  *
-  * Additions and Modifications to ATMEL AVR32-SoftwareFramework-AT32UC3 are:
+ * Additions and Modifications to ATMEL AVR32-SoftwareFramework-AT32UC3 are:
  *
  * Copyright (C) 2012 Borge Strand-Bergesen
  *

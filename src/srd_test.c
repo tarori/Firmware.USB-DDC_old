@@ -28,9 +28,9 @@ int32_t BSBmult(int32_t A, int32_t V)
     return X;
 }
 /* builds
-	muls.d		r10, r11, r12
-	lsr     	r10, 28
-	or			r12, r10, r11 << 4
+        muls.d		r10, r11, r12
+        lsr     	r10, 28
+        or			r12, r10, r11 << 4
 */
 
 S32 Cmult(int32_t A, int32_t V)
@@ -41,9 +41,9 @@ S32 Cmult(int32_t A, int32_t V)
     return (S32)((int64_t)((int64_t)A * (int64_t)V) >> 28);
 }
 /* builds
-	muls.d  	r10, r11, r12
-	lsr     	r12, r10, 28
-	or			r12, r12, r11 << 4
+        muls.d  	r10, r11, r12
+        lsr     	r12, r10, 28
+        or			r12, r12, r11 << 4
 */
 
 /*
@@ -66,11 +66,11 @@ int foo(void)
     int timeout = 8000;
 
     /*
-	// Code to determine GPIO constants, rewrite this (2 positions!) first, compile this section, then modify asm
-	volatile avr32_gpio_port_t *gpio_port = &GPIO.port[AVR32_PIN_PA04 >> 5];
-	while ( (timeout != 0) && ( ((gpio_port->pvr >> (AVR32_PIN_PA04 & 0x1F)) & 1) == 0) ) {
-		timeout --;
-	}
+        // Code to determine GPIO constants, rewrite this (2 positions!) first, compile this section, then modify asm
+        volatile avr32_gpio_port_t *gpio_port = &GPIO.port[AVR32_PIN_PA04 >> 5];
+        while ( (timeout != 0) && ( ((gpio_port->pvr >> (AVR32_PIN_PA04 & 0x1F)) & 1) == 0) ) {
+                timeout --;
+        }
 */
 
     // Code to determine GPIO constants, rewrite this (2 positions!) first, compile this section, then modify asm
@@ -81,62 +81,62 @@ int foo(void)
     }
 
     /*
-	// Determining speed at TP16 / DAC_0P / PA04 for now.
-	int timeout;
-	
-	asm volatile(
-		"ssrf	16				\n\t"	// Disable global interrupt
-		"mov	%0, 	8000	\n\t"	// Load timeout
-		"mov	r9,		-61440	\n\t"	// Immediate load, set up pointer to PA04, (0xFFFF1000) recompile C for other IO pin, do once
-		"mov	r9,		-61184	\n\t"	// Immediate load, set up pointer to PB11, (0XFFFF1100) recompile C for other IO pin, do once
-		
-		"L0:					\n\t"	// Loop while PA04 is 1
-		"ld.w	r8,		r9[96]	\n\t"	// Load PA04 (and surroundings?) into r8, 		recompile C for other IO pin
-		"bld	r8, 	4		\n\t"	// Bit load to Z and C, similar to above line,	recompile c for other IO pin
-		"brne	L0_done			\n\t"	// Branch if %0 bit 11 was 0 (bit was 0, Z becomes 0 i.e. not equal)
-		"sub	%0,	1			\n\t"	// Count down
-		"brne	L0				\n\t"	// Not done counting down
-		"rjmp	COUNTD			\n\t"	// Countdown reached
-		"L0_done:				\n\t"
+        // Determining speed at TP16 / DAC_0P / PA04 for now.
+        int timeout;
 
-		"L1:					\n\t"	// Loop while PA04 is 0
-		"ld.w	r8,		r9[96]	\n\t"	// Load PA04 (and surroundings?) into r8, 		recompile C for other IO pin
-		"bld	r8, 	4		\n\t"	// Bit load to Z and C, similar to above line,	recompile c for other IO pin
-		"breq	L1_done			\n\t"	// Branch if %0 bit 4 was 1 (bit was 1, Z becomes 1 i.e. equal)
-		"sub	%0,	1			\n\t"	// Count down
-		"brne	L1				\n\t"	// Not done counting down
-		"rjmp	COUNTD			\n\t"	// Countdown reached
-		"L1_done:				\n\t"
+        asm volatile(
+                "ssrf	16				\n\t"	// Disable global interrupt
+                "mov	%0, 	8000	\n\t"	// Load timeout
+                "mov	r9,		-61440	\n\t"	// Immediate load, set up pointer to PA04, (0xFFFF1000) recompile C for other IO pin, do once
+                "mov	r9,		-61184	\n\t"	// Immediate load, set up pointer to PB11, (0XFFFF1100) recompile C for other IO pin, do once
 
-		"mov	%0, 	8000	\n\t"	// Restart countdon for actual timing of below half-cycles
+                "L0:					\n\t"	// Loop while PA04 is 1
+                "ld.w	r8,		r9[96]	\n\t"	// Load PA04 (and surroundings?) into r8, 		recompile C for other IO pin
+                "bld	r8, 	4		\n\t"	// Bit load to Z and C, similar to above line,	recompile c for other IO pin
+                "brne	L0_done			\n\t"	// Branch if %0 bit 11 was 0 (bit was 0, Z becomes 0 i.e. not equal)
+                "sub	%0,	1			\n\t"	// Count down
+                "brne	L0				\n\t"	// Not done counting down
+                "rjmp	COUNTD			\n\t"	// Countdown reached
+                "L0_done:				\n\t"
 
-		"L3:					\n\t"	// Loop while PBA04 is 1
-		"ld.w	r8,		r9[96]	\n\t"	// Load PA04 (and surroundings?) into r8, 		recompile C for other IO pin
-		"bld	r8, 	4		\n\t"	// Bit load to Z and C, similar to above line,	recompile c for other IO pin
-		"brne	L3_done			\n\t"	// Branch if %0 bit 4 was 0 (bit was 0, Z becomes 0 i.e. not equal)
-		"sub	%0,	1			\n\t"	// Count down
-		"brne	L3				\n\t"	// Not done counting down
-		"rjmp	COUNTD			\n\t"	// Countdown reached
-		"L3_done:				\n\t"
+                "L1:					\n\t"	// Loop while PA04 is 0
+                "ld.w	r8,		r9[96]	\n\t"	// Load PA04 (and surroundings?) into r8, 		recompile C for other IO pin
+                "bld	r8, 	4		\n\t"	// Bit load to Z and C, similar to above line,	recompile c for other IO pin
+                "breq	L1_done			\n\t"	// Branch if %0 bit 4 was 1 (bit was 1, Z becomes 1 i.e. equal)
+                "sub	%0,	1			\n\t"	// Count down
+                "brne	L1				\n\t"	// Not done counting down
+                "rjmp	COUNTD			\n\t"	// Countdown reached
+                "L1_done:				\n\t"
 
-		"L4:					\n\t"	// Loop while PA04 is 0
-		"ld.w	r8,		r9[96]	\n\t"	// Load PA04 (and surroundings?) into r8, 		recompile C for other IO pin
-		"bld	r8, 	4		\n\t"	// Bit load to Z and C, similar to above line,	recompile c for other IO pin
-		"breq	L4_done			\n\t"	// Branch if %0 bit 4 was 1 (bit was 1, Z becomes 1 i.e. equal)
-		"sub	%0,	1			\n\t"	// Count down
-		"brne	L4				\n\t"	// Not done counting down
-		"rjmp	COUNTD			\n\t"	// Countdown reached
-		"L4_done:				\n\t"
-		"rjmp	RETURN__		\n\t"
-		
-		"COUNTD:				\n\t"	// Countdown reached, %0 is 0
+                "mov	%0, 	8000	\n\t"	// Restart countdon for actual timing of below half-cycles
 
-		"RETURN__:				\n\t"
-		"csrf	16				\n\t"	// Enable global interrupt
-		:	"=r" (timeout)				// One output register
-		:								// No input registers
-		:	"r8", "r9"					// Clobber registers, pushed/popped unless assigned by GCC as temps
-	);
+                "L3:					\n\t"	// Loop while PBA04 is 1
+                "ld.w	r8,		r9[96]	\n\t"	// Load PA04 (and surroundings?) into r8, 		recompile C for other IO pin
+                "bld	r8, 	4		\n\t"	// Bit load to Z and C, similar to above line,	recompile c for other IO pin
+                "brne	L3_done			\n\t"	// Branch if %0 bit 4 was 0 (bit was 0, Z becomes 0 i.e. not equal)
+                "sub	%0,	1			\n\t"	// Count down
+                "brne	L3				\n\t"	// Not done counting down
+                "rjmp	COUNTD			\n\t"	// Countdown reached
+                "L3_done:				\n\t"
+
+                "L4:					\n\t"	// Loop while PA04 is 0
+                "ld.w	r8,		r9[96]	\n\t"	// Load PA04 (and surroundings?) into r8, 		recompile C for other IO pin
+                "bld	r8, 	4		\n\t"	// Bit load to Z and C, similar to above line,	recompile c for other IO pin
+                "breq	L4_done			\n\t"	// Branch if %0 bit 4 was 1 (bit was 1, Z becomes 1 i.e. equal)
+                "sub	%0,	1			\n\t"	// Count down
+                "brne	L4				\n\t"	// Not done counting down
+                "rjmp	COUNTD			\n\t"	// Countdown reached
+                "L4_done:				\n\t"
+                "rjmp	RETURN__		\n\t"
+
+                "COUNTD:				\n\t"	// Countdown reached, %0 is 0
+
+                "RETURN__:				\n\t"
+                "csrf	16				\n\t"	// Enable global interrupt
+                :	"=r" (timeout)				// One output register
+                :								// No input registers
+                :	"r8", "r9"					// Clobber registers, pushed/popped unless assigned by GCC as temps
+        );
 */
 
     return timeout;

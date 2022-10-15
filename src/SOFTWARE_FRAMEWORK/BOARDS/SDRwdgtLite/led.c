@@ -229,7 +229,7 @@ void LED_On_GPIO(U32 leds)
     }
 }
 
-//Function called by other code
+// Function called by other code
 void LED_Off(U32 leds)
 {
     gpio_enable_pin_pull_up(AVR32_PIN_PA04);  // Floating: Active high. GND: Active low
@@ -242,7 +242,7 @@ void LED_Off(U32 leds)
     gpio_disable_pin_pull_up(AVR32_PIN_PA04);  // Floating: Active high. GND: Active low
 }
 
-//Function called by other code
+// Function called by other code
 void LED_On(U32 leds)
 {
     gpio_enable_pin_pull_up(AVR32_PIN_PA04);  // Floating: Active high. GND: Active low

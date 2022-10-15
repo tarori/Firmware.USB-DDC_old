@@ -103,7 +103,7 @@ void dg8saqFunctionWrite(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* Buf
 
 /**
  @brief Process USB query commands and return a result (flexible size data payload)
-		This function processes control of all USB commands except for 0x30 - 0x35
+                This function processes control of all USB commands except for 0x30 - 0x35
 */
 uint8_t dg8saqFunctionSetup(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* Buffer)
 {
@@ -124,68 +124,68 @@ uint8_t dg8saqFunctionSetup(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* 
 
         // Todo -- may all go:
         /***********************************
-	#if LEGACY_PORT_CMD						// Legacy Commands 0x01 - 0x04. Normally not needed
-	case 0x01:								// set port pin directions (PORTD)
-		//
-		// Here we may want to insert a #define-able protection for the GPIO style
-		// Low Pass filter select signals.  A later project, if needed.
-		//
+        #if LEGACY_PORT_CMD						// Legacy Commands 0x01 - 0x04. Normally not needed
+        case 0x01:								// set port pin directions (PORTD)
+                //
+                // Here we may want to insert a #define-able protection for the GPIO style
+                // Low Pass filter select signals.  A later project, if needed.
+                //
 
-		#if ENCODER_INT_STYLE || ENCODER_SCAN_STYLE	// Shaft Encoder VFO function
-											// Protect Shaft encoder bits
-		IO_DDR_MP = rq ->wValue.b0 & ~(ENC_A_PIN | ENC_B_PIN | ENC_PUSHB_PIN);
-		#else
-		IO_DDR_MP = rq->wValue.b0;
-		#endif
-		break;
+                #if ENCODER_INT_STYLE || ENCODER_SCAN_STYLE	// Shaft Encoder VFO function
+                                                                                        // Protect Shaft encoder bits
+                IO_DDR_MP = rq ->wValue.b0 & ~(ENC_A_PIN | ENC_B_PIN | ENC_PUSHB_PIN);
+                #else
+                IO_DDR_MP = rq->wValue.b0;
+                #endif
+                break;
 
-	case 0x02:								// read PORTD
-		Buffer[0] = IO_PIN_MP;
-		return sizeof(uint8_t);
+        case 0x02:								// read PORTD
+                Buffer[0] = IO_PIN_MP;
+                return sizeof(uint8_t);
 
-	case 0x03:								// read port states, PORTD
-		Buffer[0] = IO_PORT_MP;
-		return sizeof(uint8_t);
+        case 0x03:								// read port states, PORTD
+                Buffer[0] = IO_PORT_MP;
+                return sizeof(uint8_t);
 
-	case 0x04:								// set outputs, PORTD
-		//
-		// Here we may want to insert a #define-able protection for the GPIO style
-		// Low Pass filter select signals.  A later project, if needed.
-		//
-		#if ENCODER_INT_STYLE || ENCODER_SCAN_STYLE	// Shaft Encoder VFO function
-											// Protect Shaft encoder bits
-		IO_PORT_MP = wValue | (ENC_A_PIN | ENC_B_PIN | ENC_PUSHB_PIN);
-		#else
-		IO_PORT_MP = wValue;
-		#endif
-		break;
-	#endif//LEGACY_PORT_CMD
-	***********************************/
+        case 0x04:								// set outputs, PORTD
+                //
+                // Here we may want to insert a #define-able protection for the GPIO style
+                // Low Pass filter select signals.  A later project, if needed.
+                //
+                #if ENCODER_INT_STYLE || ENCODER_SCAN_STYLE	// Shaft Encoder VFO function
+                                                                                        // Protect Shaft encoder bits
+                IO_PORT_MP = wValue | (ENC_A_PIN | ENC_B_PIN | ENC_PUSHB_PIN);
+                #else
+                IO_PORT_MP = wValue;
+                #endif
+                break;
+        #endif//LEGACY_PORT_CMD
+        ***********************************/
 
     case 0x0f:  // Reboot Widget
         widget_reset();
 
         // Todo -- may go, unless we have GPIOs to work with
         /***************************************************
-	case 0x15:								// Set IO port with mask and data bytes
-		//
-		// Here we may want to insert a #define-able protection for the GPIO style
-		// Low Pass filter select signals.  A later project, if needed.
-		//
-		#if ENCODER_INT_STYLE || ENCODER_SCAN_STYLE	// Shaft Encoder VFO function
-											// Protect Shaft encoder bits
-		IO_DDR_MP  = wValue & ~(ENC_A_PIN | ENC_B_PIN | ENC_PUSHB_PIN);
-		IO_PORT_MP = wIndex |  (ENC_A_PIN | ENC_B_PIN | ENC_PUSHB_PIN);
-		#else
-		IO_DDR_MP  = wValue;
-		IO_PORT_MP = wIndex;
-		#endif
-		// passthrough to case 0x16
+        case 0x15:								// Set IO port with mask and data bytes
+                //
+                // Here we may want to insert a #define-able protection for the GPIO style
+                // Low Pass filter select signals.  A later project, if needed.
+                //
+                #if ENCODER_INT_STYLE || ENCODER_SCAN_STYLE	// Shaft Encoder VFO function
+                                                                                        // Protect Shaft encoder bits
+                IO_DDR_MP  = wValue & ~(ENC_A_PIN | ENC_B_PIN | ENC_PUSHB_PIN);
+                IO_PORT_MP = wIndex |  (ENC_A_PIN | ENC_B_PIN | ENC_PUSHB_PIN);
+                #else
+                IO_DDR_MP  = wValue;
+                IO_PORT_MP = wIndex;
+                #endif
+                // passthrough to case 0x16
 
-	case 0x16:								// Read I/O bits
-		*Buf16 = IO_PIN_MP;
-    	return sizeof(uint16_t);
-	****************************************************/
+        case 0x16:								// Read I/O bits
+                *Buf16 = IO_PIN_MP;
+        return sizeof(uint16_t);
+        ****************************************************/
 
     case 0x17:  // Read and Write the Filter Cross over point's and use it.
     {
@@ -220,7 +220,7 @@ uint8_t dg8saqFunctionSetup(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* 
 
 
         // Todo -- delete, most likely
-        //case 0x20:								// [DEBUG] Write byte to Si570 register
+        // case 0x20:								// [DEBUG] Write byte to Si570 register
         //	Si570CmdReg(rq->wValue.b1, rq->wIndex.b0);  // Value high byte and Index low byte
         //
         //	Status2 |= SI570_OFFL;				// Next SetFreq call no smoothtune
@@ -228,16 +228,16 @@ uint8_t dg8saqFunctionSetup(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* 
         //	replyBuf[0].b0 = I2CErrors;			// return I2C transmission error status
         //  return sizeof(uint8_t);
 
-        //case 0x30:							// Set frequnecy by register and load Si570
-        //case 0x31:							// Write the FREQ mul & add to the eeprom
-        //case 0x32:							// Set frequency by value and load Si570
-        //case 0x33:							// write new crystal frequency to EEPROM and use it.
-        //case 0x34:							// Write new startup frequency to eeprom
-        //case 0x35:							// Write new smooth tune to eeprom and use it.
-        //case 0x36:
-        //case 0x37:
+        // case 0x30:							// Set frequnecy by register and load Si570
+        // case 0x31:							// Write the FREQ mul & add to the eeprom
+        // case 0x32:							// Set frequency by value and load Si570
+        // case 0x33:							// write new crystal frequency to EEPROM and use it.
+        // case 0x34:							// Write new startup frequency to eeprom
+        // case 0x35:							// Write new smooth tune to eeprom and use it.
+        // case 0x36:
+        // case 0x37:
         //	return 0		;					// Hey we're not supposed to be here
-        // 	we use usbFunctionWrite() to transfer data
+        //  	we use usbFunctionWrite() to transfer data
 
 
     case 0x3a:  // Return running frequnecy
@@ -342,7 +342,7 @@ uint8_t dg8saqFunctionSetup(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* 
 
         // Todo
         //#if USB_SERIAL_ID						// A feature to change the last char of the USB Serial  number
-        //case 0x43:							// Get/Set the USB SeialNumber ID
+        // case 0x43:							// Get/Set the USB SeialNumber ID
         //	replyBuf[0].b0 = R.SerialNumber;
         //	if (rq->wValue.b0 != 0) {			// Only set if Value != 0
         //		R.SerialNumber = rq->wValue.b0;
@@ -351,7 +351,7 @@ uint8_t dg8saqFunctionSetup(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* 
         //	return sizeof(R.SerialNumber);
         //#endif
 
-    case 0x50:  //Set/Release PTT and get cw-key status
+    case 0x50:  // Set/Release PTT and get cw-key status
         if (wValue == 0) {
             // Clear PTT flag, ask for state change to RX
             TX_flag = FALSE;
@@ -754,7 +754,7 @@ uint8_t dg8saqFunctionSetup(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* 
             return sizeof(uint8_t);
         }
     default:
-        return 1;  //break;
+        return 1;  // break;
     }
     return 1;
 }

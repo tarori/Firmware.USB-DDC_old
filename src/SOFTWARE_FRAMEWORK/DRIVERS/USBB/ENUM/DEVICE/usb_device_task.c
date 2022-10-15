@@ -98,8 +98,8 @@ void usb_device_task_init(void)
     usb_connected = FALSE;
     usb_configuration_nb = 0;
     //! @todo Implement this on the silicon version
-    //Pll_start_auto();
-    //Wait_pll_ready();
+    // Pll_start_auto();
+    // Wait_pll_ready();
     Disable_global_interrupt();
     Usb_disable();
     (void)Is_usb_enabled();
@@ -194,4 +194,3 @@ void usb_device_task(void)
     }
 #endif
 }
-

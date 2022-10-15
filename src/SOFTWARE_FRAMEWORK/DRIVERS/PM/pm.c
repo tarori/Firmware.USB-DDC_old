@@ -147,7 +147,9 @@ void pm_enable_osc0_ext_clock(volatile avr32_pm_t* pm)
 
 void pm_enable_osc0_crystal(volatile avr32_pm_t* pm, unsigned int fosc0)
 {
-    pm_set_osc0_mode(pm, (fosc0 < 900000) ? AVR32_PM_OSCCTRL0_MODE_CRYSTAL_G0 : (fosc0 < 3000000) ? AVR32_PM_OSCCTRL0_MODE_CRYSTAL_G1 : (fosc0 < 8000000) ? AVR32_PM_OSCCTRL0_MODE_CRYSTAL_G2 : AVR32_PM_OSCCTRL0_MODE_CRYSTAL_G3);
+    pm_set_osc0_mode(pm, (fosc0 < 900000) ? AVR32_PM_OSCCTRL0_MODE_CRYSTAL_G0 : (fosc0 < 3000000) ? AVR32_PM_OSCCTRL0_MODE_CRYSTAL_G1
+                                                                            : (fosc0 < 8000000)   ? AVR32_PM_OSCCTRL0_MODE_CRYSTAL_G2
+                                                                                                  : AVR32_PM_OSCCTRL0_MODE_CRYSTAL_G3);
 }
 
 void pm_enable_clk0(volatile avr32_pm_t* pm, unsigned int startup)
@@ -201,7 +203,9 @@ void pm_enable_osc1_ext_clock(volatile avr32_pm_t* pm)
 
 void pm_enable_osc1_crystal(volatile avr32_pm_t* pm, unsigned int fosc1)
 {
-    pm_set_osc1_mode(pm, (fosc1 < 900000) ? AVR32_PM_OSCCTRL1_MODE_CRYSTAL_G0 : (fosc1 < 3000000) ? AVR32_PM_OSCCTRL1_MODE_CRYSTAL_G1 : (fosc1 < 8000000) ? AVR32_PM_OSCCTRL1_MODE_CRYSTAL_G2 : AVR32_PM_OSCCTRL1_MODE_CRYSTAL_G3);
+    pm_set_osc1_mode(pm, (fosc1 < 900000) ? AVR32_PM_OSCCTRL1_MODE_CRYSTAL_G0 : (fosc1 < 3000000) ? AVR32_PM_OSCCTRL1_MODE_CRYSTAL_G1
+                                                                            : (fosc1 < 8000000)   ? AVR32_PM_OSCCTRL1_MODE_CRYSTAL_G2
+                                                                                                  : AVR32_PM_OSCCTRL1_MODE_CRYSTAL_G3);
 }
 
 void pm_enable_clk1(volatile avr32_pm_t* pm, unsigned int startup)

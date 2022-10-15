@@ -653,49 +653,49 @@ typedef struct
  * \warning It shall not be called from the CPU application mode.
  */
 #if (defined __GNUC__)
-#define Reset_CPU()                                                                                             \
-    (                                                                                                           \
-        {                                                                                                       \
-            __asm__ __volatile__(                                                                               \
-                "lddpc   r9, 3f\n\t"                                                                            \
-                "mfsr    r8, %[SR]\n\t"                                                                         \
-                "bfextu  r8, r8, %[SR_M_OFFSET], %[SR_M_SIZE]\n\t"                                              \
-                "cp.w    r8, 0b001\n\t"                                                                         \
-                "breq    0f\n\t"                                                                                \
-                "sub     r8, pc, $ - 1f\n\t"                                                                    \
-                "pushm   r8-r9\n\t"                                                                             \
-                "rete\n"                                                                                        \
-                "0:\n\t"                                                                                        \
-                "mtsr    %[SR], r9\n"                                                                           \
-                "1:\n\t"                                                                                        \
-                "mov     r0, 0\n\t"                                                                             \
-                "mov     r1, 0\n\t"                                                                             \
-                "mov     r2, 0\n\t"                                                                             \
-                "mov     r3, 0\n\t"                                                                             \
-                "mov     r4, 0\n\t"                                                                             \
-                "mov     r5, 0\n\t"                                                                             \
-                "mov     r6, 0\n\t"                                                                             \
-                "mov     r7, 0\n\t"                                                                             \
-                "mov     r8, 0\n\t"                                                                             \
-                "mov     r9, 0\n\t"                                                                             \
-                "mov     r10, 0\n\t"                                                                            \
-                "mov     r11, 0\n\t"                                                                            \
-                "mov     r12, 0\n\t"                                                                            \
-                "mov     sp, 0\n\t"                                                                             \
-                "stdsp   sp[0], sp\n\t"                                                                         \
-                "ldmts   sp, sp\n\t"                                                                            \
-                "mov     lr, 0\n\t"                                                                             \
-                "lddpc   pc, 2f\n\t"                                                                            \
-                ".balign 4\n"                                                                                   \
-                "2:\n\t"                                                                                        \
-                ".word   _start\n"                                                                              \
-                "3:\n\t"                                                                                        \
-                ".word   %[RESET_SR]"                                                                           \
-                :                                                                                               \
-                : [ SR ] "i"(AVR32_SR),                                                                         \
-                [ SR_M_OFFSET ] "i"(AVR32_SR_M_OFFSET),                                                         \
-                [ SR_M_SIZE ] "i"(AVR32_SR_M_SIZE),                                                             \
-                [ RESET_SR ] "i"(AVR32_SR_GM_MASK | AVR32_SR_EM_MASK | (AVR32_SR_M_SUP << AVR32_SR_M_OFFSET))); \
+#define Reset_CPU()                                                                                           \
+    (                                                                                                         \
+        {                                                                                                     \
+            __asm__ __volatile__(                                                                             \
+                "lddpc   r9, 3f\n\t"                                                                          \
+                "mfsr    r8, %[SR]\n\t"                                                                       \
+                "bfextu  r8, r8, %[SR_M_OFFSET], %[SR_M_SIZE]\n\t"                                            \
+                "cp.w    r8, 0b001\n\t"                                                                       \
+                "breq    0f\n\t"                                                                              \
+                "sub     r8, pc, $ - 1f\n\t"                                                                  \
+                "pushm   r8-r9\n\t"                                                                           \
+                "rete\n"                                                                                      \
+                "0:\n\t"                                                                                      \
+                "mtsr    %[SR], r9\n"                                                                         \
+                "1:\n\t"                                                                                      \
+                "mov     r0, 0\n\t"                                                                           \
+                "mov     r1, 0\n\t"                                                                           \
+                "mov     r2, 0\n\t"                                                                           \
+                "mov     r3, 0\n\t"                                                                           \
+                "mov     r4, 0\n\t"                                                                           \
+                "mov     r5, 0\n\t"                                                                           \
+                "mov     r6, 0\n\t"                                                                           \
+                "mov     r7, 0\n\t"                                                                           \
+                "mov     r8, 0\n\t"                                                                           \
+                "mov     r9, 0\n\t"                                                                           \
+                "mov     r10, 0\n\t"                                                                          \
+                "mov     r11, 0\n\t"                                                                          \
+                "mov     r12, 0\n\t"                                                                          \
+                "mov     sp, 0\n\t"                                                                           \
+                "stdsp   sp[0], sp\n\t"                                                                       \
+                "ldmts   sp, sp\n\t"                                                                          \
+                "mov     lr, 0\n\t"                                                                           \
+                "lddpc   pc, 2f\n\t"                                                                          \
+                ".balign 4\n"                                                                                 \
+                "2:\n\t"                                                                                      \
+                ".word   _start\n"                                                                            \
+                "3:\n\t"                                                                                      \
+                ".word   %[RESET_SR]"                                                                         \
+                :                                                                                             \
+                : [SR] "i"(AVR32_SR),                                                                         \
+                [SR_M_OFFSET] "i"(AVR32_SR_M_OFFSET),                                                         \
+                [SR_M_SIZE] "i"(AVR32_SR_M_SIZE),                                                             \
+                [RESET_SR] "i"(AVR32_SR_GM_MASK | AVR32_SR_EM_MASK | (AVR32_SR_M_SUP << AVR32_SR_M_OFFSET))); \
         })
 #elif (defined __ICCAVR32__)
 #define Reset_CPU()                                                                                                                                                                                                                                                                                                                                                                                   \

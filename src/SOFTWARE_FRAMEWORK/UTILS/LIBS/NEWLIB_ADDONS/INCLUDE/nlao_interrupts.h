@@ -58,12 +58,12 @@ _BEGIN_STD_C
 #define INTREQ_BASE (__intc_base__ + 64 * 4)
 #define INTCAUSE_BASE (__intc_base__ + 2 * 64 * 4)
 
-//Register offsets
+// Register offsets
 #define INTLEVEL 30
 #define AUTOVECTOR 0
 #define AUTOVECTOR_BITS 14
 
-//Priorities
+// Priorities
 #define INT0 0
 #define INT1 1
 #define INT2 2

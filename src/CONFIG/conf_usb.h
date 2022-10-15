@@ -170,7 +170,7 @@
 #define USB_INT_LEVEL AVR32_INTC_INT0
 
 //! Debug trace macro
-#define LOG_STR(str)  //print_dbg(str)
+#define LOG_STR(str)  // print_dbg(str)
 
 //! @defgroup usb_stream_control USB stream control parameters
 //! Defines the way the USB stream control will operate. The USB Stream Control embeds a mechanism

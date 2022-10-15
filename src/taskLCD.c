@@ -35,8 +35,8 @@ uint8_t position_saved;
 void ___waitForLCD(void)
 {
     //  Wait: new instructions may be given to the LCD screen 50us
-    //cpu_delay_us(50, FOSC0);	// A bit crude, as this is time not claimable by RTOS
-    //cpu_delay_us(100, FOSC0);
+    // cpu_delay_us(50, FOSC0);	// A bit crude, as this is time not claimable by RTOS
+    // cpu_delay_us(100, FOSC0);
     vTaskDelay(1);  // This is a bit slow...
                     // ...TF3LJ 2010-06-19
 }
@@ -61,7 +61,7 @@ void ___toggle_e(void)
 void ___writeNibbleToLCD(uint8_t selectedRegister, uint8_t nibble)
 {
     //  Pull the enable line high
-    //lcd_e_high();
+    // lcd_e_high();
 
     //  Output the nibble to the LCD
     //  FIXME there must be a smoother method than bit banging
@@ -89,7 +89,7 @@ void ___writeNibbleToLCD(uint8_t selectedRegister, uint8_t nibble)
     lcd_rw_low();
 
     //  Toggle the enable line to latch the nibble
-    //lcd_e_low();
+    // lcd_e_low();
     lcd_e_toggle();
 }
 
@@ -358,7 +358,7 @@ static void vtaskLCD(void* pcParameters)
 void vStartTaskLCD(void)
 {
     mutexQueLCD = xSemaphoreCreateMutex();
-    //mutexLCD = xSemaphoreCreateMutex();
+    // mutexLCD = xSemaphoreCreateMutex();
 
     xStatus = xTaskCreate(vtaskLCD,
         (signed char*)"LCDpanel",
@@ -372,79 +372,79 @@ void vStartTaskLCD(void)
 
 void lcd_q_init(void)
 {
-    //xSemaphoreTake( mutexLCD, portMAX_DELAY );
+    // xSemaphoreTake( mutexLCD, portMAX_DELAY );
     lcdQUEDATA.CMD = lcdINIT;
     xStatus = xQueueSendToBack(lcdCMDQUE, &lcdQUEDATA, portMAX_DELAY);
-    //xSemaphoreGive( mutexLCD );
+    // xSemaphoreGive( mutexLCD );
 }
 
 void lcd_q_clear(void)
 {
-    //xSemaphoreTake( mutexLCD, portMAX_DELAY );
+    // xSemaphoreTake( mutexLCD, portMAX_DELAY );
     lcdQUEDATA.CMD = lcdCLEAR;
     xStatus = xQueueSendToBack(lcdCMDQUE, &lcdQUEDATA, portMAX_DELAY);
-    //xSemaphoreGive( mutexLCD );
+    // xSemaphoreGive( mutexLCD );
 }
 
 void lcd_q_crlf(void)
 {
-    //xSemaphoreTake( mutexLCD, portMAX_DELAY );
+    // xSemaphoreTake( mutexLCD, portMAX_DELAY );
     lcdQUEDATA.CMD = lcdCRLF;
     xStatus = xQueueSendToBack(lcdCMDQUE, &lcdQUEDATA, portMAX_DELAY);
-    //xSemaphoreGive( mutexLCD );
+    // xSemaphoreGive( mutexLCD );
 }
 
 void lcd_q_goto(uint8_t row, uint8_t col)
 {
-    //xSemaphoreTake( mutexLCD, portMAX_DELAY );
+    // xSemaphoreTake( mutexLCD, portMAX_DELAY );
     lcdQUEDATA.CMD = lcdGOTO;
     lcdQUEDATA.data.scrnPOS.row = row;
     lcdQUEDATA.data.scrnPOS.col = col;
     xStatus = xQueueSendToBack(lcdCMDQUE, &lcdQUEDATA, portMAX_DELAY);
-    //xSemaphoreGive( mutexLCD );
+    // xSemaphoreGive( mutexLCD );
 }
 
 void lcd_q_write(char ch)
 {
-    //xSemaphoreTake( mutexLCD, portMAX_DELAY );
+    // xSemaphoreTake( mutexLCD, portMAX_DELAY );
     lcdQUEDATA.CMD = lcdWRITE;
     lcdQUEDATA.data.aChar = ch;
     xStatus = xQueueSendToBack(lcdCMDQUE, &lcdQUEDATA, portMAX_DELAY);
-    //xSemaphoreGive( mutexLCD );
+    // xSemaphoreGive( mutexLCD );
 }
 
 void lcd_q_putc(char ch)
 {
-    //xSemaphoreTake( mutexLCD, portMAX_DELAY );
+    // xSemaphoreTake( mutexLCD, portMAX_DELAY );
     lcdQUEDATA.CMD = lcdPUTC;
     lcdQUEDATA.data.aChar = ch;
     xStatus = xQueueSendToBack(lcdCMDQUE, &lcdQUEDATA, portMAX_DELAY);
-    //xSemaphoreGive( mutexLCD );
+    // xSemaphoreGive( mutexLCD );
 }
 
 void lcd_q_puth(uint8_t hex)
 {
-    //xSemaphoreTake( mutexLCD, portMAX_DELAY );
+    // xSemaphoreTake( mutexLCD, portMAX_DELAY );
     lcdQUEDATA.CMD = lcdPUTH;
     lcdQUEDATA.data.aChar = hex;
     xStatus = xQueueSendToBack(lcdCMDQUE, &lcdQUEDATA, portMAX_DELAY);
-    //xSemaphoreGive( mutexLCD );
+    // xSemaphoreGive( mutexLCD );
 }
 
 void lcd_q_print(char* string)
 {
-    //xSemaphoreTake( mutexLCD, portMAX_DELAY );
+    // xSemaphoreTake( mutexLCD, portMAX_DELAY );
     lcdQUEDATA.CMD = lcdPUTS;
     lcdQUEDATA.data.aString = (uint8_t*)string;
     xStatus = xQueueSendToBack(lcdCMDQUE, &lcdQUEDATA, portMAX_DELAY);
-    //xSemaphoreGive( mutexLCD );
+    // xSemaphoreGive( mutexLCD );
 }
 
 void lcd_q_set(uint8_t cmd)
 {
-    //xSemaphoreTake( mutexLCD, portMAX_DELAY );
+    // xSemaphoreTake( mutexLCD, portMAX_DELAY );
     lcdQUEDATA.CMD = lcdSET;
     lcdQUEDATA.data.rawBYTE = cmd;
     xStatus = xQueueSendToBack(lcdCMDQUE, &lcdQUEDATA, portMAX_DELAY);
-    //xSemaphoreGive( mutexLCD );
+    // xSemaphoreGive( mutexLCD );
 }

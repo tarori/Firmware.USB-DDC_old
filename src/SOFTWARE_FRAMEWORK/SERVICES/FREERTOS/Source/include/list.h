@@ -35,9 +35,9 @@
     FreeRTOS is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-    more details. You should have received a copy of the GNU General Public 
-    License and the FreeRTOS license exception along with FreeRTOS; if not it 
-    can be viewed here: http://www.freertos.org/a00114.html and also obtained 
+    more details. You should have received a copy of the GNU General Public
+    License and the FreeRTOS license exception along with FreeRTOS; if not it
+    can be viewed here: http://www.freertos.org/a00114.html and also obtained
     by writing to Richard Barry, contact details for whom are available on the
     FreeRTOS WEB site.
 
@@ -82,10 +82,10 @@
  */
 
 /*
-	Changes from V4.3.1
+        Changes from V4.3.1
 
-	+ Included local const within listGET_OWNER_OF_NEXT_ENTRY() to assist
-	  compiler with optimisation.  Thanks B.R.
+        + Included local const within listGET_OWNER_OF_NEXT_ENTRY() to assist
+          compiler with optimisation.  Thanks B.R.
 */
 
 #ifndef LIST_H

@@ -59,7 +59,7 @@
 
 //_____ D E C L A R A T I O N S ____________________________________________
 
-//extern void device_mouse_hid_task_init(U8 ep_hid_rx, U8 ep_hid_tx);
+// extern void device_mouse_hid_task_init(U8 ep_hid_rx, U8 ep_hid_tx);
 extern void device_mouse_hid_task_init(U8 ep_hid_tx);
 extern void device_mouse_hid_task(void* pvParameters);
 

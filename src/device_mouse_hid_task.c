@@ -162,7 +162,7 @@ void device_mouse_hid_task(void* pvParameters)
         vTaskDelayUntil(&xLastWakeTime, configTSK_USB_DHID_MOUSE_PERIOD);
 
         // First, check the device enumeration state BSB 20160504 Let's drop that for now...
-//    if (!Is_device_enumerated()) continue;
+        //    if (!Is_device_enumerated()) continue;
 
         // BSB 20120711: Debugging HID
         /*
@@ -172,17 +172,17 @@ void device_mouse_hid_task(void* pvParameters)
        switch (usb_state){
 
        case 'r':
-	   if ( Is_usb_out_received(EP_HID_RX)){
-		   LED_Toggle(LED1);
-		   Usb_reset_endpoint_fifo_access(EP_HID_RX);
-		   data_length = Usb_byte_count(EP_HID_RX);
-		   if (data_length > 2) data_length = 2;
-		   usb_read_ep_rxpacket(EP_HID_RX, &usb_report[0], data_length, NULL);
-		   Usb_ack_out_received_free(EP_HID_RX);
+           if ( Is_usb_out_received(EP_HID_RX)){
+                   LED_Toggle(LED1);
+                   Usb_reset_endpoint_fifo_access(EP_HID_RX);
+                   data_length = Usb_byte_count(EP_HID_RX);
+                   if (data_length > 2) data_length = 2;
+                   usb_read_ep_rxpacket(EP_HID_RX, &usb_report[0], data_length, NULL);
+                   Usb_ack_out_received_free(EP_HID_RX);
 #if LCD_DISPLAY			// Multi-line LCD display
-		   xSemaphoreTake( mutexQueLCD, portMAX_DELAY );
-		   lcdQUEDATA.CMD = lcdPOSW;
-	       xStatus = xQueueSendToBack( lcdCMDQUE, &lcdQUEDATA, portMAX_DELAY );
+                   xSemaphoreTake( mutexQueLCD, portMAX_DELAY );
+                   lcdQUEDATA.CMD = lcdPOSW;
+               xStatus = xQueueSendToBack( lcdCMDQUE, &lcdQUEDATA, portMAX_DELAY );
            lcdQUEDATA.CMD=lcdGOTO;
            lcdQUEDATA.data.scrnPOS.row = 3;
            lcdQUEDATA.data.scrnPOS.col = 14;
@@ -199,17 +199,17 @@ void device_mouse_hid_task(void* pvParameters)
 #endif
            print_dbg("HID: report received\n");
 
-		   usb_state = 't';
-	   }
-	   break;
+                   usb_state = 't';
+           }
+           break;
 
        case 't':
 
        if( Is_usb_in_ready(EP_HID_TX) )
        {
-    	  LED_Toggle(LED0);
+          LED_Toggle(LED0);
           Usb_reset_endpoint_fifo_access(EP_HID_TX);
-          
+
           //! Write report
           Usb_write_endpoint_data(EP_HID_TX, 8, usb_report[0]);
           Usb_write_endpoint_data(EP_HID_TX, 8, usb_report[1]);
@@ -223,31 +223,31 @@ void device_mouse_hid_task(void* pvParameters)
         // BSB 20120711: HID using uart
 
         /*
- * HID protocol using uart
- *
- * baud rate = 57600 (to be lowered to accommodate bit-banging hardware)
- * data bits = 8, stop bits = 1 (probably, haven't messed with defaults in TeraTerm...)
- *
- * At reboot usb-i2s module reports "\nHID ready\n"
- *
- * MCU sends usb-i2s module the ASCII command "hXXYY" where 'h' is the letter 'h',
- * XX is ASCII encoded ReportByte1, YY is ASCII encoded ReportByte2. usb-i2s module
- * echos transmission. A USB HID report of 0x01, XX, YY is sent to HOST. After sending it,
- * usb-i2s module sends 'H' '\n' to the MCU over uart. If USB HID report fails, '-' '\n'
- * is sent to the MCU.
- *
- * Both key press ( (XX != 0) || (YY != 0) ) and key release (XX == YY == 0) must be sent
- * separately by the MCU. The HOST decodes this into short, long and double key presses
- *
- * See usb_descriptors.c: usb_hid_report_descriptor[USB_HID_REPORT_DESC] on how XX and YY
- * encode user buttons.
- *
- * See BasicAudioDevice-10.pdf for more info
- * See "12 Consumer" of http://stuff.mit.edu/afs/sipb/project/freebsd/head/share/misc/usb_hid_usages
- *
- * Bugs: At present it only works with YY == 00. Reworking HID report has not been successful.
- *
- */
+         * HID protocol using uart
+         *
+         * baud rate = 57600 (to be lowered to accommodate bit-banging hardware)
+         * data bits = 8, stop bits = 1 (probably, haven't messed with defaults in TeraTerm...)
+         *
+         * At reboot usb-i2s module reports "\nHID ready\n"
+         *
+         * MCU sends usb-i2s module the ASCII command "hXXYY" where 'h' is the letter 'h',
+         * XX is ASCII encoded ReportByte1, YY is ASCII encoded ReportByte2. usb-i2s module
+         * echos transmission. A USB HID report of 0x01, XX, YY is sent to HOST. After sending it,
+         * usb-i2s module sends 'H' '\n' to the MCU over uart. If USB HID report fails, '-' '\n'
+         * is sent to the MCU.
+         *
+         * Both key press ( (XX != 0) || (YY != 0) ) and key release (XX == YY == 0) must be sent
+         * separately by the MCU. The HOST decodes this into short, long and double key presses
+         *
+         * See usb_descriptors.c: usb_hid_report_descriptor[USB_HID_REPORT_DESC] on how XX and YY
+         * encode user buttons.
+         *
+         * See BasicAudioDevice-10.pdf for more info
+         * See "12 Consumer" of http://stuff.mit.edu/afs/sipb/project/freebsd/head/share/misc/usb_hid_usages
+         *
+         * Bugs: At present it only works with YY == 00. Reworking HID report has not been successful.
+         *
+         */
 
         gotcmd = 0;  // No HID button change recorded yet
 
@@ -287,15 +287,15 @@ void device_mouse_hid_task(void* pvParameters)
 
             else {  // GPIO pin _changes_ are sent to Host
                 /*
-    		if ( (gpio_get_pin_value(PRG_BUTTON) == 0) ) {	// Check if Prog button is pushed down
-				ReportByte1 = 0x04;							// Encode the Play/Pause HID command
-				ReportByte2 = 0x00;							// This command is 0x00 until HID becomes more refined...
-			}
+                if ( (gpio_get_pin_value(PRG_BUTTON) == 0) ) {	// Check if Prog button is pushed down
+                                ReportByte1 = 0x04;							// Encode the Play/Pause HID command
+                                ReportByte2 = 0x00;							// This command is 0x00 until HID becomes more refined...
+                        }
 
-			else if ( (gpio_get_pin_value(PRG_BUTTON) != 0) ) {	// Check if Prog button is released
-				ReportByte1 = 0x00;							// Encode the button release HID command
-				ReportByte2 = 0x00;							// This command is 0x00 until HID becomes more refined...
-			}
+                        else if ( (gpio_get_pin_value(PRG_BUTTON) != 0) ) {	// Check if Prog button is released
+                                ReportByte1 = 0x00;							// Encode the button release HID command
+                                ReportByte2 = 0x00;							// This command is 0x00 until HID becomes more refined...
+                        }
 */
 
                 // Add more pins to poll here!
@@ -309,7 +309,7 @@ void device_mouse_hid_task(void* pvParameters)
 
             if (gotcmd == 0)      // Nothing recorded:
                 vTaskDelay(120);  // Polling cycle gives 12ms to RTOS. WM8805 needs that, HID doesn't
-        }                         //while (gotcmd == 0)
+        }                         // while (gotcmd == 0)
 
         //  Tested ReportByte1 content with JRiver and VLC on Win7-32
         //  ReportByte1 = 0b00000001; // Encode volup according to usb_hid_report_descriptor[USB_HID_REPORT_DESC] works!
@@ -329,7 +329,7 @@ void device_mouse_hid_task(void* pvParameters)
 #endif
 
         // Send the HID report over USB
-    if (1) {
+        if (1) {
             print_dbg_char('-');   // NO HID command forwarded to HOST
             print_dbg_char('\n');  // NO HID command forwarded to HOST
 #ifdef HID2LCD
@@ -338,6 +338,5 @@ void device_mouse_hid_task(void* pvParameters)
         }
 
         // BSB 20120711: Debugging HID end
-
     }
 }

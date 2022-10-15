@@ -111,8 +111,8 @@ static U8 bmRequestType;
 volatile U8 usb_configuration_nb;
 extern volatile Bool usb_connected;
 
-//extern  const     S_usb_device_descriptor             usb_user_device_descriptor;
-//extern  const     S_usb_user_configuration_descriptor usb_user_configuration_descriptor;
+// extern  const     S_usb_device_descriptor             usb_user_device_descriptor;
+// extern  const     S_usb_user_configuration_descriptor usb_user_configuration_descriptor;
 #define NB_INTERFACE 8
 static U8 usb_interface_status[NB_INTERFACE];  // All interface with default setting
 
@@ -274,7 +274,7 @@ void usb_get_descriptor(void)
     U8 descriptor_type;
     U8 string_type;
     Union32 temp;
-    //U16	  wInterface;
+    // U16	  wInterface;
 
 #if (USB_HIGH_SPEED_SUPPORT == ENABLED)
     Bool b_first_data = TRUE;
@@ -721,4 +721,3 @@ void usb_set_interface(void)
     while (!Is_usb_control_in_ready())
         ;
 }
-

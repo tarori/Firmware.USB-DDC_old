@@ -58,7 +58,7 @@ void SetFilter(uint32_t freq)
             if (Freq.w0 < cdata.FilterCrossOver[i])
                 break;
         }
-        //i = i & 0x07;								// We only want 3 bits
+        // i = i & 0x07;								// We only want 3 bits
         pcf8574_mobo_data_out &= 0xf8;                 // clear and leave upper 5 bits untouched
         pcf8574_mobo_set(cdata.PCF_I2C_Mobo_addr, i);  // Combine the two and write out
         selectedFilters[0] = i;                        // Used for LCD Print indication
@@ -82,11 +82,7 @@ void SetFilter(uint32_t freq)
             gpio_set_gpio_pin(PTT_3);
         else
             gpio_clr_gpio_pin(PTT_3);
-
     }
-
-
-
 }
 
 /*! \brief Si570 Set frequency (as a 32bit value) and filters, frequency [MHz] * 2^21
@@ -109,7 +105,7 @@ uint8_t new_freq_and_filters(uint32_t freq)
 
     cdata.Freq[0] = freq;  // Some Command calls to this func do not update si570.Freq[0]
 
-    if (TX_flag)        // Oops, we are transmitting... return without changing frequency
+    if (TX_flag)  // Oops, we are transmitting... return without changing frequency
         return TWI_INVALID_ARGUMENT;
 
 

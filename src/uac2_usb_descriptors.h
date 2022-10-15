@@ -108,8 +108,8 @@
 // USB Endpoint 3 descriptor
 #define ENDPOINT_NB_3 (UAC2_EP_AUDIO_OUT_FB | MSK_EP_DIR)  // 0x81
 #define EP_ATTRIBUTES_3 0b00010001                         // ISOCHRONOUS FEEDBACK
-#define EP_IN_LENGTH_3_FS 4                                //64				//   BSB 20170703 Is this really correct? Never tested in FS
-#define EP_IN_LENGTH_3_HS 4                                //64				// Xperia, changing to 64 did not help
+#define EP_IN_LENGTH_3_FS 4                                // 64				//   BSB 20170703 Is this really correct? Never tested in FS
+#define EP_IN_LENGTH_3_HS 4                                // 64				// Xperia, changing to 64 did not help
 #define EP_SIZE_3_FS EP_IN_LENGTH_3_FS
 #define EP_SIZE_3_HS EP_IN_LENGTH_3_HS
 #define EP_INTERVAL_3_FS 0x01
@@ -153,7 +153,7 @@
 #define OUTPUT_TERMINAL_SOURCE_ID MIC_FEATURE_UNIT_ID
 #define OUTPUT_TERMINAL_CONTROLS 0x0000  // no controls
 
-//MIC Feature Unit descriptor
+// MIC Feature Unit descriptor
 #define MIC_FEATURE_UNIT_ID 0x02
 #define MIC_FEATURE_UNIT_SOURCE_ID INPUT_TERMINAL_ID
 #define MIC_BMA_CONTROLS 0x00000003       // Mute readable and writable
@@ -169,7 +169,7 @@
 #define SPK_INPUT_TERMINAL_CH_NAME_ID LEFT_CH_INDEX  // Was: 0x00
 #define SPK_INPUT_TERMINAL_STRING_DESC AIT_INDEX
 
-//SPK Feature Unit descriptor
+// SPK Feature Unit descriptor
 #ifdef FEATURE_VOLUME_CTRL        // Only if volume control is compiled in do we expose it in the feature unit
 #define SPK_FEATURE_UNIT_ID 0x14  // Was 0x12
 #define SPK_FEATURE_UNIT_SOURCE_ID SPK_INPUT_TERMINAL_ID
@@ -190,7 +190,7 @@
 
 #define SPK_OUTPUT_TERMINAL_CONTROLS 0x0000  // no controls
 
-//Audio Streaming (AS) interface descriptor
+// Audio Streaming (AS) interface descriptor
 #define STD_AS_INTERFACE_OUT 0x01  // Index of Std AS Interface for Audio Out
 
 //#define DSC_INTERFACE_AS				STD_AS_INTERFACE_IN
@@ -198,28 +198,28 @@
 
 // Also mix in FEATURE_CFG_INTERFACE in Alternate interfaces?
 
-//Alternate O Audio Streaming (AS) interface descriptor
+// Alternate O Audio Streaming (AS) interface descriptor
 #define ALT0_AS_INTERFACE_INDEX 0x00      // Index of Std AS interface Alt0
 #define ALT0_AS_NB_ENDPOINT 0x00          // Nb of endpoints for alt0 interface
 #define ALT0_AS_INTERFACE_CLASS 0x01      // Audio class
 #define ALT0_AS_INTERFACE_SUB_CLASS 0x02  // Audio streamn sub class
 #define ALT0_AS_INTERFACE_PROTOCOL IP_VERSION_02_00
 
-//Alternate 1 Audio Streaming (AS) interface descriptor
+// Alternate 1 Audio Streaming (AS) interface descriptor
 #define ALT1_AS_INTERFACE_INDEX 0x01      // Index of Std AS interface Alt1
 #define ALT1_AS_NB_ENDPOINT 0x01          // Nb of endpoints for alt1 interface
 #define ALT1_AS_INTERFACE_CLASS 0x01      // Audio class
 #define ALT1_AS_INTERFACE_SUB_CLASS 0x02  // Audio streamn sub class
 #define ALT1_AS_INTERFACE_PROTOCOL IP_VERSION_02_00
 
-//Alternate 2 Audio Streaming (AS) interface descriptor // bBitResolution
+// Alternate 2 Audio Streaming (AS) interface descriptor // bBitResolution
 #define ALT2_AS_INTERFACE_INDEX 0x02      // Index of Std AS interface Alt2
 #define ALT2_AS_NB_ENDPOINT 0x01          // Nb of endpoints for alt2 interface
 #define ALT2_AS_INTERFACE_CLASS 0x01      // Audio class
 #define ALT2_AS_INTERFACE_SUB_CLASS 0x02  // Audio streamn sub class
 #define ALT2_AS_INTERFACE_PROTOCOL IP_VERSION_02_00
 
-//Class Specific AS (general) Interface descriptor
+// Class Specific AS (general) Interface descriptor
 #define AS_TERMINAL_LINK OUTPUT_TERMINAL_ID  // Unit Id of the output terminal
 #define AS_DELAY 0x01                        // Interface delay
 #define AS_FORMAT_TYPE 0x01                  // PCM Format
@@ -238,13 +238,13 @@
 #define FORMAT_SUBSLOT_SIZE_2 0x02    // Number of bytes per subslot
 #define FORMAT_BIT_RESOLUTION_2 0x10  // 16 bits per sample
 
-//Audio endpoint specific descriptor field
+// Audio endpoint specific descriptor field
 #define AUDIO_EP_ATRIBUTES 0b00000000  // No sampling freq, no pitch, no pading
 #define AUDIO_EP_CONTROLS 0b00000000
 #define AUDIO_EP_DELAY_UNIT 0x00    // Unused
 #define AUDIO_EP_LOCK_DELAY 0x0000  // Unused
 
-//For playback
+// For playback
 #define ALT1_AS_NB_ENDPOINT_OUT 0x02  // two EP,  OUT and OUT_FB
 #define ALT2_AS_NB_ENDPOINT_OUT 0x02  // two EP,  OUT and OUT_FB
 #define AS_TERMINAL_LINK_OUT SPK_INPUT_TERMINAL_ID

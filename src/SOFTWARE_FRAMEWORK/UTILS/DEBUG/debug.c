@@ -99,7 +99,7 @@ void uc3_round_trace_init(void* buf, U32 size)
 
 void uc3_round_trace(U32 val)
 {
-    //Disable_global_interrupt();
+    // Disable_global_interrupt();
 
     U32* p_wr = (U32*)(*(U32*)round_trace_pbuf);
     *p_wr = val;
@@ -109,5 +109,5 @@ void uc3_round_trace(U32 val)
     *p_wr = 0xdeadbeef;
     *(U32*)round_trace_pbuf = (U32)p_wr;
 
-    //Enable_global_interrupt();
+    // Enable_global_interrupt();
 }

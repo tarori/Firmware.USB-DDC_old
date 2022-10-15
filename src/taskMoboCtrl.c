@@ -43,7 +43,6 @@
 #include "usb_specific_request.h"
 
 
-
 //#define GPIO_PIN_EXAMPLE_3    GPIO_PUSH_BUTTON_SW2
 
 // Set up NVRAM (EEPROM) storage
@@ -204,8 +203,8 @@ void PA_bias(void)
                 calibrate = 0;          // Clear calibrate value (for next round)
                 cdata.Bias_Select = 2;  // Set bias select for class A and store
                 flashc_memset8((void*)&nvram_cdata.Bias_Select, cdata.Bias_Select, sizeof(cdata.Bias_Select), TRUE);
-                //implicit, no need:
-                //ad5301(cdata.AD5301_I2C_addr, cdata.cal_HI);// Set bias	at class A value
+                // implicit, no need:
+                // ad5301(cdata.AD5301_I2C_addr, cdata.cal_HI);// Set bias	at class A value
             }
 
             // Crank up the bias
@@ -255,10 +254,10 @@ static void vtaskMoboCtrl(void* pcParameters)
     gpio_enable_pin_pull_up(GPIO_CW_KEY_2);
 
     // Initialize Real Time Counter
-    //rtc_init(&AVR32_RTC, RTC_OSC_RC, 0);	// RC clock at 115kHz
-    //rtc_disable_interrupt(&AVR32_RTC);
-    //rtc_set_top_value(&AVR32_RTC, RTC_COUNTER_MAX);	// Counter reset once per 10 seconds
-    //rtc_enable(&AVR32_RTC);
+    // rtc_init(&AVR32_RTC, RTC_OSC_RC, 0);	// RC clock at 115kHz
+    // rtc_disable_interrupt(&AVR32_RTC);
+    // rtc_set_top_value(&AVR32_RTC, RTC_COUNTER_MAX);	// Counter reset once per 10 seconds
+    // rtc_enable(&AVR32_RTC);
 
 
     //Todo! may want a better name for function, function has changed
@@ -270,7 +269,7 @@ static void vtaskMoboCtrl(void* pcParameters)
     // Create I2C comms semaphore
     mutexI2C = xSemaphoreCreateMutex();
 
-// Initialize I2C communications
+    // Initialize I2C communications
 
 #if !LOGGING
 #endif
@@ -286,7 +285,7 @@ static void vtaskMoboCtrl(void* pcParameters)
     // Initialise Rotary Encoder Function
     encoder_init();
 
-// Force an initial reading of AD7991 etc
+    // Force an initial reading of AD7991 etc
 
     widget_initialization_finish();
 
@@ -312,8 +311,8 @@ static void vtaskMoboCtrl(void* pcParameters)
         static uint32_t btn_poll_lastIteration = 0, btn_poll_Timerval;  // Counters to keep track of time
 
         /*	// Only needed with working flash writes, see below
-		static S16 spk_vol_usb_L_local = VOL_INVALID;
-		static S16 spk_vol_usb_R_local = VOL_INVALID;
+                static S16 spk_vol_usb_L_local = VOL_INVALID;
+                static S16 spk_vol_usb_R_local = VOL_INVALID;
 */
 
         // Poll Real Time Clock, used for 0.5s, 100ms and 10s timing below
@@ -324,30 +323,30 @@ static void vtaskMoboCtrl(void* pcParameters)
             btn_poll_lastIteration = btn_poll_Timerval;     // Make ready for next iteration
 
             /*		// FIX: Flash writes creates ticks. Much faster (or interruptable code) is needed!
-    		// Has volume setting changed recently? If so store it to flash
-    		if (spk_vol_usb_L_local == VOL_INVALID) {
-    			spk_vol_usb_L_local = spk_vol_usb_L;		// 1st time, establish history
-    		}
-    		if (spk_vol_usb_R_local == VOL_INVALID) {
-    			spk_vol_usb_R_local = spk_vol_usb_R;		// 1st time, establish history
-    		}
-    		else if (spk_vol_usb_L_local != spk_vol_usb_L) {
-    			spk_vol_usb_L_local = spk_vol_usb_L;
-            	usb_volume_flash(CH_LEFT, spk_vol_usb_L, VOL_WRITE);
-    		}
-    		else if (spk_vol_usb_R_local != spk_vol_usb_R) {	// Not both in a row! These suckers seem to take TIME away from scheduler!
-    			spk_vol_usb_R_local = spk_vol_usb_R;
-            	usb_volume_flash(CH_RIGHT, spk_vol_usb_R, VOL_WRITE);
-    		}
+                // Has volume setting changed recently? If so store it to flash
+                if (spk_vol_usb_L_local == VOL_INVALID) {
+                        spk_vol_usb_L_local = spk_vol_usb_L;		// 1st time, establish history
+                }
+                if (spk_vol_usb_R_local == VOL_INVALID) {
+                        spk_vol_usb_R_local = spk_vol_usb_R;		// 1st time, establish history
+                }
+                else if (spk_vol_usb_L_local != spk_vol_usb_L) {
+                        spk_vol_usb_L_local = spk_vol_usb_L;
+                usb_volume_flash(CH_LEFT, spk_vol_usb_L, VOL_WRITE);
+                }
+                else if (spk_vol_usb_R_local != spk_vol_usb_R) {	// Not both in a row! These suckers seem to take TIME away from scheduler!
+                        spk_vol_usb_R_local = spk_vol_usb_R;
+                usb_volume_flash(CH_RIGHT, spk_vol_usb_R, VOL_WRITE);
+                }
 */
 
             if (gpio_get_pin_value(PRG_BUTTON) == 0) {
             }
 
-            if ((gpio_get_pin_value(PRG_BUTTON) == 0) && (btn_poll_temp != 100)) {  // If Prog button pressed and not yet handled..
-                                                                                    // At first detection of Prog pin change AB-1.x / USB DAC 128 mkI/II front LEDs for contrast:
-                                                                                    // RED->GREEN / GREEN->RED depending on LED_AB_FRONT
-                                                                                    // Historical note: Here used to be a pink definition and a bunch of defines. Removed 20150403
+            if ((gpio_get_pin_value(PRG_BUTTON) == 0) && (btn_poll_temp != 100)) {         // If Prog button pressed and not yet handled..
+                                                                                           // At first detection of Prog pin change AB-1.x / USB DAC 128 mkI/II front LEDs for contrast:
+                                                                                           // RED->GREEN / GREEN->RED depending on LED_AB_FRONT
+                                                                                           // Historical note: Here used to be a pink definition and a bunch of defines. Removed 20150403
                 if (feature_get_nvram(feature_image_index) == feature_image_uac1_audio) {  // With UAC1:
                     mobo_led(FLED_RED);
                 } else {  // With UAC != 1
@@ -395,13 +394,13 @@ static void vtaskMoboCtrl(void* pcParameters)
 
         }  // if (btn_poll_Timerval != btn_poll_lastIteration)	// Once every 1second, do stuff
 
-// End Prog button poll stuff BSB 20110903
+        // End Prog button poll stuff BSB 20110903
 
-//-----------------------------
-// Routines accessed every 10ms Now probably every 12ms due to vTaskDelay(120) below...
-//-----------------------------
+        //-----------------------------
+        // Routines accessed every 10ms Now probably every 12ms due to vTaskDelay(120) below...
+        //-----------------------------
 
-// The below is only applicable if I2C bus is available
+        // The below is only applicable if I2C bus is available
 
         LED_Toggle(LED2);  // FIX: Needed???
 

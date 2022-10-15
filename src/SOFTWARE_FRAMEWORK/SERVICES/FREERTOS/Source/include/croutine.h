@@ -35,9 +35,9 @@
     FreeRTOS is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-    more details. You should have received a copy of the GNU General Public 
-    License and the FreeRTOS license exception along with FreeRTOS; if not it 
-    can be viewed here: http://www.freertos.org/a00114.html and also obtained 
+    more details. You should have received a copy of the GNU General Public
+    License and the FreeRTOS license exception along with FreeRTOS; if not it
+    can be viewed here: http://www.freertos.org/a00114.html and also obtained
     by writing to Richard Barry, contact details for whom are available on the
     FreeRTOS WEB site.
 
@@ -144,7 +144,7 @@ typedef struct corCoRoutineControlBlock {
  {
  unsigned char ucParameterToPass;
  xTaskHandle xHandle;
-		
+
      // Create two co-routines at priority 0.  The first is given index 0
      // so (from the code above) toggles LED 5 every 200 ticks.  The second
      // is given index 1 so toggles LED 6 every 400 ticks.
@@ -181,7 +181,7 @@ signed portBASE_TYPE xCoRoutineCreate(crCOROUTINE_CODE pxCoRoutineCode, unsigned
  // The rest of the idle task will execute between co-routine calls.
  void vApplicationIdleHook( void )
  {
-	vCoRoutineSchedule();
+        vCoRoutineSchedule();
  }
 
  // Alternatively, if you do not require any other part of the idle task to
@@ -675,25 +675,25 @@ void vCoRoutineSchedule(void);
          {
              // The character was successfully posted to the queue.
          }
-		 else
-		 {
-			// Could not post the character to the queue.
-		 }
+                 else
+                 {
+                        // Could not post the character to the queue.
+                 }
 
          // Enable the UART Tx interrupt to cause an interrupt in this
-		 // hypothetical UART.  The interrupt will obtain the character
-		 // from the queue and send it.
-		 ENABLE_RX_INTERRUPT();
+                 // hypothetical UART.  The interrupt will obtain the character
+                 // from the queue and send it.
+                 ENABLE_RX_INTERRUPT();
 
-		 // Increment to the next character then block for a fixed period.
-		 // cCharToTx will maintain its value across the delay as it is
-		 // declared static.
-		 cCharToTx++;
-		 if( cCharToTx > 'x' )
-		 {
-			cCharToTx = 'a';
-		 }
-		 crDELAY( 100 );
+                 // Increment to the next character then block for a fixed period.
+                 // cCharToTx will maintain its value across the delay as it is
+                 // declared static.
+                 cCharToTx++;
+                 if( cCharToTx > 'x' )
+                 {
+                        cCharToTx = 'a';
+                 }
+                 crDELAY( 100 );
      }
 
      // All co-routines must end with a call to crEND().
@@ -709,13 +709,13 @@ void vCoRoutineSchedule(void);
      while( UART_TX_REG_EMPTY() )
      {
          // Are there any characters in the queue waiting to be sent?
-		 // xCRWokenByPost will automatically be set to pdTRUE if a co-routine
-		 // is woken by the post - ensuring that only a single co-routine is
-		 // woken no matter how many times we go around this loop.
+                 // xCRWokenByPost will automatically be set to pdTRUE if a co-routine
+                 // is woken by the post - ensuring that only a single co-routine is
+                 // woken no matter how many times we go around this loop.
          if( crQUEUE_RECEIVE_FROM_ISR( pxQueue, &cCharToTx, &xCRWokenByPost ) )
-		 {
-			 SEND_CHARACTER( cCharToTx );
-		 }
+                 {
+                         SEND_CHARACTER( cCharToTx );
+                 }
      }
  }</pre>
  * \defgroup crQUEUE_RECEIVE_FROM_ISR crQUEUE_RECEIVE_FROM_ISR

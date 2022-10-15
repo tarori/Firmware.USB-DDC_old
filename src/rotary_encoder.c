@@ -60,10 +60,10 @@
 // RTC initialized as follows in a parental function
 // Initialize Real Time Counter
 //
-//rtc_init(&AVR32_RTC, RTC_OSC_RC, 0);	// RC clock at 115kHz
-//rtc_disable_interrupt(&AVR32_RTC);
-//rtc_set_top_value(&AVR32_RTC, 1150000);	// Counter reset once per 10 seconds
-//rtc_enable(&AVR32_RTC);
+// rtc_init(&AVR32_RTC, RTC_OSC_RC, 0);	// RC clock at 115kHz
+// rtc_disable_interrupt(&AVR32_RTC);
+// rtc_set_top_value(&AVR32_RTC, 1150000);	// Counter reset once per 10 seconds
+// rtc_enable(&AVR32_RTC);
 //--------------------------------------------------------
 
 // Add up frequency delta from Rotary Encoder, parental function adds the

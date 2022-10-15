@@ -147,4 +147,3 @@ Bool hpsdr_user_read_request(U8 type, U8 request)
 
     return FALSE;  // No supported request
 }
-

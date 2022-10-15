@@ -35,9 +35,9 @@
     FreeRTOS is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-    more details. You should have received a copy of the GNU General Public 
-    License and the FreeRTOS license exception along with FreeRTOS; if not it 
-    can be viewed here: http://www.freertos.org/a00114.html and also obtained 
+    more details. You should have received a copy of the GNU General Public
+    License and the FreeRTOS license exception along with FreeRTOS; if not it
+    can be viewed here: http://www.freertos.org/a00114.html and also obtained
     by writing to Richard Barry, contact details for whom are available on the
     FreeRTOS WEB site.
 
@@ -179,7 +179,7 @@ typedef portBASE_TYPE (*pdTASK_HOOK_CODE)(void*);
 
 #if (configUSE_MUTEXES == 1)
 /* xTaskGetCurrentTaskHandle is used by the priority inheritance mechanism
-	within the mutex implementation so must be available if mutexes are used. */
+        within the mutex implementation so must be available if mutexes are used. */
 #undef INCLUDE_xTaskGetCurrentTaskHandle
 #define INCLUDE_xTaskGetCurrentTaskHandle 1
 #else
@@ -209,41 +209,41 @@ typedef portBASE_TYPE (*pdTASK_HOOK_CODE)(void*);
 /* Remove any unused trace macros. */
 #ifndef traceSTART
 /* Used to perform any necessary initialisation - for example, open a file
-	into which trace is to be written. */
+        into which trace is to be written. */
 #define traceSTART()
 #endif
 
 #ifndef traceEND
 /* Use to close a trace, for example close a file into which trace has been
-	written. */
+        written. */
 #define traceEND()
 #endif
 
 #ifndef traceTASK_SWITCHED_IN
 /* Called after a task has been selected to run.  pxCurrentTCB holds a pointer
-	to the task control block of the selected task. */
+        to the task control block of the selected task. */
 #define traceTASK_SWITCHED_IN()
 #endif
 
 #ifndef traceTASK_SWITCHED_OUT
 /* Called before a task has been selected to run.  pxCurrentTCB holds a pointer
-	to the task control block of the task being switched out. */
+        to the task control block of the task being switched out. */
 #define traceTASK_SWITCHED_OUT()
 #endif
 
 #ifndef traceBLOCKING_ON_QUEUE_RECEIVE
-/* Task is about to block because it cannot read from a 
-	queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
-	upon which the read was attempted.  pxCurrentTCB points to the TCB of the 
-	task that attempted the read. */
+/* Task is about to block because it cannot read from a
+        queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
+        upon which the read was attempted.  pxCurrentTCB points to the TCB of the
+        task that attempted the read. */
 #define traceBLOCKING_ON_QUEUE_RECEIVE(pxQueue)
 #endif
 
 #ifndef traceBLOCKING_ON_QUEUE_SEND
-/* Task is about to block because it cannot write to a 
-	queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
-	upon which the write was attempted.  pxCurrentTCB points to the TCB of the 
-	task that attempted the write. */
+/* Task is about to block because it cannot write to a
+        queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
+        upon which the write was attempted.  pxCurrentTCB points to the TCB of the
+        task that attempted the write. */
 #define traceBLOCKING_ON_QUEUE_SEND(pxQueue)
 #endif
 

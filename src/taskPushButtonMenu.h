@@ -10,7 +10,7 @@
 
 #define MENU_BUTTON ENCODER_SWITCH
 
-//extern bool		MENU_mode;					// LCD Menu mode (declared in Mobo_config.h)
+// extern bool		MENU_mode;					// LCD Menu mode (declared in Mobo_config.h)
 
 extern void vStartTaskPushButtonMenu(void);
 

@@ -63,18 +63,18 @@ const S_usb_user_configuration_descriptor hpsdr_usb_conf_desc_fs = {
         MAX_POWER}
 
     /*
-	,
-	{
-		sizeof(S_usb_interface_descriptor),
-		INTERFACE_DESCRIPTOR,
-		INTERFACE_NB0,
-		ALTERNATE_NB0,
-		NB_ENDPOINT0,
-		INTERFACE_CLASS0,
-		INTERFACE_SUB_CLASS0,
-		INTERFACE_PROTOCOL0,
-		INTERFACE_INDEX0
-	}
+        ,
+        {
+                sizeof(S_usb_interface_descriptor),
+                INTERFACE_DESCRIPTOR,
+                INTERFACE_NB0,
+                ALTERNATE_NB0,
+                NB_ENDPOINT0,
+                INTERFACE_CLASS0,
+                INTERFACE_SUB_CLASS0,
+                INTERFACE_PROTOCOL0,
+                INTERFACE_INDEX0
+        }
 
 */
     ,
@@ -101,18 +101,18 @@ const S_usb_user_configuration_descriptor hpsdr_usb_conf_desc_hs = {
         CONF_ATTRIBUTES,
         MAX_POWER}
     /*
-	,
-	{
-		sizeof(S_usb_interface_descriptor),
-		INTERFACE_DESCRIPTOR,
-		INTERFACE_NB0,
-		ALTERNATE_NB0,
-		NB_ENDPOINT0,
-		INTERFACE_CLASS0,
-		INTERFACE_SUB_CLASS0,
-		INTERFACE_PROTOCOL0,
-		INTERFACE_INDEX0
-	}
+        ,
+        {
+                sizeof(S_usb_interface_descriptor),
+                INTERFACE_DESCRIPTOR,
+                INTERFACE_NB0,
+                ALTERNATE_NB0,
+                NB_ENDPOINT0,
+                INTERFACE_CLASS0,
+                INTERFACE_SUB_CLASS0,
+                INTERFACE_PROTOCOL0,
+                INTERFACE_INDEX0
+        }
 */
     ,
     {sizeof(S_usb_endpoint_descriptor), ENDPOINT_DESCRIPTOR, ENDPOINT_NB_1, EP_ATTRIBUTES_1, Usb_format_mcu_to_usb_data(16, EP_SIZE_1_HS), EP_INTERVAL_1_HS},
@@ -137,4 +137,3 @@ const S_usb_product_string_descriptor hpsdr_usb_user_product_string_descriptor =
     sizeof(S_usb_product_string_descriptor),
     STRING_DESCRIPTOR,
     HPSDR_USB_PRODUCT_NAME};
-

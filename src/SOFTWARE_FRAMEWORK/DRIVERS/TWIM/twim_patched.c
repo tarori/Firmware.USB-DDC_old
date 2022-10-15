@@ -87,7 +87,7 @@ twi_master_interrupt_handler(void)
     int status = twim_inst->sr & twim_it_mask;
     // this is a NACK
     if (status & AVR32_TWIM_SR_ANAK_MASK) {
-        //if we get a nak, clear the valid bit in cmdr, otherwise the command will be resent.
+        // if we get a nak, clear the valid bit in cmdr, otherwise the command will be resent.
         twim_inst->cmdr = twim_inst->cmdr ^ AVR32_TWIM_CMDR_VALID_MASK;
         twim_inst->scr = AVR32_TWIM_SCR_ANAK_MASK;
         goto nack;
@@ -178,7 +178,7 @@ int twi_master_init(volatile avr32_twim_t* twi, const twi_options_t* opt, const 
 
     // Register TWI handler on level 2
     // Hack TF3LJ
-    //INTC_register_interrupt( &twi_master_interrupt_handler, AVR32_TWIM0_IRQ, AVR32_INTC_INT1);
+    // INTC_register_interrupt( &twi_master_interrupt_handler, AVR32_TWIM0_IRQ, AVR32_INTC_INT1);
     INTC_register_interrupt(&twi_master_interrupt_handler, irq, AVR32_INTC_INT1);
 
     // Enable all interrupts
@@ -196,7 +196,7 @@ int twi_master_init(volatile avr32_twim_t* twi, const twi_options_t* opt, const 
         return TWI_INVALID_CLOCK_DIV;
 
     // Probe the component
-    //status = twi_probe(twi, opt->chip);
+    // status = twi_probe(twi, opt->chip);
 
     return status;
 }
@@ -299,7 +299,7 @@ int twim_read(volatile avr32_twim_t* twi, unsigned char* buffer, int nbytes,
     // get a pointer to applicative data
     twim_rx_data = buffer;
 
-    //tenbit need special handling
+    // tenbit need special handling
     if (tenbit) {
         twi->cmdr = (saddr << AVR32_TWIM_CMDR_SADR_OFFSET) | (0 << AVR32_TWIM_CMDR_NBYTES_OFFSET) | (1 << AVR32_TWIM_CMDR_VALID_OFFSET) | (1 << AVR32_TWIM_CMDR_START_OFFSET) | (0 << AVR32_TWIM_CMDR_STOP_OFFSET) | (1 << AVR32_TWIM_CMDR_TENBIT_OFFSET) | (0 << AVR32_TWIM_CMDR_READ_OFFSET);
 

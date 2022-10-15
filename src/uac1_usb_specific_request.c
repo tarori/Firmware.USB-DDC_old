@@ -154,10 +154,10 @@ void uac1_user_set_interface(U8 wIndex, U8 wValue)
 
     // BSB 20130604 disabling UAC1 IN
     /*
-	else if (usb_interface_nb == STD_AS_INTERFACE_IN) {
-		usb_alternate_setting = wValue;
-		usb_alternate_setting_changed = TRUE;
-	} */
+        else if (usb_interface_nb == STD_AS_INTERFACE_IN) {
+                usb_alternate_setting = wValue;
+                usb_alternate_setting_changed = TRUE;
+        } */
 }
 
 static Bool uac1_user_get_interface_descriptor()
@@ -234,10 +234,10 @@ void audio_get_min(void)
     */
 
     /*
-		// 44.1khz min sampling freq
-    	Usb_write_endpoint_data(EP_CONTROL, 8, 0x44);
-    	Usb_write_endpoint_data(EP_CONTROL, 8, 0xac);
-    	Usb_write_endpoint_data(EP_CONTROL, 8, 0x00);
+                // 44.1khz min sampling freq
+        Usb_write_endpoint_data(EP_CONTROL, 8, 0x44);
+        Usb_write_endpoint_data(EP_CONTROL, 8, 0xac);
+        Usb_write_endpoint_data(EP_CONTROL, 8, 0x00);
 */
 
     Usb_ack_control_in_ready_send();
@@ -296,10 +296,10 @@ void audio_get_max(void)
    */
 
     /*
-		// 48khz max sampling freq
-		Usb_write_endpoint_data(EP_CONTROL, 8, 0x80);
-		Usb_write_endpoint_data(EP_CONTROL, 8, 0xbb);
-		Usb_write_endpoint_data(EP_CONTROL, 8, 0x00);
+                // 48khz max sampling freq
+                Usb_write_endpoint_data(EP_CONTROL, 8, 0x80);
+                Usb_write_endpoint_data(EP_CONTROL, 8, 0xbb);
+                Usb_write_endpoint_data(EP_CONTROL, 8, 0x00);
 */
 
     Usb_ack_control_in_ready_send();
@@ -358,10 +358,10 @@ void audio_get_res(void)
    */
 
     /*
-	// 48000 - 44100 = 3900
-   	Usb_write_endpoint_data(EP_CONTROL, 8, 0x3c);
-   	Usb_write_endpoint_data(EP_CONTROL, 8, 0x0f);
-   	Usb_write_endpoint_data(EP_CONTROL, 8, 0x00);
+        // 48000 - 44100 = 3900
+        Usb_write_endpoint_data(EP_CONTROL, 8, 0x3c);
+        Usb_write_endpoint_data(EP_CONTROL, 8, 0x0f);
+        Usb_write_endpoint_data(EP_CONTROL, 8, 0x00);
 */
 
     Usb_ack_control_in_ready_send();
@@ -634,4 +634,3 @@ Bool uac1_user_read_request(U8 type, U8 request)
 
     return FALSE;  // No supported request
 }
-

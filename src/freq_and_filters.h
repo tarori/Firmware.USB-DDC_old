@@ -12,7 +12,7 @@
 
 typedef union {  // Union of unsigned and signed 16 bit
     uint16_t w;  // and 8bit[2]
-    //int16_t		i;
+    // int16_t		i;
     struct {
         uint8_t b0;
         uint8_t b1;

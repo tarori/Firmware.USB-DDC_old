@@ -61,14 +61,13 @@
 #define CONF_ATTRIBUTES USB_CONFIG_BUSPOWERED  // default is bus-powered FIX: make dynamic for USB-C applications!
 #define MAX_POWER 250                          // 500mA for bus-powered operation
 
-//Audio Streaming (AS) interface descriptor
+// Audio Streaming (AS) interface descriptor
 #define STD_AS_INTERFACE_OUT 0x01  // Index of Std AS Interface for Audio Out
 
 // IAD for Audio
 #define FIRST_INTERFACE1 0
 // BSB 20130604 disabling UAC1 IN #define INTERFACE_COUNT1	3
 #define INTERFACE_COUNT1 2
-
 
 
 // Standard Audio Control (AC) interface descriptor
@@ -92,8 +91,8 @@
 #define EP_SIZE_3_HS EP_IN_LENGTH_3_HS
 #define EP_INTERVAL_3_FS 0x01  // one packet per uframe must set to 1 for ms
 #define EP_INTERVAL_3_HS 0x04  // One packet per 8 uframe
-#define EP_REFRESH_3_FS 0x00   //0x00	// was 0x05		 // BSB 20130530 should be 0? Added as #define See USB audio 1.0 specification, Table 4-20: Standard AS Isochronous Audio Data Endpoint.
-#define EP_REFRESH_3_HS 0x00   //0x00	// was 0x05		 // BSB 20130530 should be 0? Added as #define
+#define EP_REFRESH_3_FS 0x00   // 0x00	// was 0x05		 // BSB 20130530 should be 0? Added as #define See USB audio 1.0 specification, Table 4-20: Standard AS Isochronous Audio Data Endpoint.
+#define EP_REFRESH_3_HS 0x00   // 0x00	// was 0x05		 // BSB 20130530 should be 0? Added as #define
 //**** BSB: Is this correct with 0x05?? How about UAC1_EP_AUDIO_OUT_FB ??
 #define EP_BSYNC_ADDRESS_3 0x05  // feedback EP is EP 5
 //#define EP_BSYNC_ADDRESS_3	0x04			 // feedback EP is EP 4 - using audio input pipe to sync
@@ -195,28 +194,28 @@
 #define SPK_AS_DELAY 0x04          // Interface delay
 #define SPK_AS_FORMAT_TAG 0x0001   // PCM
 
-//Alternate O Audio Streaming (AS) interface descriptor
+// Alternate O Audio Streaming (AS) interface descriptor
 #define ALT0_AS_INTERFACE_INDEX 0x00      // Index of Std AS interface Alt0
 #define ALT0_AS_NB_ENDPOINT 0x00          // Nb of endpoints for alt0 interface
 #define ALT0_AS_INTERFACE_CLASS 0x01      // Audio class
 #define ALT0_AS_INTERFACE_SUB_CLASS 0x02  // Audio streamn sub class
 #define ALT0_AS_INTERFACE_PROTOCOL 0x00   // Unused
 
-//Alternate 1 Audio Streaming (AS) interface descriptor
+// Alternate 1 Audio Streaming (AS) interface descriptor
 #define ALT1_AS_INTERFACE_INDEX 0x01      // Index of Std AS interface Alt1
 #define ALT1_AS_NB_ENDPOINT 0x01          // Nb of endpoints for alt1 interface
 #define ALT1_AS_INTERFACE_CLASS 0x01      // Audio class
 #define ALT1_AS_INTERFACE_SUB_CLASS 0x02  // Audio streamn sub class
 #define ALT1_AS_INTERFACE_PROTOCOL 0x00   // Unused
 
-//Alternate 2 Audio Streaming (AS) interface descriptor
+// Alternate 2 Audio Streaming (AS) interface descriptor
 #define ALT2_AS_INTERFACE_INDEX 0x02      // Index of Std AS interface Alt2
 #define ALT2_AS_NB_ENDPOINT 0x01          // Nb of endpoints for alt2 interface
 #define ALT2_AS_INTERFACE_CLASS 0x01      // Audio class
 #define ALT2_AS_INTERFACE_SUB_CLASS 0x02  // Audio streamn sub class
 #define ALT2_AS_INTERFACE_PROTOCOL 0x00   // Unused
 
-//AS general Interface descriptor
+// AS general Interface descriptor
 #define AS_TERMINAL_LINK 0x03  // Unit Id of the output terminal
 #define AS_DELAY 0x01          // Interface delay
 #define AS_FORMAT_TAG 0x0001   // PCM Format
@@ -234,7 +233,7 @@
 //#define FORMAT_LSBYTE_SAMPLE_FREQ			0x7700	// 96khz
 //#define FORMAT_MSBYTE_SAMPLE_FREQ			0x01	// MsByte
 
-//Audio endpoint specific descriptor field
+// Audio endpoint specific descriptor field
 #define AUDIO_EP_ATRIBUTES 0x01     // sampling freq, no pitch, no pading
 #define AUDIO_EP_DELAY_UNIT 0x00    // Unused
 #define AUDIO_EP_LOCK_DELAY 0x0000  // Unused
@@ -249,7 +248,7 @@ typedef
 #endif
 {
     S_usb_configuration_descriptor cfg;
-// Config interface at endpoint 0
+    // Config interface at endpoint 0
     S_usb_interface_association_descriptor iad1;
     S_usb_interface_descriptor ifc2;
     S_usb_ac_interface_descriptor_1 audioac;

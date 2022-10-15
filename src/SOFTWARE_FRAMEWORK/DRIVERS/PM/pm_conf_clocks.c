@@ -145,7 +145,7 @@ int pm_configure_clocks(pm_freq_param_t* param)
     );
 
     pm_pll_set_option(&AVR32_PM, 0  // pll
-        // PLL clock is lower than 160MHz: need to set pllopt.
+                                    // PLL clock is lower than 160MHz: need to set pllopt.
         ,
         (pll_freq < AVR32_PM_PLL_VCO_RANGE0_MIN_FREQ) ? 1 : 0  // pll_freq
         ,

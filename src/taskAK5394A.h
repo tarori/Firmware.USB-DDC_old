@@ -90,9 +90,9 @@
 #define SILENCE_USB_INIT 0
 #define USB_IS_SILENT() (silence_USB >= SILENCE_USB_LIMIT)
 
-//extern const gpio_map_t SSC_GPIO_MAP;
-//extern const pdca_channel_options_t PDCA_OPTIONS;
-//extern const pdca_channel_options_t SPK_PDCA_OPTIONS;
+// extern const gpio_map_t SSC_GPIO_MAP;
+// extern const pdca_channel_options_t PDCA_OPTIONS;
+// extern const pdca_channel_options_t SPK_PDCA_OPTIONS;
 
 // Global buffer variables
 extern volatile S32 audio_buffer_0[ADC_BUFFER_SIZE];  // BSB 20170324 changed to signed

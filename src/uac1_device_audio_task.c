@@ -281,12 +281,12 @@ void uac1_device_audio_task(void* pvParameters)
                 Usb_reset_endpoint_fifo_access(EP_AUDIO_OUT_FB);
 
                 /* BSB 20131101
- * A "stupid" Host is able to read the feedback but does not consider it. Emulate that by resetting packets_since_feedback
- * and sending the Host the initial feedback value. Initial feedback is seeded with a hardcoded offset FB_INITIAL_OFFSET
- *
- * A "dead" Host is not reading the feedback. Emulate that by not resetting packets_since_feedbakc and sending the Host the
- * initial feedback value.
- */
+                 * A "stupid" Host is able to read the feedback but does not consider it. Emulate that by resetting packets_since_feedback
+                 * and sending the Host the initial feedback value. Initial feedback is seeded with a hardcoded offset FB_INITIAL_OFFSET
+                 *
+                 * A "dead" Host is not reading the feedback. Emulate that by not resetting packets_since_feedbakc and sending the Host the
+                 * initial feedback value.
+                 */
 
                 if (FEATURE_HDEAD_OFF)
                     packets_since_feedback = 0;
@@ -383,15 +383,15 @@ void uac1_device_audio_task(void* pvParameters)
                 // A high error means we must skip.
 
                 /*					// Try to detect a dead Host feedback system
-						if (FEATURE_NOSKIP_OFF) { 				// If skip/insert isn't disabled...
-							if (packets_since_feedback > SPK_HOST_FB_DEAD_AFTER)
-								skip_enable |= SPK_SKIP_EN_DEAD;	// Enable skip/insert due to dead host feedback system
-							else {
-								packets_since_feedback ++;
-								skip_enable &= ~SPK_SKIP_EN_DEAD;	// Disable skip/insert due to dead host feedback system
-							}
-						}
-	*/
+                                                if (FEATURE_NOSKIP_OFF) { 				// If skip/insert isn't disabled...
+                                                        if (packets_since_feedback > SPK_HOST_FB_DEAD_AFTER)
+                                                                skip_enable |= SPK_SKIP_EN_DEAD;	// Enable skip/insert due to dead host feedback system
+                                                        else {
+                                                                packets_since_feedback ++;
+                                                                skip_enable &= ~SPK_SKIP_EN_DEAD;	// Disable skip/insert due to dead host feedback system
+                                                        }
+                                                }
+        */
 
                 // Default:1 Skip:0 Insert:2 Only one skip or insert per USB package
                 // .. prior to for(num_samples) Hence 1st sample in a package is skipped or inserted
@@ -628,4 +628,3 @@ void uac1_device_audio_task(void* pvParameters)
 
     }  // end while vTask
 }
-

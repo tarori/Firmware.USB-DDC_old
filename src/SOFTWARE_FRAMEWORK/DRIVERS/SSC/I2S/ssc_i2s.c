@@ -191,16 +191,16 @@ int ssc_i2s_init(volatile avr32_ssc_t* ssc,
     else if (mode == SSC_I2S_MODE_STEREO_OUT_STEREO_IN) {
         ssc->cmr = AVR32_SSC_CMR_DIV_NOT_ACTIVE << AVR32_SSC_CMR_DIV_OFFSET;
         /* Set transmit clock mode:
-       *   CKS - use TK pin.  Signal from GCLK1
-       *   CKO - no output on TK.  Input only.
-       *   CKI - shift data on falling clock
-       *   CKG - transmit continuous clock on TK
-       *   START - on any TF(WS) edge
-       *   STTDLY - TF toggles before last bit of last word, not before
-       *            first bit on next word. Therefore: delay one cycle.
-       *   PERIOD - generate framesync for each sample (FS is generated
-       *            every (PERIOD + 1) * 2 clock)
-       */
+         *   CKS - use TK pin.  Signal from GCLK1
+         *   CKO - no output on TK.  Input only.
+         *   CKI - shift data on falling clock
+         *   CKG - transmit continuous clock on TK
+         *   START - on any TF(WS) edge
+         *   STTDLY - TF toggles before last bit of last word, not before
+         *            first bit on next word. Therefore: delay one cycle.
+         *   PERIOD - generate framesync for each sample (FS is generated
+         *            every (PERIOD + 1) * 2 clock)
+         */
         ssc->tcmr = AVR32_SSC_TCMR_CKS_TK_PIN << AVR32_SSC_TCMR_CKS_OFFSET | AVR32_SSC_TCMR_CKO_INPUT_ONLY << AVR32_SSC_TCMR_CKO_OFFSET | 0 << AVR32_SSC_TCMR_CKI_OFFSET | AVR32_SSC_TCMR_CKG_NONE << AVR32_SSC_TCMR_CKG_OFFSET |
                     //                AVR32_SSC_TCMR_START_DETECT_FALLING_TF	   << AVR32_SSC_TCMR_START_OFFSET  |	// Only transmit on falling BSB 20170605 see ssc_320.h
                     AVR32_SSC_TCMR_START_DETECT_ANY_EDGE_TF << AVR32_SSC_TCMR_START_OFFSET |  // Transmit on rising and falling
@@ -208,15 +208,15 @@ int ssc_i2s_init(volatile avr32_ssc_t* ssc,
                     1 << AVR32_SSC_TCMR_STTDLY_OFFSET | (frame_bit_res - 1) << AVR32_SSC_TCMR_PERIOD_OFFSET;
 
         /* Set transmit frame mode:
-     *  DATLEN - one sample for one channel
-     *  DATDEF - Default to zero,
-     *  MSBF - transmit msb first,
-     *  DATNB - Transfer two words (left+right),
-     *  FSLEN - Frame sync is entire left channel
-     *  FSOS - transmit negative pulse on WS (start sync on left channel)
-     *  FSDEN - Do not use transmit frame sync data
-     *  FSEDGE - detect frame sync positive edge
-     */
+         *  DATLEN - one sample for one channel
+         *  DATDEF - Default to zero,
+         *  MSBF - transmit msb first,
+         *  DATNB - Transfer two words (left+right),
+         *  FSLEN - Frame sync is entire left channel
+         *  FSOS - transmit negative pulse on WS (start sync on left channel)
+         *  FSDEN - Do not use transmit frame sync data
+         *  FSEDGE - detect frame sync positive edge
+         */
 #ifdef AVR32_SSC_220_H_INCLUDED
         ssc->tfmr = (data_bit_res - 1) << AVR32_SSC_TFMR_DATLEN_OFFSET | 0 << AVR32_SSC_TFMR_DATDEF_OFFSET | 1 << AVR32_SSC_TFMR_MSBF_OFFSET | (1 - 1) << AVR32_SSC_TFMR_DATNB_OFFSET | (((frame_bit_res - 1) << AVR32_SSC_TFMR_FSLEN_OFFSET) & AVR32_SSC_TFMR_FSLEN_MASK) | AVR32_SSC_TFMR_FSOS_NEG_PULSE << AVR32_SSC_TFMR_FSOS_OFFSET | 0 << AVR32_SSC_TFMR_FSDEN_OFFSET | 1 << AVR32_SSC_TFMR_FSEDGE_OFFSET;
 #else
@@ -225,16 +225,16 @@ int ssc_i2s_init(volatile avr32_ssc_t* ssc,
         txen_mask = AVR32_SSC_CR_TXEN_MASK;
 
         /* Set receive clock mode:
-	       *  CKS - use RK pin
-	       *  CKO - No clock output,
-	       *  CKI - shift data on rising edge,
-	       *  CKG - No clock output,
-	       *  START -  v76 On rising edge of the FRAME_SYNC input which is connected to FSYNC
-	       *  START -  v77 On level change of LRCK if SSC_RX_FS is connected to AD_LRCK
-	       *  STTDLY - v77 i2s data starts one SCLK after LRCK change
-	       *  STTDLY - v76 i2s data starts zero SCLK, ie immediately on FSYNC
-	       *  PERIOD - No FS generation
-	       */
+         *  CKS - use RK pin
+         *  CKO - No clock output,
+         *  CKI - shift data on rising edge,
+         *  CKG - No clock output,
+         *  START -  v76 On rising edge of the FRAME_SYNC input which is connected to FSYNC
+         *  START -  v77 On level change of LRCK if SSC_RX_FS is connected to AD_LRCK
+         *  STTDLY - v77 i2s data starts one SCLK after LRCK change
+         *  STTDLY - v76 i2s data starts zero SCLK, ie immediately on FSYNC
+         *  PERIOD - No FS generation
+         */
 
         ssc->rcmr = (AVR32_SSC_RCMR_CKS_RK_PIN << AVR32_SSC_RCMR_CKS_OFFSET) | (1 << AVR32_SSC_RCMR_CKI_OFFSET) | (AVR32_SSC_RCMR_CKO_INPUT_ONLY << AVR32_SSC_RCMR_CKO_OFFSET) |
                     //  I2S specs says data starts one SCLK after LRCK edge.  However testing shows that
@@ -263,16 +263,16 @@ int ssc_i2s_init(volatile avr32_ssc_t* ssc,
         ssc->tfmr = 0;
 
         /* Set receive clock mode:
-	       *  CKS - use RK pin
-	       *  CKO - No clock output,
-	       *  CKI - shift data on rising edge,
-	       *  CKG - No clock output,
-	       *  START -  v76 On rising edge of the FRAME_SYNC input which is connected to FSYNC
-	       *  START -  v77 On level change of LRCK if SSC_RX_FS is connected to AD_LRCK
-	       *  STTDLY - v77 i2s data starts one SCLK after LRCK change
-	       *  STTDLY - v76 i2s data starts zero SCLK, ie immediately on FSYNC
-	       *  PERIOD - No FS generation
-	       */
+         *  CKS - use RK pin
+         *  CKO - No clock output,
+         *  CKI - shift data on rising edge,
+         *  CKG - No clock output,
+         *  START -  v76 On rising edge of the FRAME_SYNC input which is connected to FSYNC
+         *  START -  v77 On level change of LRCK if SSC_RX_FS is connected to AD_LRCK
+         *  STTDLY - v77 i2s data starts one SCLK after LRCK change
+         *  STTDLY - v76 i2s data starts zero SCLK, ie immediately on FSYNC
+         *  PERIOD - No FS generation
+         */
 
         ssc->rcmr = (AVR32_SSC_RCMR_CKS_RK_PIN << AVR32_SSC_RCMR_CKS_OFFSET) | (1 << AVR32_SSC_RCMR_CKI_OFFSET) | (AVR32_SSC_RCMR_CKO_INPUT_ONLY << AVR32_SSC_RCMR_CKO_OFFSET) |
                     //  I2S specs says data starts one SCLK after LRCK edge.  However testing shows that
@@ -292,30 +292,30 @@ int ssc_i2s_init(volatile avr32_ssc_t* ssc,
     } else if (mode == SSC_I2S_MODE_STEREO_OUT_EXT_CLK) {
         ssc->cmr = AVR32_SSC_CMR_DIV_NOT_ACTIVE << AVR32_SSC_CMR_DIV_OFFSET;
         /* Set transmit clock mode:
-       *   CKS - external clock in TX pin,
-       *   CKO - input only
-       *   CKI - shift data on falling clock, (so that data will be valid on rising clock)
-       *   CKG - transmit continuous clock on TK
-       *   START - on any TF(WS) edge
-       *   STTDLY - TF toggles before last bit of last word, not before
-       *            first bit on next word. Therefore: delay one cycle.
-       *   PERIOD - generate framesync for each sample (FS is generated
-       *            every (PERIOD + 1) * 2 clock)
-       */
+         *   CKS - external clock in TX pin,
+         *   CKO - input only
+         *   CKI - shift data on falling clock, (so that data will be valid on rising clock)
+         *   CKG - transmit continuous clock on TK
+         *   START - on any TF(WS) edge
+         *   STTDLY - TF toggles before last bit of last word, not before
+         *            first bit on next word. Therefore: delay one cycle.
+         *   PERIOD - generate framesync for each sample (FS is generated
+         *            every (PERIOD + 1) * 2 clock)
+         */
         ssc->tcmr = AVR32_SSC_TCMR_CKS_TK_PIN << AVR32_SSC_TCMR_CKS_OFFSET | AVR32_SSC_TCMR_CKO_INPUT_ONLY << AVR32_SSC_TCMR_CKO_OFFSET | 0 << AVR32_SSC_TCMR_CKI_OFFSET | AVR32_SSC_TCMR_CKG_NONE << AVR32_SSC_TCMR_CKG_OFFSET | AVR32_SSC_TCMR_START_DETECT_ANY_EDGE_TF << AVR32_SSC_TCMR_START_OFFSET |
                     //               AVR32_SSC_TCMR_START_DETECT_LEVEL_CHANGE_TF   << AVR32_SSC_TCMR_START_OFFSET  |
                     1 << AVR32_SSC_TCMR_STTDLY_OFFSET | (frame_bit_res - 1) << AVR32_SSC_TCMR_PERIOD_OFFSET;
 
         /* Set transmit frame mode:
-     *  DATLEN - one sample for one channel
-     *  DATDEF - Default to zero,
-     *  MSBF - transmit msb first,
-     *  DATNB - Transfer two words (left+right),
-     *  FSLEN - Frame sync is entire left channel
-     *  FSOS - transmit negative pulse on WS (start sync on left channel)
-     *  FSDEN - Do not use transmit frame sync data
-     *  FSEDGE - detect frame sync positive edge
-     */
+         *  DATLEN - one sample for one channel
+         *  DATDEF - Default to zero,
+         *  MSBF - transmit msb first,
+         *  DATNB - Transfer two words (left+right),
+         *  FSLEN - Frame sync is entire left channel
+         *  FSOS - transmit negative pulse on WS (start sync on left channel)
+         *  FSDEN - Do not use transmit frame sync data
+         *  FSEDGE - detect frame sync positive edge
+         */
 #ifdef AVR32_SSC_220_H_INCLUDED
         ssc->tfmr = (data_bit_res - 1) << AVR32_SSC_TFMR_DATLEN_OFFSET | 0 << AVR32_SSC_TFMR_DATDEF_OFFSET | 1 << AVR32_SSC_TFMR_MSBF_OFFSET | (1 - 1) << AVR32_SSC_TFMR_DATNB_OFFSET | (((frame_bit_res - 1) << AVR32_SSC_TFMR_FSLEN_OFFSET) & AVR32_SSC_TFMR_FSLEN_MASK) | AVR32_SSC_TFMR_FSOS_NEG_PULSE << AVR32_SSC_TFMR_FSOS_OFFSET | 0 << AVR32_SSC_TFMR_FSDEN_OFFSET | 1 << AVR32_SSC_TFMR_FSEDGE_OFFSET;
 #else
@@ -336,60 +336,60 @@ int ssc_i2s_init(volatile avr32_ssc_t* ssc,
         }
 
         /* SSC can only receive one channel of audio input.  In order
-     * to use two inputs, two SSC's must be used. The first (master)
-     * deals with both output channels and the left input, and should
-     * be set to mode=I2S_STEREO_OUT_MONO_IN, and the second to
-     * mode=I2S_RIGHT_IN. The second SSC should be connected to the
-     * first SSC's in the following way:
-     * master-ssc:TF -> slave-ssc:RF,
-     * master-ssc:TK -> slave-ssc:RK
-     */
+         * to use two inputs, two SSC's must be used. The first (master)
+         * deals with both output channels and the left input, and should
+         * be set to mode=I2S_STEREO_OUT_MONO_IN, and the second to
+         * mode=I2S_RIGHT_IN. The second SSC should be connected to the
+         * first SSC's in the following way:
+         * master-ssc:TF -> slave-ssc:RF,
+         * master-ssc:TK -> slave-ssc:RK
+         */
 
         /* If only slave I2S SSC, do not set transmit registers */
         if (mode != SSC_I2S_MODE_RIGHT_IN) {
             if (mode != SSC_I2S_MODE_STEREO_OUT_EXT_CLK) {
                 /* Set transmit clock mode:
-         *   CKS - use divided clock,
-         *   CKO - transmit continous clock on TK
-         *   CKI - shift data on falling clock
-         *   CKG - continuous clock
-         *   START - on falling TF(WS) edge
-         *   STTDLY - TF toggles before last bit of last word, not before
-         *            first bit on next word. Therefore: delay one cycle.
-         *   PERIOD - generate framesync for each sample (FS is generated
-         *            every (PERIOD + 1) * 2 clock)
-         */
+                 *   CKS - use divided clock,
+                 *   CKO - transmit continous clock on TK
+                 *   CKI - shift data on falling clock
+                 *   CKG - continuous clock
+                 *   START - on falling TF(WS) edge
+                 *   STTDLY - TF toggles before last bit of last word, not before
+                 *            first bit on next word. Therefore: delay one cycle.
+                 *   PERIOD - generate framesync for each sample (FS is generated
+                 *            every (PERIOD + 1) * 2 clock)
+                 */
                 ssc->tcmr = AVR32_SSC_TCMR_CKS_DIV_CLOCK << AVR32_SSC_TCMR_CKS_OFFSET | AVR32_SSC_TCMR_CKO_CONTINOUS_CLOCK_OUTPUT << AVR32_SSC_TCMR_CKO_OFFSET | 0 << AVR32_SSC_TCMR_CKI_OFFSET | AVR32_SSC_TCMR_CKG_NONE << AVR32_SSC_TCMR_CKG_OFFSET | AVR32_SSC_TCMR_START_DETECT_ANY_EDGE_TF << AVR32_SSC_TCMR_START_OFFSET | 1 << AVR32_SSC_TCMR_STTDLY_OFFSET | (frame_bit_res - 1) << AVR32_SSC_TCMR_PERIOD_OFFSET;
             } else  // Stereo out using internal RX clock
             {
                 /* Set transmit clock mode:
-         *   CKS - use RX clock,
-         *   CKO - transmit continuous clock on TK
-         *   CKI - shift data on falling clock
-         *   CKG - transmit continuous clock on TK
-         *   START - on falling TF(WS) edge
-         *   STTDLY - TF toggles before last bit of last word, not before
-         *            first bit on next word. Therefore: delay one cycle.
-         *   PERIOD - generate framesync for each sample (FS is generated
-         *            every (PERIOD + 1) * 2 clock)
-         */
+                 *   CKS - use RX clock,
+                 *   CKO - transmit continuous clock on TK
+                 *   CKI - shift data on falling clock
+                 *   CKG - transmit continuous clock on TK
+                 *   START - on falling TF(WS) edge
+                 *   STTDLY - TF toggles before last bit of last word, not before
+                 *            first bit on next word. Therefore: delay one cycle.
+                 *   PERIOD - generate framesync for each sample (FS is generated
+                 *            every (PERIOD + 1) * 2 clock)
+                 */
                 ssc->tcmr = AVR32_SSC_TCMR_CKS_RK_CLOCK << AVR32_SSC_TCMR_CKS_OFFSET | AVR32_SSC_TCMR_CKO_CONTINOUS_CLOCK_OUTPUT << AVR32_SSC_TCMR_CKO_OFFSET | 0 << AVR32_SSC_TCMR_CKI_OFFSET | AVR32_SSC_TCMR_CKG_NONE << AVR32_SSC_TCMR_CKG_OFFSET | AVR32_SSC_TCMR_START_DETECT_ANY_EDGE_TF << AVR32_SSC_TCMR_START_OFFSET | 1 << AVR32_SSC_TCMR_STTDLY_OFFSET | (frame_bit_res - 1) << AVR32_SSC_TCMR_PERIOD_OFFSET;
                 /* Set receive clock mode:
-         *  CKS - uses RK pin
-         */
+                 *  CKS - uses RK pin
+                 */
                 ssc->rcmr = (AVR32_SSC_RCMR_CKS_RK_PIN << AVR32_SSC_RCMR_CKS_OFFSET);
             }
 
             /* Set transmit frame mode:
-       *  DATLEN - one sample for one channel
-       *  DATDEF - Default to zero,
-       *  MSBF - transmit msb first,
-       *  DATNB - Transfer two words (left+right),
-       *  FSLEN - Frame sync is entire left channel
-       *  FSOS - transmit negative pulse on WS (start sync on left channel)
-       *  FSDEN - Do not use transmit frame sync data
-       *  FSEDGE - detect frame sync positive edge
-       */
+             *  DATLEN - one sample for one channel
+             *  DATDEF - Default to zero,
+             *  MSBF - transmit msb first,
+             *  DATNB - Transfer two words (left+right),
+             *  FSLEN - Frame sync is entire left channel
+             *  FSOS - transmit negative pulse on WS (start sync on left channel)
+             *  FSDEN - Do not use transmit frame sync data
+             *  FSEDGE - detect frame sync positive edge
+             */
 #ifdef AVR32_SSC_220_H_INCLUDED
             ssc->tfmr = (data_bit_res - 1) << AVR32_SSC_TFMR_DATLEN_OFFSET | 0 << AVR32_SSC_TFMR_DATDEF_OFFSET | 1 << AVR32_SSC_TFMR_MSBF_OFFSET | (1 - 1) << AVR32_SSC_TFMR_DATNB_OFFSET | (((frame_bit_res - 1) << AVR32_SSC_TFMR_FSLEN_OFFSET) & AVR32_SSC_TFMR_FSLEN_MASK) | AVR32_SSC_TFMR_FSOS_NEG_PULSE << AVR32_SSC_TFMR_FSOS_OFFSET | 0 << AVR32_SSC_TFMR_FSDEN_OFFSET | 1 << AVR32_SSC_TFMR_FSEDGE_OFFSET;
 #else
@@ -402,29 +402,29 @@ int ssc_i2s_init(volatile avr32_ssc_t* ssc,
         if ((mode != SSC_I2S_MODE_STEREO_OUT) && (mode != SSC_I2S_MODE_STEREO_OUT_EXT_CLK)) {
             if ((mode == SSC_I2S_MODE_STEREO_OUT_MONO_IN) || (mode == SSC_I2S_MODE_RIGHT_IN)) {
                 /* Set receive clock mode:
-           *  CKS - left ch uses TK, right (slave) uses RK pin
-           *  CKO - No clock output,
-           *  CKI - shift data on rising edge,
-           *  CKG - No clock output,
-           *  START - left ch starts when transmit starts, right starts on
-           *          word-select (RF) rising edge
-           *  STTDLY - RF toggles before last bit of last word, not before
-           *           first bit on next word. Therefore, delay one cycle.
-           *  PERIOD - No FS generation
-           */
+                 *  CKS - left ch uses TK, right (slave) uses RK pin
+                 *  CKO - No clock output,
+                 *  CKI - shift data on rising edge,
+                 *  CKG - No clock output,
+                 *  START - left ch starts when transmit starts, right starts on
+                 *          word-select (RF) rising edge
+                 *  STTDLY - RF toggles before last bit of last word, not before
+                 *           first bit on next word. Therefore, delay one cycle.
+                 *  PERIOD - No FS generation
+                 */
                 ssc->rcmr = ((mode == SSC_I2S_MODE_RIGHT_IN ? AVR32_SSC_RCMR_CKS_RK_PIN : AVR32_SSC_RCMR_CKS_TK_CLOCK)
                                 << AVR32_SSC_RCMR_CKS_OFFSET)
                             | (AVR32_SSC_RCMR_CKO_INPUT_ONLY << AVR32_SSC_RCMR_CKO_OFFSET) | (1 << AVR32_SSC_RCMR_CKI_OFFSET) | (AVR32_SSC_RCMR_CKG_NONE << AVR32_SSC_RCMR_CKG_OFFSET) | ((mode == SSC_I2S_MODE_RIGHT_IN ? AVR32_SSC_RCMR_START_DETECT_RISING_RF : AVR32_SSC_RCMR_START_TRANSMIT_START) << AVR32_SSC_RCMR_START_OFFSET) | (1 << AVR32_SSC_RCMR_STTDLY_OFFSET) | (0 << AVR32_SSC_RCMR_PERIOD_OFFSET);
 
                 /* Set receive frame mode:
-           *  DATLEN - bits per sample
-           *  LOOP - no loopback
-           *  MSBF - msb first
-           *  DATNB - transmit one per sync
-           *  FSLEN - no generate framesync
-           *  FSOS - do not generate framesync
-           *  FSEDGE - detect frame sync positive edge
-           */
+                 *  DATLEN - bits per sample
+                 *  LOOP - no loopback
+                 *  MSBF - msb first
+                 *  DATNB - transmit one per sync
+                 *  FSLEN - no generate framesync
+                 *  FSOS - do not generate framesync
+                 *  FSEDGE - detect frame sync positive edge
+                 */
                 ssc->rfmr = ((data_bit_res - 1) << AVR32_SSC_RFMR_DATLEN_OFFSET) | (0 << AVR32_SSC_RFMR_LOOP_OFFSET) | (1 << AVR32_SSC_RFMR_MSBF_OFFSET) | (0 << AVR32_SSC_RFMR_DATNB_OFFSET) | (0 << AVR32_SSC_RFMR_FSLEN_OFFSET) | (AVR32_SSC_RFMR_FSOS_INPUT_ONLY << AVR32_SSC_RFMR_FSOS_OFFSET) | (0 << AVR32_SSC_RFMR_FSEDGE_OFFSET);
 
                 rxen_mask = AVR32_SSC_CR_RXEN_MASK;

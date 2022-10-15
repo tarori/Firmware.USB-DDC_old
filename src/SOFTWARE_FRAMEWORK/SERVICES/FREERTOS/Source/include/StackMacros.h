@@ -35,9 +35,9 @@
     FreeRTOS is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-    more details. You should have received a copy of the GNU General Public 
-    License and the FreeRTOS license exception along with FreeRTOS; if not it 
-    can be viewed here: http://www.freertos.org/a00114.html and also obtained 
+    more details. You should have received a copy of the GNU General Public
+    License and the FreeRTOS license exception along with FreeRTOS; if not it
+    can be viewed here: http://www.freertos.org/a00114.html and also obtained
     by writing to Richard Barry, contact details for whom are available on the
     FreeRTOS WEB site.
 
@@ -65,7 +65,7 @@
  * the current stack state only - comparing the current top of stack value to
  * the stack limit.  Setting configCHECK_FOR_STACK_OVERFLOW to greater than 1
  * will also cause the last few stack bytes to be checked to ensure the value
- * to which the bytes were set when the task was created have not been 
+ * to which the bytes were set when the task was created have not been
  * overwritten.  Note this second test does not guarantee that an overflowed
  * stack will always be recognised.
  */
@@ -84,7 +84,7 @@
 #if (configCHECK_FOR_STACK_OVERFLOW == 1)
 
 /* FreeRTOSConfig.h is only set to use the first method of
-	overflow checking. */
+        overflow checking. */
 #define taskSECOND_CHECK_FOR_STACK_OVERFLOW()
 
 #endif

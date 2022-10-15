@@ -365,7 +365,7 @@ static long int pcl_configure_clocks_uc3c(pcl_freq_param_t* param)
         opt.div = div,                                                         // DIV=1 in the formula
         opt.mul = mul,                                                         // MUL=7 in the formula
         opt.pll_div2 = div2_en,                                                // pll_div2 Divide the PLL output frequency by 2 (this settings does not change the FVCO value)
-        opt.pll_wbwdisable = 0,                                                //pll_wbwdisable 1 Disable the Wide-Bandith Mode (Wide-Bandwith mode allow a faster startup time and out-of-lock time). 0 to enable the Wide-Bandith Mode.
+        opt.pll_wbwdisable = 0,                                                // pll_wbwdisable 1 Disable the Wide-Bandith Mode (Wide-Bandwith mode allow a faster startup time and out-of-lock time). 0 to enable the Wide-Bandith Mode.
         opt.pll_freq = (pll_freq < AVR32_PM_PLL_VCO_RANGE0_MIN_FREQ) ? 1 : 0,  // Set to 1 for VCO frequency range 80-180MHz, set to 0 for VCO frequency range 160-240Mhz.
 
         scif_pll_setup(SCIF_PLL0, opt);  // lockcount in main clock for the PLL wait lock
@@ -470,7 +470,7 @@ long int pcl_configure_usb_clock(void)
         .div = 1,             // DIV=1 in the formula
         .mul = 5,             // MUL=7 in the formula
         .pll_div2 = 1,        // pll_div2 Divide the PLL output frequency by 2 (this settings does not change the FVCO value)
-        .pll_wbwdisable = 0,  //pll_wbwdisable 1 Disable the Wide-Bandith Mode (Wide-Bandwith mode allow a faster startup time and out-of-lock time). 0 to enable the Wide-Bandith Mode.
+        .pll_wbwdisable = 0,  // pll_wbwdisable 1 Disable the Wide-Bandith Mode (Wide-Bandwith mode allow a faster startup time and out-of-lock time). 0 to enable the Wide-Bandith Mode.
         .pll_freq = 1,        // Set to 1 for VCO frequency range 80-180MHz, set to 0 for VCO frequency range 160-240Mhz.
     };
 
