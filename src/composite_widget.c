@@ -259,7 +259,6 @@ int main(void)
     else
         input_select = MOBO_SRC_UAC2;
 
-    //	mobo_xo_select(FREQ_44, input_select);					// Initial GPIO XO control and frequency indication
     mobo_xo_select(FREQ_INVALID, input_select);  // Initial GPIO XO control and frequency indication
 
 
@@ -286,10 +285,6 @@ int main(void)
 
     // Initialize widget management
     widget_init();
-
-    //	if ( FEATURE_BOARD_WIDGET ) {
-    //		gpio_clr_gpio_pin(AK5394_RSTN);	// put AK5394A in reset
-    //	}
 
     if (FEATURE_ADC_AK5394A) {
         int counter;

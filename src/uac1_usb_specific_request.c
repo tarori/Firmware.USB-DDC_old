@@ -420,9 +420,7 @@ void audio_get_cur(void)
     else if (i_unit == SPK_FEATURE_UNIT_ID) {
         switch (wValue_msb) {
         case CS_MUTE:
-            //		   		if (length == 1) { // Don't lock onto set mute status length 1 byte. Not 100% sure if Linux uses ==1 byte
             Usb_write_endpoint_data(EP_CONTROL, 8, usb_spk_mute);
-            //				}
             break;
         case CS_VOLUME:
             if (length == 2) {
@@ -513,11 +511,8 @@ void audio_set_cur(void)
         uint8_t temp2 = 0;
 
         if (wValue_msb == CS_MUTE) {
-            //		   if (length == 1) { // Don't lock onto set mute status length 1 byte. Not 100% sure if Linux uses ==1 byte
             temp1 = Usb_read_endpoint_data(EP_CONTROL, 8);
             usb_spk_mute = temp1;
-
-            //		   }
         } else if (wValue_msb == CS_VOLUME) {
             if (length == 2) {
                 temp1 = Usb_read_endpoint_data(EP_CONTROL, 8);

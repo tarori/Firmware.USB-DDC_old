@@ -308,14 +308,10 @@ void mobo_clear_adc_channel(void)
 {
     int i;
 
-    //	gpio_set_gpio_pin(AVR32_PIN_PX18); // ch2
-
     for (i = 0; i < ADC_BUFFER_SIZE; i++) {
         audio_buffer_0[i] = 0;
         audio_buffer_1[i] = 0;
     }
-
-    //	gpio_clr_gpio_pin(AVR32_PIN_PX18); // ch2
 }
 
 // Empty the contents of the outgoing pdca buffers
@@ -323,15 +319,10 @@ void mobo_clear_dac_channel(void)
 {
     int i;
 
-
-    //	gpio_set_gpio_pin(AVR32_PIN_PX17); // ch3
-
     for (i = 0; i < DAC_BUFFER_SIZE; i++) {
         spk_buffer_0[i] = 0;
         spk_buffer_1[i] = 0;
     }
-
-    //	gpio_clr_gpio_pin(AVR32_PIN_PX17); // ch3
 }
 
 //

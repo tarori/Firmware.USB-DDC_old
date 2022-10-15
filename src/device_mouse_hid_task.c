@@ -120,7 +120,6 @@ void device_mouse_hid_task_init(U8 ep_tx)
     // Initialize accelerometer driver
     acc_init();
 #endif
-    //	ep_hid_rx = ep_rx; // BSB 20120718 unused variable, sane?
     ep_hid_tx = ep_tx;
 
     xTaskCreate(device_mouse_hid_task,
@@ -132,13 +131,6 @@ void device_mouse_hid_task_init(U8 ep_tx)
 
     // Added BSB 20120718
     print_dbg("\nHID ready\n");  // usart is ready to receive HID commands!
-
-    // Added BSB 20120719
-
-#ifdef HID2LCD  // Needed here? Including these lines seems to break functionality
-//	lcd_q_init();
-//	lcd_q_clear();
-#endif
 }
 
 //!
@@ -309,7 +301,7 @@ void device_mouse_hid_task(void* pvParameters)
 
             if (gotcmd == 0)      // Nothing recorded:
                 vTaskDelay(120);  // Polling cycle gives 12ms to RTOS. WM8805 needs that, HID doesn't
-        }                         // while (gotcmd == 0)
+        }
 
         //  Tested ReportByte1 content with JRiver and VLC on Win7-32
         //  ReportByte1 = 0b00000001; // Encode volup according to usb_hid_report_descriptor[USB_HID_REPORT_DESC] works!

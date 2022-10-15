@@ -238,13 +238,6 @@ void uac2_freq_change_handler()
                 gpio_clr_gpio_pin(AK5394_DFS1);
             }
 
-            /*
-                         if (FEATURE_LINUX_QUIRK_ON)
-                         FB_rate = (96) << 15;
-                         else
-                         */
-
-            //				FB_rate = (96) << 14; // Generic OS, supported by linux OS patch...
             FB_rate = (99) << 14;                                // Needed by Linux, linux-quirk replacement, in initial, not in nominal
             FB_rate_initial = FB_rate;                           // BSB 20131031 Record FB_rate as it was set by control system
             FB_rate_nominal = ((96) << 14) + FB_NOMINAL_OFFSET;  // BSB 20131115 Record FB_rate as it was set by control system
@@ -260,13 +253,6 @@ void uac2_freq_change_handler()
                 gpio_clr_gpio_pin(AK5394_DFS1);
             }
 
-            /*
-                         if (FEATURE_LINUX_QUIRK_ON)
-                         FB_rate = (88 << 15) + (1<<15)/5;
-                         else
-                         */
-
-            //				FB_rate = (88 << 14) + (1<<14)/5; // Generic code, supported by linux OS patch
             FB_rate = (99 << 14);                                                // Needed by Linux, Linux-quirk replacement, in initial, not in nominal
             FB_rate_initial = FB_rate;                                           // BSB 20131031 Record FB_rate as it was set by control system
             FB_rate_nominal = ((88 << 14) + (1 << 14) / 5) + FB_NOMINAL_OFFSET;  // BSB 20131115 Record FB_rate as it was set by control system
@@ -388,10 +374,6 @@ void uac2_user_set_interface(U8 wIndex, U8 wValue)
 {
     //* Check whether it is the audio streaming interface and Alternate Setting that is being set
     usb_interface_nb = wIndex;
-    //   if (usb_interface_nb == STD_AS_INTERFACE_IN) {
-    //	   usb_alternate_setting = wValue;
-    //	   usb_alternate_setting_changed = TRUE;
-    //   } else if (usb_interface_nb == STD_AS_INTERFACE_OUT) {
     if (usb_interface_nb == STD_AS_INTERFACE_OUT) {
         usb_alternate_setting_out = wValue;
         usb_alternate_setting_out_changed = TRUE;
@@ -809,7 +791,6 @@ Bool uac2_user_read_request(U8 type, U8 request)
 
 
                         if (wLength == 8) {
-                            //							Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, VOL_RES));
                             Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, 1));
                             Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, VOL_MIN));
                             Usb_write_endpoint_data(EP_CONTROL, 16, Usb_format_mcu_to_usb_data(16, VOL_MAX));
@@ -883,7 +864,6 @@ Bool uac2_user_read_request(U8 type, U8 request)
                         Usb_reset_endpoint_fifo_access(EP_CONTROL);
 
                         if (usb_alternate_setting_out >= 1) {  // bBitResolution
-                                                               //						if (usb_alternate_setting_out == 1) {
                             Usb_write_endpoint_data(EP_CONTROL, 8, SPK_INPUT_TERMINAL_NB_CHANNELS);
                             Usb_write_endpoint_data(EP_CONTROL, 8, (U8)SPK_INPUT_TERMINAL_CHANNEL_CONF);
                             Usb_write_endpoint_data(EP_CONTROL, 8, 0x00);

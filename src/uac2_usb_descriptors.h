@@ -46,7 +46,7 @@
 
 // CONFIGURATION
 
-#define NB_INTERFACE 2  //         Audio control, audio streaming
+#define NB_INTERFACE 2  //  Audio control, audio streaming
 
 #define CONF_NB 1  //! Number of this configuration
 #define CONF_INDEX 0

@@ -93,8 +93,6 @@ void uac1_AK5394A_task(void* pvParameters)
         vTaskDelayUntil(&xLastWakeTime, UAC1_configTSK_AK5394A_PERIOD);
 
         if (freq_changed) {
-
-            //			print_dbg_char('8');	// Does this ever happen? YES it does!
             spk_mute = TRUE;
             if (current_freq.frequency == FREQ_48) {
                 FB_rate = 48 << 14;
@@ -109,8 +107,6 @@ void uac1_AK5394A_task(void* pvParameters)
             freq_changed = FALSE;
         }
         if (usb_alternate_setting_changed) {
-
-            //			print_dbg_char('7');	// Does this ever happen? // Doesn't look like that..
 
             // FIX: This is not pretty! We only comment out the disabling of PDCA_CHANNEL_SSC_RX, not what else is going on in the file
             pdca_disable_interrupt_reload_counter_zero(PDCA_CHANNEL_SSC_RX);
@@ -139,20 +135,6 @@ void uac1_AK5394A_task(void* pvParameters)
             usb_alternate_setting_changed = FALSE;
         }
 
-        /*
-                if (usb_alternate_setting_out_changed){
-                        if (usb_alternate_setting_out != 1){
-                                spk_mute = TRUE;
-                                for (i = 0; i < DAC_BUFFER_SIZE; i++){
-                                        spk_buffer_0[i] = 0;
-                                        spk_buffer_1[i] = 0;
-                                }
-                                spk_mute = FALSE;
-                        }
-                        usb_alternate_setting_out_changed = FALSE;
-                }
-*/
-
         // silence speaker if USB data out is stalled, as indicated by heart-beat counter
         if (old_spk_usb_heart_beat == spk_usb_heart_beat) {
             if ((input_select == MOBO_SRC_UAC1) || (input_select == MOBO_SRC_NONE)) {
@@ -165,11 +147,5 @@ void uac1_AK5394A_task(void* pvParameters)
                 usb_buffer_toggle = USB_BUFFER_TOGGLE_LIM;
         }
         old_spk_usb_heart_beat = spk_usb_heart_beat;
-        /*
-                if (FEATURE_IMAGE_UAC1_DG8SAQ) {
-                        spk_mute = TX_state ? FALSE : TRUE;
-                        mute = TX_state ? TRUE : FALSE;
-                }
-*/
     }  // end while (TRUE)
 }

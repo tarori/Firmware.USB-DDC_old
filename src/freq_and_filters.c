@@ -40,9 +40,7 @@ void SetFilter(uint32_t freq)
 
     uint8_t i;
 
-    //	#if SCRAMBLED_FILTERS						// Enable a non contiguous order of filters
     uint8_t data;
-    //	#endif
 
     sint32_t Freq;
 

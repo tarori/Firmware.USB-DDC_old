@@ -193,8 +193,6 @@ void AK5394A_pdca_rx_enable(U32 frequency)
 {
     U16 countdown = 0xFFFF;
 
-    //	gpio_set_gpio_pin(AVR32_PIN_PX43); // ch6 p88
-
     pdca_disable_interrupt_reload_counter_zero(PDCA_CHANNEL_SSC_RX);
     mobo_clear_adc_channel();
 
@@ -225,8 +223,6 @@ void AK5394A_pdca_rx_enable(U32 frequency)
     pdca_enable_interrupt_reload_counter_zero(PDCA_CHANNEL_SSC_RX);
 
     taskEXIT_CRITICAL();
-
-    //	gpio_clr_gpio_pin(AVR32_PIN_PX43); // ch6 p88
 }
 
 // Turn on the TX pdca, run after ssc_i2s_init()
@@ -234,8 +230,6 @@ void AK5394A_pdca_rx_enable(U32 frequency)
 void AK5394A_pdca_tx_enable(U32 frequency)
 {
     U16 countdown = 0xFFFF;
-
-    //	gpio_set_gpio_pin(AVR32_PIN_PX52); // ch5 p87
 
     pdca_disable_interrupt_reload_counter_zero(PDCA_CHANNEL_SSC_TX);
 
@@ -268,8 +262,6 @@ void AK5394A_pdca_tx_enable(U32 frequency)
     pdca_enable_interrupt_reload_counter_zero(PDCA_CHANNEL_SSC_TX);
 
     taskEXIT_CRITICAL();
-
-    //	gpio_clr_gpio_pin(AVR32_PIN_PX52); // ch5 p87
 }
 
 void AK5394A_task_init(const Bool uac1)
@@ -322,8 +314,6 @@ void AK5394A_task_init(const Bool uac1)
     // HSB Bus matrix register MCFG1 is associated with the CPU instruction master interface.
     AVR32_HMATRIX.mcfg[AVR32_HMATRIX_MASTER_CPU_INSN] = 0x1;
 
-    // 	ADC_buf_DMA_write = 0; Now done in (global) variable declaration
-    //	DAC_buf_DMA_read = 0; Now done in (global) variable declaration
     // Register PDCA IRQ interruptS. // Plural those are!
     pdca_set_irq();
 

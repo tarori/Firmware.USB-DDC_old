@@ -125,8 +125,6 @@ double Freq_From_Register(double fcryst)  // side effects: rfreq and delta_rfreq
     hsdiv = ((si570reg[0] & 0xE0) >> 5) + 4;
     n1 = ((si570reg[0] & 0x1f) << 2) + ((si570reg[1] & 0xc0) >> 6);
 
-    //	if(n1 == 0) n1 = 1;
-    //	else if((n1 & 1) !=0) n1 += 1;
     n1 += 1;
 
     rfreq_integer_portion = ((uint32_t)(si570reg[1] & 0x3f)) << 4 | ((uint32_t)(si570reg[2] & 0xf0)) >> 4;

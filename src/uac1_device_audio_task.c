@@ -272,7 +272,6 @@ void uac1_device_audio_task(void* pvParameters)
            // Should we remove old ADC code to here?
 
         if (usb_alternate_setting_out >= 1) {  // bBitResolution
-                                               //				if (usb_alternate_setting_out == 1) {
             // BSB 20131031 actual gap calculation moved to after OUT data processing
 
             /* SPDIF reduced OK */
@@ -382,17 +381,6 @@ void uac1_device_audio_task(void* pvParameters)
                 // Error increases when Host (in average) sends too much data compared to FB_rate
                 // A high error means we must skip.
 
-                /*					// Try to detect a dead Host feedback system
-                                                if (FEATURE_NOSKIP_OFF) { 				// If skip/insert isn't disabled...
-                                                        if (packets_since_feedback > SPK_HOST_FB_DEAD_AFTER)
-                                                                skip_enable |= SPK_SKIP_EN_DEAD;	// Enable skip/insert due to dead host feedback system
-                                                        else {
-                                                                packets_since_feedback ++;
-                                                                skip_enable &= ~SPK_SKIP_EN_DEAD;	// Disable skip/insert due to dead host feedback system
-                                                        }
-                                                }
-        */
-
                 // Default:1 Skip:0 Insert:2 Only one skip or insert per USB package
                 // .. prior to for(num_samples) Hence 1st sample in a package is skipped or inserted
 
@@ -419,16 +407,6 @@ void uac1_device_audio_task(void* pvParameters)
                         LED_On(LED1);  // Indicate skipping on module LED
                     }
                 }
-
-                // BSB 20131106 some notes on using AB-1.1 analog output for debug
-                //					sample_L = 0x007FFFFF; // posative 24-bit full scale for calibration AB-1.1: 2.744VDC NB!! ES9023 keep squares at least 3dB
-                //					sample_R = 0xFF800001; // negitive 24-bit full scale for calibration AB-1.2: -2.745VDC     below full-scale!
-                //					sample_L = (U32)num_samples << 16; // +127 is maximum. Expect 9 times 44 and once 45. Multimeter:945.4mVDC dead on!
-                //					sample_R = (U32)FB_rate_initial << 2; // It was <<'ed by 14, expect 44.1 /  Multimeter: 948.6mVDC not quite dead on..
-                //					sample_R = (U32)num_samples << 16; // +127 is maximum. Expect 9 times 44 and once 45. Multimeter: 948.0mVDC
-                //					sample_L = (U32)FB_rate_initial << 2; // It was <<'ed by 14, expect 44.1 /  Multimeter: 946.1mVDC dead on!
-                //					sample_L = (U32)FB_error_acc << 2;
-                //					sample_R = (U32)num_samples << 16;
 
                 // ON this particular AB-1.2, the Left channel is more accurate at this particular measurement. We'll wait with further
                 // calibration. FB_rate_initial is verified. Value of 1<<16 = 21mV
@@ -526,7 +504,6 @@ void uac1_device_audio_task(void* pvParameters)
                     else  // Initially and a while after any skip/insert
                         time_to_calculate_gap = SPK_PACKETS_PER_GAP_CALCULATION - 1;
                     if (usb_alternate_setting_out >= 1) {  // bBitResolution // Used with explicit feedback and not ADC data
-                                                           //							if (usb_alternate_setting_out == 1) {	// Used with explicit feedback and not ADC data
 
                         DAC_buf_DMA_read_local = DAC_buf_DMA_read;
                         num_remaining = spk_pdca_channel->tcr;
@@ -607,8 +584,6 @@ void uac1_device_audio_task(void* pvParameters)
 
         else {  // opposite of ( (usb_alternate_setting_out >= 1) && (usb_ch_swap == USB_CH_NOSWAP) )
 
-
-            //				if (input_select == MOBO_SRC_UAC1) {			// Set from playing nonzero USB
             // mobodebug untested fix
             if ((input_select == MOBO_SRC_UAC1) && (playerStarted != FALSE)) {  // Set from playing nonzero USB
                 playerStarted = FALSE;                                          // Inserted here in mobodebug untested fix, removed above

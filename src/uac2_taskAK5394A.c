@@ -71,7 +71,6 @@ void uac2_AK5394A_task(void*);
 //!
 void uac2_AK5394A_task_init(void)
 {
-    //	current_freq.frequency = FREQ_96;
     current_freq.frequency = FREQ_44;
     AK5394A_task_init(FALSE);
 
@@ -97,16 +96,6 @@ void uac2_AK5394A_task(void* pvParameters)
     xLastWakeTime = xTaskGetTickCount();
     volatile S32 usb_buffer_toggle;
 
-    /*
-        U32 poolingFreq;
-        U32 FB_rate_int;
-        U32 FB_rate_frac;
-
-        #define NUM_INTERVAL 40
-        U32 sampling_rate = 48*(UAC2_configTSK_AK5394A_PERIOD/10)*NUM_INTERVAL;
-        U32 old_sampling_rate = 48*(UAC2_configTSK_AK5394A_PERIOD/10)*NUM_INTERVAL;
-        int sampling_count = 0;
-*/
     while (TRUE) {
         // All the hard work is done by the pdca and the interrupt handler.
         // This does some periodic checking such as whether USB data out is stalled
@@ -127,13 +116,5 @@ void uac2_AK5394A_task(void* pvParameters)
                 usb_buffer_toggle = USB_BUFFER_TOGGLE_LIM;
         }
         old_spk_usb_heart_beat = spk_usb_heart_beat;
-
-        /*
-                if (FEATURE_IMAGE_UAC2_DG8SAQ) {
-                        spk_mute = TX_state ? FALSE : TRUE;
-                        mute = TX_state ? TRUE : FALSE;
-                }
-*/
-
     }  // end while (TRUE)
 }

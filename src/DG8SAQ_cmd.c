@@ -51,8 +51,6 @@ void dg8saqFunctionWrite(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* Buf
     Buf16 = (uint16_t*)Buffer;
     int x;
 
-    //	LED_Toggle(LED1);
-
     switch (type) {
     case 0x30:
         if (len == 6) {
@@ -113,8 +111,6 @@ uint8_t dg8saqFunctionSetup(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* 
     uint16_t* Buf16;
     Buf32 = (uint32_t*)Buffer;
     Buf16 = (uint16_t*)Buffer;
-
-    //	LED_Toggle(LED1);
 
     *Buffer = 255;  // default error return
     switch (type) {
@@ -218,28 +214,6 @@ uint8_t dg8saqFunctionSetup(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* 
         }
     }
 
-
-        // Todo -- delete, most likely
-        // case 0x20:								// [DEBUG] Write byte to Si570 register
-        //	Si570CmdReg(rq->wValue.b1, rq->wIndex.b0);  // Value high byte and Index low byte
-        //
-        //	Status2 |= SI570_OFFL;				// Next SetFreq call no smoothtune
-        //
-        //	replyBuf[0].b0 = I2CErrors;			// return I2C transmission error status
-        //  return sizeof(uint8_t);
-
-        // case 0x30:							// Set frequnecy by register and load Si570
-        // case 0x31:							// Write the FREQ mul & add to the eeprom
-        // case 0x32:							// Set frequency by value and load Si570
-        // case 0x33:							// write new crystal frequency to EEPROM and use it.
-        // case 0x34:							// Write new startup frequency to eeprom
-        // case 0x35:							// Write new smooth tune to eeprom and use it.
-        // case 0x36:
-        // case 0x37:
-        //	return 0		;					// Hey we're not supposed to be here
-        //  	we use usbFunctionWrite() to transfer data
-
-
     case 0x3a:  // Return running frequnecy
         *Buf32 = cdata.Freq[0];
         return sizeof(uint32_t);
@@ -339,17 +313,6 @@ uint8_t dg8saqFunctionSetup(uint8_t type, uint16_t wValue, uint16_t wIndex, U8* 
             }
         }
         return sizeof(uint8_t);
-
-        // Todo
-        //#if USB_SERIAL_ID						// A feature to change the last char of the USB Serial  number
-        // case 0x43:							// Get/Set the USB SeialNumber ID
-        //	replyBuf[0].b0 = R.SerialNumber;
-        //	if (rq->wValue.b0 != 0) {			// Only set if Value != 0
-        //		R.SerialNumber = rq->wValue.b0;
-        //		eeprom_write_byte(&E.SerialNumber, R.SerialNumber);
-        //	}
-        //	return sizeof(R.SerialNumber);
-        //#endif
 
     case 0x50:  // Set/Release PTT and get cw-key status
         if (wValue == 0) {

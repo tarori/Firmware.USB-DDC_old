@@ -35,27 +35,8 @@ int32_t BSBmult(int32_t A, int32_t V)
 
 S32 Cmult(int32_t A, int32_t V)
 {
-    //	int64_t X = (int64_t)( (int64_t)A * (int64_t)V ) >> 28;
-    //	return ( (int32_t)(X >> 0) );
-
     return (S32)((int64_t)((int64_t)A * (int64_t)V) >> 28);
 }
-/* builds
-        muls.d  	r10, r11, r12
-        lsr     	r12, r10, 28
-        or			r12, r12, r11 << 4
-*/
-
-/*
-S64 sshhiifftt(S64 A) {
-
-return A >> 28;
-//	lsr     r10, 28
-//	or		r10, r10, r11 << 4
-//	asr     r11, 28
-
-}
-*/
 
 int foo(void)
 {

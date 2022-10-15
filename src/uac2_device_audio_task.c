@@ -135,8 +135,6 @@ void uac2_device_audio_task_init(U8 ep_in, U8 ep_out, U8 ep_out_fb)
 void uac2_device_audio_task(void* pvParameters)
 {
     (void)pvParameters;
-    //	static U32  time=0;
-    //	static Bool startup=TRUE;
     Bool playerStarted = FALSE;  // BSB 20150516: changed into global variable
     int i;
     U16 num_samples, num_remaining, gap;
@@ -275,7 +273,6 @@ void uac2_device_audio_task(void* pvParameters)
         }  // end alt setting 1
 
         if (usb_alternate_setting_out >= 1) {  // bBitResolution
-                                               //			if (usb_alternate_setting_out == 1) {
 
             /* SPDIF reduced OK */
             if (Is_usb_in_ready(EP_AUDIO_OUT_FB)) {  // Endpoint buffer free ?
@@ -333,13 +330,6 @@ void uac2_device_audio_task(void* pvParameters)
                 }
 
                 if (playerStarted) {
-                    // 					Original Linux quirk replacement code
-                    //					if (((current_freq.frequency == FREQ_88) && (FB_rate > ((88 << 14) + (7 << 14)/10))) ||
-                    //						((current_freq.frequency == FREQ_96) && (FB_rate > ((96 << 14) + (6 << 14)/10))))
-                    //						FB_rate -= FB_RATE_DELTA * 512;
-
-                    //					Alternative Linux quirk replacement code, insert nominal FB_rate after a short interlude of requesting 99ksps (see uac2_usb_specific_request.c)
-
                     // FIX: Will Linux quirk work with WM8805 input??
                     if ((current_freq.frequency == FREQ_88) && (FB_rate > (98 << 14))) {
                         FB_rate = FB_rate_nominal;  // BSB 20131115 restore saved nominal feedback rate
@@ -408,17 +398,6 @@ void uac2_device_audio_task(void* pvParameters)
                 // Error increases when Host (in average) sends too much data compared to FB_rate
                 // A high error means we must skip.
 
-                /*					// Try to detect a dead Host feedback system
-                                        if (FEATURE_NOSKIP_OFF) { 				// If skip/insert isn't disabled...
-                                                if (packets_since_feedback > SPK_HOST_FB_DEAD_AFTER)
-                                                        skip_enable |= SPK_SKIP_EN_DEAD;	// Enable skip/insert due to dead host feedback system
-                                                else {
-                                                        packets_since_feedback ++;
-                                                        skip_enable &= ~SPK_SKIP_EN_DEAD;	// Disable skip/insert due to dead host feedback system
-                                                }
-                                        }
-        */
-
                 // Default:1 Skip:0 Insert:2 Only one skip or insert per USB package
                 // .. prior to for(num_samples) Hence 1st sample in a package is skipped or inserted
                 samples_to_transfer_OUT = 1;
@@ -469,13 +448,13 @@ void uac2_device_audio_task(void* pvParameters)
                         sample_LSB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
                         sample_SB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
                         sample_MSB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
-                        sample_L = (((U32)sample_MSB) << 24) + (((U32)sample_SB) << 16) + (((U32)sample_LSB) << 8);  //  + sample_HSB; // bBitResolution
+                        sample_L = (((U32)sample_MSB) << 24) + (((U32)sample_SB) << 16) + (((U32)sample_LSB) << 8);  // bBitResolution
 
                         sample_HSB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);  // bBitResolution void input byte to fill up to 4 bytes?
                         sample_LSB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
                         sample_SB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
                         sample_MSB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
-                        sample_R = (((U32)sample_MSB) << 24) + (((U32)sample_SB) << 16) + (((U32)sample_LSB) << 8);  // + sample_HSB; // bBitResolution
+                        sample_R = (((U32)sample_MSB) << 24) + (((U32)sample_SB) << 16) + (((U32)sample_LSB) << 8);  // bBitResolution
                     } else if (usb_alternate_setting_out == ALT2_AS_INTERFACE_INDEX) {                               // Alternate 2 16 bits/sample, 4 bytes per stereo sample
                         // 16-bit code
                         sample_LSB = Usb_read_endpoint_data(EP_AUDIO_OUT, 8);
@@ -553,7 +532,6 @@ void uac2_device_audio_task(void* pvParameters)
                     else  // Initially and a while after any skip/insert
                         time_to_calculate_gap = SPK_PACKETS_PER_GAP_CALCULATION - 1;
                     if (usb_alternate_setting_out >= 1) {  // bBitResolution // Used with explicit feedback and not ADC data
-                                                           //						if (usb_alternate_setting_out == 1) {	// Used with explicit feedback and not ADC data
 
                         DAC_buf_DMA_read_local = DAC_buf_DMA_read;
                         num_remaining = spk_pdca_channel->tcr;
@@ -634,8 +612,6 @@ void uac2_device_audio_task(void* pvParameters)
 
         else {  // ( (usb_alternate_setting_out >= 1) && (usb_ch_swap == USB_CH_NOSWAP) )
 
-
-            //				if (input_select == MOBO_SRC_UAC2) {			// Set from playing nonzero USB
             // mobodebug untested fix
             if ((input_select == MOBO_SRC_UAC2) && (playerStarted != FALSE)) {  // Set from playing nonzero USB
                 playerStarted = FALSE;                                          // Inserted here in mobodebug untested fix, removed above

@@ -495,23 +495,6 @@ void widget_blink_morse(char* ascii)
 
 void widget_init(void)
 {
-    // widget_blink_morse(" v ");
-    // char buffer[64];
-    // strncpy(buffer,widget_reset_cause(),64);
-    // buffer[3] = 0;
-    // widget_blink_morse(buffer);
-    // widget_blink_morse(" v ");
-
-    // this returns not tasking during startup
-    // if (widget_is_tasking()) widget_blink_morse(" tasking "); else widget_blink_morse(" not tasking ");
-    //	widget_blink_morse("   ");
-    //	widget_blink_morse(" reset from ");
-    //	widget_blink_morse(widget_reset_cause());
-    //	widget_blink_morse("   ");
-    //	if ( ! widget_is_supervisor() )
-    //		widget_blink_morse(" user");
-    //	else
-    //		widget_blink_morse(" super");
 }
 
 void widget_ready(char* msg)
